@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Transformations of regressors: Some payoffs from the linear algebra perspective.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-MMK2VCM6EW"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
+</script>
+<script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/stat_bear.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Spring 2026 STAT151A</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../lectures/lectures.qmd"> 
+<span class="menu-text">Lectures</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../assignments/assignments.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../labs/index.html"> 
+<span class="menu-text">Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../datasets/data.html"> 
+<span class="menu-text">Datasets</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../course_policies.html"> 
+<span class="menu-text">Course Policies</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/berkeley-stat151a/spring-2026-private/actions/workflows/publish-to-public-repo.yml"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#prediction-in-the-bodyfat-example" id="toc-prediction-in-the-bodyfat-example" class="nav-link" data-scroll-target="#prediction-in-the-bodyfat-example">Prediction in the bodyfat example</a>
+  <ul class="collapse">
+  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1">Question 1</a></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2">Question 2</a></li>
+  <li><a href="#question-3" id="toc-question-3" class="nav-link" data-scroll-target="#question-3">Question 3</a></li>
+  <li><a href="#question-4" id="toc-question-4" class="nav-link" data-scroll-target="#question-4">Question 4</a></li>
+  </ul></li>
+  <li><a href="#answer-to-question-1" id="toc-answer-to-question-1" class="nav-link" data-scroll-target="#answer-to-question-1">Answer to Question 1</a>
+  <ul class="collapse">
+  <li><a href="#linear-combinations-of-variables-in-simple-least-squares" id="toc-linear-combinations-of-variables-in-simple-least-squares" class="nav-link" data-scroll-target="#linear-combinations-of-variables-in-simple-least-squares">Linear combinations of variables in simple least squares</a></li>
+  <li><a href="#linear-combinations-of-variables-in-matrix-form" id="toc-linear-combinations-of-variables-in-matrix-form" class="nav-link" data-scroll-target="#linear-combinations-of-variables-in-matrix-form">Linear combinations of variables in matrix form</a></li>
+  <li><a href="#linear-combinations-of-variables-in-general" id="toc-linear-combinations-of-variables-in-general" class="nav-link" data-scroll-target="#linear-combinations-of-variables-in-general">Linear combinations of variables in general</a></li>
+  <li><a href="#linear-transformations-and-column-spans" id="toc-linear-transformations-and-column-spans" class="nav-link" data-scroll-target="#linear-transformations-and-column-spans">Linear transformations and column spans</a></li>
+  </ul></li>
+  <li><a href="#answer-to-question-2" id="toc-answer-to-question-2" class="nav-link" data-scroll-target="#answer-to-question-2">Answer to Question 2</a>
+  <ul class="collapse">
+  <li><a href="#redundant-variables-in-simple-regression" id="toc-redundant-variables-in-simple-regression" class="nav-link" data-scroll-target="#redundant-variables-in-simple-regression">Redundant variables in simple regression</a></li>
+  <li><a href="#redundant-variables-in-matrix-form" id="toc-redundant-variables-in-matrix-form" class="nav-link" data-scroll-target="#redundant-variables-in-matrix-form">Redundant variables in matrix form</a></li>
+  <li><a href="#in-r" id="toc-in-r" class="nav-link" data-scroll-target="#in-r">In R</a></li>
+  </ul></li>
+  <li><a href="#answer-to-question-3" id="toc-answer-to-question-3" class="nav-link" data-scroll-target="#answer-to-question-3">Answer to Question 3</a></li>
+  <li><a href="#answer-to-question-4" id="toc-answer-to-question-4" class="nav-link" data-scroll-target="#answer-to-question-4">Answer to Question 4</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Transformations of regressors: Some payoffs from the linear algebra perspective.</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><span class="math inline">\(\LaTeX\)</span></p>
+<section id="goals" class="level1">
+<h1>Goals</h1>
+<ul>
+<li>Use our technical results to answer some questions about prediction:
+<ul>
+<li>How can we form new predictors for prediction problems?</li>
+</ul></li>
+</ul>
+</section>
+<section id="prediction-in-the-bodyfat-example" class="level1">
+<h1>Prediction in the bodyfat example</h1>
+<p>Recall our bodyweight example. Suppose we’ve chosen a couple of variables to form our prediction: Height, Weight, and Abdomen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> Abdomen <span class="sc">+</span> Height <span class="sc">+</span> Weight, bodyfat_df)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)     Abdomen      Height      Weight 
+-36.6147193   0.9515631  -0.1270307  -0.1307606 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Error: 19.456161"</code></pre>
+</div>
+</div>
+<section id="question-1" class="level3">
+<h3 class="anchored" data-anchor-id="question-1">Question 1</h3>
+<p>Noting that all three of these variables are on different scales, you might think you would get a better fit by normalizing them. Let’s see what happens:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>bodyfat_df <span class="ot">&lt;-</span> bodyfat_df <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">height_norm=</span>(Height <span class="sc">-</span> <span class="fu">mean</span>(Height)) <span class="sc">/</span> <span class="fu">sd</span>(Height),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">weight_norm=</span>(Weight <span class="sc">-</span> <span class="fu">mean</span>(Weight)) <span class="sc">/</span> <span class="fu">sd</span>(Weight),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">abdomen_norm=</span>(Abdomen <span class="sc">-</span> <span class="fu">mean</span>(Abdomen)) <span class="sc">/</span> <span class="fu">sd</span>(Abdomen))</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>reg_norm <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> abdomen_norm <span class="sc">+</span> height_norm <span class="sc">+</span> weight_norm, bodyfat_df)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_norm<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept) abdomen_norm  height_norm  weight_norm 
+   19.150794    10.260778    -0.465295    -3.842945 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_norm<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Error: 19.456161"</code></pre>
+</div>
+</div>
+<p>Our coefficients changed, but our fitted error didn’t change at all! <strong>Why not?</strong></p>
+</section>
+<section id="question-2" class="level3">
+<h3 class="anchored" data-anchor-id="question-2">Question 2</h3>
+<p>Suppose we think, okay, maybe it’s the difference between normalized height and weight that helps us predict.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>bodyfat_df <span class="ot">&lt;-</span> bodyfat_df <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">hw_diff =</span> height_norm <span class="sc">-</span> weight_norm)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>reg_diff <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> abdomen_norm <span class="sc">+</span> height_norm <span class="sc">+</span> weight_norm <span class="sc">+</span> hw_diff, bodyfat_df)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_diff<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept) abdomen_norm  height_norm  weight_norm      hw_diff 
+   19.150794    10.260778    -0.465295    -3.842945           NA </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_diff<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Error: 19.456161"</code></pre>
+</div>
+</div>
+<p>Now, our fitted error didn’t change at all, but our difference coefficient wasn’t even estimated. <strong>What is going on?</strong></p>
+</section>
+<section id="question-3" class="level3">
+<h3 class="anchored" data-anchor-id="question-3">Question 3</h3>
+<p>What about the ratio of weight to height?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>bodyfat_df <span class="ot">&lt;-</span> bodyfat_df <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">hw_ratio =</span> height_norm <span class="sc">/</span> weight_norm)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>reg_ratio <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> abdomen_norm <span class="sc">+</span> height_norm <span class="sc">+</span> weight_norm <span class="sc">+</span> hw_ratio, bodyfat_df)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_ratio<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept) abdomen_norm  height_norm  weight_norm     hw_ratio 
+19.149475485 10.271751693 -0.478683698 -3.848561820  0.009057317 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_ratio<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Error: 19.423560"</code></pre>
+</div>
+</div>
+<p>Our fitted error finally changed, and we could estimate this coefficient. <strong>What’s different between this example and the previous one?</strong></p>
+</section>
+<section id="question-4" class="level3">
+<h3 class="anchored" data-anchor-id="question-4">Question 4</h3>
+<p>Let <span class="math inline">\(\x_n = (\textrm{Abdomen}_n, \textrm{Height}_n, \textrm{Weight}_n, \textrm{Wrist}_n ...)\)</span> contain all the measured variables in the dataset.</p>
+<p>A colleague suggests a research project where you improve your fit by regressing <span class="math inline">\(\y_n \sim \z_n\)</span> for new regressors <span class="math inline">\(\z_n\)</span> of the form <span class="math inline">\(\z_n = \A \x_n\)</span> where the matrix <span class="math inline">\(\A\)</span> is chosen optimally.</p>
+<p>A different colleague suggests a research project where you try the same thing, but let <span class="math inline">\(\z_n = f(\x_n)\)</span> for any function <span class="math inline">\(f\)</span>, where you optimize over all functions.</p>
+<p><strong>What do you think of these ideas?</strong></p>
+</section>
+</section>
+<section id="answer-to-question-1" class="level1">
+<h1>Answer to Question 1</h1>
+<section id="linear-combinations-of-variables-in-simple-least-squares" class="level2">
+<h2 class="anchored" data-anchor-id="linear-combinations-of-variables-in-simple-least-squares">Linear combinations of variables in simple least squares</h2>
+<p>To answer question 1, let’s look at a slightly simpler example, where we perform simple least squares on heigh.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>reg_height <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> Height, bodyfat_df)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_height<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)      Height 
+ 33.4944938  -0.2044753 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_height<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Error: 69.199176"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>reg_height_norm <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> height_norm, bodyfat_df)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_height_norm<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept) height_norm 
+ 19.1507937  -0.7489636 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_height_norm<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Error: 69.199176"</code></pre>
+</div>
+</div>
+<p>Why do these two have different coefficients, but the same fit? The answer comes from our projection result. Let’s let <span class="math inline">\(\x_n = \textrm{Height}_n\)</span>, and <span class="math inline">\(\z_n = \textrm{height\_norm}_n\)</span>. Recall that <code>R</code> includes a constant in the regression by default, so our two regressions are:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\textrm{height: } &amp;&amp; \textrm{height\_norm} \\
+\y_n = \beta_0 + \beta_1 \x_n + \res_n &amp;&amp;
+\y_n = \gamma_0 + \gamma_1 \z_n + \nu_n.
+\end{aligned}
+\]</span></p>
+<p>What’s the relationship between these two regressions? Well, taking <span class="math inline">\(\overline{x} := \meann \x_n\)</span> and <span class="math inline">\(\sigmahat_x := \sqrt{\meann (\x_n - \overline{x})^2}\)</span>. In our case, <span class="math inline">\(\sigmahat_x &gt; 0\)</span>, so we’ve set</p>
+<p><span id="eq-beta-to-gamma-1d"><span class="math display">\[
+\z_n = \frac{\x_n - \overline{x}}{\sigmahat_x} =
+  \frac{1}{\sigmahat_x} \x_n - \frac{\overline{x}}{\sigmahat_x}.
+\tag{1}\]</span></span></p>
+<p>That means we can write</p>
+<p><span class="math display">\[
+\begin{aligned}
+\gamma_0 + \gamma_1 \z_n + \nu_n ={}&amp;
+\gamma_0 + \gamma_1 \left( \frac{1}{\sigmahat_x} \x_n -
+  \frac{\overline{x}}{\sigmahat_x} \right) + \nu_n  \\
+={}&amp;
+\left(\gamma_0 - \frac{\overline{x}}{\sigmahat_x} \gamma_1 \right)  +
+   \left( \frac{\gamma_1}{\sigmahat_x}\right) \x_n  + \nu_n.
+\end{aligned}
+\]</span></p>
+<p>By identifying</p>
+<p><span class="math display">\[
+\gamma_0 - \frac{\overline{x}}{\sigmahat_x} \gamma_1 = \beta_0 \quad\textrm{and}\quad
+\frac{\gamma_1}{\sigmahat_x} = \beta_1,
+\]</span></p>
+<p>we see that the two regressions are exactly the same! From this two conclusions follow:</p>
+<ul>
+<li>It is impossible for you to get a better fit with one than the other.</li>
+<li>In general the coefficients will be different.</li>
+</ul>
+<p>In fact, we can write down the rule to convert between the two. Let’s check that it works:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(bodyfat_df<span class="sc">$</span>Height)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>sigmahat <span class="ot">&lt;-</span> <span class="fu">sd</span>(bodyfat_df<span class="sc">$</span>Height)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>gammahat_0 <span class="ot">&lt;-</span> reg_height_norm<span class="sc">$</span>coefficients[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>gammahat_1 <span class="ot">&lt;-</span> reg_height_norm<span class="sc">$</span>coefficients[<span class="st">"height_norm"</span>]</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>betahat_0 <span class="ot">&lt;-</span> reg_height<span class="sc">$</span>coefficients[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>betahat_1 <span class="ot">&lt;-</span> reg_height<span class="sc">$</span>coefficients[<span class="st">"Height"</span>]</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Intercept: "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Intercept: "</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(betahat_0, <span class="st">" = "</span>, gammahat_0 <span class="sc">-</span> gammahat_1 <span class="sc">*</span> xbar <span class="sc">/</span> sigmahat, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>33.49449  =  33.49449 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(betahat_1, <span class="st">" = "</span>, gammahat_1  <span class="sc">/</span> sigmahat, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-0.2044753  =  -0.2044753 </code></pre>
+</div>
+</div>
+</section>
+<section id="linear-combinations-of-variables-in-matrix-form" class="level2">
+<h2 class="anchored" data-anchor-id="linear-combinations-of-variables-in-matrix-form">Linear combinations of variables in matrix form</h2>
+<p>To extend what we just did, let’s put our result in matrix notation. First, write</p>
+<p><span class="math display">\[
+\xv_n = \begin{pmatrix}
+1 \\ \x_n
+\end{pmatrix}
+\quad\textrm{and}\quad
+\zv_n = \begin{pmatrix}
+1 \\ \z_n
+\end{pmatrix}.
+\]</span></p>
+<p>In this notation, we can write <a href="#eq-beta-to-gamma-1d" class="quarto-xref">Equation&nbsp;1</a> as</p>
+<p><span class="math display">\[
+\zv_n =
+\begin{pmatrix}
+1 &amp; 0 \\
+-\frac{\overline{x}}{\sigmahat_x} &amp; \frac{1}{\sigmahat_x}
+\end{pmatrix}
+\xv_n
+=: \A \xv_n.
+\]</span></p>
+<p>We can see that <span class="math inline">\(\A\)</span> is invertible whenever <span class="math inline">\(\sigmahat_x &gt; 0\)</span>. Using the matrix <span class="math inline">\(\A\)</span>, we can write <span class="math inline">\(\Z = \X \A^\trans\)</span>, so</p>
+<p><span class="math display">\[
+\Y = \Z \gamma + \etav =
+\X \A^\trans \gamma + \etav =
+\X  \beta + \resv,
+\]</span></p>
+<p>which gives</p>
+<p><span class="math display">\[
+\etav = \resv
+\quad\Leftrightarrow \quad
+\A^\trans \gamma =  \beta
+\quad\Leftrightarrow \quad
+\gamma = (\A^\trans)^{-1} \beta
+.
+\]</span></p>
+<p>We can confirm that this condition does indeed hold at the optimum of each regression:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>a_mat <span class="ot">=</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>a_mat[<span class="dv">1</span>,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>a_mat[<span class="dv">1</span>,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>a_mat[<span class="dv">2</span>,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="sc">-</span>xbar <span class="sc">/</span> sigmahat</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>a_mat[<span class="dv">2</span>,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigmahat</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">t</span>(a_mat) <span class="sc">%*%</span> reg_height_norm<span class="sc">$</span>coefficients <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33.4944938 -0.2044753</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_height<span class="sc">$</span>coefficients)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(Intercept)      Height 
+ 33.4944938  -0.2044753 </code></pre>
+</div>
+</div>
+<p>Note that we were able to do this only because we included an intercept in the regression! In fact, we can show that we get different fits if we don’t include the intercept:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>reg_height_noint <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> Height <span class="sc">-</span> <span class="dv">1</span>, bodyfat_df)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_height_noint<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Error: 72.237550"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>reg_height_norm_noint <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> height_norm <span class="sc">-</span> <span class="dv">1</span>, bodyfat_df)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_height_norm_noint<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Error: 435.952073"</code></pre>
+</div>
+</div>
+</section>
+<section id="linear-combinations-of-variables-in-general" class="level2">
+<h2 class="anchored" data-anchor-id="linear-combinations-of-variables-in-general">Linear combinations of variables in general</h2>
+<p>Note that the argument which we made in the special case above actually holds in general. Let’s go to <span class="math inline">\(P\)</span>–dimensional regression, but otherwise retaining the notation <span class="math inline">\(\y_n \sim \z_n^\trans\gamma\)</span> and <span class="math inline">\(\y_n \sim \x_n^\trans \beta\)</span>. If we can find an invertible <span class="math inline">\(\A\)</span> such that <span class="math inline">\(\z_n = \A \x_n\)</span>, then we still have</p>
+<p><span class="math display">\[
+\Y = \Z \gamma + \etav =
+\X \A^\trans \gamma + \etav =
+\X  \beta + \resv,
+\]</span></p>
+<p><span class="math display">\[
+\etav = \resv
+\quad\Leftrightarrow \quad
+\A^\trans \gamma =  \beta
+\quad\Leftrightarrow \quad
+\gamma = (\A^\trans)^{-1} \beta
+.
+\]</span></p>
+<p>How can we recognize a linear transformation from <span class="math inline">\(\x_n\)</span> to <span class="math inline">\(\z_n\)</span>?<br>
+It’s enough for each entry of <span class="math inline">\(\z_n\)</span> to be a linear transform <span class="math inline">\(\z_{np}= \a_p^\trans \x_n\)</span>, since we can then just stack the <span class="math inline">\(\a_p^\trans\)</span> vectors to form <span class="math inline">\(\A\)</span>.</p>
+<ul>
+<li>Linear transformations of <span class="math inline">\(\x_n\)</span> always look like <span class="math inline">\(\z_{np} = \a_{p1} \x_{n1} + \ldots \a_{pP} \x_{nP}\)</span>.</li>
+<li>Entries that are unchanged are always the (trivial) identity linear transformation <span class="math inline">\(\a_{p} = (0, 0, \ldots, 0, 1,  0, \ldots, 0)\)</span></li>
+</ul>
+<p>Note that adding a constant is an affine, not a linear transformation. However, it can be a linear transformation if your model includes an intercept — or if some sum of the entries of <span class="math inline">\(\x_n\)</span> is always a constant.</p>
+<p>Not that it is not always easy to see whether a linear transformation is invertible! We will talk about that problem shortly.</p>
+<p>In this way, one can see that the normalization of Question 1 is a linear transformation.</p>
+</section>
+<section id="linear-transformations-and-column-spans" class="level2">
+<h2 class="anchored" data-anchor-id="linear-transformations-and-column-spans">Linear transformations and column spans</h2>
+<p>Finally, recall our projection result that states</p>
+<p><span class="math display">\[
+\Yhat = \proj{\S_\X} \Y = \X (\X^\trans \X)^{-1} \X^\trans \Y,
+\]</span></p>
+<p>where <span class="math inline">\(\S_\X\)</span> is the space of linear combinations of the columns of <span class="math inline">\(\X\)</span>. If <span class="math inline">\(\A\)</span> is invertible, then the column span of <span class="math inline">\(\Z = \X \A^\trans\)</span> is equal to the column span of <span class="math inline">\(\X\)</span>. Consequently, a regression on an invertible linear combination of regressors cannot affect the fit.</p>
+<p>Although this intuition is clear enough if you’re comfortable with linear algebra, you can also check directly that</p>
+<p><span class="math display">\[
+\proj{\S_\Z} \Y =
+\Z (\Z^\trans \Z)^{-1} \Z^\trans \Y =
+\X \A^\trans (\A \X^\trans \X \A^\trans)^{-1} \A \X^\trans \Y =
+\X \A^\trans (\A^\trans)^{-1} (\X^\trans \X)^{-1} \A^{-1} \A \X^\trans \Y =
+\X (\X^\trans \X)^{-1} \X^\trans \Y =
+\proj{\S_\X} \Y.
+\]</span></p>
+</section>
+</section>
+<section id="answer-to-question-2" class="level1">
+<h1>Answer to Question 2</h1>
+<section id="redundant-variables-in-simple-regression" class="level2">
+<h2 class="anchored" data-anchor-id="redundant-variables-in-simple-regression">Redundant variables in simple regression</h2>
+<p>Once again, it will be useful to start with a simpler example. Suppose you have a regression <span class="math inline">\(\y_n \sim \xv_n^\trans \beta\)</span>, with <span class="math inline">\(\xv_n = (1, \x_n)^\trans\)</span>, where <span class="math inline">\(\sigmahat_x &gt; 0\)</span> (as defined above). Now suppose you want to run a new regression <span class="math inline">\(\y_n \sim \z_n^\trans \gamma\)</span> with</p>
+<p><span class="math display">\[
+\zv_n =
+\begin{pmatrix}
+1 \\
+\x_n \\
+\x_n - 1
+\end{pmatrix}.
+\]</span></p>
+<p>Note that the new regression is the same as</p>
+<p><span class="math display">\[
+\begin{aligned}
+\y_n ={}&amp; \gamma_1 + \gamma_2 \x_n + \gamma_3 (\x_n - 1) + \eta_n \\
+={}&amp; (\gamma_1 - \gamma_3) + (\gamma_2 + \gamma_3) \x_n +  \eta_n \\
+={}&amp; \beta_1 + \beta_2 \x_n +  \res_n.
+\end{aligned}
+\]</span></p>
+<p>We achieve the same fit — <span class="math inline">\(\res_n = \eta_n\)</span> for all <span class="math inline">\(n\)</span> — whenever</p>
+<p><span class="math display">\[
+\gamma_1 - \gamma_3 = \beta_1
+\quad\textrm{and}\quad
+\gamma_2 + \gamma_3 = \beta_2.
+\]</span></p>
+<p>By the arguments above, the two regressions must have the same optimal fit. But in this case, there are actually a whole infinite dimensional set of <span class="math inline">\(\gammav\)</span> that correspond to each <span class="math inline">\(\bv\)</span>. In particular, for any <span class="math inline">\(a\)</span>, we can take</p>
+<p><span class="math display">\[
+\begin{aligned}
+\gamma_1 &amp;\rightarrow \gamma_1 + a \\
+\gamma_2 &amp;\rightarrow \gamma_2 - a \\
+\gamma_3 &amp;\rightarrow \gamma_3 + a,
+\end{aligned}
+\]</span></p>
+<p>and achieve exactly the same fit. In other words, the optimal fit <span class="math inline">\(\Yhat\)</span> is the same for the two regressions, but the optimal parameter</p>
+<p><span class="math display">\[
+\gammahat := \argmin{\gamma} \meann \eta_n^2
+\]</span></p>
+<p>is not uniquely defined — there is a whole family of coefficients that acheive the same optimal fit.</p>
+</section>
+<section id="redundant-variables-in-matrix-form" class="level2">
+<h2 class="anchored" data-anchor-id="redundant-variables-in-matrix-form">Redundant variables in matrix form</h2>
+<p>How can we understand this in matrix form? In this case, we can write the third element of the <span class="math inline">\(\zv_n\)</span> regressor as a linear combination of the other two:</p>
+<p><span class="math display">\[
+\zv_{n3} = \x_n - 1 = \zv_{n2} - \zv_{n1}
+\quad\Leftrightarrow\quad
+\zv_{n3} - \zv_{n2} + \zv_{n1}  = 0
+\quad\Leftrightarrow\quad
+\zv_n^\trans
+\begin{pmatrix}
+1 \\
+-1 \\
+1
+\end{pmatrix} =: \zv_n^\trans \vv = 0.
+\]</span></p>
+<p>Since this is true for every row, we have that <span class="math inline">\(\Z \vv = \zerov\)</span> as well, and so</p>
+<p><span class="math display">\[
+\vv^\trans (\Z^\trans \Z) \vv = 0.
+\]</span></p>
+<p>In other words, <span class="math inline">\(\vv\)</span> is a non-zero vector in the nullspace of <span class="math inline">\(\Z^\trans \Z\)</span>. It follows that <span class="math inline">\(\Z^\trans \Z\)</span> is not invertible, and the OLS coefficient <span class="math inline">\((\Z^\trans\Z)^{-1} \Z^\trans \Y\)</span> is not defined!</p>
+<p>But that does not prevent us from finding the optimal projection. That is, we can still find</p>
+<p><span class="math display">\[
+\textrm{Well-defined: }\quad
+\min_{\gamma} \norm{\Y - \Z \gamma}_2^2
+\quad\quad\quad
+\quad\quad\quad
+\textrm{Ill-defined: }\quad
+\argmin{\gamma} \norm{\Y - \Z \gamma}_2^2.
+\]</span></p>
+<p>Specifically,</p>
+<p><span class="math display">\[
+\min_{\gamma} \norm{\Y - \Z \gamma}_2^2 = \norm{(\id - \proj{\S_\Z}) \Y}_2^2
+\]</span></p>
+<p>is the norm of the projection perpendicular to the space spanned by the columns of <span class="math inline">\(\Z\)</span>, it’s just that this space is two-dimensional, not three-dimensional.</p>
+</section>
+<section id="in-r" class="level2">
+<h2 class="anchored" data-anchor-id="in-r">In R</h2>
+<p>It turns out that <code>R</code> does not actually estimate the OLS fit by forming <span class="math inline">\((\X^\trans \X)^{-1} \X^\trans \Y\)</span>. It uses an iterative procedure that is roughly similar to Gaussian elimination to estimate one component at a time. When it gets to a component that cannot be estimated beacuse <span class="math inline">\(\X^\trans \X\)</span> has a non-trivial nullspace, then the fit terminates, and it reports the values for the coefficients estimated up to that point, with <code>NA</code> for the rest.</p>
+<p>In our example, the difference <code>hw_diff</code> is a linear combination of <code>height_norm</code> and <code>weight_norm</code>. Thus the regressors have a non-trivial nullspace, and the best fit <span class="math inline">\(\Yhat\)</span> is defined even though the regressors are not.</p>
+</section>
+</section>
+<section id="answer-to-question-3" class="level1">
+<h1>Answer to Question 3</h1>
+<p>The above arguments apply only to linear transformations. Non-linear transformations of the regressors give different fits.</p>
+<p>A single counterexample is enough to prove the general statement. Take <span class="math inline">\(\y_n = 1\)</span> for all <span class="math inline">\(n\)</span>, <span class="math inline">\(N\)</span> to be even, and take <span class="math display">\[
+\x_n =
+\begin{cases}
+  -1 &amp; \textrm{if }n\textrm{ is odd} \\
+  1 &amp; \textrm{if }n\textrm{ is even}. \\
+\end{cases}
+\]</span></p>
+<p>Take <span class="math inline">\(\z_n = \x_n^2\)</span>, which is a nonlinear function. Regressing <span class="math inline">\(\y_n \sim \x_n \beta\)</span> and <span class="math inline">\(\y_n \sim \z_n \gamma\)</span>, we get</p>
+<p><span class="math display">\[
+\betahat = \frac{\sumn \y_n \x_n}{\sumn \x_n^2}
+  = \frac{\sum_{n\textrm{ odd}} (-1) + \sum_{n\textrm{ even}}1}{\sumn 1}
+  = 0
+\]</span></p>
+<p>but</p>
+<p><span class="math display">\[
+\gammahat = \frac{\sumn \y_n \z_n}{\sumn \z_n^2}
+  = \frac{\sum_{n\textrm{ odd}} (-1)^2 + \sum_{n\textrm{ even}}1}{\sumn 1}
+  = 1.
+\]</span></p>
+<p>Of course, a non-linear transform can still be linear on a particular dataset — for example, if <span class="math inline">\(\x_n\)</span> are all a positive constant, then the column span of the regressors <span class="math inline">\(\x_n\)</span> and <span class="math inline">\(\x_n^2\)</span> is the same.</p>
+<p>A more pathological example is as follows. Suppose that the <span class="math inline">\(\x_n\)</span> are all distinct, and define sets <span class="math inline">\(B_n\)</span> such that <span class="math inline">\(\x_n \in B_n\)</span> but <span class="math inline">\(\x_n \notin B_m\)</span> for <span class="math inline">\(n \ne m\)</span>. Then define an <span class="math inline">\(N\)</span>–dimensional regressor <span class="math display">\[
+\z_{np} =
+\begin{cases}
+1 &amp; \x_{n} \in B_p \\
+0 &amp; \x_{n} \notin B_p.
+\end{cases}
+\]</span></p>
+<p>This is a perfectly well-defined function of <span class="math inline">\(\x_n\)</span>! However, <span class="math inline">\(\Z\)</span> is the identity matrix, so the OLS solution to <span class="math inline">\(\y_n \sim \z_n \beta\)</span> is <span class="math inline">\(\beta = \Y\)</span>, with zero error.</p>
+<p>It is difficult to say in general what effect nonlinear transformations will have on a regression, but to answer Question 3, it suffices to notice that <code>height_norm</code> / <code>weight_norm</code> is a nonlinear function of the two variables, and so provide a linearly independent regressor in general.</p>
+</section>
+<section id="answer-to-question-4" class="level1">
+<h1>Answer to Question 4</h1>
+<p>Hopefully you will find that we have already answered Question 4! Neither are a very good idea.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb39" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Transformations of regressors: Some payoffs from the linear algebra perspective."</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>$\LaTeX$</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="co">#| include: false</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width =</span> <span class="dv">15</span>, <span class="at">repr.plot.height =</span> <span class="dv">8</span>, <span class="at">repr.plot.res =</span> <span class="dv">300</span>)</span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_update</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">24</span>))</span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width=</span><span class="dv">12</span>, <span class="at">repr.plot.height=</span><span class="dv">6</span>)</span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>root_dir <span class="ot">&lt;-</span> quarto<span class="sc">::</span><span class="fu">find_project_root</span>()</span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> <span class="fu">file.path</span>(root_dir, <span class="st">"datasets/bodyfat"</span>)</span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>bodyfat_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(data_location, <span class="st">"bodyfat.csv"</span>))</span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bodyfat_df)</span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(bodyfat_df)</span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use our technical results to answer some questions about prediction:</span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>How can we form new predictors for prediction problems?</span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a><span class="fu"># Prediction in the bodyfat example</span></span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a>Recall our bodyweight example.  Suppose we've chosen a couple of variables</span>
+<span id="cb39-43"><a href="#cb39-43" aria-hidden="true" tabindex="-1"></a>to form our prediction: Height, Weight, and Abdomen.</span>
+<span id="cb39-44"><a href="#cb39-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-47"><a href="#cb39-47" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-48"><a href="#cb39-48" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> Abdomen <span class="sc">+</span> Height <span class="sc">+</span> Weight, bodyfat_df)</span>
+<span id="cb39-49"><a href="#cb39-49" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg<span class="sc">$</span>coefficients)</span>
+<span id="cb39-50"><a href="#cb39-50" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb39-51"><a href="#cb39-51" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-52"><a href="#cb39-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-53"><a href="#cb39-53" aria-hidden="true" tabindex="-1"></a><span class="fu">### Question 1</span></span>
+<span id="cb39-54"><a href="#cb39-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-55"><a href="#cb39-55" aria-hidden="true" tabindex="-1"></a>Noting that all three of these variables are on different scales,</span>
+<span id="cb39-56"><a href="#cb39-56" aria-hidden="true" tabindex="-1"></a>you might think you would get a better fit by normalizing them.</span>
+<span id="cb39-57"><a href="#cb39-57" aria-hidden="true" tabindex="-1"></a>Let's see what happens:</span>
+<span id="cb39-58"><a href="#cb39-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-61"><a href="#cb39-61" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-62"><a href="#cb39-62" aria-hidden="true" tabindex="-1"></a>bodyfat_df <span class="ot">&lt;-</span> bodyfat_df <span class="sc">%&gt;%</span></span>
+<span id="cb39-63"><a href="#cb39-63" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">height_norm=</span>(Height <span class="sc">-</span> <span class="fu">mean</span>(Height)) <span class="sc">/</span> <span class="fu">sd</span>(Height),</span>
+<span id="cb39-64"><a href="#cb39-64" aria-hidden="true" tabindex="-1"></a>           <span class="at">weight_norm=</span>(Weight <span class="sc">-</span> <span class="fu">mean</span>(Weight)) <span class="sc">/</span> <span class="fu">sd</span>(Weight),</span>
+<span id="cb39-65"><a href="#cb39-65" aria-hidden="true" tabindex="-1"></a>           <span class="at">abdomen_norm=</span>(Abdomen <span class="sc">-</span> <span class="fu">mean</span>(Abdomen)) <span class="sc">/</span> <span class="fu">sd</span>(Abdomen))</span>
+<span id="cb39-66"><a href="#cb39-66" aria-hidden="true" tabindex="-1"></a>reg_norm <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> abdomen_norm <span class="sc">+</span> height_norm <span class="sc">+</span> weight_norm, bodyfat_df)</span>
+<span id="cb39-67"><a href="#cb39-67" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_norm<span class="sc">$</span>coefficients)</span>
+<span id="cb39-68"><a href="#cb39-68" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_norm<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb39-69"><a href="#cb39-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-70"><a href="#cb39-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-71"><a href="#cb39-71" aria-hidden="true" tabindex="-1"></a>Our coefficients changed, but our fitted error didn't change at all!  **Why not?**</span>
+<span id="cb39-72"><a href="#cb39-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-73"><a href="#cb39-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-74"><a href="#cb39-74" aria-hidden="true" tabindex="-1"></a><span class="fu">### Question 2</span></span>
+<span id="cb39-75"><a href="#cb39-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-76"><a href="#cb39-76" aria-hidden="true" tabindex="-1"></a>Suppose we think, okay, maybe it's the difference between normalized</span>
+<span id="cb39-77"><a href="#cb39-77" aria-hidden="true" tabindex="-1"></a>height and weight that helps us predict.</span>
+<span id="cb39-78"><a href="#cb39-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-81"><a href="#cb39-81" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-82"><a href="#cb39-82" aria-hidden="true" tabindex="-1"></a>bodyfat_df <span class="ot">&lt;-</span> bodyfat_df <span class="sc">%&gt;%</span></span>
+<span id="cb39-83"><a href="#cb39-83" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">hw_diff =</span> height_norm <span class="sc">-</span> weight_norm)</span>
+<span id="cb39-84"><a href="#cb39-84" aria-hidden="true" tabindex="-1"></a>reg_diff <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> abdomen_norm <span class="sc">+</span> height_norm <span class="sc">+</span> weight_norm <span class="sc">+</span> hw_diff, bodyfat_df)</span>
+<span id="cb39-85"><a href="#cb39-85" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_diff<span class="sc">$</span>coefficients)</span>
+<span id="cb39-86"><a href="#cb39-86" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_diff<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb39-87"><a href="#cb39-87" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-88"><a href="#cb39-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-89"><a href="#cb39-89" aria-hidden="true" tabindex="-1"></a>Now, our fitted error didn't change at all, but our difference coefficient</span>
+<span id="cb39-90"><a href="#cb39-90" aria-hidden="true" tabindex="-1"></a>wasn't even estimated.  **What is going on?**</span>
+<span id="cb39-91"><a href="#cb39-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-92"><a href="#cb39-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-93"><a href="#cb39-93" aria-hidden="true" tabindex="-1"></a><span class="fu">### Question 3</span></span>
+<span id="cb39-94"><a href="#cb39-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-95"><a href="#cb39-95" aria-hidden="true" tabindex="-1"></a>What about the ratio of weight to height?</span>
+<span id="cb39-96"><a href="#cb39-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-99"><a href="#cb39-99" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-100"><a href="#cb39-100" aria-hidden="true" tabindex="-1"></a>bodyfat_df <span class="ot">&lt;-</span> bodyfat_df <span class="sc">%&gt;%</span></span>
+<span id="cb39-101"><a href="#cb39-101" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">hw_ratio =</span> height_norm <span class="sc">/</span> weight_norm)</span>
+<span id="cb39-102"><a href="#cb39-102" aria-hidden="true" tabindex="-1"></a>reg_ratio <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> abdomen_norm <span class="sc">+</span> height_norm <span class="sc">+</span> weight_norm <span class="sc">+</span> hw_ratio, bodyfat_df)</span>
+<span id="cb39-103"><a href="#cb39-103" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_ratio<span class="sc">$</span>coefficients)</span>
+<span id="cb39-104"><a href="#cb39-104" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_ratio<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb39-105"><a href="#cb39-105" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-106"><a href="#cb39-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-107"><a href="#cb39-107" aria-hidden="true" tabindex="-1"></a>Our fitted error finally changed, and we could estimate this coefficient.</span>
+<span id="cb39-108"><a href="#cb39-108" aria-hidden="true" tabindex="-1"></a>**What's different between this example and the previous one?**</span>
+<span id="cb39-109"><a href="#cb39-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-110"><a href="#cb39-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-111"><a href="#cb39-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-112"><a href="#cb39-112" aria-hidden="true" tabindex="-1"></a><span class="fu">### Question 4</span></span>
+<span id="cb39-113"><a href="#cb39-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-114"><a href="#cb39-114" aria-hidden="true" tabindex="-1"></a>Let $\x_n = (\textrm{Abdomen}_n, \textrm{Height}_n, \textrm{Weight}_n, \textrm{Wrist}_n ...)$</span>
+<span id="cb39-115"><a href="#cb39-115" aria-hidden="true" tabindex="-1"></a>contain all the measured variables in the dataset.</span>
+<span id="cb39-116"><a href="#cb39-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-117"><a href="#cb39-117" aria-hidden="true" tabindex="-1"></a>A colleague suggests a research project where you </span>
+<span id="cb39-118"><a href="#cb39-118" aria-hidden="true" tabindex="-1"></a>improve your fit by regressing $\y_n \sim \z_n$ for new regressors $\z_n$</span>
+<span id="cb39-119"><a href="#cb39-119" aria-hidden="true" tabindex="-1"></a>of the form $\z_n = \A \x_n$ where the matrix $\A$ is chosen optimally.</span>
+<span id="cb39-120"><a href="#cb39-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-121"><a href="#cb39-121" aria-hidden="true" tabindex="-1"></a>A different colleague suggests a research project where you try the same</span>
+<span id="cb39-122"><a href="#cb39-122" aria-hidden="true" tabindex="-1"></a>thing, but let $\z_n = f(\x_n)$ for any function $f$, where you optimize</span>
+<span id="cb39-123"><a href="#cb39-123" aria-hidden="true" tabindex="-1"></a>over all functions.</span>
+<span id="cb39-124"><a href="#cb39-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-125"><a href="#cb39-125" aria-hidden="true" tabindex="-1"></a>**What do you think of these ideas?**</span>
+<span id="cb39-126"><a href="#cb39-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-127"><a href="#cb39-127" aria-hidden="true" tabindex="-1"></a><span class="fu"># Answer to Question 1</span></span>
+<span id="cb39-128"><a href="#cb39-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-129"><a href="#cb39-129" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear combinations of variables in simple least squares</span></span>
+<span id="cb39-130"><a href="#cb39-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-131"><a href="#cb39-131" aria-hidden="true" tabindex="-1"></a>To answer question 1, let's look at a slightly simpler example,</span>
+<span id="cb39-132"><a href="#cb39-132" aria-hidden="true" tabindex="-1"></a>where we perform simple least squares on heigh.</span>
+<span id="cb39-133"><a href="#cb39-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-136"><a href="#cb39-136" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-137"><a href="#cb39-137" aria-hidden="true" tabindex="-1"></a>reg_height <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> Height, bodyfat_df)</span>
+<span id="cb39-138"><a href="#cb39-138" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_height<span class="sc">$</span>coefficients)</span>
+<span id="cb39-139"><a href="#cb39-139" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_height<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb39-140"><a href="#cb39-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-141"><a href="#cb39-141" aria-hidden="true" tabindex="-1"></a>reg_height_norm <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> height_norm, bodyfat_df)</span>
+<span id="cb39-142"><a href="#cb39-142" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_height_norm<span class="sc">$</span>coefficients)</span>
+<span id="cb39-143"><a href="#cb39-143" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_height_norm<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb39-144"><a href="#cb39-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-145"><a href="#cb39-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-146"><a href="#cb39-146" aria-hidden="true" tabindex="-1"></a>Why do these two have different coefficients, but the same</span>
+<span id="cb39-147"><a href="#cb39-147" aria-hidden="true" tabindex="-1"></a>fit?  The answer comes from our projection result.  Let's let</span>
+<span id="cb39-148"><a href="#cb39-148" aria-hidden="true" tabindex="-1"></a>$\x_n = \textrm{Height}_n$, and $\z_n = \textrm{height<span class="sc">\_</span>norm}_n$.</span>
+<span id="cb39-149"><a href="#cb39-149" aria-hidden="true" tabindex="-1"></a>Recall that <span class="in">`R`</span> includes a constant in the regression by default,</span>
+<span id="cb39-150"><a href="#cb39-150" aria-hidden="true" tabindex="-1"></a>so our two regressions are:</span>
+<span id="cb39-151"><a href="#cb39-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-152"><a href="#cb39-152" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-153"><a href="#cb39-153" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb39-154"><a href="#cb39-154" aria-hidden="true" tabindex="-1"></a>\textrm{height: } &amp;&amp; \textrm{height<span class="sc">\_</span>norm} <span class="sc">\\</span></span>
+<span id="cb39-155"><a href="#cb39-155" aria-hidden="true" tabindex="-1"></a>\y_n = \beta_0 + \beta_1 \x_n + \res_n &amp;&amp;</span>
+<span id="cb39-156"><a href="#cb39-156" aria-hidden="true" tabindex="-1"></a>\y_n = \gamma_0 + \gamma_1 \z_n + \nu_n.</span>
+<span id="cb39-157"><a href="#cb39-157" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb39-158"><a href="#cb39-158" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-159"><a href="#cb39-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-160"><a href="#cb39-160" aria-hidden="true" tabindex="-1"></a>What's the relationship between these two regressions?</span>
+<span id="cb39-161"><a href="#cb39-161" aria-hidden="true" tabindex="-1"></a>Well, taking $\overline{x} := \meann \x_n$ and</span>
+<span id="cb39-162"><a href="#cb39-162" aria-hidden="true" tabindex="-1"></a>$\sigmahat_x := \sqrt{\meann (\x_n - \overline{x})^2}$.</span>
+<span id="cb39-163"><a href="#cb39-163" aria-hidden="true" tabindex="-1"></a>In our case, $\sigmahat_x &gt; 0$, so we've set</span>
+<span id="cb39-164"><a href="#cb39-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-165"><a href="#cb39-165" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-166"><a href="#cb39-166" aria-hidden="true" tabindex="-1"></a>\z_n = \frac{\x_n - \overline{x}}{\sigmahat_x} = </span>
+<span id="cb39-167"><a href="#cb39-167" aria-hidden="true" tabindex="-1"></a>  \frac{1}{\sigmahat_x} \x_n - \frac{\overline{x}}{\sigmahat_x}.</span>
+<span id="cb39-168"><a href="#cb39-168" aria-hidden="true" tabindex="-1"></a>$${#eq-beta-to-gamma-1d}</span>
+<span id="cb39-169"><a href="#cb39-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-170"><a href="#cb39-170" aria-hidden="true" tabindex="-1"></a>That means we can write</span>
+<span id="cb39-171"><a href="#cb39-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-172"><a href="#cb39-172" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-173"><a href="#cb39-173" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb39-174"><a href="#cb39-174" aria-hidden="true" tabindex="-1"></a>\gamma_0 + \gamma_1 \z_n + \nu_n ={}&amp;</span>
+<span id="cb39-175"><a href="#cb39-175" aria-hidden="true" tabindex="-1"></a>\gamma_0 + \gamma_1 \left( \frac{1}{\sigmahat_x} \x_n - </span>
+<span id="cb39-176"><a href="#cb39-176" aria-hidden="true" tabindex="-1"></a>  \frac{\overline{x}}{\sigmahat_x} \right) + \nu_n  <span class="sc">\\</span></span>
+<span id="cb39-177"><a href="#cb39-177" aria-hidden="true" tabindex="-1"></a>={}&amp; </span>
+<span id="cb39-178"><a href="#cb39-178" aria-hidden="true" tabindex="-1"></a>\left(\gamma_0 - \frac{\overline{x}}{\sigmahat_x} \gamma_1 \right)  + </span>
+<span id="cb39-179"><a href="#cb39-179" aria-hidden="true" tabindex="-1"></a>   \left( \frac{\gamma_1}{\sigmahat_x}\right) \x_n  + \nu_n.</span>
+<span id="cb39-180"><a href="#cb39-180" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb39-181"><a href="#cb39-181" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-182"><a href="#cb39-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-183"><a href="#cb39-183" aria-hidden="true" tabindex="-1"></a>By identifying</span>
+<span id="cb39-184"><a href="#cb39-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-185"><a href="#cb39-185" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-186"><a href="#cb39-186" aria-hidden="true" tabindex="-1"></a>\gamma_0 - \frac{\overline{x}}{\sigmahat_x} \gamma_1 = \beta_0 \quad\textrm{and}\quad</span>
+<span id="cb39-187"><a href="#cb39-187" aria-hidden="true" tabindex="-1"></a>\frac{\gamma_1}{\sigmahat_x} = \beta_1,</span>
+<span id="cb39-188"><a href="#cb39-188" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-189"><a href="#cb39-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-190"><a href="#cb39-190" aria-hidden="true" tabindex="-1"></a>we see that the two regressions are exactly the same!  From </span>
+<span id="cb39-191"><a href="#cb39-191" aria-hidden="true" tabindex="-1"></a>this two conclusions follow:</span>
+<span id="cb39-192"><a href="#cb39-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-193"><a href="#cb39-193" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It is impossible for you to get a better fit with one than the other.</span>
+<span id="cb39-194"><a href="#cb39-194" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>In general the coefficients will be different.</span>
+<span id="cb39-195"><a href="#cb39-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-196"><a href="#cb39-196" aria-hidden="true" tabindex="-1"></a>In fact, we can write down the rule to convert between the two. </span>
+<span id="cb39-197"><a href="#cb39-197" aria-hidden="true" tabindex="-1"></a>Let's check that it works:</span>
+<span id="cb39-198"><a href="#cb39-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-201"><a href="#cb39-201" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-202"><a href="#cb39-202" aria-hidden="true" tabindex="-1"></a>xbar <span class="ot">&lt;-</span> <span class="fu">mean</span>(bodyfat_df<span class="sc">$</span>Height)</span>
+<span id="cb39-203"><a href="#cb39-203" aria-hidden="true" tabindex="-1"></a>sigmahat <span class="ot">&lt;-</span> <span class="fu">sd</span>(bodyfat_df<span class="sc">$</span>Height)</span>
+<span id="cb39-204"><a href="#cb39-204" aria-hidden="true" tabindex="-1"></a>gammahat_0 <span class="ot">&lt;-</span> reg_height_norm<span class="sc">$</span>coefficients[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb39-205"><a href="#cb39-205" aria-hidden="true" tabindex="-1"></a>gammahat_1 <span class="ot">&lt;-</span> reg_height_norm<span class="sc">$</span>coefficients[<span class="st">"height_norm"</span>]</span>
+<span id="cb39-206"><a href="#cb39-206" aria-hidden="true" tabindex="-1"></a>betahat_0 <span class="ot">&lt;-</span> reg_height<span class="sc">$</span>coefficients[<span class="st">"(Intercept)"</span>]</span>
+<span id="cb39-207"><a href="#cb39-207" aria-hidden="true" tabindex="-1"></a>betahat_1 <span class="ot">&lt;-</span> reg_height<span class="sc">$</span>coefficients[<span class="st">"Height"</span>]</span>
+<span id="cb39-208"><a href="#cb39-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-209"><a href="#cb39-209" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Intercept: "</span>)</span>
+<span id="cb39-210"><a href="#cb39-210" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(betahat_0, <span class="st">" = "</span>, gammahat_0 <span class="sc">-</span> gammahat_1 <span class="sc">*</span> xbar <span class="sc">/</span> sigmahat, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb39-211"><a href="#cb39-211" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(betahat_1, <span class="st">" = "</span>, gammahat_1  <span class="sc">/</span> sigmahat, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb39-212"><a href="#cb39-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-213"><a href="#cb39-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-214"><a href="#cb39-214" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear combinations of variables in matrix form</span></span>
+<span id="cb39-215"><a href="#cb39-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-216"><a href="#cb39-216" aria-hidden="true" tabindex="-1"></a>To extend what we just did, let's put our result in matrix</span>
+<span id="cb39-217"><a href="#cb39-217" aria-hidden="true" tabindex="-1"></a>notation.  First, write</span>
+<span id="cb39-218"><a href="#cb39-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-219"><a href="#cb39-219" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-220"><a href="#cb39-220" aria-hidden="true" tabindex="-1"></a>\xv_n = \begin{pmatrix}</span>
+<span id="cb39-221"><a href="#cb39-221" aria-hidden="true" tabindex="-1"></a>1 <span class="sc">\\</span> \x_n</span>
+<span id="cb39-222"><a href="#cb39-222" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb39-223"><a href="#cb39-223" aria-hidden="true" tabindex="-1"></a>\quad\textrm{and}\quad</span>
+<span id="cb39-224"><a href="#cb39-224" aria-hidden="true" tabindex="-1"></a>\zv_n = \begin{pmatrix}</span>
+<span id="cb39-225"><a href="#cb39-225" aria-hidden="true" tabindex="-1"></a>1 <span class="sc">\\</span> \z_n</span>
+<span id="cb39-226"><a href="#cb39-226" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}.</span>
+<span id="cb39-227"><a href="#cb39-227" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-228"><a href="#cb39-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-229"><a href="#cb39-229" aria-hidden="true" tabindex="-1"></a>In this notation, we can write @eq-beta-to-gamma-1d as</span>
+<span id="cb39-230"><a href="#cb39-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-231"><a href="#cb39-231" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-232"><a href="#cb39-232" aria-hidden="true" tabindex="-1"></a>\zv_n =</span>
+<span id="cb39-233"><a href="#cb39-233" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb39-234"><a href="#cb39-234" aria-hidden="true" tabindex="-1"></a>1 &amp; 0 <span class="sc">\\</span></span>
+<span id="cb39-235"><a href="#cb39-235" aria-hidden="true" tabindex="-1"></a>-\frac{\overline{x}}{\sigmahat_x} &amp; \frac{1}{\sigmahat_x}</span>
+<span id="cb39-236"><a href="#cb39-236" aria-hidden="true" tabindex="-1"></a>\end{pmatrix} </span>
+<span id="cb39-237"><a href="#cb39-237" aria-hidden="true" tabindex="-1"></a>\xv_n</span>
+<span id="cb39-238"><a href="#cb39-238" aria-hidden="true" tabindex="-1"></a>=: \A \xv_n.</span>
+<span id="cb39-239"><a href="#cb39-239" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-240"><a href="#cb39-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-241"><a href="#cb39-241" aria-hidden="true" tabindex="-1"></a>We can see that $\A$ is invertible whenever $\sigmahat_x &gt; 0$.  Using the</span>
+<span id="cb39-242"><a href="#cb39-242" aria-hidden="true" tabindex="-1"></a>matrix $\A$, we can write $\Z = \X \A^\trans$, so</span>
+<span id="cb39-243"><a href="#cb39-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-244"><a href="#cb39-244" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-245"><a href="#cb39-245" aria-hidden="true" tabindex="-1"></a>\Y = \Z \gamma + \etav = </span>
+<span id="cb39-246"><a href="#cb39-246" aria-hidden="true" tabindex="-1"></a>\X \A^\trans \gamma + \etav =</span>
+<span id="cb39-247"><a href="#cb39-247" aria-hidden="true" tabindex="-1"></a>\X  \beta + \resv,</span>
+<span id="cb39-248"><a href="#cb39-248" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-249"><a href="#cb39-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-250"><a href="#cb39-250" aria-hidden="true" tabindex="-1"></a>which gives</span>
+<span id="cb39-251"><a href="#cb39-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-252"><a href="#cb39-252" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-253"><a href="#cb39-253" aria-hidden="true" tabindex="-1"></a>\etav = \resv </span>
+<span id="cb39-254"><a href="#cb39-254" aria-hidden="true" tabindex="-1"></a>\quad\Leftrightarrow \quad</span>
+<span id="cb39-255"><a href="#cb39-255" aria-hidden="true" tabindex="-1"></a>\A^\trans \gamma =  \beta</span>
+<span id="cb39-256"><a href="#cb39-256" aria-hidden="true" tabindex="-1"></a>\quad\Leftrightarrow \quad</span>
+<span id="cb39-257"><a href="#cb39-257" aria-hidden="true" tabindex="-1"></a> \gamma = (\A^\trans)^{-1} \beta</span>
+<span id="cb39-258"><a href="#cb39-258" aria-hidden="true" tabindex="-1"></a>.</span>
+<span id="cb39-259"><a href="#cb39-259" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-260"><a href="#cb39-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-261"><a href="#cb39-261" aria-hidden="true" tabindex="-1"></a>We can confirm that this condition does indeed hold at the optimum</span>
+<span id="cb39-262"><a href="#cb39-262" aria-hidden="true" tabindex="-1"></a>of each regression:</span>
+<span id="cb39-263"><a href="#cb39-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-266"><a href="#cb39-266" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-267"><a href="#cb39-267" aria-hidden="true" tabindex="-1"></a>a_mat <span class="ot">=</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb39-268"><a href="#cb39-268" aria-hidden="true" tabindex="-1"></a>a_mat[<span class="dv">1</span>,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb39-269"><a href="#cb39-269" aria-hidden="true" tabindex="-1"></a>a_mat[<span class="dv">1</span>,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb39-270"><a href="#cb39-270" aria-hidden="true" tabindex="-1"></a>a_mat[<span class="dv">2</span>,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="sc">-</span>xbar <span class="sc">/</span> sigmahat</span>
+<span id="cb39-271"><a href="#cb39-271" aria-hidden="true" tabindex="-1"></a>a_mat[<span class="dv">2</span>,<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> sigmahat</span>
+<span id="cb39-272"><a href="#cb39-272" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">t</span>(a_mat) <span class="sc">%*%</span> reg_height_norm<span class="sc">$</span>coefficients <span class="sc">%&gt;%</span> <span class="fu">as.numeric</span>())</span>
+<span id="cb39-273"><a href="#cb39-273" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(reg_height<span class="sc">$</span>coefficients)</span>
+<span id="cb39-274"><a href="#cb39-274" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-275"><a href="#cb39-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-276"><a href="#cb39-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-277"><a href="#cb39-277" aria-hidden="true" tabindex="-1"></a>Note that we were able to do this only because we included an intercept</span>
+<span id="cb39-278"><a href="#cb39-278" aria-hidden="true" tabindex="-1"></a>in the regression!  In fact, we can show that we get different</span>
+<span id="cb39-279"><a href="#cb39-279" aria-hidden="true" tabindex="-1"></a>fits if we don't include the intercept:</span>
+<span id="cb39-280"><a href="#cb39-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-283"><a href="#cb39-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb39-284"><a href="#cb39-284" aria-hidden="true" tabindex="-1"></a>reg_height_noint <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> Height <span class="sc">-</span> <span class="dv">1</span>, bodyfat_df)</span>
+<span id="cb39-285"><a href="#cb39-285" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_height_noint<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb39-286"><a href="#cb39-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-287"><a href="#cb39-287" aria-hidden="true" tabindex="-1"></a>reg_height_norm_noint <span class="ot">&lt;-</span> <span class="fu">lm</span>(bodyfat <span class="sc">~</span> height_norm <span class="sc">-</span> <span class="dv">1</span>, bodyfat_df)</span>
+<span id="cb39-288"><a href="#cb39-288" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"Error: %f"</span>, <span class="fu">mean</span>(reg_height_norm_noint<span class="sc">$</span>residuals<span class="sc">^</span><span class="dv">2</span>)))</span>
+<span id="cb39-289"><a href="#cb39-289" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb39-290"><a href="#cb39-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-291"><a href="#cb39-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-292"><a href="#cb39-292" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear combinations of variables in general</span></span>
+<span id="cb39-293"><a href="#cb39-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-294"><a href="#cb39-294" aria-hidden="true" tabindex="-1"></a>Note that the argument which we made in the special case above</span>
+<span id="cb39-295"><a href="#cb39-295" aria-hidden="true" tabindex="-1"></a>actually holds in general.  Let's go to $P$--dimensional</span>
+<span id="cb39-296"><a href="#cb39-296" aria-hidden="true" tabindex="-1"></a>regression, but otherwise retaining the notation</span>
+<span id="cb39-297"><a href="#cb39-297" aria-hidden="true" tabindex="-1"></a>$\y_n \sim \z_n^\trans\gamma$ and $\y_n \sim \x_n^\trans \beta$.  If we can find an invertible</span>
+<span id="cb39-298"><a href="#cb39-298" aria-hidden="true" tabindex="-1"></a>$\A$ such that $\z_n = \A \x_n$, then we still have</span>
+<span id="cb39-299"><a href="#cb39-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-300"><a href="#cb39-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-301"><a href="#cb39-301" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-302"><a href="#cb39-302" aria-hidden="true" tabindex="-1"></a>\Y = \Z \gamma + \etav = </span>
+<span id="cb39-303"><a href="#cb39-303" aria-hidden="true" tabindex="-1"></a>\X \A^\trans \gamma + \etav =</span>
+<span id="cb39-304"><a href="#cb39-304" aria-hidden="true" tabindex="-1"></a>\X  \beta + \resv,</span>
+<span id="cb39-305"><a href="#cb39-305" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-306"><a href="#cb39-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-307"><a href="#cb39-307" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-308"><a href="#cb39-308" aria-hidden="true" tabindex="-1"></a>\etav = \resv </span>
+<span id="cb39-309"><a href="#cb39-309" aria-hidden="true" tabindex="-1"></a>\quad\Leftrightarrow \quad</span>
+<span id="cb39-310"><a href="#cb39-310" aria-hidden="true" tabindex="-1"></a>\A^\trans \gamma =  \beta</span>
+<span id="cb39-311"><a href="#cb39-311" aria-hidden="true" tabindex="-1"></a>\quad\Leftrightarrow \quad</span>
+<span id="cb39-312"><a href="#cb39-312" aria-hidden="true" tabindex="-1"></a> \gamma = (\A^\trans)^{-1} \beta</span>
+<span id="cb39-313"><a href="#cb39-313" aria-hidden="true" tabindex="-1"></a>.</span>
+<span id="cb39-314"><a href="#cb39-314" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-315"><a href="#cb39-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-316"><a href="#cb39-316" aria-hidden="true" tabindex="-1"></a>How can we recognize a linear transformation from $\x_n$ to $\z_n$?  </span>
+<span id="cb39-317"><a href="#cb39-317" aria-hidden="true" tabindex="-1"></a>It's enough for each entry of $\z_n$ to be a linear transform </span>
+<span id="cb39-318"><a href="#cb39-318" aria-hidden="true" tabindex="-1"></a>$\z_{np}= \a_p^\trans \x_n$,</span>
+<span id="cb39-319"><a href="#cb39-319" aria-hidden="true" tabindex="-1"></a>since we can then just stack the $\a_p^\trans$ vectors to form $\A$.</span>
+<span id="cb39-320"><a href="#cb39-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-321"><a href="#cb39-321" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Linear transformations of $\x_n$ always look like </span>
+<span id="cb39-322"><a href="#cb39-322" aria-hidden="true" tabindex="-1"></a>  $\z_{np} = \a_{p1} \x_{n1} + \ldots \a_{pP} \x_{nP}$.</span>
+<span id="cb39-323"><a href="#cb39-323" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Entries that are unchanged are always the (trivial) identity linear transformation</span>
+<span id="cb39-324"><a href="#cb39-324" aria-hidden="true" tabindex="-1"></a>  $\a_{p} = (0, 0, \ldots, 0, 1,  0, \ldots, 0)$</span>
+<span id="cb39-325"><a href="#cb39-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-326"><a href="#cb39-326" aria-hidden="true" tabindex="-1"></a>Note that adding a constant is an affine, not a linear transformation.</span>
+<span id="cb39-327"><a href="#cb39-327" aria-hidden="true" tabindex="-1"></a>However, it can be a linear transformation if your model includes an intercept ---</span>
+<span id="cb39-328"><a href="#cb39-328" aria-hidden="true" tabindex="-1"></a>or if some sum of the entries of $\x_n$ is always a constant.</span>
+<span id="cb39-329"><a href="#cb39-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-330"><a href="#cb39-330" aria-hidden="true" tabindex="-1"></a>Not that it is not always easy to see whether a linear transformation is invertible!</span>
+<span id="cb39-331"><a href="#cb39-331" aria-hidden="true" tabindex="-1"></a>We will talk about that problem shortly.</span>
+<span id="cb39-332"><a href="#cb39-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-333"><a href="#cb39-333" aria-hidden="true" tabindex="-1"></a>In this way, one can see that the normalization of Question 1 is a linear</span>
+<span id="cb39-334"><a href="#cb39-334" aria-hidden="true" tabindex="-1"></a>transformation.</span>
+<span id="cb39-335"><a href="#cb39-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-336"><a href="#cb39-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-337"><a href="#cb39-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-338"><a href="#cb39-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-339"><a href="#cb39-339" aria-hidden="true" tabindex="-1"></a><span class="fu">## Linear transformations and column spans</span></span>
+<span id="cb39-340"><a href="#cb39-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-341"><a href="#cb39-341" aria-hidden="true" tabindex="-1"></a>Finally, recall our projection result that states</span>
+<span id="cb39-342"><a href="#cb39-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-343"><a href="#cb39-343" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-344"><a href="#cb39-344" aria-hidden="true" tabindex="-1"></a>\Yhat = \proj{\S_\X} \Y = \X (\X^\trans \X)^{-1} \X^\trans \Y,</span>
+<span id="cb39-345"><a href="#cb39-345" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-346"><a href="#cb39-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-347"><a href="#cb39-347" aria-hidden="true" tabindex="-1"></a>where $\S_\X$ is the space of linear combinations of the</span>
+<span id="cb39-348"><a href="#cb39-348" aria-hidden="true" tabindex="-1"></a>columns of $\X$.  If $\A$ is invertible, then the column</span>
+<span id="cb39-349"><a href="#cb39-349" aria-hidden="true" tabindex="-1"></a>span of $\Z = \X \A^\trans$ is equal to the column span of $\X$.</span>
+<span id="cb39-350"><a href="#cb39-350" aria-hidden="true" tabindex="-1"></a>Consequently, a regression on an invertible linear</span>
+<span id="cb39-351"><a href="#cb39-351" aria-hidden="true" tabindex="-1"></a>combination of regressors cannot affect the fit.</span>
+<span id="cb39-352"><a href="#cb39-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-353"><a href="#cb39-353" aria-hidden="true" tabindex="-1"></a>Although this intuition is clear enough if you're comfortable</span>
+<span id="cb39-354"><a href="#cb39-354" aria-hidden="true" tabindex="-1"></a>with linear algebra, you can also check directly that</span>
+<span id="cb39-355"><a href="#cb39-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-356"><a href="#cb39-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-357"><a href="#cb39-357" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-358"><a href="#cb39-358" aria-hidden="true" tabindex="-1"></a>\proj{\S_\Z} \Y = </span>
+<span id="cb39-359"><a href="#cb39-359" aria-hidden="true" tabindex="-1"></a>\Z (\Z^\trans \Z)^{-1} \Z^\trans \Y =</span>
+<span id="cb39-360"><a href="#cb39-360" aria-hidden="true" tabindex="-1"></a>\X \A^\trans (\A \X^\trans \X \A^\trans)^{-1} \A \X^\trans \Y =</span>
+<span id="cb39-361"><a href="#cb39-361" aria-hidden="true" tabindex="-1"></a>\X \A^\trans (\A^\trans)^{-1} (\X^\trans \X)^{-1} \A^{-1} \A \X^\trans \Y =</span>
+<span id="cb39-362"><a href="#cb39-362" aria-hidden="true" tabindex="-1"></a>\X (\X^\trans \X)^{-1} \X^\trans \Y =</span>
+<span id="cb39-363"><a href="#cb39-363" aria-hidden="true" tabindex="-1"></a>\proj{\S_\X} \Y. </span>
+<span id="cb39-364"><a href="#cb39-364" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-365"><a href="#cb39-365" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-366"><a href="#cb39-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-367"><a href="#cb39-367" aria-hidden="true" tabindex="-1"></a><span class="fu"># Answer to Question 2</span></span>
+<span id="cb39-368"><a href="#cb39-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-369"><a href="#cb39-369" aria-hidden="true" tabindex="-1"></a><span class="fu">## Redundant variables in simple regression</span></span>
+<span id="cb39-370"><a href="#cb39-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-371"><a href="#cb39-371" aria-hidden="true" tabindex="-1"></a>Once again, it will be useful to start with a simpler example.  Suppose you</span>
+<span id="cb39-372"><a href="#cb39-372" aria-hidden="true" tabindex="-1"></a>have a regression $\y_n \sim \xv_n^\trans \beta$, with $\xv_n = (1, \x_n)^\trans$,</span>
+<span id="cb39-373"><a href="#cb39-373" aria-hidden="true" tabindex="-1"></a>where $\sigmahat_x &gt; 0$ (as defined above).  Now suppose you want to</span>
+<span id="cb39-374"><a href="#cb39-374" aria-hidden="true" tabindex="-1"></a>run a new regression $\y_n \sim \z_n^\trans \gamma$ with</span>
+<span id="cb39-375"><a href="#cb39-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-376"><a href="#cb39-376" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-377"><a href="#cb39-377" aria-hidden="true" tabindex="-1"></a>\zv_n =</span>
+<span id="cb39-378"><a href="#cb39-378" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb39-379"><a href="#cb39-379" aria-hidden="true" tabindex="-1"></a>1 <span class="sc">\\</span></span>
+<span id="cb39-380"><a href="#cb39-380" aria-hidden="true" tabindex="-1"></a>\x_n <span class="sc">\\</span></span>
+<span id="cb39-381"><a href="#cb39-381" aria-hidden="true" tabindex="-1"></a>\x_n - 1</span>
+<span id="cb39-382"><a href="#cb39-382" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}.</span>
+<span id="cb39-383"><a href="#cb39-383" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-384"><a href="#cb39-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-385"><a href="#cb39-385" aria-hidden="true" tabindex="-1"></a>Note that the new regression is the same as</span>
+<span id="cb39-386"><a href="#cb39-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-387"><a href="#cb39-387" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-388"><a href="#cb39-388" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb39-389"><a href="#cb39-389" aria-hidden="true" tabindex="-1"></a>\y_n ={}&amp; \gamma_1 + \gamma_2 \x_n + \gamma_3 (\x_n - 1) + \eta_n <span class="sc">\\</span></span>
+<span id="cb39-390"><a href="#cb39-390" aria-hidden="true" tabindex="-1"></a> ={}&amp; (\gamma_1 - \gamma_3) + (\gamma_2 + \gamma_3) \x_n +  \eta_n <span class="sc">\\</span></span>
+<span id="cb39-391"><a href="#cb39-391" aria-hidden="true" tabindex="-1"></a> ={}&amp; \beta_1 + \beta_2 \x_n +  \res_n.</span>
+<span id="cb39-392"><a href="#cb39-392" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb39-393"><a href="#cb39-393" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-394"><a href="#cb39-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-395"><a href="#cb39-395" aria-hidden="true" tabindex="-1"></a>We achieve the same fit --- $\res_n = \eta_n$ for all $n$  --- whenever</span>
+<span id="cb39-396"><a href="#cb39-396" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-397"><a href="#cb39-397" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-398"><a href="#cb39-398" aria-hidden="true" tabindex="-1"></a>\gamma_1 - \gamma_3 = \beta_1 </span>
+<span id="cb39-399"><a href="#cb39-399" aria-hidden="true" tabindex="-1"></a>\quad\textrm{and}\quad</span>
+<span id="cb39-400"><a href="#cb39-400" aria-hidden="true" tabindex="-1"></a>\gamma_2 + \gamma_3 = \beta_2. </span>
+<span id="cb39-401"><a href="#cb39-401" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-402"><a href="#cb39-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-403"><a href="#cb39-403" aria-hidden="true" tabindex="-1"></a>By the arguments above, the two regressions must have the same optimal fit.</span>
+<span id="cb39-404"><a href="#cb39-404" aria-hidden="true" tabindex="-1"></a>But in this case, there are actually a whole infinite dimensional set</span>
+<span id="cb39-405"><a href="#cb39-405" aria-hidden="true" tabindex="-1"></a>of $\gammav$ that correspond to each $\bv$.  In particular, for any</span>
+<span id="cb39-406"><a href="#cb39-406" aria-hidden="true" tabindex="-1"></a>$a$, we can take</span>
+<span id="cb39-407"><a href="#cb39-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-408"><a href="#cb39-408" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-409"><a href="#cb39-409" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb39-410"><a href="#cb39-410" aria-hidden="true" tabindex="-1"></a>\gamma_1 &amp;\rightarrow \gamma_1 + a <span class="sc">\\</span></span>
+<span id="cb39-411"><a href="#cb39-411" aria-hidden="true" tabindex="-1"></a>\gamma_2 &amp;\rightarrow \gamma_2 - a <span class="sc">\\</span></span>
+<span id="cb39-412"><a href="#cb39-412" aria-hidden="true" tabindex="-1"></a>\gamma_3 &amp;\rightarrow \gamma_3 + a,</span>
+<span id="cb39-413"><a href="#cb39-413" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb39-414"><a href="#cb39-414" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-415"><a href="#cb39-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-416"><a href="#cb39-416" aria-hidden="true" tabindex="-1"></a>and achieve exactly the same fit.  In other words, the optimal</span>
+<span id="cb39-417"><a href="#cb39-417" aria-hidden="true" tabindex="-1"></a>fit $\Yhat$ is the same for the two regressions, but the optimal</span>
+<span id="cb39-418"><a href="#cb39-418" aria-hidden="true" tabindex="-1"></a>parameter</span>
+<span id="cb39-419"><a href="#cb39-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-420"><a href="#cb39-420" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-421"><a href="#cb39-421" aria-hidden="true" tabindex="-1"></a>\gammahat := \argmin{\gamma} \meann \eta_n^2</span>
+<span id="cb39-422"><a href="#cb39-422" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-423"><a href="#cb39-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-424"><a href="#cb39-424" aria-hidden="true" tabindex="-1"></a>is not uniquely defined --- there is a whole family of coefficients</span>
+<span id="cb39-425"><a href="#cb39-425" aria-hidden="true" tabindex="-1"></a>that acheive the same optimal fit.</span>
+<span id="cb39-426"><a href="#cb39-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-427"><a href="#cb39-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-428"><a href="#cb39-428" aria-hidden="true" tabindex="-1"></a><span class="fu">## Redundant variables in matrix form</span></span>
+<span id="cb39-429"><a href="#cb39-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-430"><a href="#cb39-430" aria-hidden="true" tabindex="-1"></a>How can we understand this in matrix form?  In this case,</span>
+<span id="cb39-431"><a href="#cb39-431" aria-hidden="true" tabindex="-1"></a>we can write the third element of the $\zv_n$ regressor</span>
+<span id="cb39-432"><a href="#cb39-432" aria-hidden="true" tabindex="-1"></a>as a linear combination of the other two:</span>
+<span id="cb39-433"><a href="#cb39-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-434"><a href="#cb39-434" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-435"><a href="#cb39-435" aria-hidden="true" tabindex="-1"></a>\zv_{n3} = \x_n - 1 = \zv_{n2} - \zv_{n1}</span>
+<span id="cb39-436"><a href="#cb39-436" aria-hidden="true" tabindex="-1"></a>\quad\Leftrightarrow\quad</span>
+<span id="cb39-437"><a href="#cb39-437" aria-hidden="true" tabindex="-1"></a>\zv_{n3} - \zv_{n2} + \zv_{n1}  = 0</span>
+<span id="cb39-438"><a href="#cb39-438" aria-hidden="true" tabindex="-1"></a>\quad\Leftrightarrow\quad</span>
+<span id="cb39-439"><a href="#cb39-439" aria-hidden="true" tabindex="-1"></a>\zv_n^\trans</span>
+<span id="cb39-440"><a href="#cb39-440" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb39-441"><a href="#cb39-441" aria-hidden="true" tabindex="-1"></a>1 <span class="sc">\\</span></span>
+<span id="cb39-442"><a href="#cb39-442" aria-hidden="true" tabindex="-1"></a>-1 <span class="sc">\\</span></span>
+<span id="cb39-443"><a href="#cb39-443" aria-hidden="true" tabindex="-1"></a>1</span>
+<span id="cb39-444"><a href="#cb39-444" aria-hidden="true" tabindex="-1"></a>\end{pmatrix} =: \zv_n^\trans \vv = 0.</span>
+<span id="cb39-445"><a href="#cb39-445" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-446"><a href="#cb39-446" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-447"><a href="#cb39-447" aria-hidden="true" tabindex="-1"></a>Since this is true for every row, we have that</span>
+<span id="cb39-448"><a href="#cb39-448" aria-hidden="true" tabindex="-1"></a>$\Z \vv = \zerov$ as well, and so</span>
+<span id="cb39-449"><a href="#cb39-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-450"><a href="#cb39-450" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-451"><a href="#cb39-451" aria-hidden="true" tabindex="-1"></a>\vv^\trans (\Z^\trans \Z) \vv = 0.</span>
+<span id="cb39-452"><a href="#cb39-452" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-453"><a href="#cb39-453" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-454"><a href="#cb39-454" aria-hidden="true" tabindex="-1"></a>In other words, $\vv$ is a non-zero vector in the nullspace of</span>
+<span id="cb39-455"><a href="#cb39-455" aria-hidden="true" tabindex="-1"></a>$\Z^\trans \Z$.  It follows that $\Z^\trans \Z$ is not invertible,</span>
+<span id="cb39-456"><a href="#cb39-456" aria-hidden="true" tabindex="-1"></a>and the OLS coefficient $(\Z^\trans\Z)^{-1} \Z^\trans \Y$ is not defined!</span>
+<span id="cb39-457"><a href="#cb39-457" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-458"><a href="#cb39-458" aria-hidden="true" tabindex="-1"></a>But that does not prevent us from finding the optimal projection.  That is,</span>
+<span id="cb39-459"><a href="#cb39-459" aria-hidden="true" tabindex="-1"></a>we can still find</span>
+<span id="cb39-460"><a href="#cb39-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-461"><a href="#cb39-461" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-462"><a href="#cb39-462" aria-hidden="true" tabindex="-1"></a>\textrm{Well-defined: }\quad</span>
+<span id="cb39-463"><a href="#cb39-463" aria-hidden="true" tabindex="-1"></a>\min_{\gamma} \norm{\Y - \Z \gamma}_2^2</span>
+<span id="cb39-464"><a href="#cb39-464" aria-hidden="true" tabindex="-1"></a>\quad\quad\quad</span>
+<span id="cb39-465"><a href="#cb39-465" aria-hidden="true" tabindex="-1"></a>\quad\quad\quad</span>
+<span id="cb39-466"><a href="#cb39-466" aria-hidden="true" tabindex="-1"></a>\textrm{Ill-defined: }\quad</span>
+<span id="cb39-467"><a href="#cb39-467" aria-hidden="true" tabindex="-1"></a>\argmin{\gamma} \norm{\Y - \Z \gamma}_2^2.</span>
+<span id="cb39-468"><a href="#cb39-468" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-469"><a href="#cb39-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-470"><a href="#cb39-470" aria-hidden="true" tabindex="-1"></a>Specifically, </span>
+<span id="cb39-471"><a href="#cb39-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-472"><a href="#cb39-472" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-473"><a href="#cb39-473" aria-hidden="true" tabindex="-1"></a>\min_{\gamma} \norm{\Y - \Z \gamma}_2^2 = \norm{(\id - \proj{\S_\Z}) \Y}_2^2</span>
+<span id="cb39-474"><a href="#cb39-474" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-475"><a href="#cb39-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-476"><a href="#cb39-476" aria-hidden="true" tabindex="-1"></a>is the norm of the projection perpendicular to the space spanned by the columns</span>
+<span id="cb39-477"><a href="#cb39-477" aria-hidden="true" tabindex="-1"></a>of $\Z$, it's just that this space is two-dimensional, not three-dimensional.</span>
+<span id="cb39-478"><a href="#cb39-478" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-479"><a href="#cb39-479" aria-hidden="true" tabindex="-1"></a><span class="fu">## In R</span></span>
+<span id="cb39-480"><a href="#cb39-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-481"><a href="#cb39-481" aria-hidden="true" tabindex="-1"></a>It turns out that <span class="in">`R`</span> does not actually estimate the OLS fit by forming</span>
+<span id="cb39-482"><a href="#cb39-482" aria-hidden="true" tabindex="-1"></a>$(\X^\trans \X)^{-1} \X^\trans \Y$.  It uses an iterative procedure</span>
+<span id="cb39-483"><a href="#cb39-483" aria-hidden="true" tabindex="-1"></a>that is roughly similar to Gaussian elimination to estimate one component at a time.</span>
+<span id="cb39-484"><a href="#cb39-484" aria-hidden="true" tabindex="-1"></a>When it gets to a component that cannot be estimated beacuse $\X^\trans \X$</span>
+<span id="cb39-485"><a href="#cb39-485" aria-hidden="true" tabindex="-1"></a>has a non-trivial nullspace, then the fit terminates, and it reports the</span>
+<span id="cb39-486"><a href="#cb39-486" aria-hidden="true" tabindex="-1"></a>values for the coefficients estimated up to that point, with <span class="in">`NA`</span> for the rest.</span>
+<span id="cb39-487"><a href="#cb39-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-488"><a href="#cb39-488" aria-hidden="true" tabindex="-1"></a>In our example, the difference <span class="in">`hw_diff`</span> is a linear combination of</span>
+<span id="cb39-489"><a href="#cb39-489" aria-hidden="true" tabindex="-1"></a><span class="in">`height_norm`</span> and <span class="in">`weight_norm`</span>.  Thus the regressors have a non-trivial</span>
+<span id="cb39-490"><a href="#cb39-490" aria-hidden="true" tabindex="-1"></a>nullspace, and the best fit $\Yhat$ is defined even though the</span>
+<span id="cb39-491"><a href="#cb39-491" aria-hidden="true" tabindex="-1"></a>regressors are not.</span>
+<span id="cb39-492"><a href="#cb39-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-493"><a href="#cb39-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-494"><a href="#cb39-494" aria-hidden="true" tabindex="-1"></a><span class="fu"># Answer to Question 3</span></span>
+<span id="cb39-495"><a href="#cb39-495" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-496"><a href="#cb39-496" aria-hidden="true" tabindex="-1"></a>The above arguments apply only to linear transformations.  Non-linear</span>
+<span id="cb39-497"><a href="#cb39-497" aria-hidden="true" tabindex="-1"></a>transformations of the regressors give different fits.</span>
+<span id="cb39-498"><a href="#cb39-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-499"><a href="#cb39-499" aria-hidden="true" tabindex="-1"></a>A single counterexample is enough to prove the general</span>
+<span id="cb39-500"><a href="#cb39-500" aria-hidden="true" tabindex="-1"></a>statement.  Take $\y_n = 1$ for all $n$, $N$ to be even, and take</span>
+<span id="cb39-501"><a href="#cb39-501" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-502"><a href="#cb39-502" aria-hidden="true" tabindex="-1"></a>\x_n = </span>
+<span id="cb39-503"><a href="#cb39-503" aria-hidden="true" tabindex="-1"></a>\begin{cases}</span>
+<span id="cb39-504"><a href="#cb39-504" aria-hidden="true" tabindex="-1"></a>  -1 &amp; \textrm{if }n\textrm{ is odd} <span class="sc">\\</span></span>
+<span id="cb39-505"><a href="#cb39-505" aria-hidden="true" tabindex="-1"></a>  1 &amp; \textrm{if }n\textrm{ is even}. <span class="sc">\\</span></span>
+<span id="cb39-506"><a href="#cb39-506" aria-hidden="true" tabindex="-1"></a>\end{cases}</span>
+<span id="cb39-507"><a href="#cb39-507" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-508"><a href="#cb39-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-509"><a href="#cb39-509" aria-hidden="true" tabindex="-1"></a>Take $\z_n = \x_n^2$, which is a nonlinear function.  Regressing</span>
+<span id="cb39-510"><a href="#cb39-510" aria-hidden="true" tabindex="-1"></a>$\y_n \sim \x_n \beta$ and $\y_n \sim \z_n \gamma$, we get</span>
+<span id="cb39-511"><a href="#cb39-511" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-512"><a href="#cb39-512" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-513"><a href="#cb39-513" aria-hidden="true" tabindex="-1"></a>\betahat = \frac{\sumn \y_n \x_n}{\sumn \x_n^2} </span>
+<span id="cb39-514"><a href="#cb39-514" aria-hidden="true" tabindex="-1"></a>  = \frac{\sum_{n\textrm{ odd}} (-1) + \sum_{n\textrm{ even}}1}{\sumn 1}</span>
+<span id="cb39-515"><a href="#cb39-515" aria-hidden="true" tabindex="-1"></a>  = 0</span>
+<span id="cb39-516"><a href="#cb39-516" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-517"><a href="#cb39-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-518"><a href="#cb39-518" aria-hidden="true" tabindex="-1"></a>but</span>
+<span id="cb39-519"><a href="#cb39-519" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-520"><a href="#cb39-520" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-521"><a href="#cb39-521" aria-hidden="true" tabindex="-1"></a>\gammahat = \frac{\sumn \y_n \z_n}{\sumn \z_n^2} </span>
+<span id="cb39-522"><a href="#cb39-522" aria-hidden="true" tabindex="-1"></a>  = \frac{\sum_{n\textrm{ odd}} (-1)^2 + \sum_{n\textrm{ even}}1}{\sumn 1}</span>
+<span id="cb39-523"><a href="#cb39-523" aria-hidden="true" tabindex="-1"></a>  = 1.</span>
+<span id="cb39-524"><a href="#cb39-524" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-525"><a href="#cb39-525" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-526"><a href="#cb39-526" aria-hidden="true" tabindex="-1"></a>Of course, a non-linear transform can still be linear on a particular</span>
+<span id="cb39-527"><a href="#cb39-527" aria-hidden="true" tabindex="-1"></a>dataset --- for example, if $\x_n$ are all a positive constant, then </span>
+<span id="cb39-528"><a href="#cb39-528" aria-hidden="true" tabindex="-1"></a>the column span of the regressors $\x_n$ and $\x_n^2$ is the same.</span>
+<span id="cb39-529"><a href="#cb39-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-530"><a href="#cb39-530" aria-hidden="true" tabindex="-1"></a>A more pathological example is as follows.  Suppose that</span>
+<span id="cb39-531"><a href="#cb39-531" aria-hidden="true" tabindex="-1"></a>the $\x_n$ are all distinct, and define sets $B_n$ such that</span>
+<span id="cb39-532"><a href="#cb39-532" aria-hidden="true" tabindex="-1"></a>$\x_n \in B_n$ but $\x_n \notin B_m$ for $n \ne m$.  Then define</span>
+<span id="cb39-533"><a href="#cb39-533" aria-hidden="true" tabindex="-1"></a>an $N$--dimensional regressor</span>
+<span id="cb39-534"><a href="#cb39-534" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-535"><a href="#cb39-535" aria-hidden="true" tabindex="-1"></a>\z_{np} = </span>
+<span id="cb39-536"><a href="#cb39-536" aria-hidden="true" tabindex="-1"></a>\begin{cases}</span>
+<span id="cb39-537"><a href="#cb39-537" aria-hidden="true" tabindex="-1"></a>1 &amp; \x_{n} \in B_p <span class="sc">\\</span></span>
+<span id="cb39-538"><a href="#cb39-538" aria-hidden="true" tabindex="-1"></a>0 &amp; \x_{n} \notin B_p.</span>
+<span id="cb39-539"><a href="#cb39-539" aria-hidden="true" tabindex="-1"></a>\end{cases}</span>
+<span id="cb39-540"><a href="#cb39-540" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb39-541"><a href="#cb39-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-542"><a href="#cb39-542" aria-hidden="true" tabindex="-1"></a>This is a perfectly well-defined function of $\x_n$!  However,</span>
+<span id="cb39-543"><a href="#cb39-543" aria-hidden="true" tabindex="-1"></a>$\Z$ is the identity matrix, so the OLS solution to $\y_n \sim \z_n \beta$ is</span>
+<span id="cb39-544"><a href="#cb39-544" aria-hidden="true" tabindex="-1"></a>$\beta = \Y$, with zero error.</span>
+<span id="cb39-545"><a href="#cb39-545" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-546"><a href="#cb39-546" aria-hidden="true" tabindex="-1"></a>It is difficult to say in general what effect nonlinear transformations</span>
+<span id="cb39-547"><a href="#cb39-547" aria-hidden="true" tabindex="-1"></a>will have on a regression, but to answer Question 3, it suffices</span>
+<span id="cb39-548"><a href="#cb39-548" aria-hidden="true" tabindex="-1"></a>to notice that <span class="in">`height_norm`</span> / <span class="in">`weight_norm`</span> is a nonlinear function</span>
+<span id="cb39-549"><a href="#cb39-549" aria-hidden="true" tabindex="-1"></a>of the two variables, and so provide a linearly independent regressor</span>
+<span id="cb39-550"><a href="#cb39-550" aria-hidden="true" tabindex="-1"></a>in general.</span>
+<span id="cb39-551"><a href="#cb39-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-552"><a href="#cb39-552" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-553"><a href="#cb39-553" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-554"><a href="#cb39-554" aria-hidden="true" tabindex="-1"></a><span class="fu"># Answer to Question 4</span></span>
+<span id="cb39-555"><a href="#cb39-555" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-556"><a href="#cb39-556" aria-hidden="true" tabindex="-1"></a>Hopefully you will find that we have already answered Question 4!</span>
+<span id="cb39-557"><a href="#cb39-557" aria-hidden="true" tabindex="-1"></a>Neither are a very good idea.</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Stochastic assumptions on the residual</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-MMK2VCM6EW"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
+</script>
+<script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/stat_bear.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Spring 2026 STAT151A</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../lectures/lectures.qmd"> 
+<span class="menu-text">Lectures</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../assignments/assignments.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../labs/index.html"> 
+<span class="menu-text">Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../datasets/data.html"> 
+<span class="menu-text">Datasets</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../course_policies.html"> 
+<span class="menu-text">Course Policies</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/berkeley-stat151a/spring-2026-private/actions/workflows/publish-to-public-repo.yml"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#births-dataset" id="toc-births-dataset" class="nav-link" data-scroll-target="#births-dataset">Births dataset</a></li>
+  <li><a href="#from-sample-means-to-regression" id="toc-from-sample-means-to-regression" class="nav-link" data-scroll-target="#from-sample-means-to-regression">From sample means to regression</a></li>
+  <li><a href="#assumptions-on-the-true-model" id="toc-assumptions-on-the-true-model" class="nav-link" data-scroll-target="#assumptions-on-the-true-model">Assumptions on the “true” model</a>
+  <ul class="collapse">
+  <li><a href="#iid-data" id="toc-iid-data" class="nav-link" data-scroll-target="#iid-data">IID data</a></li>
+  <li><a href="#linear-expectation" id="toc-linear-expectation" class="nav-link" data-scroll-target="#linear-expectation">Linear expectation</a></li>
+  <li><a href="#homoskedastic-residuals" id="toc-homoskedastic-residuals" class="nav-link" data-scroll-target="#homoskedastic-residuals">Homoskedastic residuals</a></li>
+  <li><a href="#gaussian-residuals" id="toc-gaussian-residuals" class="nav-link" data-scroll-target="#gaussian-residuals">Gaussian residuals</a></li>
+  <li><a href="#independent-or-uncorrelated-residuals" id="toc-independent-or-uncorrelated-residuals" class="nav-link" data-scroll-target="#independent-or-uncorrelated-residuals">Independent or uncorrelated residuals?</a></li>
+  <li><a href="#fixed-or-random-regressors" id="toc-fixed-or-random-regressors" class="nav-link" data-scroll-target="#fixed-or-random-regressors">Fixed or random regressors?</a></li>
+  </ul></li>
+  <li><a href="#assumptions-in-the-kleiber-example" id="toc-assumptions-in-the-kleiber-example" class="nav-link" data-scroll-target="#assumptions-in-the-kleiber-example">Assumptions in the Kleiber example</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Stochastic assumptions on the residual</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goals" class="level1">
+<h1>Goals</h1>
+<ul>
+<li>Introduce statistical assumptions to OLS
+<ul>
+<li>Hierachies of assumptions
+<ul>
+<li>Independent mean zero residuals</li>
+<li>IID residuals</li>
+<li>IID Normal residuals</li>
+</ul></li>
+<li>Bias in OLS</li>
+<li>Variance in OLS</li>
+<li>Fixed versus random regressors</li>
+<li>Meaning and criticism of assumptions</li>
+</ul></li>
+</ul>
+</section>
+<section id="births-dataset" class="level1">
+<h1>Births dataset</h1>
+<p>Recall our births dataset, which contains observational data on many aspects of a pregancy, including whether the mother was a smoker. Let’s suppose we’re interested in seeing whether there is evidence that smoking affects a baby’s birth weight negatively.</p>
+<p>The histograms are suggestive:</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The dot-dot notation (`..density..`) was deprecated in ggplot2 3.4.0.
+ℹ Please use `after_stat(density)` instead.</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="8_StochasticModelingOfOLS_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>But we might reasonably want to try to control for some of the many additional variables using regression. For instance, we might run the regression:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lm_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> mage <span class="sc">+</span> habit <span class="sc">+</span> (whitemom <span class="sc">+</span> sex <span class="sc">+</span> visits <span class="sc">+</span> gained)<span class="sc">^</span><span class="dv">2</span>, births_df)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_inter)<span class="sc">$</span>coefficients[<span class="st">"habitsmoker"</span>, <span class="st">"Estimate"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.6169764</code></pre>
+</div>
+</div>
+<p>That’s a pretty large and negative estimated effect. But we might want to ask a number of critical questions:</p>
+<ul>
+<li>Could such a large effect be due to chance, especially given how many regressors we controlled for?</li>
+<li>Can we quantify mathematically what goes wrong when we fail to include regressors we should?</li>
+<li>What happens if some of our regressors are observed with errors?</li>
+<li>How does the amount of data affect the accuracy of our results?</li>
+</ul>
+<p>To answer these questions, we need some stochastic assumptions.</p>
+</section>
+<section id="from-sample-means-to-regression" class="level1">
+<h1>From sample means to regression</h1>
+<p>Suppose we just look at the sample averages for smokers and non–smokers: <span class="math inline">\(\ybar_{s}\)</span> and <span class="math inline">\(\ybar_{x}\)</span>, respectively. We talked a lot at the beginning about when we might assume that our <span class="math inline">\(\y_n\)</span> are IID samples from some population of smokers and non–smokers. In that case, note that the <span class="math inline">\(n\)</span>–th smoker’s weight observation can be written as</p>
+<p><span class="math display">\[
+\y_{sn} = \expect{\y_{sn}} + (\y_{sn} - \expect{\y_{sn}}) = \mu_s + \res_{sn},
+\]</span></p>
+<p>where <span class="math inline">\(\mu_s = \expect{\y_{sn}}\)</span> is what we want to know, and <span class="math inline">\(\expect{\res_{sn}} = 0\)</span> by definition! In this case, if <span class="math inline">\(\z_n\)</span> encodes smoking, we can write</p>
+<p><span class="math display">\[
+\y_n = \beta_1 + \beta_2 \z_n + \res_{n}
+\]</span></p>
+<p>with <em>no additional assumptions</em> — there automatically exists <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> such that this is true, namely</p>
+<p><span class="math display">\[
+\beta_1 = \mu_x
+\quad\textrm{and}\quad
+\beta_2 = \mu_s - \mu_x.
+\]</span></p>
+<p>Furthermore, we know that <span class="math inline">\(\betavhat\)</span> is unbiased for these. (Exercise: show this.)</p>
+<p>However, the situation becomes more complicated if we want to control for mother’s age (for example). In that case, if we take <span class="math inline">\(\x_n\)</span> to be mother’s age, write</p>
+<p><span class="math display">\[
+\y_n = \beta_1 + \beta_2 \z_n + \beta_3 \x_n + \res_n,
+\]</span></p>
+<p>then it may not be true that <span class="math inline">\(\expect{\res_n} = 0\)</span> from IID sampling alone. For example, suppose that, actually, <span class="math inline">\(\y_n = \gamma \x_n^2 + \eta_n\)</span>, for <span class="math inline">\(\expect{\eta_n} = 0\)</span>. Then we can plug in and see that (taking the regressors as fixed, and not random):</p>
+<p><span class="math display">\[
+\expect{\res_n} =
+\expect{\y_n - \beta_1 + \beta_2 \z_n + \beta_3 \x_n} =
+\expect{\gamma \x_n^2 - \beta_1 + \beta_2 \z_n + \beta_3 \x_n} \ne 0,
+\]</span></p>
+<p>in general.</p>
+<p>What we’ve just done is an example of sequence of steps we’ll be following a lot:</p>
+<ul>
+<li>Tentatively assume some “true” model (often for the sake of argument), and then</li>
+<li>Examine the behavior of our regression under that true model, typically by plugging the true model into our formula for <span class="math inline">\(\betavhat\)</span> or <span class="math inline">\(\yhat_n\)</span>.</li>
+</ul>
+<p>We can do this in order to: - Gain intuition about linear regression that we hope extends to other models, - Falsify the assumed model, - Explore patterns in the data, - Attempt to assess the prediction accuracy, - … and so on.</p>
+<p>Typically our assumptions may be falsifiable, but they are often not verifiable. They have to be critically examined, and are a central part of any argument made using regression.</p>
+</section>
+<section id="assumptions-on-the-true-model" class="level1">
+<h1>Assumptions on the “true” model</h1>
+<p>In the next six weeks, we will explore a hierarchy of assumptions. Typically, the more assume, the more precise you can be about the behavior of linear regression!</p>
+<section id="iid-data" class="level3">
+<h3 class="anchored" data-anchor-id="iid-data">IID data</h3>
+<p>The loosest assumption is that <span class="math inline">\((\xv_n, \y_n)\)</span> are IID pairs.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="IID data assumption">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+IID data assumption
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Assume that the pairs <span class="math inline">\((\x_n, \y_n)\)</span> are IID, and that both <span class="math inline">\(\expect{\y_n \vert \x_n}\)</span> and <span class="math inline">\(\var{\y_n \vert \x_n}\)</span> are finite.</p>
+</div>
+</div>
+<p>This is similar to a “machine learning” style assumption, where we don’t assume much about the relationship between <span class="math inline">\(\x_n\)</span> and <span class="math inline">\(\y_n\)</span>, but want to predict <span class="math inline">\(\expect{\y_n \vert \xv_n}\)</span> with some flexible learning algorithm — which could be linear regression.</p>
+</section>
+<section id="linear-expectation" class="level3">
+<h3 class="anchored" data-anchor-id="linear-expectation">Linear expectation</h3>
+<p>The next strongest assumption is this:</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Linear expectation (LE) assumption">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Linear expectation (LE) assumption
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under the IID data assumption, assume additionally that there exists a <span class="math inline">\(\betav\)</span> such that, for all <span class="math inline">\(\xv_n\)</span>, <span class="math inline">\(\expect{\y_n \vert \xv_n} = \betav^\trans \xv_n\)</span>. Equivalently, we can write <span class="math inline">\(\expect{\Y \vert \X} = \X \betav\)</span>.</p>
+</div>
+</div>
+<p>This is a strong assumption! It is unlikely to be actually true in most practical settings. However, something like this is necessary if we’re to evaluate how well OLS recovers a “true” <span class="math inline">\(\betav\)</span>.</p>
+<p>Under this assumption, we can always define</p>
+<p><span class="math display">\[
+\res_n = \y_n - \betav^\trans \xv_n = \y_n - \expect{\y_n \vert \xv_n},
+\]</span></p>
+<p>which must satisfy</p>
+<p><span class="math display">\[
+\expect{\res_n \vert \xv_n} = 0
+\quad\Rightarrow\quad
+\expect{\res_n} = \expect{\expect{\res_n \vert \xv_n}} = 0,
+\]</span></p>
+<p>this is equivalent to saying that there exists <span class="math inline">\(\betav\)</span> such that <span class="math inline">\(\y_n = \betav^\trans \xv_n + \res_n\)</span> with <span class="math inline">\(\expect{\res_n \vert \xv_n} = 0\)</span>.</p>
+<p>Since this assumption allows <span class="math inline">\(\var{\res_n \vert \xv_n}\)</span> to vary with <span class="math inline">\(\xv_n\)</span>, the residuals are sometimes called “heteroskedastic,” meaning “different randomness,” in contrast with the next assumption.</p>
+<section id="unbiasedness-under-the-le-assumption" class="level4">
+<h4 class="anchored" data-anchor-id="unbiasedness-under-the-le-assumption">Unbiasedness under the LE assumption</h4>
+<p>Amazingly, the LE assumption is enough to prove the unbiasedness of OLS under correct specification. Here is a proof:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\betavhat ={}&amp; (\X^\trans \X)^{-1} \X^\trans \Y
+\\={}&amp; (\X^\trans \X)^{-1} \X^\trans (\X \betav + \resv)
+\\={}&amp; (\X^\trans \X)^{-1} \X^\trans \X \betav + (\X^\trans \X)^{-1} \X^\trans \resv
+\\={}&amp; \betav + (\X^\trans \X)^{-1} \X^\trans \resv
+\quad\Rightarrow\\
+\expect{\betavhat \vert \X} ={}&amp;
+\betav + (\X^\trans \X)^{-1} \X^\trans \expect{\resv \vert \X}
+={} \betav
+\quad\Rightarrow\\
+\expect{\betavhat} ={}&amp; \expect{\expect{\betavhat \vert \X}} = \betav.
+\end{aligned}
+\]</span></p>
+</section>
+<section id="omitted-variables-under-the-le-assumption" class="level4">
+<h4 class="anchored" data-anchor-id="omitted-variables-under-the-le-assumption">Omitted variables under the LE assumption</h4>
+<p>The LE assumption also helps make it clear what happens when you <em>fail</em> to include variables which you should have included.</p>
+<p>Suppose that the true model is <span class="math inline">\(\Y = \X \betav + \Z \gammav + \resv\)</span> under the LE assumption, but we run the regression <span class="math inline">\(\Y \sim \Z \alphav\)</span>. How different is <span class="math inline">\(\alphavhat\)</span> from the true <span class="math inline">\(\gammav\)</span>?</p>
+<p>We can repeat the steps above to get</p>
+<p><span class="math display">\[
+\begin{aligned}
+\alphavhat ={}&amp; (\Z^\trans \Z)^{-1} \Z^\trans \Y
+\\={}&amp; (\Z^\trans \Z)^{-1} \Z^\trans (\X \betav + \Z \gammav + \resv)
+\\={}&amp; \gammav + (\Z^\trans \Z)^{-1} \Z^\trans \X \betav  +
+       (\Z^\trans \Z)^{-1} \Z^\trans \resv
+\quad\Rightarrow\\
+\expect{\alphavhat \vert \X, \Z} ={}&amp;
+  \gammav + (\Z^\trans \Z)^{-1} \Z^\trans \X \betav.
+\end{aligned}
+\]</span></p>
+<p>We see that <span class="math inline">\(\alphahat\)</span> is biased as an estimator of <span class="math inline">\(\gammav\)</span> unless either <span class="math inline">\(\Z^\trans \X \betav = \zerov\)</span>. This term can be zero in two ways:</p>
+<ol type="1">
+<li>If <span class="math inline">\(\betav = 0\)</span>. This happens when <span class="math inline">\(\X\)</span> actually has no effect on <span class="math inline">\(\Y\)</span> in the true model, and so can be safely omitted.</li>
+<li>If <span class="math inline">\(\Z^\trans \X = \zerov\)</span>. This happens when <span class="math inline">\(\X\)</span> is orthogonal to <span class="math inline">\(\Z\)</span>.</li>
+</ol>
+<p>One way to think about the <span class="math inline">\(\Z^\trans \X = \zerov\)</span> case is as follows: you could incorporate <span class="math inline">\(\X \betav\)</span> into a new residual, <span class="math inline">\(\etav = \resv + \X \betav\)</span> in the model <span class="math inline">\(\Y = \Z \alpha + \etav\)</span>. It is no longer the case that <span class="math inline">\(\expect{\etav | \Z}\)</span> is zero, but it is <em>uncorrelated with </em><span class="math inline">\(\Z\)</span>, and so has no effect on the regression. This is an instance where it’s more useful to analyze OLS using the assumption that errors are uncorrelated rather than independent.</p>
+<p><strong>TODO: I expanded on this in lecture but did not write it up here. In particular, write out how highly correlated omitted variables are good for prediction but bad for inference.</strong></p>
+</section>
+</section>
+<section id="homoskedastic-residuals" class="level3">
+<h3 class="anchored" data-anchor-id="homoskedastic-residuals">Homoskedastic residuals</h3>
+<p>The next assumption is more common in econometrics, and it simply assumes that the residuals all have the same variance.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Homoskedastic residuals assumption">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Homoskedastic residuals assumption
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under the linear expectation assumption, assume additionally that <span class="math inline">\(\var{\res_n \vert \xv_n} = \sigma_\res^2\)</span> for all <span class="math inline">\(\xv_n\)</span>; that is, the residual variance is constant.</p>
+</div>
+</div>
+<p>Such residuals are called “homoskedastic” for “same randomness.”</p>
+<section id="variance-under-homoskedastic-residuals" class="level4">
+<h4 class="anchored" data-anchor-id="variance-under-homoskedastic-residuals">Variance under homoskedastic residuals</h4>
+<p>The homoskedastic residuals assumption leads to a particularly simple form for the <em>covariance</em> of <span class="math inline">\(\betavhat\)</span>, which is more complicated under heteroskedasticity. Using our result above,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\cov{\betavhat \vert \X} ={}&amp;
+\expect{\left( \betavhat - \betav\right) \left( \betavhat - \betav\right)^\trans \vert \X}
+\\={}&amp;
+\expect{\left( (\X^\trans \X)^{-1} \X^\trans \resv \right)
+        \left( (\X^\trans \X)^{-1} \X^\trans \resv \right)^\trans \vert \X}
+\\={}&amp;
+(\X^\trans \X)^{-1} \X^\trans
+  \expect{\resv  \resv^\trans \vert \X}
+  \X (\X^\trans \X)^{-1}
+\\={}&amp;
+(\X^\trans \X)^{-1} \X^\trans
+  \sigma^2_\res \id
+  \X (\X^\trans \X)^{-1}
+\\={}&amp;
+\sigma^2_\res (\X^\trans \X)^{-1} \X^\trans
+   \id
+  \X (\X^\trans \X)^{-1}
+\\={}&amp;
+\sigma^2_\res (\X^\trans \X)^{-1}.
+\end{aligned}
+\]</span></p>
+<p>Unlike the expectation, it is no longer the case that <span class="math inline">\(\cov{\betavhat}\)</span> has a simple form marginally over <span class="math inline">\(\X\)</span>, because, in general,</p>
+<p><span class="math display">\[
+\expect{(\X^\trans \X)^{-1}} \ne \expect{\X^\trans \X}^{-1}.
+\]</span></p>
+<p>A simple special case is for univarite <span class="math inline">\(\x_n\)</span>, for which it is hopefull familiar that</p>
+<p><span class="math display">\[
+\expect{\frac{1}{\x_n^2}} \ne \frac{1}{\expect{\x_n^2}}
+\]</span></p>
+<p>unless <span class="math inline">\(\var{\x_n} = 0\)</span>. This is one of the “mathematical conveniences” that motivate treating <span class="math inline">\(\xv_n\)</span> as fixed rather than random when analyzing OLS — see below for more discussion.</p>
+</section>
+</section>
+<section id="gaussian-residuals" class="level3">
+<h3 class="anchored" data-anchor-id="gaussian-residuals">Gaussian residuals</h3>
+<p>Finally, we come to the most classic assumption: fully Gaussian residuals.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Gaussian residuals assumption">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Gaussian residuals assumption
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under the linear expectation assumption, assume additionally that <span class="math inline">\(\res_n \sim \gauss{0, \sigma^2}\)</span>.</p>
+</div>
+</div>
+<p>This assumption is, of course, the least likely to hold in practice. However, it’s also the easiest to analyze — we’ll be able to derive closed–form expressions for the behavior of many OLS test statistics. This is also the assumption that is made implicitly by a lot of standard statistical software, including the <code>lm</code> function from <code>R</code>, so it is important to understand its implications.</p>
+<section id="normality-under-gaussian-residuals" class="level4">
+<h4 class="anchored" data-anchor-id="normality-under-gaussian-residuals">Normality under Gaussian residuals</h4>
+<p>Under the Gaussian assumption, since <span class="math inline">\(\y_n = \betav^\trans \xv_n + \res_n\)</span>, this implies that <span class="math inline">\(\y_n\)</span> is also Gaussian conditional on <span class="math inline">\(\xv_n\)</span>. Even more, <span class="math inline">\(\betavhat\)</span> is Gaussian conditional on <span class="math inline">\(\X\)</span>, since it is itself a linear combination of Gaussian errors:</p>
+<p><span class="math display">\[
+\betavhat = \beta + (\X^\trans \X) \X^\trans \resv
+\quad\Rightarrow\quad
+\betavhat \sim \gauss{\beta, \sigma^2 (\X^\trans \X)^{-1}}.
+\]</span></p>
+</section>
+</section>
+<section id="independent-or-uncorrelated-residuals" class="level2">
+<h2 class="anchored" data-anchor-id="independent-or-uncorrelated-residuals">Independent or uncorrelated residuals?</h2>
+<p>Note that under all these assumptions, the residuals are assumed to be independent of one another. That’s not strictly necessary — if you closely examine the proofs to come, you will see that often pairwise uncorrelated residuals will be enough. However, for simplicity, I’ll stay with the assumption of independent residuals in this class; it will hopefully be clear enough where that can be weakened if necessary.</p>
+</section>
+<section id="fixed-or-random-regressors" class="level2">
+<h2 class="anchored" data-anchor-id="fixed-or-random-regressors">Fixed or random regressors?</h2>
+<p>Above, it’s clear that <span class="math inline">\(\y_n\)</span> is considered random (and, correspondingly, so are the residuals <span class="math inline">\(\res_n\)</span>). What about <span class="math inline">\(\xv_n\)</span> for the linear expectation assumption onwards? Is it random or fixed?</p>
+<p>Depending on the setting, it might be reasonable to model <span class="math inline">\(\xv_n\)</span> as either random <em>or</em> fixed. For example, if <span class="math inline">\(\xv_n\)</span> are part of a systematic design, such as an evenly spaced set of weights for which you will measure the deflection of a spring, then it makes sense to think of <span class="math inline">\(\xv_n\)</span> as fixed. However, if your data are samples from some larger population, such as data about mothers’ smoking habits and baby birth weight, then it might make sense to think of <span class="math inline">\(\xv_n\)</span> as random along with <span class="math inline">\(\y_n\)</span>.</p>
+<p>However, mathematically speaking,</p>
+<ul>
+<li>It is usually easier to think of <span class="math inline">\(\xv_n\)</span> as fixed, and</li>
+<li>It would rarely affect our substantive conclusions, since the variance of the residuals dominates the variability of the regressors. (This may not be obvious, even later in the course, but I assure you it is true.)</li>
+</ul>
+<p>For these reasons, I will make the following assumption for simplicity:</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Fixed regressor assumption">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Fixed regressor assumption
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under the linear expectation, homoskedastic, and Gaussian assumptions, I will assume that the regressors <span class="math inline">\(\X\)</span> are fixed unless I say explicitly otherwise. In that case, by conditioning, I simply mean “for that value of <span class="math inline">\(\xv_n\)</span>,” as in <span class="math inline">\(\expect{\y_n \vert \xv_n} = \betav^\trans \xv_n\)</span>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="assumptions-in-the-kleiber-example" class="level1">
+<h1>Assumptions in the Kleiber example</h1>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="8_StochasticModelingOfOLS_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Recall the Kleiber example, in which observations were animals, weights, and metabolism rates. Which of these assumptions make sense?</p>
+<p>Arguably, none of them:</p>
+<ul>
+<li>This is not a “random sample from all animals,” even if you could make that sentence make sense</li>
+<li>There are multiple observations for the same type of animal</li>
+<li>There is no reason to believe a linear model is well specified</li>
+<li>There is no reason to believe the errors are normal or even homoskedastic</li>
+</ul>
+<p>The best you might hope for is to argue that the IID assumption characterizes something like “how much would my conclusion have changed if I had collected the same dataset again but with different randomly chosen animals of the same species?” But this is not very much like the real question, which is “how much might the slope of the regression line differ from 2/3 due only to the ideosyncracies of this particular dataset?”</p>
+<!-- 
+
+Note to future instructors --- this needs more time and more detail to
+be useful to the students.
+
+-->
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Stochastic assumptions on the residual"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Introduce statistical assumptions to OLS</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Hierachies of assumptions</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Independent mean zero residuals</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>IID residuals</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>IID Normal residuals</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Bias in OLS</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Variance in OLS</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Fixed versus random regressors</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Meaning and criticism of assumptions</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="fu"># Births dataset</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quarto)</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>root_dir <span class="ot">&lt;-</span> quarto<span class="sc">::</span><span class="fu">find_project_root</span>()</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>births_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(root_dir, <span class="st">"datasets/births/births14.csv"</span>))</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>Recall our births dataset, which contains observational data on </span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>many aspects of a pregancy, including whether the mother was a smoker.  Let's</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>suppose we're interested in seeing whether there is evidence that smoking</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>affects a baby's birth weight negatively.</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>The histograms are suggestive:</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>births_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(habit)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>weight, <span class="at">fill=</span>habit, <span class="at">y=</span>..density.., <span class="at">color=</span>habit), </span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>                 <span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">position=</span><span class="st">"identity"</span>, <span class="at">bins=</span><span class="dv">40</span>)</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>But we might reasonably want to try to control for some of the many additional</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>variables using regression.  For instance, we might run the regression:</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>lm_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> mage <span class="sc">+</span> habit <span class="sc">+</span> (whitemom <span class="sc">+</span> sex <span class="sc">+</span> visits <span class="sc">+</span> gained)<span class="sc">^</span><span class="dv">2</span>, births_df)</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm_inter)<span class="sc">$</span>coefficients[<span class="st">"habitsmoker"</span>, <span class="st">"Estimate"</span>]</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>That's a pretty large and negative estimated effect.  But we might want to ask</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>a number of critical questions:</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Could such a large effect be due to chance, especially given how many regressors we controlled for?</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Can we quantify mathematically what goes wrong when we fail to include regressors we should?</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>What happens if some of our regressors are observed with errors?</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How does the amount of data affect the accuracy of our results?</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a>To answer these questions, we need some stochastic assumptions.  </span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="fu"># From sample means to regression</span></span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>Suppose we just look at the sample averages for smokers and non--smokers:</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a>$\ybar_{s}$ and $\ybar_{x}$, respectively.  We talked a lot at the beginning</span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>about when we might assume that our $\y_n$ are IID samples from some population</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>of smokers and non--smokers.  In that case, note that the $n$--th smoker's</span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>weight observation can be written as</span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>\y_{sn} = \expect{\y_{sn}} + (\y_{sn} - \expect{\y_{sn}}) = \mu_s + \res_{sn},</span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>where $\mu_s = \expect{\y_{sn}}$ is what we want to know, and </span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>$\expect{\res_{sn}} = 0$ by definition!  In this case, if $\z_n$ encodes</span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>smoking, we can write</span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>\y_n = \beta_1 + \beta_2 \z_n + \res_{n}</span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>with *no additional assumptions* --- there automatically exists $\beta_1$ and</span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>$\beta_2$ such that this is true, namely</span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>\beta_1 = \mu_x</span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>\quad\textrm{and}\quad</span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a>\beta_2 = \mu_s - \mu_x.</span>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a>Furthermore, we know that $\betavhat$ is unbiased for these.  (Exercise: show this.)</span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>However, the situation becomes more complicated if we want to control for mother's</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>age (for example).  In that case, if we take $\x_n$ to be mother's age, write</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>\y_n = \beta_1 + \beta_2 \z_n + \beta_3 \x_n + \res_n,</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>then it may not be true that $\expect{\res_n} = 0$ from IID sampling alone.  For example,</span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>suppose that, actually, $\y_n = \gamma \x_n^2 + \eta_n$, for $\expect{\eta_n} = 0$. Then we </span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>can plug in and see that (taking the regressors as fixed, and not random):</span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>\expect{\res_n} = </span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>\expect{\y_n - \beta_1 + \beta_2 \z_n + \beta_3 \x_n} =</span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>\expect{\gamma \x_n^2 - \beta_1 + \beta_2 \z_n + \beta_3 \x_n} \ne 0,</span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>in general.</span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>What we've just done is an example of sequence of steps we'll be following a lot:</span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tentatively assume some "true" model (often for the sake of argument), and then</span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Examine the behavior of our regression under that true model, typically by</span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>  plugging the true model into our formula for $\betavhat$ or $\yhat_n$.</span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>We can do this in order to:</span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Gain intuition about linear regression that we hope extends to other models,</span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Falsify the assumed model,</span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Explore patterns in the data,</span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Attempt to assess the prediction accuracy,</span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>... and so on.</span>
+<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a>Typically our assumptions may be falsifiable, but they are often not verifiable.  They</span>
+<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>have to be critically examined, and are a central part of any argument made using regression.</span>
+<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-149"><a href="#cb4-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-150"><a href="#cb4-150" aria-hidden="true" tabindex="-1"></a><span class="fu"># Assumptions on the "true" model</span></span>
+<span id="cb4-151"><a href="#cb4-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-152"><a href="#cb4-152" aria-hidden="true" tabindex="-1"></a>In the next six weeks, we will explore a hierarchy of assumptions.  Typically,</span>
+<span id="cb4-153"><a href="#cb4-153" aria-hidden="true" tabindex="-1"></a>the more assume, the more precise you can be about the behavior of linear regression!</span>
+<span id="cb4-154"><a href="#cb4-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-155"><a href="#cb4-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-156"><a href="#cb4-156" aria-hidden="true" tabindex="-1"></a><span class="fu">### IID data</span></span>
+<span id="cb4-157"><a href="#cb4-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-158"><a href="#cb4-158" aria-hidden="true" tabindex="-1"></a>The loosest assumption is that $(\xv_n, \y_n)$ are IID pairs.  </span>
+<span id="cb4-159"><a href="#cb4-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-160"><a href="#cb4-160" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="IID data assumption"}</span>
+<span id="cb4-161"><a href="#cb4-161" aria-hidden="true" tabindex="-1"></a>Assume that the pairs $(\x_n, \y_n)$ are IID, and that</span>
+<span id="cb4-162"><a href="#cb4-162" aria-hidden="true" tabindex="-1"></a>both $\expect{\y_n \vert \x_n}$ and $\var{\y_n \vert \x_n}$ are finite.</span>
+<span id="cb4-163"><a href="#cb4-163" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-164"><a href="#cb4-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-165"><a href="#cb4-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-166"><a href="#cb4-166" aria-hidden="true" tabindex="-1"></a>This is similar to a "machine learning" style assumption, where we don't</span>
+<span id="cb4-167"><a href="#cb4-167" aria-hidden="true" tabindex="-1"></a>assume much about the relationship between $\x_n$ and $\y_n$, but</span>
+<span id="cb4-168"><a href="#cb4-168" aria-hidden="true" tabindex="-1"></a>want to predict $\expect{\y_n \vert \xv_n}$ with some flexible learning</span>
+<span id="cb4-169"><a href="#cb4-169" aria-hidden="true" tabindex="-1"></a>algorithm --- which could be linear regression.</span>
+<span id="cb4-170"><a href="#cb4-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-171"><a href="#cb4-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-172"><a href="#cb4-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-173"><a href="#cb4-173" aria-hidden="true" tabindex="-1"></a><span class="fu">### Linear expectation</span></span>
+<span id="cb4-174"><a href="#cb4-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-175"><a href="#cb4-175" aria-hidden="true" tabindex="-1"></a>The next strongest assumption is this:</span>
+<span id="cb4-176"><a href="#cb4-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-177"><a href="#cb4-177" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Linear expectation (LE) assumption"}</span>
+<span id="cb4-178"><a href="#cb4-178" aria-hidden="true" tabindex="-1"></a>Under the IID data assumption,</span>
+<span id="cb4-179"><a href="#cb4-179" aria-hidden="true" tabindex="-1"></a>assume additionally that there exists a $\betav$ such that, for all $\xv_n$,</span>
+<span id="cb4-180"><a href="#cb4-180" aria-hidden="true" tabindex="-1"></a>$\expect{\y_n \vert \xv_n} = \betav^\trans \xv_n$.  Equivalently, we</span>
+<span id="cb4-181"><a href="#cb4-181" aria-hidden="true" tabindex="-1"></a>can write $\expect{\Y \vert \X} = \X \betav$.</span>
+<span id="cb4-182"><a href="#cb4-182" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-183"><a href="#cb4-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-184"><a href="#cb4-184" aria-hidden="true" tabindex="-1"></a>This is a strong assumption!  It is unlikely to be actually true in most</span>
+<span id="cb4-185"><a href="#cb4-185" aria-hidden="true" tabindex="-1"></a>practical settings.  However, something like this is necessary if we're to evaluate </span>
+<span id="cb4-186"><a href="#cb4-186" aria-hidden="true" tabindex="-1"></a>how well OLS recovers a "true" $\betav$.</span>
+<span id="cb4-187"><a href="#cb4-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-188"><a href="#cb4-188" aria-hidden="true" tabindex="-1"></a>Under this assumption, we can always define</span>
+<span id="cb4-189"><a href="#cb4-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-190"><a href="#cb4-190" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-191"><a href="#cb4-191" aria-hidden="true" tabindex="-1"></a>\res_n = \y_n - \betav^\trans \xv_n = \y_n - \expect{\y_n \vert \xv_n},</span>
+<span id="cb4-192"><a href="#cb4-192" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-193"><a href="#cb4-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-194"><a href="#cb4-194" aria-hidden="true" tabindex="-1"></a>which must satisfy </span>
+<span id="cb4-195"><a href="#cb4-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-196"><a href="#cb4-196" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a>\expect{\res_n \vert \xv_n} = 0 </span>
+<span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow\quad</span>
+<span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a>\expect{\res_n} = \expect{\expect{\res_n \vert \xv_n}} = 0,</span>
+<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a>this is equivalent to saying that there exists $\betav$ such that </span>
+<span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>$\y_n = \betav^\trans \xv_n + \res_n$ with $\expect{\res_n \vert \xv_n} = 0$.</span>
+<span id="cb4-204"><a href="#cb4-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-205"><a href="#cb4-205" aria-hidden="true" tabindex="-1"></a>Since this assumption allows $\var{\res_n \vert \xv_n}$ to vary with $\xv_n$,</span>
+<span id="cb4-206"><a href="#cb4-206" aria-hidden="true" tabindex="-1"></a>the residuals are sometimes called "heteroskedastic," meaning "different randomness,"</span>
+<span id="cb4-207"><a href="#cb4-207" aria-hidden="true" tabindex="-1"></a>in contrast with the next assumption.</span>
+<span id="cb4-208"><a href="#cb4-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-209"><a href="#cb4-209" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Unbiasedness under the LE assumption</span></span>
+<span id="cb4-210"><a href="#cb4-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-211"><a href="#cb4-211" aria-hidden="true" tabindex="-1"></a>Amazingly, the LE assumption is enough to prove the unbiasedness of</span>
+<span id="cb4-212"><a href="#cb4-212" aria-hidden="true" tabindex="-1"></a>OLS under correct specification.  Here is a proof:</span>
+<span id="cb4-213"><a href="#cb4-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-214"><a href="#cb4-214" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-215"><a href="#cb4-215" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb4-216"><a href="#cb4-216" aria-hidden="true" tabindex="-1"></a>\betavhat ={}&amp; (\X^\trans \X)^{-1} \X^\trans \Y</span>
+<span id="cb4-217"><a href="#cb4-217" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; (\X^\trans \X)^{-1} \X^\trans (\X \betav + \resv)</span>
+<span id="cb4-218"><a href="#cb4-218" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; (\X^\trans \X)^{-1} \X^\trans \X \betav + (\X^\trans \X)^{-1} \X^\trans \resv</span>
+<span id="cb4-219"><a href="#cb4-219" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \betav + (\X^\trans \X)^{-1} \X^\trans \resv</span>
+<span id="cb4-220"><a href="#cb4-220" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow<span class="sc">\\</span></span>
+<span id="cb4-221"><a href="#cb4-221" aria-hidden="true" tabindex="-1"></a>\expect{\betavhat \vert \X} ={}&amp;</span>
+<span id="cb4-222"><a href="#cb4-222" aria-hidden="true" tabindex="-1"></a>\betav + (\X^\trans \X)^{-1} \X^\trans \expect{\resv \vert \X} </span>
+<span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>={} \betav</span>
+<span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow<span class="sc">\\</span></span>
+<span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a>\expect{\betavhat} ={}&amp; \expect{\expect{\betavhat \vert \X}} = \betav.</span>
+<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-230"><a href="#cb4-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-231"><a href="#cb4-231" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Omitted variables under the LE assumption</span></span>
+<span id="cb4-232"><a href="#cb4-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-233"><a href="#cb4-233" aria-hidden="true" tabindex="-1"></a>The LE assumption also helps make it clear what happens when you *fail* to include</span>
+<span id="cb4-234"><a href="#cb4-234" aria-hidden="true" tabindex="-1"></a>variables which you should have included.</span>
+<span id="cb4-235"><a href="#cb4-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-236"><a href="#cb4-236" aria-hidden="true" tabindex="-1"></a>Suppose that the true model is $\Y = \X \betav + \Z \gammav + \resv$</span>
+<span id="cb4-237"><a href="#cb4-237" aria-hidden="true" tabindex="-1"></a>under the LE assumption, but we run the regression $\Y \sim \Z \alphav$.  How</span>
+<span id="cb4-238"><a href="#cb4-238" aria-hidden="true" tabindex="-1"></a>different is $\alphavhat$ from the true $\gammav$?</span>
+<span id="cb4-239"><a href="#cb4-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-240"><a href="#cb4-240" aria-hidden="true" tabindex="-1"></a>We can repeat the steps above to get</span>
+<span id="cb4-241"><a href="#cb4-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-242"><a href="#cb4-242" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a>\alphavhat ={}&amp; (\Z^\trans \Z)^{-1} \Z^\trans \Y</span>
+<span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; (\Z^\trans \Z)^{-1} \Z^\trans (\X \betav + \Z \gammav + \resv)</span>
+<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \gammav + (\Z^\trans \Z)^{-1} \Z^\trans \X \betav  + </span>
+<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a>       (\Z^\trans \Z)^{-1} \Z^\trans \resv</span>
+<span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow<span class="sc">\\</span></span>
+<span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a>\expect{\alphavhat \vert \X, \Z} ={}&amp;</span>
+<span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>  \gammav + (\Z^\trans \Z)^{-1} \Z^\trans \X \betav.</span>
+<span id="cb4-251"><a href="#cb4-251" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb4-252"><a href="#cb4-252" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-253"><a href="#cb4-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-254"><a href="#cb4-254" aria-hidden="true" tabindex="-1"></a>We see that $\alphahat$ is biased as an</span>
+<span id="cb4-255"><a href="#cb4-255" aria-hidden="true" tabindex="-1"></a>estimator of $\gammav$ unless either $\Z^\trans \X \betav = \zerov$.  This term</span>
+<span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a>can be zero in two ways:</span>
+<span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>If $\betav = 0$.  This happens when $\X$ actually has no effect on $\Y$</span>
+<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>   in the true model, and so can be safely omitted.</span>
+<span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>If $\Z^\trans \X = \zerov$.  This happens when $\X$ is orthogonal to </span>
+<span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>   $\Z$.  </span>
+<span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb4-263"><a href="#cb4-263" aria-hidden="true" tabindex="-1"></a>One way to think about the $\Z^\trans \X = \zerov$ case is as follows: you could </span>
+<span id="cb4-264"><a href="#cb4-264" aria-hidden="true" tabindex="-1"></a>incorporate $\X \betav$  into a new residual, $\etav = \resv + \X \betav$ in the model</span>
+<span id="cb4-265"><a href="#cb4-265" aria-hidden="true" tabindex="-1"></a>$\Y = \Z \alpha + \etav$.  It is no longer the case that $\expect{\etav | \Z}$ is</span>
+<span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>zero, but it is *uncorrelated with *$\Z$, and so has no effect on the regression.  This</span>
+<span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>is an instance where it's more useful to analyze OLS using the assumption that errors are </span>
+<span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a>uncorrelated rather than independent.</span>
+<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>**TODO: I expanded on this in lecture but did not write it up here.  In particular,</span>
+<span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a>write out how highly correlated omitted variables are good for prediction but</span>
+<span id="cb4-273"><a href="#cb4-273" aria-hidden="true" tabindex="-1"></a>bad for inference.**</span>
+<span id="cb4-274"><a href="#cb4-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-275"><a href="#cb4-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-276"><a href="#cb4-276" aria-hidden="true" tabindex="-1"></a><span class="fu">### Homoskedastic residuals</span></span>
+<span id="cb4-277"><a href="#cb4-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-278"><a href="#cb4-278" aria-hidden="true" tabindex="-1"></a>The next assumption is more common in econometrics, and it simply assumes</span>
+<span id="cb4-279"><a href="#cb4-279" aria-hidden="true" tabindex="-1"></a>that the residuals all have the same variance.</span>
+<span id="cb4-280"><a href="#cb4-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-281"><a href="#cb4-281" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Homoskedastic residuals assumption"}</span>
+<span id="cb4-282"><a href="#cb4-282" aria-hidden="true" tabindex="-1"></a>Under the linear expectation assumption, assume additionally that</span>
+<span id="cb4-283"><a href="#cb4-283" aria-hidden="true" tabindex="-1"></a>$\var{\res_n \vert \xv_n} = \sigma_\res^2$ for all $\xv_n$; that is,</span>
+<span id="cb4-284"><a href="#cb4-284" aria-hidden="true" tabindex="-1"></a>the residual variance is constant.</span>
+<span id="cb4-285"><a href="#cb4-285" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-286"><a href="#cb4-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-287"><a href="#cb4-287" aria-hidden="true" tabindex="-1"></a>Such residuals are called "homoskedastic" for "same randomness."</span>
+<span id="cb4-288"><a href="#cb4-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-289"><a href="#cb4-289" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Variance under homoskedastic residuals</span></span>
+<span id="cb4-290"><a href="#cb4-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-291"><a href="#cb4-291" aria-hidden="true" tabindex="-1"></a>The homoskedastic residuals assumption leads to a particularly simple</span>
+<span id="cb4-292"><a href="#cb4-292" aria-hidden="true" tabindex="-1"></a>form for the *covariance* of $\betavhat$, which is more complicated</span>
+<span id="cb4-293"><a href="#cb4-293" aria-hidden="true" tabindex="-1"></a>under heteroskedasticity.  Using our result above,</span>
+<span id="cb4-294"><a href="#cb4-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-295"><a href="#cb4-295" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-296"><a href="#cb4-296" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb4-297"><a href="#cb4-297" aria-hidden="true" tabindex="-1"></a>\cov{\betavhat \vert \X} ={}&amp;</span>
+<span id="cb4-298"><a href="#cb4-298" aria-hidden="true" tabindex="-1"></a>\expect{\left( \betavhat - \betav\right) \left( \betavhat - \betav\right)^\trans \vert \X}</span>
+<span id="cb4-299"><a href="#cb4-299" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb4-300"><a href="#cb4-300" aria-hidden="true" tabindex="-1"></a>\expect{\left( (\X^\trans \X)^{-1} \X^\trans \resv \right) </span>
+<span id="cb4-301"><a href="#cb4-301" aria-hidden="true" tabindex="-1"></a>        \left( (\X^\trans \X)^{-1} \X^\trans \resv \right)^\trans \vert \X}</span>
+<span id="cb4-302"><a href="#cb4-302" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb4-303"><a href="#cb4-303" aria-hidden="true" tabindex="-1"></a>(\X^\trans \X)^{-1} \X^\trans</span>
+<span id="cb4-304"><a href="#cb4-304" aria-hidden="true" tabindex="-1"></a>  \expect{\resv  \resv^\trans \vert \X}</span>
+<span id="cb4-305"><a href="#cb4-305" aria-hidden="true" tabindex="-1"></a>  \X (\X^\trans \X)^{-1}</span>
+<span id="cb4-306"><a href="#cb4-306" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb4-307"><a href="#cb4-307" aria-hidden="true" tabindex="-1"></a>(\X^\trans \X)^{-1} \X^\trans</span>
+<span id="cb4-308"><a href="#cb4-308" aria-hidden="true" tabindex="-1"></a>  \sigma^2_\res \id</span>
+<span id="cb4-309"><a href="#cb4-309" aria-hidden="true" tabindex="-1"></a>  \X (\X^\trans \X)^{-1}</span>
+<span id="cb4-310"><a href="#cb4-310" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb4-311"><a href="#cb4-311" aria-hidden="true" tabindex="-1"></a>\sigma^2_\res (\X^\trans \X)^{-1} \X^\trans</span>
+<span id="cb4-312"><a href="#cb4-312" aria-hidden="true" tabindex="-1"></a>   \id</span>
+<span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>  \X (\X^\trans \X)^{-1}</span>
+<span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>\sigma^2_\res (\X^\trans \X)^{-1}.</span>
+<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>Unlike the expectation, it is no longer the case that $\cov{\betavhat}$ has a simple</span>
+<span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a>form marginally over $\X$, because, in general,</span>
+<span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-322"><a href="#cb4-322" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-323"><a href="#cb4-323" aria-hidden="true" tabindex="-1"></a>\expect{(\X^\trans \X)^{-1}} \ne \expect{\X^\trans \X}^{-1}.</span>
+<span id="cb4-324"><a href="#cb4-324" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>A simple special case is for univarite $\x_n$, for which it is hopefull familiar</span>
+<span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a>that</span>
+<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a>\expect{\frac{1}{\x_n^2}} \ne \frac{1}{\expect{\x_n^2}}</span>
+<span id="cb4-331"><a href="#cb4-331" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-332"><a href="#cb4-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a>unless $\var{\x_n} = 0$.  This is one of the "mathematical conveniences" that motivate</span>
+<span id="cb4-334"><a href="#cb4-334" aria-hidden="true" tabindex="-1"></a>treating $\xv_n$ as fixed rather than random when analyzing OLS --- see below for</span>
+<span id="cb4-335"><a href="#cb4-335" aria-hidden="true" tabindex="-1"></a>more discussion.</span>
+<span id="cb4-336"><a href="#cb4-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-337"><a href="#cb4-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-338"><a href="#cb4-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-339"><a href="#cb4-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-340"><a href="#cb4-340" aria-hidden="true" tabindex="-1"></a><span class="fu">### Gaussian residuals</span></span>
+<span id="cb4-341"><a href="#cb4-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-342"><a href="#cb4-342" aria-hidden="true" tabindex="-1"></a>Finally, we come to the most classic assumption: fully Gaussian residuals.</span>
+<span id="cb4-343"><a href="#cb4-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-344"><a href="#cb4-344" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Gaussian residuals assumption"}</span>
+<span id="cb4-345"><a href="#cb4-345" aria-hidden="true" tabindex="-1"></a>Under the linear expectation assumption, assume additionally that</span>
+<span id="cb4-346"><a href="#cb4-346" aria-hidden="true" tabindex="-1"></a>$\res_n \sim \gauss{0, \sigma^2}$.</span>
+<span id="cb4-347"><a href="#cb4-347" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-348"><a href="#cb4-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-349"><a href="#cb4-349" aria-hidden="true" tabindex="-1"></a>This assumption is, of course, the least likely to hold in practice.  However,</span>
+<span id="cb4-350"><a href="#cb4-350" aria-hidden="true" tabindex="-1"></a>it's also the easiest to analyze --- we'll be able to derive closed--form</span>
+<span id="cb4-351"><a href="#cb4-351" aria-hidden="true" tabindex="-1"></a>expressions for the behavior of many OLS test statistics.  This is also the</span>
+<span id="cb4-352"><a href="#cb4-352" aria-hidden="true" tabindex="-1"></a>assumption that is made implicitly by a lot of standard statistical software,</span>
+<span id="cb4-353"><a href="#cb4-353" aria-hidden="true" tabindex="-1"></a>including the <span class="in">`lm`</span> function from <span class="in">`R`</span>, so it is important to understand its</span>
+<span id="cb4-354"><a href="#cb4-354" aria-hidden="true" tabindex="-1"></a>implications.</span>
+<span id="cb4-355"><a href="#cb4-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-356"><a href="#cb4-356" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Normality under Gaussian residuals</span></span>
+<span id="cb4-357"><a href="#cb4-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-358"><a href="#cb4-358" aria-hidden="true" tabindex="-1"></a>Under the Gaussian assumption, since $\y_n = \betav^\trans \xv_n + \res_n$,</span>
+<span id="cb4-359"><a href="#cb4-359" aria-hidden="true" tabindex="-1"></a>this implies that $\y_n$ is also Gaussian conditional on $\xv_n$.  Even more,</span>
+<span id="cb4-360"><a href="#cb4-360" aria-hidden="true" tabindex="-1"></a>$\betavhat$ is Gaussian conditional on $\X$, since it is itself a linear</span>
+<span id="cb4-361"><a href="#cb4-361" aria-hidden="true" tabindex="-1"></a>combination of Gaussian errors:</span>
+<span id="cb4-362"><a href="#cb4-362" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-363"><a href="#cb4-363" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-364"><a href="#cb4-364" aria-hidden="true" tabindex="-1"></a>\betavhat = \beta + (\X^\trans \X) \X^\trans \resv </span>
+<span id="cb4-365"><a href="#cb4-365" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow\quad</span>
+<span id="cb4-366"><a href="#cb4-366" aria-hidden="true" tabindex="-1"></a>\betavhat \sim \gauss{\beta, \sigma^2 (\X^\trans \X)^{-1}}.</span>
+<span id="cb4-367"><a href="#cb4-367" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb4-368"><a href="#cb4-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-369"><a href="#cb4-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-370"><a href="#cb4-370" aria-hidden="true" tabindex="-1"></a><span class="fu">## Independent or uncorrelated residuals?</span></span>
+<span id="cb4-371"><a href="#cb4-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-372"><a href="#cb4-372" aria-hidden="true" tabindex="-1"></a>Note that under all these assumptions, the residuals are assumed to be independent</span>
+<span id="cb4-373"><a href="#cb4-373" aria-hidden="true" tabindex="-1"></a>of one another.  That's not strictly necessary --- if you closely examine the</span>
+<span id="cb4-374"><a href="#cb4-374" aria-hidden="true" tabindex="-1"></a>proofs to come, you will see that often pairwise uncorrelated residuals will be</span>
+<span id="cb4-375"><a href="#cb4-375" aria-hidden="true" tabindex="-1"></a>enough.  However, for simplicity, I'll stay with the assumption of independent</span>
+<span id="cb4-376"><a href="#cb4-376" aria-hidden="true" tabindex="-1"></a>residuals in this class; it will hopefully be clear enough where that</span>
+<span id="cb4-377"><a href="#cb4-377" aria-hidden="true" tabindex="-1"></a>can be weakened if necessary.</span>
+<span id="cb4-378"><a href="#cb4-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-379"><a href="#cb4-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-380"><a href="#cb4-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-381"><a href="#cb4-381" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fixed or random regressors?</span></span>
+<span id="cb4-382"><a href="#cb4-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-383"><a href="#cb4-383" aria-hidden="true" tabindex="-1"></a>Above, it's clear that $\y_n$ is considered random (and, correspondingly,</span>
+<span id="cb4-384"><a href="#cb4-384" aria-hidden="true" tabindex="-1"></a>so are the residuals $\res_n$).  What about $\xv_n$ for the linear</span>
+<span id="cb4-385"><a href="#cb4-385" aria-hidden="true" tabindex="-1"></a>expectation assumption onwards?  Is it random or fixed?</span>
+<span id="cb4-386"><a href="#cb4-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-387"><a href="#cb4-387" aria-hidden="true" tabindex="-1"></a>Depending on the setting, it might be reasonable to model $\xv_n$</span>
+<span id="cb4-388"><a href="#cb4-388" aria-hidden="true" tabindex="-1"></a>as either random *or* fixed.  For example, if $\xv_n$ are part of a </span>
+<span id="cb4-389"><a href="#cb4-389" aria-hidden="true" tabindex="-1"></a>systematic design, such as an evenly spaced set of weights for which you </span>
+<span id="cb4-390"><a href="#cb4-390" aria-hidden="true" tabindex="-1"></a>will measure the deflection</span>
+<span id="cb4-391"><a href="#cb4-391" aria-hidden="true" tabindex="-1"></a>of a spring, then it makes sense to think of $\xv_n$ as fixed.  However,</span>
+<span id="cb4-392"><a href="#cb4-392" aria-hidden="true" tabindex="-1"></a>if your data are samples from some larger population, such as data about</span>
+<span id="cb4-393"><a href="#cb4-393" aria-hidden="true" tabindex="-1"></a>mothers' smoking habits and baby birth weight, then it might make sense</span>
+<span id="cb4-394"><a href="#cb4-394" aria-hidden="true" tabindex="-1"></a>to think of $\xv_n$ as random along with $\y_n$.</span>
+<span id="cb4-395"><a href="#cb4-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-396"><a href="#cb4-396" aria-hidden="true" tabindex="-1"></a>However, mathematically speaking, </span>
+<span id="cb4-397"><a href="#cb4-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-398"><a href="#cb4-398" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It is usually easier to think of $\xv_n$ as fixed, and </span>
+<span id="cb4-399"><a href="#cb4-399" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It would rarely affect our substantive conclusions, since the variance of</span>
+<span id="cb4-400"><a href="#cb4-400" aria-hidden="true" tabindex="-1"></a>  the residuals dominates the variability of the regressors.  (This</span>
+<span id="cb4-401"><a href="#cb4-401" aria-hidden="true" tabindex="-1"></a>  may not be obvious, even later in the course, but I assure you it is true.)</span>
+<span id="cb4-402"><a href="#cb4-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-403"><a href="#cb4-403" aria-hidden="true" tabindex="-1"></a>For these reasons, I will make the following assumption for simplicity:</span>
+<span id="cb4-404"><a href="#cb4-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-405"><a href="#cb4-405" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Fixed regressor assumption"}</span>
+<span id="cb4-406"><a href="#cb4-406" aria-hidden="true" tabindex="-1"></a>Under the linear expectation, homoskedastic, and Gaussian assumptions,</span>
+<span id="cb4-407"><a href="#cb4-407" aria-hidden="true" tabindex="-1"></a>I will assume that the regressors $\X$ are fixed unless I say explicitly</span>
+<span id="cb4-408"><a href="#cb4-408" aria-hidden="true" tabindex="-1"></a>otherwise.  In that case, by conditioning, I simply mean "for that value</span>
+<span id="cb4-409"><a href="#cb4-409" aria-hidden="true" tabindex="-1"></a>of $\xv_n$," as in $\expect{\y_n \vert \xv_n} = \betav^\trans \xv_n$.</span>
+<span id="cb4-410"><a href="#cb4-410" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb4-411"><a href="#cb4-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-412"><a href="#cb4-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-413"><a href="#cb4-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-414"><a href="#cb4-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-415"><a href="#cb4-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-416"><a href="#cb4-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-417"><a href="#cb4-417" aria-hidden="true" tabindex="-1"></a><span class="fu"># Assumptions in the Kleiber example</span></span>
+<span id="cb4-418"><a href="#cb4-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-419"><a href="#cb4-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-422"><a href="#cb4-422" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-423"><a href="#cb4-423" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb4-424"><a href="#cb4-424" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb4-425"><a href="#cb4-425" aria-hidden="true" tabindex="-1"></a>kleiber_df <span class="ot">&lt;-</span> </span>
+<span id="cb4-426"><a href="#cb4-426" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read.csv</span>(<span class="fu">file.path</span>(root_dir, <span class="st">"datasets/kleiber/kleiber.csv"</span>))</span>
+<span id="cb4-427"><a href="#cb4-427" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-428"><a href="#cb4-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-429"><a href="#cb4-429" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-432"><a href="#cb4-432" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb4-433"><a href="#cb4-433" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb4-434"><a href="#cb4-434" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(kleiber_df) <span class="sc">+</span></span>
+<span id="cb4-435"><a href="#cb4-435" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Weight_kg, <span class="at">y=</span>Metabol_kcal_per_day, <span class="at">color=</span>Animal), <span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb4-436"><a href="#cb4-436" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span> <span class="fu">scale_y_log10</span>()</span>
+<span id="cb4-437"><a href="#cb4-437" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-438"><a href="#cb4-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-439"><a href="#cb4-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-440"><a href="#cb4-440" aria-hidden="true" tabindex="-1"></a>Recall the Kleiber example, in which observations were animals,</span>
+<span id="cb4-441"><a href="#cb4-441" aria-hidden="true" tabindex="-1"></a>weights, and metabolism rates.  Which of these assumptions make sense?  </span>
+<span id="cb4-442"><a href="#cb4-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-443"><a href="#cb4-443" aria-hidden="true" tabindex="-1"></a>Arguably, none of them:</span>
+<span id="cb4-444"><a href="#cb4-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-445"><a href="#cb4-445" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is not a "random sample from all animals," even if you could</span>
+<span id="cb4-446"><a href="#cb4-446" aria-hidden="true" tabindex="-1"></a>  make that sentence make sense</span>
+<span id="cb4-447"><a href="#cb4-447" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>There are multiple observations for the same type of animal</span>
+<span id="cb4-448"><a href="#cb4-448" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>There is no reason to believe a linear model is well specified</span>
+<span id="cb4-449"><a href="#cb4-449" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>There is no reason to believe the errors are normal or even homoskedastic</span>
+<span id="cb4-450"><a href="#cb4-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-451"><a href="#cb4-451" aria-hidden="true" tabindex="-1"></a>The best you might hope for is to argue that the IID assumption characterizes</span>
+<span id="cb4-452"><a href="#cb4-452" aria-hidden="true" tabindex="-1"></a>something like "how much would my conclusion have changed if I had collected</span>
+<span id="cb4-453"><a href="#cb4-453" aria-hidden="true" tabindex="-1"></a>the same dataset again but with different randomly chosen animals of the same</span>
+<span id="cb4-454"><a href="#cb4-454" aria-hidden="true" tabindex="-1"></a>species?"  But this is not very much like the real question, which is</span>
+<span id="cb4-455"><a href="#cb4-455" aria-hidden="true" tabindex="-1"></a>"how much might the slope of the regression line differ from 2/3 due only to the</span>
+<span id="cb4-456"><a href="#cb4-456" aria-hidden="true" tabindex="-1"></a>ideosyncracies of this particular dataset?"</span>
+<span id="cb4-457"><a href="#cb4-457" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-458"><a href="#cb4-458" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-459"><a href="#cb4-459" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- </span></span>
+<span id="cb4-460"><a href="#cb4-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-461"><a href="#cb4-461" aria-hidden="true" tabindex="-1"></a><span class="co">Note to future instructors --- this needs more time and more detail to</span></span>
+<span id="cb4-462"><a href="#cb4-462" aria-hidden="true" tabindex="-1"></a><span class="co">be useful to the students.</span></span>
+<span id="cb4-463"><a href="#cb4-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-464"><a href="#cb4-464" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
