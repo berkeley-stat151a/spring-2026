@@ -154,6 +154,14 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 <span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
+    <a class="nav-link" href="../labs/index.html"> 
+<span class="menu-text">Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../datasets/data.html"> 
+<span class="menu-text">Datasets</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../course_policies.html"> 
 <span class="menu-text">Course Policies</span></a>
   </li>  
@@ -207,24 +215,105 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 </header>
 
 
-<div id="4d8d56c6-20f3-4456-b8fc-e9abde8282f9" class="cell" data-tags="[]" data-execution_count="1">
+<div id="4d8d56c6-20f3-4456-b8fc-e9abde8282f9" class="cell" data-tags="[]" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">repr.plot.width=</span><span class="dv">15</span>, <span class="at">repr.plot.height=</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="32adc84f-c398-4b30-a9e5-2c69a07af647" class="cell" data-tags="[]" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"final_exams_spring24.csv"</span>)<span class="sc">$</span>Total</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>n_obs <span class="ot">&lt;-</span> <span class="fu">length</span>(scores)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(scores)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(scores) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="32adc84f-c398-4b30-a9e5-2c69a07af647" class="cell" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>grades_df <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.csv</span>(<span class="st">"../datasets/grades/grades.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(class <span class="sc">==</span> <span class="st">"151A"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(grades_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="grades_graph_files/figure-html/cell-3-output-1.png" width="900" height="480" class="figure-img"></p>
-</figure>
-</div>
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true">
+<caption>A data.frame: 6 × 7</caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" scope="col">grade</th>
+<th data-quarto-table-cell-role="th" scope="col">final</th>
+<th data-quarto-table-cell-role="th" scope="col">hw</th>
+<th data-quarto-table-cell-role="th" scope="col">quizzes</th>
+<th data-quarto-table-cell-role="th" scope="col">class</th>
+<th data-quarto-table-cell-role="th" scope="col">semester</th>
+<th data-quarto-table-cell-role="th" scope="col">time</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;dbl&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;chr&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;chr&gt;</th>
+<th data-quarto-table-cell-role="th" scope="col">&lt;chr&gt;</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th" scope="row">1</td>
+<td>0.9977708</td>
+<td>1.0000000</td>
+<td>0.9944444</td>
+<td>1.0000000</td>
+<td>151A</td>
+<td>Fall 2024</td>
+<td>Fall 2024</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th" scope="row">2</td>
+<td>0.9941875</td>
+<td>1.0000000</td>
+<td>0.9975000</td>
+<td>0.9875000</td>
+<td>151A</td>
+<td>Fall 2024</td>
+<td>Fall 2024</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th" scope="row">3</td>
+<td>0.9875083</td>
+<td>1.0000000</td>
+<td>0.9961111</td>
+<td>1.0000000</td>
+<td>151A</td>
+<td>Fall 2024</td>
+<td>Fall 2024</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th" scope="row">4</td>
+<td>0.9856245</td>
+<td>1.0000000</td>
+<td>0.9983333</td>
+<td>0.9583333</td>
+<td>151A</td>
+<td>Fall 2024</td>
+<td>Fall 2024</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th" scope="row">5</td>
+<td>0.9841245</td>
+<td>1.0000000</td>
+<td>0.9975000</td>
+<td>0.9541667</td>
+<td>151A</td>
+<td>Fall 2024</td>
+<td>Fall 2024</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th" scope="row">6</td>
+<td>0.9832380</td>
+<td>0.9895833</td>
+<td>1.0000000</td>
+<td>1.0000000</td>
+<td>151A</td>
+<td>Fall 2024</td>
+<td>Fall 2024</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="4ab1d255-95e6-4626-815a-e92d280a2e94" class="cell" data-tags="[]" data-execution_count="3">
