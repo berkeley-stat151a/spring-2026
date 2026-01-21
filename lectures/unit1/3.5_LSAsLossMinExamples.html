@@ -262,15 +262,14 @@ window.Quarto = {
 </header>
 
 
-<p><span class="math inline">\(\textcolor{white}{\LaTeX}\)</span></p>
 <section id="goals" class="level1">
 <h1>Goals</h1>
 <ul>
 <li>Review some familiar examples of linear regression in matrix form, seeing examples where
 <ul>
-<li>One–hot encodings give orthogonal column vectors of <span class="math inline">\(\X\)</span></li>
+<li>One–hot encodings give orthogonal column vectors of <span class="math inline">\(\boldsymbol{X}\)</span></li>
 <li>…and orthonormal column vectors are easy regression problems!</li>
-<li>Mean zero, uncorrelated regressors give rise to orthonormal <span class="math inline">\(\X\)</span> columns asymptotically (and so to easy regression problems)</li>
+<li>Mean zero, uncorrelated regressors give rise to orthonormal <span class="math inline">\(\boldsymbol{X}\)</span> columns asymptotically (and so to easy regression problems)</li>
 <li>Linear transformations of regressors give equivalent regressions.</li>
 <li>Redundant regressors give rise to OLS fits which are not unique</li>
 </ul></li>
@@ -279,17 +278,17 @@ window.Quarto = {
 <section id="some-examples" class="level1">
 <h1>Some examples</h1>
 <p>The formulas given in <a href="#eq-ols-esteq" class="quarto-xref">Equation&nbsp;1</a> and <a href="#eq-ols-betahat" class="quarto-xref">Equation&nbsp;2</a> are enough to calculate every least squares estimator we’ll encounter. But we’d like to have intuition for the meaning of the formulas, and for that it will be useful to start by applying the formulas in some familiar settings.</p>
-<p>Recall that, any fit of the form <span class="math inline">\(\X \betav\)</span> that minimizes the sum of squared errors must take the form <span class="math inline">\(\X \betavhat\)</span> where <span class="math inline">\(\betavhat\)</span> satisfies</p>
+<p>Recall that, any fit of the form <span class="math inline">\(\boldsymbol{X}\boldsymbol{\beta}\)</span> that minimizes the sum of squared errors must take the form <span class="math inline">\(\boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span> where <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> satisfies</p>
 <p><span id="eq-ols-esteq"><span class="math display">\[
 \begin{align*}
-\X^\trans \X \betavhat ={}&amp; \X^\trans \Y.
+\boldsymbol{X}^\intercal\boldsymbol{X}\hat{\boldsymbol{\beta}}={}&amp; \boldsymbol{X}^\intercal\boldsymbol{Y}.
 \end{align*}
 \tag{1}\]</span></span></p>
-<p>However, there may in general be many <span class="math inline">\(\betavhat\)</span> that satisfy the preceding equation. But if <span class="math inline">\(\X^\trans \X\)</span> is invertible, then <span id="eq-ols-betahat"><span class="math display">\[
-\betavhat = (\X^\trans \X)^{-1} \X^\trans \Y,
+<p>However, there may in general be many <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> that satisfy the preceding equation. But if <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible, then <span id="eq-ols-betahat"><span class="math display">\[
+\hat{\boldsymbol{\beta}}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y},
 \tag{2}\]</span></span></p>
-<p>and there is only one <span class="math inline">\(\betavhat\)</span> that minimizes the sum of squared error.</p>
-<p>Let’s take a careful look at what <span class="math inline">\(\X^\trans \X\)</span> is measuring, what it means for it to be invertible, as well as what it means when it is <em>not</em> invertible.</p>
+<p>and there is only one <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> that minimizes the sum of squared error.</p>
+<p>Let’s take a careful look at what <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is measuring, what it means for it to be invertible, as well as what it means when it is <em>not</em> invertible.</p>
 <section id="working-examples" class="level2">
 <h2 class="anchored" data-anchor-id="working-examples">Working examples</h2>
 <p>The following examples will be used to illustrate the main ideas.</p>
@@ -305,39 +304,39 @@ Notation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>I will use <span class="math inline">\(\onev\)</span> to denote a vector full of ones. Usually it will be an <span class="math inline">\(N\)</span>–vector, but sometimes its dimension will just be implicit. Similarly, <span class="math inline">\(\zerov\)</span> is a vector of zeros.</p>
+<p>I will use <span class="math inline">\(\boldsymbol{1}\)</span> to denote a vector full of ones. Usually it will be an <span class="math inline">\(N\)</span>–vector, but sometimes its dimension will just be implicit. Similarly, <span class="math inline">\(\boldsymbol{0}\)</span> is a vector of zeros.</p>
 </div>
 </div>
-<p>We showed earlier that the sample mean is a special case of the regression <span class="math inline">\(\y_n \sim 1 \cdot \beta\)</span>. This can be expressed in matrix notation by taking <span class="math inline">\(\X = \onev\)</span> as a <span class="math inline">\(N\times 1\)</span> vector. We then have</p>
+<p>We showed earlier that the sample mean is a special case of the regression <span class="math inline">\(y_n \sim 1 \cdot \beta\)</span>. This can be expressed in matrix notation by taking <span class="math inline">\(\boldsymbol{X}= \boldsymbol{1}\)</span> as a <span class="math inline">\(N\times 1\)</span> vector. We then have</p>
 <p><span class="math display">\[
-\X^\trans \X = \onev^\trans \onev = \sumn 1 \cdot 1 = N,
+\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{1}^\intercal\boldsymbol{1}= \sum_{n=1}^N1 \cdot 1 = N,
 \]</span></p>
-<p>so <span class="math inline">\(\X^\trans \X\)</span> is invertible as long as <span class="math inline">\(N &gt; 0\)</span> (i.e., if you have at least one datapoint), with <span class="math inline">\((\X^\trans \X)^{-1} = 1/N\)</span>. We also have</p>
+<p>so <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible as long as <span class="math inline">\(N &gt; 0\)</span> (i.e., if you have at least one datapoint), with <span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} = 1/N\)</span>. We also have</p>
 <p><span class="math display">\[
-\X^\trans \Y = \onev^\trans \Y = \sumn 1 \cdot \y_n = N \ybar,
+\boldsymbol{X}^\intercal\boldsymbol{Y}= \boldsymbol{1}^\intercal\boldsymbol{Y}= \sum_{n=1}^N1 \cdot y_n = N \bar{y},
 \]</span></p>
 <p>and so</p>
 <p><span class="math display">\[
-\betahat = (\X^\trans \X)^{-1}  \X^\trans \Y = (\onev^\trans \onev)^{-1} \onev^\trans \Y = \frac{N \ybar}{N} = \ybar,
+\hat{\beta}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}  \boldsymbol{X}^\intercal\boldsymbol{Y}= (\boldsymbol{1}^\intercal\boldsymbol{1})^{-1} \boldsymbol{1}^\intercal\boldsymbol{Y}= \frac{N \bar{y}}{N} = \bar{y},
 \]</span></p>
 <p>as expected.</p>
 </section>
 <section id="a-single-possibly-continuous-regressor" class="level3">
 <h3 class="anchored" data-anchor-id="a-single-possibly-continuous-regressor">A single (possibly continuous) regressor</h3>
-<p>Suppose that we regress <span class="math inline">\(\y_n \sim \x_n\)</span> where <span class="math inline">\(\x_n\)</span> is a scalar. Let’s suppose that <span class="math inline">\(\expect{\x_n} = 0\)</span> and <span class="math inline">\(\var{\x_n} = \sigma^2 &gt; 0\)</span>. We have</p>
+<p>Suppose that we regress <span class="math inline">\(y_n \sim x_n\)</span> where <span class="math inline">\(x_n\)</span> is a scalar. Let’s suppose that <span class="math inline">\(\mathbb{E}\left[x_n\right] = 0\)</span> and <span class="math inline">\(\mathrm{Var}\left(x_n\right) = \sigma^2 &gt; 0\)</span>. We have</p>
 <p><span class="math display">\[
-\X = \begin{pmatrix}
-\x_1 \\
-\x_2 \\
+\boldsymbol{X}= \begin{pmatrix}
+x_1 \\
+x_2 \\
 \vdots\\
-\x_N
+x_N
 \end{pmatrix}
 \]</span></p>
 <p>so</p>
 <p><span class="math display">\[
-\X^\trans \X = \sumn \x_n^2.
+\boldsymbol{X}^\intercal\boldsymbol{X}= \sum_{n=1}^Nx_n^2.
 \]</span></p>
-<p>Depending on the distribution of <span class="math inline">\(\x_n\)</span>, it may be possible for <span class="math inline">\(\X^\trans \X\)</span> to be non–invertible!</p>
+<p>Depending on the distribution of <span class="math inline">\(x_n\)</span>, it may be possible for <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> to be non–invertible!</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -348,33 +347,33 @@ Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Produce a distribution for <span class="math inline">\(\x_n\)</span> where <span class="math inline">\(\X^\trans \X\)</span> is non–invertible with positive probability for any <span class="math inline">\(N\)</span>.</p>
+<p>Produce a distribution for <span class="math inline">\(x_n\)</span> where <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is non–invertible with positive probability for any <span class="math inline">\(N\)</span>.</p>
 </div>
 </div>
-<p>However, as <span class="math inline">\(N \rightarrow \infty\)</span>, <span class="math inline">\(\frac{1}{N} \X^\trans \X \rightarrow \sigma^2\)</span> by the LLN, and since <span class="math inline">\(\sigma^2 &gt; 0\)</span>, <span class="math inline">\(\frac{1}{N} \X^\trans \X\)</span> will be invertible with probability approaching one as <span class="math inline">\(N\)</span> goes to infinity.</p>
+<p>However, as <span class="math inline">\(N \rightarrow \infty\)</span>, <span class="math inline">\(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\rightarrow \sigma^2\)</span> by the LLN, and since <span class="math inline">\(\sigma^2 &gt; 0\)</span>, <span class="math inline">\(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\)</span> will be invertible with probability approaching one as <span class="math inline">\(N\)</span> goes to infinity.</p>
 </section>
 <section id="onehot-encodings" class="level3">
 <h3 class="anchored" data-anchor-id="onehot-encodings">One–hot encodings</h3>
 <p>We discussed one-hot encodings in the context of the Ames housing data. Suppose we have a columns <span class="math inline">\(k_n \in \{ g, e\}\)</span> indicating whether a kitchen is “good” or “excellent”. A one–hot encoding of this categorical variable is given by</p>
 <p><span class="math display">\[
 \begin{aligned}
-\x_{ng} =
+x_{ng} =
 \begin{cases}
 1 &amp; \textrm{ if }k_n = g \\
 0 &amp; \textrm{ if }k_n \ne g \\
 \end{cases}
 &amp;&amp;
-\x_{ne} =
+x_{ne} =
 \begin{cases}
 1 &amp; \textrm{ if }k_n = e \\
 0 &amp; \textrm{ if }k_n \ne e \\
 \end{cases}
 \end{aligned}.
 \]</span></p>
-<p>We can then regress <span class="math inline">\(\y_n \sim \beta_g \x_{ng} + \beta_e \x_{ne} = \x_n^\trans \betav\)</span>. The corresponding <span class="math inline">\(\X\)</span> matrix might look like</p>
+<p>We can then regress <span class="math inline">\(y_n \sim \beta_g x_{ng} + \beta_e x_{ne} = x_n^\intercal\boldsymbol{\beta}\)</span>. The corresponding <span class="math inline">\(\boldsymbol{X}\)</span> matrix might look like</p>
 <p><span class="math display">\[
 \begin{aligned}
-\mybold{k} =
+\boldsymbol{k} =
 \begin{pmatrix}
 g \\
 e \\
@@ -383,7 +382,7 @@ g \\
 \vdots
 \end{pmatrix}
 &amp;&amp;
-\X = (\xv_g \quad \xv_e) =
+\boldsymbol{X}= (\boldsymbol{x}_g \quad \boldsymbol{x}_e) =
 \begin{pmatrix}
 1 &amp; 0 \\
 0 &amp; 1 \\
@@ -393,91 +392,91 @@ g \\
 \end{pmatrix}
 \end{aligned}
 \]</span></p>
-<p>Note that <span class="math inline">\(\xv_g^\trans \xv_g\)</span> is just the number of entries with <span class="math inline">\(k_n = g\)</span>, and <span class="math inline">\(\xv_g^\trans \xv_e = 0\)</span> because a kitchen is either good or excellent but never both.</p>
+<p>Note that <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{x}_g\)</span> is just the number of entries with <span class="math inline">\(k_n = g\)</span>, and <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{x}_e = 0\)</span> because a kitchen is either good or excellent but never both.</p>
 <p>We then have</p>
 <p><span class="math display">\[
-\X^\trans \X =
+\boldsymbol{X}^\intercal\boldsymbol{X}=
 \begin{pmatrix}
-\xv_g^\trans \xv_g  &amp; \xv_g^\trans \xv_e \\
-\xv_e^\trans \xv_g  &amp; \xv_e^\trans \xv_e \\
+\boldsymbol{x}_g^\intercal\boldsymbol{x}_g  &amp; \boldsymbol{x}_g^\intercal\boldsymbol{x}_e \\
+\boldsymbol{x}_e^\intercal\boldsymbol{x}_g  &amp; \boldsymbol{x}_e^\intercal\boldsymbol{x}_e \\
 \end{pmatrix} =
 \begin{pmatrix}
 N_g  &amp; 0 \\
 0  &amp; N_e \\
 \end{pmatrix}.
 \]</span></p>
-<p>Then <span class="math inline">\(\X^\trans \X\)</span> is invertible as long as <span class="math inline">\(N_g &gt; 0\)</span> and <span class="math inline">\(N_e &gt; 0\)</span>, that is, as long as we have at least one observation of each kitchen type, and</p>
+<p>Then <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible as long as <span class="math inline">\(N_g &gt; 0\)</span> and <span class="math inline">\(N_e &gt; 0\)</span>, that is, as long as we have at least one observation of each kitchen type, and</p>
 <p><span class="math display">\[
-\left(\X^\trans \X\right)^{-1} =
+\left(\boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} =
 \begin{pmatrix}
 \frac{1}{N_g}  &amp; 0 \\
 0  &amp; \frac{1}{N_e} \\
 \end{pmatrix}.
 \]</span></p>
-<p>Similarly, <span class="math inline">\(\xv_g^\trans \Y\)</span> is just the sum of entries of <span class="math inline">\(\Y\)</span> where <span class="math inline">\(k_n = g\)</span>, with the analogous conclusion for <span class="math inline">\(\xv_e\)</span>. From this we recover the result that</p>
+<p>Similarly, <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{Y}\)</span> is just the sum of entries of <span class="math inline">\(\boldsymbol{Y}\)</span> where <span class="math inline">\(k_n = g\)</span>, with the analogous conclusion for <span class="math inline">\(\boldsymbol{x}_e\)</span>. From this we recover the result that</p>
 <p><span class="math display">\[
-\betavhat = (\X^\trans \X)^{-1} \X^\trans \Y
+\hat{\boldsymbol{\beta}}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}
 =
 \begin{pmatrix}
 \frac{1}{N_g}  &amp; 0 \\
 0  &amp; \frac{1}{N_e} \\
 \end{pmatrix}
 \begin{pmatrix}
-\sum_{n: k_n=g} \y_n \\
-\sum_{n: k_n=e} \y_n
+\sum_{n: k_n=g} y_n \\
+\sum_{n: k_n=e} y_n
 \end{pmatrix}
 =
 \begin{pmatrix}
-\frac{1}{N_g} \sum_{n: k_n=g} \y_n \\
-\frac{1}{N_e} \sum_{n: k_n=e} \y_n
+\frac{1}{N_g} \sum_{n: k_n=g} y_n \\
+\frac{1}{N_e} \sum_{n: k_n=e} y_n
 \end{pmatrix}.
 \]</span></p>
-<p>If we let <span class="math inline">\(\ybar_e\)</span> and <span class="math inline">\(\ybar_g\)</span> denote the sample means within each group, we have shows that <span class="math inline">\(\betahat_g = \ybar_g\)</span> and <span class="math inline">\(\betahat_e = \ybar_e\)</span>, as we proved before without using the matrix formulation.</p>
+<p>If we let <span class="math inline">\(\bar{y}_e\)</span> and <span class="math inline">\(\bar{y}_g\)</span> denote the sample means within each group, we have shows that <span class="math inline">\(\hat{\beta}_g = \bar{y}_g\)</span> and <span class="math inline">\(\hat{\beta}_e = \bar{y}_e\)</span>, as we proved before without using the matrix formulation.</p>
 </section>
 </section>
 <section id="orthogonal-regressions-are-just-a-bunch-of-univariate-regressions" class="level2">
 <h2 class="anchored" data-anchor-id="orthogonal-regressions-are-just-a-bunch-of-univariate-regressions">Orthogonal regressions are just a bunch of univariate regressions</h2>
 <p>Suppose we have regressors such that the columns of regressors are orthonormal. This may seem strange at first, since we usually specify the <em>rows</em> of the regressors, not the columns. But in fact we have seen a near–example with one–hot encodings, which are defined row–wise, but which produce orthogonal column vectors when stacked in a matrix. If we divide a one–hot encoding by the square root of the number of ones in the whole dataset, we produce an normal column vector.</p>
-<p>Let’s call the design matrix with orthonormal columns <span class="math inline">\(\U\)</span>. Then <span class="math inline">\(\U^\trans \U = \id\)</span>, the identity matrix, and so, in the regression <span class="math inline">\(\Y \sim \U \betav\)</span>,</p>
+<p>Let’s call the design matrix with orthonormal columns <span class="math inline">\(\boldsymbol{U}\)</span>. Then <span class="math inline">\(\boldsymbol{U}^\intercal\boldsymbol{U}= \boldsymbol{I}\)</span>, the identity matrix, and so, in the regression <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{U}\boldsymbol{\beta}\)</span>,</p>
 <p><span class="math display">\[
-\betavhat = (\U^\trans \U)^{-1} \U^\trans \Y = \id \U^\trans \Y =
+\hat{\boldsymbol{\beta}}= (\boldsymbol{U}^\intercal\boldsymbol{U})^{-1} \boldsymbol{U}^\intercal\boldsymbol{Y}= \boldsymbol{I}\boldsymbol{U}^\intercal\boldsymbol{Y}=
 \begin{pmatrix}
-\U_{\cdot 1}^\trans \Y \\
+\boldsymbol{U}_{\cdot 1}^\intercal\boldsymbol{Y}\\
 \vdots \\
-\U_{\cdot P}^\trans \Y \\
+\boldsymbol{U}_{\cdot P}^\intercal\boldsymbol{Y}\\
 \end{pmatrix}.
 \]</span></p>
-<p>This regression is particularly simple — each component of <span class="math inline">\(\betavhat\)</span> depends only on its corresponding column of <span class="math inline">\(\U\)</span>, not on any of the other columns, and the multilinear regression has become <span class="math inline">\(P\)</span> separate univariate regression problems.</p>
-<p>This is of course the same answer we would have gotten if we had tried to write <span class="math inline">\(\Y\)</span> in the basis of the column vectors of <span class="math inline">\(\U\)</span>:</p>
+<p>This regression is particularly simple — each component of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> depends only on its corresponding column of <span class="math inline">\(\boldsymbol{U}\)</span>, not on any of the other columns, and the multilinear regression has become <span class="math inline">\(P\)</span> separate univariate regression problems.</p>
+<p>This is of course the same answer we would have gotten if we had tried to write <span class="math inline">\(\boldsymbol{Y}\)</span> in the basis of the column vectors of <span class="math inline">\(\boldsymbol{U}\)</span>:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\Y ={}&amp; \betahat_1 \U_{\cdot 1} + \ldots + \betahat_P \U_{\cdot P} = \U \betavhat \Rightarrow \\
-\U^\trans \Y ={}&amp; \U^\trans \U \betavhat = \betavhat.
+\boldsymbol{Y}={}&amp; \hat{\beta}_1 \boldsymbol{U}_{\cdot 1} + \ldots + \hat{\beta}_P \boldsymbol{U}_{\cdot P} = \boldsymbol{U}\hat{\boldsymbol{\beta}}\Rightarrow \\
+\boldsymbol{U}^\intercal\boldsymbol{Y}={}&amp; \boldsymbol{U}^\intercal\boldsymbol{U}\hat{\boldsymbol{\beta}}= \hat{\boldsymbol{\beta}}.
 \end{aligned}
 \]</span></p>
 <section id="uncorrelated-meanzero-regressors-and-orthogonality" class="level3">
 <h3 class="anchored" data-anchor-id="uncorrelated-meanzero-regressors-and-orthogonality">Uncorrelated, mean–zero regressors and orthogonality</h3>
-<p>Suppose that we have regressors <span class="math inline">\(\x_{np}\)</span> that are all independent of one another, with <span class="math inline">\(\var{\x_{np}} = \sigma_p^2 &lt; \infty\)</span> and <span class="math inline">\(\expect{\x_{np}} = 0\)</span>. If we regress <span class="math inline">\(\y_n \sim \betav^\trans \xv_n\)</span>, the corresponding <span class="math inline">\(\X^\trans \X\)</span> matrix is given by</p>
+<p>Suppose that we have regressors <span class="math inline">\(x_{np}\)</span> that are all independent of one another, with <span class="math inline">\(\mathrm{Var}\left(x_{np}\right) = \sigma_p^2 &lt; \infty\)</span> and <span class="math inline">\(\mathbb{E}\left[x_{np}\right] = 0\)</span>. If we regress <span class="math inline">\(y_n \sim \boldsymbol{\beta}^\intercal\boldsymbol{x}_n\)</span>, the corresponding <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> matrix is given by</p>
 <p><span class="math display">\[
-\X^\trans \X =
+\boldsymbol{X}^\intercal\boldsymbol{X}=
 \begin{pmatrix}
-\sumn \x_{n1}^2 &amp; \sumn \x_{n1} \x_{n2} &amp; \ldots \\
-\sumn \x_{n1} \x_{n2} &amp; \sumn \x_{n2}^2 &amp; \ldots \\
-\sumn \x_{n1} \x_{np} &amp; \ldots &amp; \sumn \x_{np}^2 \\
+\sum_{n=1}^Nx_{n1}^2 &amp; \sum_{n=1}^Nx_{n1} x_{n2} &amp; \ldots \\
+\sum_{n=1}^Nx_{n1} x_{n2} &amp; \sum_{n=1}^Nx_{n2}^2 &amp; \ldots \\
+\sum_{n=1}^Nx_{n1} x_{np} &amp; \ldots &amp; \sum_{n=1}^Nx_{np}^2 \\
 \end{pmatrix}.
 \]</span></p>
-<p>In general, the columns of <span class="math inline">\(\X\)</span> are not orthogonal. For example, <span class="math inline">\(\sumn \x_{n1} \x_{n2} \ne 0\)</span>, typically. But, but the LLN and indepedence,</p>
-<p><span class="math display">\[\meann \x_{n1} \x_{n2} \rightarrow \expect{\x_{n1} \x_{n2}} = \expect{\x_{n1}} \expect{\x_{n2}} = 0\]</span>,</p>
+<p>In general, the columns of <span class="math inline">\(\boldsymbol{X}\)</span> are not orthogonal. For example, <span class="math inline">\(\sum_{n=1}^Nx_{n1} x_{n2} \ne 0\)</span>, typically. But, but the LLN and indepedence,</p>
+<p><span class="math display">\[\frac{1}{N} \sum_{n=1}^Nx_{n1} x_{n2} \rightarrow \mathbb{E}\left[x_{n1} x_{n2}\right] = \mathbb{E}\left[x_{n1}\right] \mathbb{E}\left[x_{n2}\right] = 0\]</span>,</p>
 <p>with analogous results for other indices. So, as <span class="math inline">\(N\rightarrow \infty\)</span>,</p>
 <p><span class="math display">\[
-\frac{1}{N} \X^\trans \X =
+\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}=
 \begin{pmatrix}
 \sigma_1^2 &amp; 0 &amp; \ldots \\
 0 &amp; \sigma_2^2 &amp; \ldots \\
 0 &amp; \ldots &amp; \sigma_p^2 \\
 \end{pmatrix},
 \]</span></p>
-<p>a diagonal matrix. In this sense, <span class="math inline">\(\frac{1}{N} \X\)</span> has <em>asymptotically orthogonal columns</em>.</p>
+<p>a diagonal matrix. In this sense, <span class="math inline">\(\frac{1}{N} \boldsymbol{X}\)</span> has <em>asymptotically orthogonal columns</em>.</p>
 <p>In this sense, it is the dependence between different regressors within a single row that gives complexity to multilinear regression.</p>
 </section>
 </section>
@@ -488,20 +487,20 @@ N_g  &amp; 0 \\
 <p>Recall in the Ames housing data, we ran the following two regressions:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\y_n \sim{}&amp; \beta_e \x_{ne} + \beta_g \x_{ng}  \\
-\y_n \sim{}&amp; \gamma_0  + \gamma_g \x_{ng} + \res_n = \z_n^\trans \gammav,
+y_n \sim{}&amp; \beta_e x_{ne} + \beta_g x_{ng}  \\
+y_n \sim{}&amp; \gamma_0  + \gamma_g x_{ng} + \varepsilon_n = z_n^\intercal\boldsymbol{\gamma},
 \end{aligned}
-\]</span> where I take <span class="math inline">\(\gammav = (\gamma_0, \gamma_g)^\trans\)</span> and <span class="math inline">\(\z_n = (1, \x_{ng})^\trans\)</span>.</p>
+\]</span> where I take <span class="math inline">\(\boldsymbol{\gamma}= (\gamma_0, \gamma_g)^\intercal\)</span> and <span class="math inline">\(z_n = (1, x_{ng})^\intercal\)</span>.</p>
 <p>We found using <code>R</code> that the best fits were given by</p>
 <p><span class="math display">\[
 \begin{aligned}
-\betahat_e =&amp; \ybar_e  &amp; \betahat_g =&amp; \ybar_g \\
-\gammahat_0 =&amp; \ybar_e  &amp; \gammahat_g =&amp; \ybar_g - \ybar_e \\
+\hat{\beta}_e =&amp; \bar{y}_e  &amp; \hat{\beta}_g =&amp; \bar{y}_g \\
+\hat{\gamma}_0 =&amp; \bar{y}_e  &amp; \hat{\gamma}_g =&amp; \bar{y}_g - \bar{y}_e \\
 \end{aligned}
 \]</span></p>
-<p>We can compute the latter by constructing the <span class="math inline">\(\Z\)</span> matrix whose rows are <span class="math inline">\(\z_n^\trans\)</span>. (We use <span class="math inline">\(\Z\)</span> to differentiate the <span class="math inline">\(\X\)</span> matrix from the previous example.) Using similar reasoning to the one–hot encoding, we see that</p>
+<p>We can compute the latter by constructing the <span class="math inline">\(\boldsymbol{Z}\)</span> matrix whose rows are <span class="math inline">\(z_n^\intercal\)</span>. (We use <span class="math inline">\(\boldsymbol{Z}\)</span> to differentiate the <span class="math inline">\(\boldsymbol{X}\)</span> matrix from the previous example.) Using similar reasoning to the one–hot encoding, we see that</p>
 <p><span class="math display">\[
-\Z^\trans \Z =
+\boldsymbol{Z}^\intercal\boldsymbol{Z}=
 \begin{pmatrix}
 N &amp; N_g \\
 N_g &amp; N_g
@@ -509,36 +508,36 @@ N_g &amp; N_g
 \]</span></p>
 <p>This is invertible as long as <span class="math inline">\(N_g \ne N\)</span>, i.e., as long as there is at least one <span class="math inline">\(k_n = e\)</span>. We have</p>
 <p><span class="math display">\[
-(\Z^\trans \Z)^{-1} =
+(\boldsymbol{Z}^\intercal\boldsymbol{Z})^{-1} =
 \frac{1}{N_g (N - N_g)}
 \begin{pmatrix}
 N_g &amp; -N_g \\
 -N_g &amp; N
 \end{pmatrix}
 \quad\textrm{and}\quad
-\Z^\trans \Y =
+\boldsymbol{Z}^\intercal\boldsymbol{Y}=
 \begin{pmatrix}
-\sumn \y_n \\
-\sum_{n: k_n=g} \y_n \\
+\sum_{n=1}^Ny_n \\
+\sum_{n: k_n=g} y_n \\
 \end{pmatrix}
 \]</span></p>
-<p>It is possible (but a little tedious) to prove <span class="math inline">\(\gammahat_0 = \ybar_e\)</span> and <span class="math inline">\(\gammahat_g = \ybar_g - \ybar_e\)</span> using these formulas. But an easier way to see it is as follows.</p>
-<p>Note that <span class="math inline">\(\x_{ne} + \x_{ng} = 1\)</span>. That means we can always re-write the regression with a constant as</p>
+<p>It is possible (but a little tedious) to prove <span class="math inline">\(\hat{\gamma}_0 = \bar{y}_e\)</span> and <span class="math inline">\(\hat{\gamma}_g = \bar{y}_g - \bar{y}_e\)</span> using these formulas. But an easier way to see it is as follows.</p>
+<p>Note that <span class="math inline">\(x_{ne} + x_{ng} = 1\)</span>. That means we can always re-write the regression with a constant as</p>
 <p><span class="math display">\[
-\y_n \sim \gamma_0 + \gamma_g \x_{ng} = \gamma_0 (\x_{ne} + \x_{ng}) + \gamma_g \x_{ng} =
-\gamma_0 \x_{ne} + (\gamma_0 + \gamma_g) \x_{ng}.
+y_n \sim \gamma_0 + \gamma_g x_{ng} = \gamma_0 (x_{ne} + x_{ng}) + \gamma_g x_{ng} =
+\gamma_0 x_{ne} + (\gamma_0 + \gamma_g) x_{ng}.
 \]</span></p>
-<p>Now, we already know from the one–hot encoding case that the sum of squared residuals is minimized by setting <span class="math inline">\(\gammahat_0 = \ybar_e\)</span> and <span class="math inline">\(\gammahat_0 + \gammahat_g = \ybar_g\)</span>. We can then solve for <span class="math inline">\(\gammahat_g = \ybar_g - \ybar_e\)</span>, as expected.</p>
+<p>Now, we already know from the one–hot encoding case that the sum of squared residuals is minimized by setting <span class="math inline">\(\hat{\gamma}_0 = \bar{y}_e\)</span> and <span class="math inline">\(\hat{\gamma}_0 + \hat{\gamma}_g = \bar{y}_g\)</span>. We can then solve for <span class="math inline">\(\hat{\gamma}_g = \bar{y}_g - \bar{y}_e\)</span>, as expected.</p>
 <p>This is case where we have two regressions whose regressors are invertible linear combinations of one another:</p>
 <p><span class="math display">\[
-\zv_n =
+\boldsymbol{z}_n =
 \begin{pmatrix}
 1 \\
-\x_{ng}
+x_{ng}
 \end{pmatrix} =
 \begin{pmatrix}
-\x_{ne} + \x_{ng} \\
-\x_{ng}
+x_{ne} + x_{ng} \\
+x_{ng}
 \end{pmatrix}
 =
 \begin{pmatrix}
@@ -546,48 +545,48 @@ N_g &amp; -N_g \\
 1 &amp; 0\\
 \end{pmatrix}
 \begin{pmatrix}
-\x_{ng} \\
-\x_{ne}
+x_{ng} \\
+x_{ne}
 \end{pmatrix}
 =
 \begin{pmatrix}
 1 &amp; 1 \\
 1 &amp; 0\\
 \end{pmatrix}
-\xv_n.
+\boldsymbol{x}_n.
 \]</span></p>
-<p>It follows that if you can acheive a least squares fit with <span class="math inline">\(\xv_n^\trans \betavhat\)</span>, you can achieve exactly the same fit with</p>
+<p>It follows that if you can acheive a least squares fit with <span class="math inline">\(\boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}\)</span>, you can achieve exactly the same fit with</p>
 <p><span class="math display">\[
-\betavhat^\trans \xv_n =  
-\betavhat^\trans
+\hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n =  
+\hat{\boldsymbol{\beta}}^\intercal
 \begin{pmatrix}
 1 &amp; 1 \\
 1 &amp; 0\\
-\end{pmatrix}^{-1} \zv_n,
+\end{pmatrix}^{-1} \boldsymbol{z}_n,
 \]</span></p>
 <p>which can be achieved by taking</p>
 <p><span class="math display">\[
-\gammavhat^\trans =
-\betavhat^\trans
+\hat{\boldsymbol{\gamma}}^\intercal=
+\hat{\boldsymbol{\beta}}^\intercal
 \begin{pmatrix}
 1 &amp; 1 \\
 1 &amp; 0\\
 \end{pmatrix}^{-1} \Rightarrow
-\gammavhat =
+\hat{\boldsymbol{\gamma}}=
 \begin{pmatrix}
 1 &amp; 1 \\
 1 &amp; 0\\
-\end{pmatrix}^{-T} \betavhat
+\end{pmatrix}^{-T} \hat{\boldsymbol{\beta}}
 =
 \frac{1}{-1}
 \begin{pmatrix}
 0 &amp; -1 \\
 -1 &amp; 1\\
-\end{pmatrix} \betavhat
+\end{pmatrix} \hat{\boldsymbol{\beta}}
 =
 \begin{pmatrix}
-\betahat_2 \\
-\betahat_1 - \betahat_2 \\
+\hat{\beta}_2 \\
+\hat{\beta}_1 - \hat{\beta}_2 \\
 \end{pmatrix},
 \]</span></p>
 <p>exactly as expected.</p>
@@ -596,9 +595,9 @@ N_g &amp; -N_g \\
 </section>
 <section id="redundant-regressors-and-zero-eigenvalues" class="level2">
 <h2 class="anchored" data-anchor-id="redundant-regressors-and-zero-eigenvalues">Redundant regressors and zero eigenvalues</h2>
-<p>Suppose we run the (silly) regression <span class="math inline">\(\y \sim \alpha \cdot 1 + \gamma \cdot 3 + \res_n\)</span>. That is, we regress on both the constant <span class="math inline">\(1\)</span> and the constant <span class="math inline">\(3\)</span>. We have</p>
+<p>Suppose we run the (silly) regression <span class="math inline">\(y\sim \alpha \cdot 1 + \gamma \cdot 3 + \varepsilon_n\)</span>. That is, we regress on both the constant <span class="math inline">\(1\)</span> and the constant <span class="math inline">\(3\)</span>. We have</p>
 <p><span class="math display">\[
-\X =
+\boldsymbol{X}=
 \begin{pmatrix}
 1 &amp; 3 \\
 1 &amp; 3 \\
@@ -606,14 +605,14 @@ N_g &amp; -N_g \\
 \vdots
 \end{pmatrix}
 =
-(\onev \quad 3 \onev)
+(\boldsymbol{1}\quad 3 \boldsymbol{1})
 \]</span></p>
 <p>and so</p>
 <p><span class="math display">\[
-\X^\trans \X =
+\boldsymbol{X}^\intercal\boldsymbol{X}=
 \begin{pmatrix}
-\onev^\trans \onev &amp; 3 \onev^\trans \onev \\
-3 \onev^\trans \onev &amp; 9 \onev^\trans \onev \\
+\boldsymbol{1}^\intercal\boldsymbol{1}&amp; 3 \boldsymbol{1}^\intercal\boldsymbol{1}\\
+3 \boldsymbol{1}^\intercal\boldsymbol{1}&amp; 9 \boldsymbol{1}^\intercal\boldsymbol{1}\\
 \end{pmatrix}
 =
 N \begin{pmatrix}
@@ -621,22 +620,22 @@ N \begin{pmatrix}
 3 &amp; 9  \\
 \end{pmatrix}
 \]</span></p>
-<p>This is not invertible (the second row is <span class="math inline">\(3\)</span> times the first, and the determinant is <span class="math inline">\(9 - 3 \cdot 3 = 0\)</span>). So <span class="math inline">\(\betavhat\)</span> is not defined. What went wrong?</p>
+<p>This is not invertible (the second row is <span class="math inline">\(3\)</span> times the first, and the determinant is <span class="math inline">\(9 - 3 \cdot 3 = 0\)</span>). So <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is not defined. What went wrong?</p>
 <p>One way to see this is to define <span class="math inline">\(\beta = \alpha + 3 \gamma\)</span> and write</p>
 <p><span class="math display">\[
-\y_n = (\alpha + 3 \gamma) + \res_n = \beta + \res_n.
+y_n = (\alpha + 3 \gamma) + \varepsilon_n = \beta + \varepsilon_n.
 \]</span></p>
-<p>There is obviously only one <span class="math inline">\(\betahat\)</span> that minimizes <span class="math inline">\(\sumn \res_n^2\)</span>, <span class="math inline">\(\betahat = \ybar\)</span>. But there are an infinite set of choices for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\gamma\)</span> satisfying</p>
+<p>There is obviously only one <span class="math inline">\(\hat{\beta}\)</span> that minimizes <span class="math inline">\(\sum_{n=1}^N\varepsilon_n^2\)</span>, <span class="math inline">\(\hat{\beta}= \bar{y}\)</span>. But there are an infinite set of choices for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\gamma\)</span> satisfying</p>
 <p><span class="math display">\[
-\alpha + 3 \gamma = \betahat = \ybar.
+\alpha + 3 \gamma = \hat{\beta}= \bar{y}.
 \]</span></p>
-<p>Specifically, for any value of <span class="math inline">\(\gamma\)</span> we can take <span class="math inline">\(\alpha = \ybar - 3 \gamma\)</span>, leaving <span class="math inline">\(\beta\)</span> unchanged. All of these choices for <span class="math inline">\(\alpha,\gamma\)</span> acheive the same <span class="math inline">\(\sumn \res_n^2\)</span>! So the least squares criterion cannot distinguish among them.</p>
-<p>In general, this is what it means for <span class="math inline">\(\X^\trans \X\)</span> to be non–invertibile. It happens precisely when there are redundant regressors, and many regression coefficients that result in the same fit.</p>
+<p>Specifically, for any value of <span class="math inline">\(\gamma\)</span> we can take <span class="math inline">\(\alpha = \bar{y}- 3 \gamma\)</span>, leaving <span class="math inline">\(\beta\)</span> unchanged. All of these choices for <span class="math inline">\(\alpha,\gamma\)</span> acheive the same <span class="math inline">\(\sum_{n=1}^N\varepsilon_n^2\)</span>! So the least squares criterion cannot distinguish among them.</p>
+<p>In general, this is what it means for <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> to be non–invertibile. It happens precisely when there are redundant regressors, and many regression coefficients that result in the same fit.</p>
 <section id="an-eigenvalue-perspective-on-the-same-result" class="level3">
 <h3 class="anchored" data-anchor-id="an-eigenvalue-perspective-on-the-same-result">An eigenvalue perspective on the same result</h3>
-<p>In fact, <span class="math inline">\(\X^\trans \X\)</span> is invertible precisely when <span class="math inline">\(\X^\trans \X\)</span> has a zero eigenvalue. In the preceding example, we can see that</p>
+<p>In fact, <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible precisely when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> has a zero eigenvalue. In the preceding example, we can see that</p>
 <p><span class="math display">\[
-\X^\trans \X
+\boldsymbol{X}^\intercal\boldsymbol{X}
 \begin{pmatrix}
 3 \\ -1
 \end{pmatrix}
@@ -653,13 +652,13 @@ N \begin{pmatrix}
 0 \\ 0
 \end{pmatrix},
 \]</span></p>
-<p>so <span class="math inline">\((3, -1)^\trans\)</span> is a zero eigenvector. (In general you might find this by numerical eigenvalue decomposition, but in this case you can just guess the zero eigenvalue.)</p>
+<p>so <span class="math inline">\((3, -1)^\intercal\)</span> is a zero eigenvector. (In general you might find this by numerical eigenvalue decomposition, but in this case you can just guess the zero eigenvalue.)</p>
 <p>Going back to <a href="#eq-ols-esteq" class="quarto-xref">Equation&nbsp;1</a>, we see that this means that</p>
 <p><span class="math display">\[
-\X^\trans \Y =
-(\X^\trans \X)
+\boldsymbol{X}^\intercal\boldsymbol{Y}=
+(\boldsymbol{X}^\intercal\boldsymbol{X})
 \begin{pmatrix}
-\alphahat \\ \gammahat
+\hat{\alpha}\\ \hat{\gamma}
 \end{pmatrix}
 =
 N \begin{pmatrix}
@@ -667,7 +666,7 @@ N \begin{pmatrix}
 3 &amp; 9  \\
 \end{pmatrix}
 \begin{pmatrix}
-\alphahat \\ \gammahat
+\hat{\alpha}\\ \hat{\gamma}
 \end{pmatrix}
 =
 N \begin{pmatrix}
@@ -676,7 +675,7 @@ N \begin{pmatrix}
 \end{pmatrix}
 \left(
 \begin{pmatrix}
-\alphahat \\ \gammahat
+\hat{\alpha}\\ \hat{\gamma}
 \end{pmatrix}
 + C
 \begin{pmatrix}
@@ -684,7 +683,7 @@ N \begin{pmatrix}
 \end{pmatrix}
 \right)
 \]</span></p>
-<p>for <em>any</em> value of <span class="math inline">\(C\)</span>. This means there are an infinite set of “optimal” values, all of which set the gradient of the loss to zero, and all of which have the same value of the loss function (i.e.&nbsp;acheive the same fit). And you can check that these family of values are exactly the ones that satisfy <span class="math inline">\(\alpha + 3 \gamma = \betahat = \ybar\)</span>, since</p>
+<p>for <em>any</em> value of <span class="math inline">\(C\)</span>. This means there are an infinite set of “optimal” values, all of which set the gradient of the loss to zero, and all of which have the same value of the loss function (i.e.&nbsp;acheive the same fit). And you can check that these family of values are exactly the ones that satisfy <span class="math inline">\(\alpha + 3 \gamma = \hat{\beta}= \bar{y}\)</span>, since</p>
 <p><span class="math display">\[
 \alpha + 3 \gamma =
 \begin{pmatrix}
@@ -701,11 +700,11 @@ N \begin{pmatrix}
 3 \\ -1
 \end{pmatrix} = 0.
 \]</span></p>
-<p>Soon, we will see that this is a general result: when <span class="math inline">\(\X^\trans \X\)</span> is not invertible, that means there are many equivalent least squares fits, all characterized precisely by the zero eigenvectors of <span class="math inline">\(\X^\trans \X\)</span>.</p>
+<p>Soon, we will see that this is a general result: when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible, that means there are many equivalent least squares fits, all characterized precisely by the zero eigenvectors of <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span>.</p>
 </section>
 <section id="zero-variance-regressors" class="level3">
 <h3 class="anchored" data-anchor-id="zero-variance-regressors">Zero variance regressors</h3>
-<p>An example of redundant regressors occurs when the sample variance of <span class="math inline">\(\x_n\)</span> is zero and a constant is included in the regression. Specifically, suppose that <span class="math inline">\(\overline{xx} - \overline{x}^2 = 0\)</span>.</p>
+<p>An example of redundant regressors occurs when the sample variance of <span class="math inline">\(x_n\)</span> is zero and a constant is included in the regression. Specifically, suppose that <span class="math inline">\(\overline{xx} - \overline{x}^2 = 0\)</span>.</p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -716,16 +715,16 @@ Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Prove that <span class="math inline">\(\overline{xx} - \overline{x}^2 = 0\)</span> means <span class="math inline">\(\x_n\)</span> is a constant with <span class="math inline">\(\x_n = \xbar\)</span>. Hint: look at the sample variance of <span class="math inline">\(\x_n\)</span>.</p>
+<p>Prove that <span class="math inline">\(\overline{xx} - \overline{x}^2 = 0\)</span> means <span class="math inline">\(x_n\)</span> is a constant with <span class="math inline">\(x_n = \bar{x}\)</span>. Hint: look at the sample variance of <span class="math inline">\(x_n\)</span>.</p>
 </div>
 </div>
-<p>Let’s regress <span class="math inline">\(\y_n \sim \beta_1 + \beta_2 \x_n\)</span>.</p>
-<p>For simplicity, let’s take <span class="math inline">\(\x_n = 3\)</span>. In that case we can rewrite our estimating equation as</p>
+<p>Let’s regress <span class="math inline">\(y_n \sim \beta_1 + \beta_2 x_n\)</span>.</p>
+<p>For simplicity, let’s take <span class="math inline">\(x_n = 3\)</span>. In that case we can rewrite our estimating equation as</p>
 <p><span class="math display">\[
-\y_n = \beta_1 + \beta_2 \x_n + \res_n
-     = (\beta_1 + \beta_2 \xbar) + \res_n.
+y_n = \beta_1 + \beta_2 x_n + \varepsilon_n
+     = (\beta_1 + \beta_2 \bar{x}) + \varepsilon_n.
 \]</span></p>
-<p>We’re thus in the previous setting with <span class="math inline">\(\xbar\)</span> in place of the number <span class="math inline">\(3\)</span>.</p>
+<p>We’re thus in the previous setting with <span class="math inline">\(\bar{x}\)</span> in place of the number <span class="math inline">\(3\)</span>.</p>
 
 
 <!-- -->
@@ -1209,11 +1208,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>$\textcolor{white}{\LaTeX}$ </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>

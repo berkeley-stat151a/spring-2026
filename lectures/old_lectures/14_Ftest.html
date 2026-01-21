@@ -246,7 +246,6 @@ window.Quarto = {
 </header>
 
 
-<p><span class="math inline">\(\,\)</span></p>
 <section id="goals" class="level1">
 <h1>Goals</h1>
 <ul>
@@ -261,34 +260,34 @@ window.Quarto = {
 <section id="testing-multiple-coefficients-at-once" class="level1">
 <h1>Testing multiple coefficients at once</h1>
 <p>So far we have devised tests for one coefficient at a time — or, more precisely, for one linear combination of test statistics at a time. We derived tests under normality, and asserted that they made sense under homoskedasticity for large <span class="math inline">\(N\)</span>.</p>
-<p>Suppose we want to test multiple coefficients at a time. A particular use case we will work up to is asking <em>whether our regression did anything at all</em>. In particular, we might ask whether the fit <span class="math inline">\(\yhat = \X \betahat\)</span> is any better than the fit <span class="math inline">\(\yhat = 0\)</span> that did not run a regression at all.</p>
-<p>(Note that, by the FWL theorem, we can equivalently compare <span class="math inline">\(\yhat = \X \betahat\)</span> with <span class="math inline">\(\yhat = \ybar\)</span>, simply by centering everything first.)</p>
+<p>Suppose we want to test multiple coefficients at a time. A particular use case we will work up to is asking <em>whether our regression did anything at all</em>. In particular, we might ask whether the fit <span class="math inline">\(\hat{y}= \boldsymbol{X}\hat{\beta}\)</span> is any better than the fit <span class="math inline">\(\hat{y}= 0\)</span> that did not run a regression at all.</p>
+<p>(Note that, by the FWL theorem, we can equivalently compare <span class="math inline">\(\hat{y}= \boldsymbol{X}\hat{\beta}\)</span> with <span class="math inline">\(\hat{y}= \bar{y}\)</span>, simply by centering everything first.)</p>
 <section id="the-f-test" class="level2">
 <h2 class="anchored" data-anchor-id="the-f-test">The F-test</h2>
 <p>Formally, we’ll be testing the null hypothesis that</p>
 <p><span class="math display">\[
-\textrm{Null hypothesis }H_0:  \A \beta = \av
+\textrm{Null hypothesis }H_0:  \boldsymbol{A}\beta = \boldsymbol{a}
 \]</span></p>
-<p>where <span class="math inline">\(A\)</span> is a <span class="math inline">\(Q \times P\)</span> matrix, and <span class="math inline">\(c\)</span> is a <span class="math inline">\(Q\)</span>–vector. As a special case, we will test our “do nothing” hypothesis by taking <span class="math inline">\(\A = \id\)</span> and <span class="math inline">\(\av=\zerov\)</span>.</p>
+<p>where <span class="math inline">\(A\)</span> is a <span class="math inline">\(Q \times P\)</span> matrix, and <span class="math inline">\(c\)</span> is a <span class="math inline">\(Q\)</span>–vector. As a special case, we will test our “do nothing” hypothesis by taking <span class="math inline">\(\boldsymbol{A}= \boldsymbol{I}\)</span> and <span class="math inline">\(\boldsymbol{a}=\boldsymbol{0}\)</span>.</p>
 <p>Our trick will be the same as always: transform into known distributions. Specifically, under <span class="math inline">\(H_0\)</span> and the normal assumptions, we know that</p>
 <p><span class="math display">\[
-\A \betahat \sim \gauss{\A \beta, \A (\X^\trans \X)^{-1} \A^\trans \sigma^2} = \gauss{\a, \A (\X^\trans \X)^{-1} \A^\trans \sigma^2}.
+\boldsymbol{A}\hat{\beta}\sim \mathcal{N}\left(\boldsymbol{A}\beta, \boldsymbol{A}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{A}^\intercal\sigma^2\right) = \mathcal{N}\left(a, \boldsymbol{A}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{A}^\intercal\sigma^2\right).
 \]</span></p>
 <p>It follows that</p>
 <p><span class="math display">\[
-\zv := \sigma^{-1} \left(\A (\X^\trans \X)^{-1} \A^\trans  \right)^{-1/2} \left(\A \betahat - \av \right) \sim \gauss{\zerov, \id},
+\boldsymbol{z}:= \sigma^{-1} \left(\boldsymbol{A}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{A}^\intercal\right)^{-1/2} \left(\boldsymbol{A}\hat{\beta}- \boldsymbol{a}\right) \sim \mathcal{N}\left(\boldsymbol{0}, \boldsymbol{I}\right),
 \]</span></p>
-<p>which is a <span class="math inline">\(Q\)</span>–dimensional standard normal. Now, to test <span class="math inline">\(H_0\)</span>, we need a single test statistic, and this is a <span class="math inline">\(Q\)</span>–vector. We can get a single number by taking the norm to get a <span class="math inline">\(\chisq{P}\)</span> distribution:</p>
+<p>which is a <span class="math inline">\(Q\)</span>–dimensional standard normal. Now, to test <span class="math inline">\(H_0\)</span>, we need a single test statistic, and this is a <span class="math inline">\(Q\)</span>–vector. We can get a single number by taking the norm to get a <span class="math inline">\(\mathcal{\chi}^2_{P}\)</span> distribution:</p>
 <p><span class="math display">\[
-\zeta := \zv^\trans \zv =
-  \sigma^{-2}  \left(\A \betahat - \av \right)^\trans \left(\A (\X^\trans \X)^{-1} \A^\trans  \right)^{-1} \left(\A \betahat - \av \right)
-  \sim \chisq{Q}.
+\zeta := \boldsymbol{z}^\intercal\boldsymbol{z}=
+  \sigma^{-2}  \left(\boldsymbol{A}\hat{\beta}- \boldsymbol{a}\right)^\intercal\left(\boldsymbol{A}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{A}^\intercal\right)^{-1} \left(\boldsymbol{A}\hat{\beta}- \boldsymbol{a}\right)
+  \sim \mathcal{\chi}^2_{Q}.
 \]</span></p>
-<p>If <span class="math inline">\(\zeta\)</span> is large, it’s evidence against <span class="math inline">\(H_0\)</span>. However, we still don’t know <span class="math inline">\(\sigma^2\)</span>. So we can do our usual trick of normalizing by <span class="math inline">\(\sigmahat^2\)</span>, which is independent of <span class="math inline">\(\zeta\)</span> under normality, giving our final computable statistic:</p>
+<p>If <span class="math inline">\(\zeta\)</span> is large, it’s evidence against <span class="math inline">\(H_0\)</span>. However, we still don’t know <span class="math inline">\(\sigma^2\)</span>. So we can do our usual trick of normalizing by <span class="math inline">\(\hat{\sigma}^2\)</span>, which is independent of <span class="math inline">\(\zeta\)</span> under normality, giving our final computable statistic:</p>
 <p><span class="math display">\[
-\phi := \frac{1}{Q} \frac{\left(\A \betahat - \av \right)^\trans \left(\A (\X^\trans \X)^{-1} \A^\trans  \right)^{-1} \left(\A \betahat - \av \right)}{\sigmahat^2} = \frac{\s_1 / Q}{\s_2 / (N-P)} \sim \fdist{Q}{N-P}.
+\phi := \frac{1}{Q} \frac{\left(\boldsymbol{A}\hat{\beta}- \boldsymbol{a}\right)^\intercal\left(\boldsymbol{A}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{A}^\intercal\right)^{-1} \left(\boldsymbol{A}\hat{\beta}- \boldsymbol{a}\right)}{\hat{\sigma}^2} = \frac{s_1 / Q}{s_2 / (N-P)} \sim \mathrm{FDist}_{Q,N-P}.
 \]</span></p>
-<p>where <span class="math inline">\(\s_1\)</span> and <span class="math inline">\(\s_2\)</span> are independent chi–squared statistics. This quantity is called an “F-statistic” and its distribution is known as the “F-distribution,” and its quantiles (and other properties) are computable in <code>R</code> using <code>qf</code> (etc).</p>
+<p>where <span class="math inline">\(s_1\)</span> and <span class="math inline">\(s_2\)</span> are independent chi–squared statistics. This quantity is called an “F-statistic” and its distribution is known as the “F-distribution,” and its quantiles (and other properties) are computable in <code>R</code> using <code>qf</code> (etc).</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Definition">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -299,10 +298,10 @@ Definition
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let <span class="math inline">\(\s_1 \sim \chisq{K_1}\)</span> and <span class="math inline">\(\s_2 \sim \chisq{K_2}\)</span>, independently of one another. Then the distribution of <span class="math display">\[
-\phi := \frac{\s_1 / K_1}{s_2 / K_2}
+<p>Let <span class="math inline">\(s_1 \sim \mathcal{\chi}^2_{K_1}\)</span> and <span class="math inline">\(s_2 \sim \mathcal{\chi}^2_{K_2}\)</span>, independently of one another. Then the distribution of <span class="math display">\[
+\phi := \frac{s_1 / K_1}{s_2 / K_2}
 \]</span></p>
-<p>is called an ``F distribution with <span class="math inline">\(K_1\)</span> and <span class="math inline">\(K_2\)</span> degrees of freedom.’’ We write <span class="math inline">\(\phi \sim \fdist{K_1}{K_2}\)</span>. As long as <span class="math inline">\(K_2 &gt; 2\)</span>, <span class="math inline">\(\expect{\phi} = \frac{K_2}{K_2 - 2}\)</span>.</p>
+<p>is called an ``F distribution with <span class="math inline">\(K_1\)</span> and <span class="math inline">\(K_2\)</span> degrees of freedom.’’ We write <span class="math inline">\(\phi \sim \mathrm{FDist}_{K_1,K_2}\)</span>. As long as <span class="math inline">\(K_2 &gt; 2\)</span>, <span class="math inline">\(\mathbb{E}\left[\phi\right] = \frac{K_2}{K_2 - 2}\)</span>.</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
@@ -328,7 +327,7 @@ Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>For large <span class="math inline">\(K_2\)</span>, show that the variance of the F distribution is approximately <span class="math inline">\(2 / K_1\)</span>. (Hint: use the definition of a <span class="math inline">\(\chisq{K_1}\)</span> as the sum of squares of independent standard normals.)</p>
+<p>For large <span class="math inline">\(K_2\)</span>, show that the variance of the F distribution is approximately <span class="math inline">\(2 / K_1\)</span>. (Hint: use the definition of a <span class="math inline">\(\mathcal{\chi}^2_{K_1}\)</span> as the sum of squares of independent standard normals.)</p>
 </div>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
@@ -348,20 +347,20 @@ Exercise
 </section>
 <section id="total-regression-as-a-special-case" class="level1">
 <h1>Total regression as a special case</h1>
-<p>What do we get when we apply the F-test to <span class="math inline">\(\beta = \zerov\)</span>? The statistic is</p>
+<p>What do we get when we apply the F-test to <span class="math inline">\(\beta = \boldsymbol{0}\)</span>? The statistic is</p>
 <p><span class="math display">\[
 \begin{aligned}
-\zeta :={}&amp; \sigma^{-2}  \betahat^\trans \X^\trans \X \betahat \\
-\phi :={}&amp; \frac{\frac{1}{P}\betahat^\trans \X^\trans \X \betahat}{\sigmahat^2} \sim \fdist{P}{N-P}.
+\zeta :={}&amp; \sigma^{-2}  \hat{\beta}^\intercal\boldsymbol{X}^\intercal\boldsymbol{X}\hat{\beta}\\
+\phi :={}&amp; \frac{\frac{1}{P}\hat{\beta}^\intercal\boldsymbol{X}^\intercal\boldsymbol{X}\hat{\beta}}{\hat{\sigma}^2} \sim \mathrm{FDist}_{P,N-P}.
 \end{aligned}
 \]</span></p>
 <p>(Note that this would commonly be done after centering, so that by the FWL theorem we are not trying to evaluate whether a constant should be included. See, for example, the output of the <code>lm</code> function in <code>R</code>.)</p>
 <p>This can be re-written in terms of some interpretable quantities. Let’s define</p>
 <p><span class="math display">\[
 \begin{aligned}
-TSS :={}&amp; \Y^\trans \Y =  \sumn \y_n^2 &amp; \textrm{"total sum of squares"}\\
-ESS :={}&amp; \Yhat^\trans \Yhat =  \sumn \yhat_n^2 &amp; \textrm{"explained sum of squares"}\\
-RSS :={}&amp; \resvhat^\trans \resvhat =  \sumn \reshat_n^2  &amp; \textrm{"residual sum of squares"}.
+TSS :={}&amp; \boldsymbol{Y}^\intercal\boldsymbol{Y}=  \sum_{n=1}^Ny_n^2 &amp; \textrm{"total sum of squares"}\\
+ESS :={}&amp; \hat{\boldsymbol{Y}}^\intercal\hat{\boldsymbol{Y}}=  \sum_{n=1}^N\hat{y}_n^2 &amp; \textrm{"explained sum of squares"}\\
+RSS :={}&amp; \hat{\boldsymbol{\varepsilon}}^\intercal\hat{\boldsymbol{\varepsilon}}=  \sum_{n=1}^N\hat{\varepsilon}_n^2  &amp; \textrm{"residual sum of squares"}.
 \end{aligned}
 \]</span></p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
@@ -401,9 +400,9 @@ Exercise
 </div>
 </div>
 <p>We might look at all our regressors and choose the set that gives the highest <span class="math inline">\(R^2\)</span>. But this does not make sense, since it would always choose to include every linearly independent regressor.</p>
-<p>Our F test statistic behaves better, though. Note that if we are testing the null that <span class="math inline">\(\betav = \zerov\)</span>, then we can write the test statistic in terms of <span class="math inline">\(R^2\)</span> and <span class="math inline">\(P / N\)</span>:</p>
+<p>Our F test statistic behaves better, though. Note that if we are testing the null that <span class="math inline">\(\boldsymbol{\beta}= \boldsymbol{0}\)</span>, then we can write the test statistic in terms of <span class="math inline">\(R^2\)</span> and <span class="math inline">\(P / N\)</span>:</p>
 <p><span class="math display">\[
-\phi = \frac{N-P}{P} \frac{\Yhat^\trans \Yhat}{\resvhat^\trans \resvhat}  
+\phi = \frac{N-P}{P} \frac{\hat{\boldsymbol{Y}}^\intercal\hat{\boldsymbol{Y}}}{\hat{\boldsymbol{\varepsilon}}^\intercal\hat{\boldsymbol{\varepsilon}}}  
 = \frac{N-P}{P} \frac{ESS}{RSS}
 = \frac{1 - P / N}{P / N} \frac{R^2}{1 - R^2}
 = \frac{\frac{1}{P/N} - 1}
@@ -906,11 +905,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>$\,$</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Derive tests for multiple coefficients at once under normality</span>

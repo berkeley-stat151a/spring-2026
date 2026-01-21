@@ -311,8 +311,7 @@ window.Quarto = {
 \]</span></p>
 <p>In this case, <span class="math inline">\(\bar{y}= 0.8942795\)</span>. Today we will talk about:</p>
 <ul>
-<li>What does this tell me?<br>
-</li>
+<li>What does this tell me?</li>
 <li>How can I understand what I’ve done mathematically?</li>
 <li>Conceptually?</li>
 <li>In what sense is there any “uncertainty” associated with this computation?</li>
@@ -323,7 +322,7 @@ window.Quarto = {
 <h1>A numerical summary</h1>
 <p>One intepretation of this is simply a measure of the “center” of the distribution.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>scores), <span class="at">bins=</span><span class="dv">40</span>) <span class="sc">+</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept=</span>ybar), <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -994,7 +993,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">  enabled: true</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="an">theme:</span><span class="co"> [sandstone, assets/styles.scss]</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="an">theme:</span><span class="co"> [sandstone, /assets/styles.css]</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="an">sidebar:</span><span class="co"> true</span></span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
@@ -1069,7 +1068,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>In this case, $\ybar = <span class="in">`r ybar`</span>$. Today we will talk about:</span>
 <span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>What does this tell me?  </span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>What does this tell me?</span>
 <span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>How can I understand what I've done mathematically?</span>
 <span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Conceptually?</span>
 <span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>In what sense is there any "uncertainty" associated with this computation?</span>
@@ -1084,7 +1083,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a>One intepretation of this is simply a measure of the "center" of the distribution.</span>
 <span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
 <span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>scores), <span class="at">bins=</span><span class="dv">40</span>) <span class="sc">+</span></span>
 <span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept=</span>ybar), <span class="at">color=</span><span class="st">"red"</span>)</span>
 <span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
@@ -1175,7 +1174,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-197"><a href="#cb4-197" aria-hidden="true" tabindex="-1"></a>We might doubt that the number <span class="in">`r ybar`</span> is unreasonably precise.  After</span>
 <span id="cb4-198"><a href="#cb4-198" aria-hidden="true" tabindex="-1"></a>all, if we had somehow given the "exactly same class and exam" to a "different</span>
 <span id="cb4-199"><a href="#cb4-199" aria-hidden="true" tabindex="-1"></a>set of students," then the final exam scores would have been different,</span>
-<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>even though the thing we're ostensibly trying to measure, the "hardness" </span>
+<span id="cb4-200"><a href="#cb4-200" aria-hidden="true" tabindex="-1"></a>even though the thing we're ostensibly trying to measure, the "hardness"</span>
 <span id="cb4-201"><a href="#cb4-201" aria-hidden="true" tabindex="-1"></a>of the exam, would be the same.  In this model, we implicitly imagine that the test</span>
 <span id="cb4-202"><a href="#cb4-202" aria-hidden="true" tabindex="-1"></a>scores we saw were $N$ draws from some hypothetical infinte distribution</span>
 <span id="cb4-203"><a href="#cb4-203" aria-hidden="true" tabindex="-1"></a>of a random variable $y$.  We would like to know $\expect{y}$, but have</span>
@@ -1201,7 +1200,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-223"><a href="#cb4-223" aria-hidden="true" tabindex="-1"></a>number, but we observe $\ybar$, which we are imagining is a random variable (since it is</span>
 <span id="cb4-224"><a href="#cb4-224" aria-hidden="true" tabindex="-1"></a>a function of $\y_1, \ldots, \y_N$, which are random).  In what</span>
 <span id="cb4-225"><a href="#cb4-225" aria-hidden="true" tabindex="-1"></a>sense does $\ybar$ tell us anything about $\mu$?  As long</span>
-<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>as $\var{y} &lt; \infty$, the most </span>
+<span id="cb4-226"><a href="#cb4-226" aria-hidden="true" tabindex="-1"></a>as $\var{y} &lt; \infty$, the most</span>
 <span id="cb4-227"><a href="#cb4-227" aria-hidden="true" tabindex="-1"></a>important property $\ybar$ has is "consistency":</span>
 <span id="cb4-228"><a href="#cb4-228" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-229"><a href="#cb4-229" aria-hidden="true" tabindex="-1"></a>$$</span>
@@ -1221,8 +1220,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-243"><a href="#cb4-243" aria-hidden="true" tabindex="-1"></a>\quad\textrm{as }N \rightarrow \infty, \textrm{ for any }\varepsilon &gt; 0.</span>
 <span id="cb4-244"><a href="#cb4-244" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb4-245"><a href="#cb4-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a>This is a one of a (class of) deterministic limits that can apply to random </span>
-<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a>variables. Specifically, this is called "convergence in probability".  There are in fact many different </span>
+<span id="cb4-246"><a href="#cb4-246" aria-hidden="true" tabindex="-1"></a>This is a one of a (class of) deterministic limits that can apply to random</span>
+<span id="cb4-247"><a href="#cb4-247" aria-hidden="true" tabindex="-1"></a>variables. Specifically, this is called "convergence in probability".  There are in fact many different</span>
 <span id="cb4-248"><a href="#cb4-248" aria-hidden="true" tabindex="-1"></a>modes of probabilistic convergence, and their study is a very interesting (but more advanced)</span>
 <span id="cb4-249"><a href="#cb4-249" aria-hidden="true" tabindex="-1"></a>topic. (In this case, it happens that the LLN also applies with "almost sure" convergence.)</span>
 <span id="cb4-250"><a href="#cb4-250" aria-hidden="true" tabindex="-1"></a>:::</span>
@@ -1234,7 +1233,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-256"><a href="#cb4-256" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-257"><a href="#cb4-257" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb4-258"><a href="#cb4-258" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>\frac{1}{N - 1} \sumn \y_n </span>
+<span id="cb4-259"><a href="#cb4-259" aria-hidden="true" tabindex="-1"></a>\frac{1}{N - 1} \sumn \y_n</span>
 <span id="cb4-260"><a href="#cb4-260" aria-hidden="true" tabindex="-1"></a>\quad\quad\quad</span>
 <span id="cb4-261"><a href="#cb4-261" aria-hidden="true" tabindex="-1"></a>\ybar + \frac{1}{N}</span>
 <span id="cb4-262"><a href="#cb4-262" aria-hidden="true" tabindex="-1"></a>\quad\quad\quad</span>
@@ -1244,7 +1243,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-266"><a href="#cb4-266" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
 <span id="cb4-267"><a href="#cb4-267" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb4-268"><a href="#cb4-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>and so on.  Why you would choose one over another is a major topic in </span>
+<span id="cb4-269"><a href="#cb4-269" aria-hidden="true" tabindex="-1"></a>and so on.  Why you would choose one over another is a major topic in</span>
 <span id="cb4-270"><a href="#cb4-270" aria-hidden="true" tabindex="-1"></a>statistics which we will touch on only lightly in this course.</span>
 <span id="cb4-271"><a href="#cb4-271" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb4-272"><a href="#cb4-272" aria-hidden="true" tabindex="-1"></a></span>
@@ -1291,9 +1290,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-313"><a href="#cb4-313" aria-hidden="true" tabindex="-1"></a>0.95 ={}&amp; \prob{-\z_\alpha \le \gauss{0, 1} \le \z_\alpha}<span class="sc">\\</span></span>
 <span id="cb4-314"><a href="#cb4-314" aria-hidden="true" tabindex="-1"></a>\approx{}&amp; \prob{-\z_\alpha \le  \frac{1}{\sqrt{N}} \sumn \frac{\y_n - \mu}{\sigma} \le \z_\alpha} &amp; \textrm{(by the CLT applied twice)}<span class="sc">\\</span></span>
 <span id="cb4-315"><a href="#cb4-315" aria-hidden="true" tabindex="-1"></a>=&amp; \prob{-\sigma \z_\alpha \le   \frac{1}{\sqrt{N}} \sumn (\y_n - \mu) \le \sigma \z_\alpha} &amp; \textrm{(algebra)}<span class="sc">\\</span></span>
-<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>=&amp; \prob{ </span>
-<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>\frac{\sigma}{\sqrt{N}} \z_\alpha \le </span>
-<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>  \frac{1}{N} \sumn (\y_n - \mu) \le </span>
+<span id="cb4-316"><a href="#cb4-316" aria-hidden="true" tabindex="-1"></a>=&amp; \prob{</span>
+<span id="cb4-317"><a href="#cb4-317" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>\frac{\sigma}{\sqrt{N}} \z_\alpha \le</span>
+<span id="cb4-318"><a href="#cb4-318" aria-hidden="true" tabindex="-1"></a>  \frac{1}{N} \sumn (\y_n - \mu) \le</span>
 <span id="cb4-319"><a href="#cb4-319" aria-hidden="true" tabindex="-1"></a>  \frac{\sigma}{\sqrt{N}} \z_\alpha</span>
 <span id="cb4-320"><a href="#cb4-320" aria-hidden="true" tabindex="-1"></a>  } &amp; \textrm{(algebra)}<span class="sc">\\</span></span>
 <span id="cb4-321"><a href="#cb4-321" aria-hidden="true" tabindex="-1"></a>=&amp; \prob{ -   \frac{\sigma}{\sqrt{N}} \z_\alpha \le  \ybar - \mu \le   \frac{\sigma}{\sqrt{N}} \z_\alpha} &amp; \textrm{(algebra)}<span class="sc">\\</span></span>
@@ -1303,7 +1302,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb4-325"><a href="#cb4-325" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-326"><a href="#cb4-326" aria-hidden="true" tabindex="-1"></a>This means that, *whatever $\mu$ is*, then with 95% probability (under IID random sampling),</span>
 <span id="cb4-327"><a href="#cb4-327" aria-hidden="true" tabindex="-1"></a>it lies in the interval $\ybar \pm \frac{\sigma}{\sqrt{N}} \z_\alpha$.  That is, we</span>
-<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a>have constructed a **95% two--sided confidence interval** for the unknown $\mu$, </span>
+<span id="cb4-328"><a href="#cb4-328" aria-hidden="true" tabindex="-1"></a>have constructed a **95% two--sided confidence interval** for the unknown $\mu$,</span>
 <span id="cb4-329"><a href="#cb4-329" aria-hidden="true" tabindex="-1"></a>which in accounts for the random variability in $\ybar$ as a measure of $\mu$.</span>
 <span id="cb4-330"><a href="#cb4-330" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-333"><a href="#cb4-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>

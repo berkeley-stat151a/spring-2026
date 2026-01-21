@@ -256,145 +256,145 @@ window.Quarto = {
 <ul>
 <li>Leave the normal assumption behind
 <ul>
-<li>Derive limiting distributions of <span class="math inline">\(\betahat\)</span> using the CLT under homoskedasticity</li>
-<li>Derive limiting distributions of <span class="math inline">\(\betahat\)</span> using the CLT under heteroskedasticity</li>
+<li>Derive limiting distributions of <span class="math inline">\(\hat{\beta}\)</span> using the CLT under homoskedasticity</li>
+<li>Derive limiting distributions of <span class="math inline">\(\hat{\beta}\)</span> using the CLT under heteroskedasticity</li>
 <li>Derive an assumption-free version of what OLS is estimating</li>
 </ul></li>
 </ul>
 </section>
 <section id="leaving-the-normal-assumption" class="level1">
 <h1>Leaving the normal assumption</h1>
-<p>Up to now, we’ve been assuming that <span class="math inline">\(\res_n \sim \gauss{0, \sigma^2}\)</span>. Under these assumptions, we were able to derive <em>closed-form, finite-sample</em> distributions for <span class="math inline">\(\betahat\)</span> and <span class="math inline">\(\sigmahat^2\)</span>. Unfortunately, the normal assumption is unreasonable in practice. So today we use asymptotics to derive confidence intervals for <span class="math inline">\(\betavhat\)</span> for large <span class="math inline">\(N\)</span> using asymptotics under the homoskedastic, heteroskedastic, and machine learning assumptions.</p>
+<p>Up to now, we’ve been assuming that <span class="math inline">\(\varepsilon_n \sim \mathcal{N}\left(0, \sigma^2\right)\)</span>. Under these assumptions, we were able to derive <em>closed-form, finite-sample</em> distributions for <span class="math inline">\(\hat{\beta}\)</span> and <span class="math inline">\(\hat{\sigma}^2\)</span>. Unfortunately, the normal assumption is unreasonable in practice. So today we use asymptotics to derive confidence intervals for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> for large <span class="math inline">\(N\)</span> using asymptotics under the homoskedastic, heteroskedastic, and machine learning assumptions.</p>
 <p>To do so, we will need one additional assumptions:</p>
 <p><span class="math display">\[
-\frac{1}{N} \X^\trans \X \rightarrow \Xcov
+\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\rightarrow \boldsymbol{M}_{\boldsymbol{X}}
 \textrm{ as }N \rightarrow \infty
-\textrm{ where }\Xcov\textrm{ is invertible.}
+\textrm{ where }\boldsymbol{M}_{\boldsymbol{X}}\textrm{ is invertible.}
 \]</span></p>
-<p>This may happen for deterministic <span class="math inline">\(\xv_n\)</span>, in which case this is just an assumption about a real–valued limit, or it may occur for random and IID <span class="math inline">\(\xv_n\)</span>, in which case <span class="math inline">\(\Xcov = \cov{\xv_n}\)</span> by the LLN.</p>
+<p>This may happen for deterministic <span class="math inline">\(\boldsymbol{x}_n\)</span>, in which case this is just an assumption about a real–valued limit, or it may occur for random and IID <span class="math inline">\(\boldsymbol{x}_n\)</span>, in which case <span class="math inline">\(\boldsymbol{M}_{\boldsymbol{X}}= \mathrm{Cov}\left(\boldsymbol{x}_n\right)\)</span> by the LLN.</p>
 </section>
 <section id="the-homoskedastic-assumption" class="level1">
 <h1>The homoskedastic assumption</h1>
 <p>We still have that</p>
 <p><span class="math display">\[
-\betahat = \beta + (\X^\trans \X)^{-1} \X^\trans \resv.
+\hat{\beta}= \beta + (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}.
 \]</span></p>
-<p>That means that <span class="math inline">\(\expect{\betahat | \X} = \beta\)</span>, so our estimator is still unbiased given <span class="math inline">\(\X\)</span>. But the term <span class="math inline">\((\X^\trans \X)^{-1} \X^\trans \resv\)</span> is no longer normal. It also remains the case that</p>
+<p>That means that <span class="math inline">\(\mathbb{E}\left[\hat{\beta}| \boldsymbol{X}\right] = \beta\)</span>, so our estimator is still unbiased given <span class="math inline">\(\boldsymbol{X}\)</span>. But the term <span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}\)</span> is no longer normal. It also remains the case that</p>
 <p><span class="math display">\[
 \begin{aligned}
-\cov{(\X^\trans \X)^{-1} \X^\trans \resv | \X} ={}&amp;
-  (\X^\trans \X)^{-1} \X^\trans \expect{\resv\resv^\trans} \X (\X^\trans \X)^{-1}
-  \\={}&amp; \sigma^2 (\X^\trans \X)^{-1}
-  \\={}&amp; \frac{1}{N} \sigma^2 \left(\frac{1}{N} \X^\trans \X \right)^{-1}
-  \\\rightarrow{}&amp; \zerov.
+\mathrm{Cov}\left((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}| \boldsymbol{X}\right) ={}&amp;
+  (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\mathbb{E}\left[\boldsymbol{\varepsilon}\boldsymbol{\varepsilon}^\intercal\right] \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}
+  \\={}&amp; \sigma^2 (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}
+  \\={}&amp; \frac{1}{N} \sigma^2 \left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1}
+  \\\rightarrow{}&amp; \boldsymbol{0}.
 \end{aligned}
 \]</span></p>
-<p>This means that <span class="math inline">\(\betahat \rightarrow \beta\)</span> — in other words, <span class="math inline">\(\betahat\)</span> is <em>consistent</em> under the homoskedastic assumptions.</p>
+<p>This means that <span class="math inline">\(\hat{\beta}\rightarrow \beta\)</span> — in other words, <span class="math inline">\(\hat{\beta}\)</span> is <em>consistent</em> under the homoskedastic assumptions.</p>
 <section id="the-lln-for-consistency" class="level3">
 <h3 class="anchored" data-anchor-id="the-lln-for-consistency">The LLN for consistency</h3>
-<p>Another way to show the same this is using the LLN <span class="math inline">\(\betahat\)</span>:</p>
+<p>Another way to show the same this is using the LLN <span class="math inline">\(\hat{\beta}\)</span>:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\betahat - \beta ={}&amp; (\X^\trans \X)^{-1} \X^\trans \resv \\
-={}&amp; \left(\frac{1}{N} \X^\trans \X \right)^{-1} \frac{1}{N} \X^\trans \resv \\
-={}&amp; \left(\meann \xv_n \xv_n^\trans \right)^{-1} \meann \xv_n \res_n.
+\hat{\beta}- \beta ={}&amp; (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}\\
+={}&amp; \left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}\\
+={}&amp; \left(\frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\right)^{-1} \frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n.
 \end{aligned}
 \]</span></p>
-<p>Now, <span class="math inline">\((\meann \xv_n \xv_n^\trans)^{-1} \rightarrow \Xcov^{-1}\)</span> by the LLN and the continuous mapping theorem, and, since</p>
+<p>Now, <span class="math inline">\((\frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \boldsymbol{x}_n^\intercal)^{-1} \rightarrow \boldsymbol{M}_{\boldsymbol{X}}^{-1}\)</span> by the LLN and the continuous mapping theorem, and, since</p>
 <p><span class="math display">\[
 \begin{aligned}
-\meann \xv_n \res_n \rightarrow{}&amp;
-\expect{\xv_n \res_n} \\={}&amp;
-\expect{\xv_n \expect{\res_n | \xv_n}}  \\={}&amp;
-\expect{\xv_n \cdot 0}  \\={}&amp;
-\zerov,
+\frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n \rightarrow{}&amp;
+\mathbb{E}\left[\boldsymbol{x}_n \varepsilon_n\right] \\={}&amp;
+\mathbb{E}\left[\boldsymbol{x}_n \mathbb{E}\left[\varepsilon_n | \boldsymbol{x}_n\right]\right]  \\={}&amp;
+\mathbb{E}\left[\boldsymbol{x}_n \cdot 0\right]  \\={}&amp;
+\boldsymbol{0},
 \end{aligned}
 \]</span></p>
-<p>simply using the fact that, by assumption, <span class="math inline">\(\expect{\res_n | \xv_n} = 0\)</span>.</p>
+<p>simply using the fact that, by assumption, <span class="math inline">\(\mathbb{E}\left[\varepsilon_n | \boldsymbol{x}_n\right] = 0\)</span>.</p>
 </section>
 <section id="the-clt-for-normality" class="level3">
 <h3 class="anchored" data-anchor-id="the-clt-for-normality">The CLT for normality</h3>
-<p>Although we don’t know the finite-sample distribution of <span class="math inline">\(\betahat - \beta\)</span>, the LLN points to a way to approximation the <em>asymptotic distribution</em> of <span class="math inline">\(\betahat - \beta\)</span> via the CLT. Specifically, note that <span class="math inline">\(\xv_n \res_n\)</span> are not IID, but</p>
+<p>Although we don’t know the finite-sample distribution of <span class="math inline">\(\hat{\beta}- \beta\)</span>, the LLN points to a way to approximation the <em>asymptotic distribution</em> of <span class="math inline">\(\hat{\beta}- \beta\)</span> via the CLT. Specifically, note that <span class="math inline">\(\boldsymbol{x}_n \varepsilon_n\)</span> are not IID, but</p>
 <p><span class="math display">\[
-\expect{\xv_n \res_n} = 0
+\mathbb{E}\left[\boldsymbol{x}_n \varepsilon_n\right] = 0
 \quad\textrm{and}\quad
-\cov{\xv_n \res_n} = \expect{\xv_n \xv_n^\trans} \sigma^2.
+\mathrm{Cov}\left(\boldsymbol{x}_n \varepsilon_n\right) = \mathbb{E}\left[\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\right] \sigma^2.
 \]</span></p>
-<p>Here, <span class="math inline">\(\expect{\xv_n \xv_n^\trans}\)</span> would be the same for all <span class="math inline">\(n\)</span> if <span class="math inline">\(\xv_n\)</span> are IID, or it might be different for each <span class="math inline">\(n\)</span> if the <span class="math inline">\(\xv_n\)</span> are fixed or non–IID. But either way, by assumption, <span class="math display">\[
-\meann \cov{\xv_n \res_n} = \sigma^2 \meann \expect{\xv_n \xv_n^\trans} \rightarrow \sigma^2 \Xcov.
+<p>Here, <span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\right]\)</span> would be the same for all <span class="math inline">\(n\)</span> if <span class="math inline">\(\boldsymbol{x}_n\)</span> are IID, or it might be different for each <span class="math inline">\(n\)</span> if the <span class="math inline">\(\boldsymbol{x}_n\)</span> are fixed or non–IID. But either way, by assumption, <span class="math display">\[
+\frac{1}{N} \sum_{n=1}^N\mathrm{Cov}\left(\boldsymbol{x}_n \varepsilon_n\right) = \sigma^2 \frac{1}{N} \sum_{n=1}^N\mathbb{E}\left[\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\right] \rightarrow \sigma^2 \boldsymbol{M}_{\boldsymbol{X}}.
 \]</span></p>
 <p>Therefore,by the multivariate CLT, <span class="math display">\[
-\frac{1}{\sqrt{N}} \sumn \xv_n \res_n \rightarrow \gauss{0, \sigma^2 \Xcov}.
+\frac{1}{\sqrt{N}} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n \rightarrow \mathcal{N}\left(0, \sigma^2 \boldsymbol{M}_{\boldsymbol{X}}\right).
 \]</span></p>
 <p>Thus, by the continuous mapping theorem,</p>
 <p><span class="math display">\[
-\sqrt{N}(\betahat - \beta) =
-\left(\meann \xv_n \xv_n^\trans \right)^{-1} \frac{1}{\sqrt{N}} \sumn \xv_n \res_n
-\rightarrow \Xcov^{-1} \RV{z}
-\quad\textrm{where}\quad \RV{\z} \sim \gauss{0, \sigma^2 \Xcov}.
+\sqrt{N}(\hat{\beta}- \beta) =
+\left(\frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\right)^{-1} \frac{1}{\sqrt{N}} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n
+\rightarrow \boldsymbol{M}_{\boldsymbol{X}}^{-1} {z}
+\quad\textrm{where}\quad {z} \sim \mathcal{N}\left(0, \sigma^2 \boldsymbol{M}_{\boldsymbol{X}}\right).
 \]</span></p>
 <p>Now, by properties of the multivariate normal,</p>
 <p><span class="math display">\[
-\Xcov^{-1} \RV{z} \sim \gauss{0, \sigma^2 \Xcov^{-1} \Xcov \Xcov^{-1}} = \gauss{0, \sigma^2 \Xcov^{-1}},
+\boldsymbol{M}_{\boldsymbol{X}}^{-1} {z} \sim \mathcal{N}\left(0, \sigma^2 \boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsymbol{M}_{\boldsymbol{X}}\boldsymbol{M}_{\boldsymbol{X}}^{-1}\right) = \mathcal{N}\left(0, \sigma^2 \boldsymbol{M}_{\boldsymbol{X}}^{-1}\right),
 \]</span></p>
 <p>so</p>
 <p><span class="math display">\[
-\sqrt{N}(\betahat - \beta) \rightarrow \gauss{0, \sigma^2 \Xcov^{-1}}.
+\sqrt{N}(\hat{\beta}- \beta) \rightarrow \mathcal{N}\left(0, \sigma^2 \boldsymbol{M}_{\boldsymbol{X}}^{-1}\right).
 \]</span></p>
 </section>
 <section id="plug-in-estimators-for-the-variance" class="level3">
 <h3 class="anchored" data-anchor-id="plug-in-estimators-for-the-variance">Plug-in estimators for the variance</h3>
-<p>Of course, in practice, we do not observe the terms in the variance <span class="math inline">\(\sigma^2 \Xcov^{-1}\)</span>. A natural solution is to plug in their consistent estimators,</p>
+<p>Of course, in practice, we do not observe the terms in the variance <span class="math inline">\(\sigma^2 \boldsymbol{M}_{\boldsymbol{X}}^{-1}\)</span>. A natural solution is to plug in their consistent estimators,</p>
 <p><span class="math display">\[
 \begin{aligned}
-\sigmahat^2 \rightarrow \sigma^2 \quad\textrm{and}\quad
-\Xcovhat := \frac{1}{N} \X^\trans \X \rightarrow \Xcov.
+\hat{\sigma}^2 \rightarrow \sigma^2 \quad\textrm{and}\quad
+\hat{\boldsymbol{M}}_{\boldsymbol{X}}:= \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\rightarrow \boldsymbol{M}_{\boldsymbol{X}}.
 \end{aligned}
 \]</span></p>
 <p>We thus say that</p>
 <p><span class="math display">\[
-\betahat - \beta \sim \gauss{0, \frac{1}{N} \sigmahat^2 \left( \frac{1}{N} \X^\trans \X \right)^{-1}}
+\hat{\beta}- \beta \sim \mathcal{N}\left(0, \frac{1}{N} \hat{\sigma}^2 \left( \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1}\right)
 \quad\textrm{approximately for large }N.
 \]</span></p>
 <p>Recall that, under normality, we had</p>
 <p><span class="math display">\[
-\betahat - \beta \sim \gauss{0, \frac{1}{N} \sigma^2 \left(\frac{1}{N} \X^\trans \X\right)^{-1}}
+\hat{\beta}- \beta \sim \mathcal{N}\left(0, \frac{1}{N} \sigma^2 \left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1}\right)
 \quad\textrm{exactly, under the normal assumption, for all }N.
 \]</span></p>
-<p>We see that the CLT gives the matching distribution for large <span class="math inline">\(N\)</span> — the difference is that the Normal distribution is justified for large <span class="math inline">\(N\)</span> by the CLT rather than by exact normality. In this sense, the normal assumptions are not essential for approximating the sampling distribution of <span class="math inline">\(\betahat - \beta\)</span>.</p>
+<p>We see that the CLT gives the matching distribution for large <span class="math inline">\(N\)</span> — the difference is that the Normal distribution is justified for large <span class="math inline">\(N\)</span> by the CLT rather than by exact normality. In this sense, the normal assumptions are not essential for approximating the sampling distribution of <span class="math inline">\(\hat{\beta}- \beta\)</span>.</p>
 </section>
 </section>
 <section id="the-heteroskedastic-assumption" class="level1">
 <h1>The heteroskedastic assumption</h1>
-<p>Under the heteroskedastic assumption, we keep <span class="math inline">\(\y_n = \x_n^\trans \betav + \res_n\)</span>, with <span class="math inline">\(\expect{\res_n \vert \xv_n} = 0\)</span>, but the variance of <span class="math inline">\(\res_n\)</span> might depend on <span class="math inline">\(\xv_n\)</span>: <span class="math inline">\(\var{\res_n \vert \xv_n} = \sigma_n^2 &lt; \infty\)</span>. Importantly, the residuals are <em>no longer independent of <span class="math inline">\(\xv_n\)</span></em> when <span class="math inline">\(\xv_n\)</span> is random.</p>
-<p>However, maybe surprisingly, we can still study the limiting distribution of <span class="math inline">\(\betahat - \betav\)</span>, which will be particularly useful for inference. Recall that the first step of deriving the limiting distribution of <span class="math inline">\(\betahat - \beta\)</span> using the CLT was to write</p>
+<p>Under the heteroskedastic assumption, we keep <span class="math inline">\(y_n = x_n^\intercal\boldsymbol{\beta}+ \varepsilon_n\)</span>, with <span class="math inline">\(\mathbb{E}\left[\varepsilon_n \vert \boldsymbol{x}_n\right] = 0\)</span>, but the variance of <span class="math inline">\(\varepsilon_n\)</span> might depend on <span class="math inline">\(\boldsymbol{x}_n\)</span>: <span class="math inline">\(\mathrm{Var}\left(\varepsilon_n \vert \boldsymbol{x}_n\right) = \sigma_n^2 &lt; \infty\)</span>. Importantly, the residuals are <em>no longer independent of <span class="math inline">\(\boldsymbol{x}_n\)</span></em> when <span class="math inline">\(\boldsymbol{x}_n\)</span> is random.</p>
+<p>However, maybe surprisingly, we can still study the limiting distribution of <span class="math inline">\(\hat{\beta}- \boldsymbol{\beta}\)</span>, which will be particularly useful for inference. Recall that the first step of deriving the limiting distribution of <span class="math inline">\(\hat{\beta}- \beta\)</span> using the CLT was to write</p>
 <p><span class="math display">\[
 \begin{aligned}
-\sqrt{N} (\betahat - \beta) = \Xcovhat^{-1} \cltn \xv_n \res_n.
+\sqrt{N} (\hat{\beta}- \beta) = \hat{\boldsymbol{M}}_{\boldsymbol{X}}^{-1} \frac{1}{\sqrt{N}} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n.
 \end{aligned}
 \]</span></p>
-<p>We then applied the CLT to <span class="math inline">\(\cltn \xv_n \res_n\)</span>, using the fact that <span class="math inline">\(\cov{\xv_n \res_n} = \sigma^2 \Xcov\)</span> under the homoskedastic assumptions. Under heteroskedastic assumptions, we now have</p>
+<p>We then applied the CLT to <span class="math inline">\(\frac{1}{\sqrt{N}} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n\)</span>, using the fact that <span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{x}_n \varepsilon_n\right) = \sigma^2 \boldsymbol{M}_{\boldsymbol{X}}\)</span> under the homoskedastic assumptions. Under heteroskedastic assumptions, we now have</p>
 <p><span class="math display">\[
-\cov{\xv_n \res_n} = \expect{\xv_n \xv_n^\trans \res_n^2} =
-\expect{\xv_n \xv_n^\trans \var{\res_n | \xv_n}} =
-\expect{\xv_n \xv_n^\trans \sigma_n^2}.
+\mathrm{Cov}\left(\boldsymbol{x}_n \varepsilon_n\right) = \mathbb{E}\left[\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\varepsilon_n^2\right] =
+\mathbb{E}\left[\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\mathrm{Var}\left(\varepsilon_n | \boldsymbol{x}_n\right)\right] =
+\mathbb{E}\left[\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\sigma_n^2\right].
 \]</span></p>
-<p>Again, if <span class="math inline">\(\xv_n\)</span> is random and IID, then the preceding quantity is a single fixed number, or if <span class="math inline">\(\xv_n\)</span> is non–random, then the preceding quantity is different for each <span class="math inline">\(\xv_n\)</span>. But, in either case, by the LLN, <span class="math display">\[
-\meann \xv_n \xv_n^\trans \res_n^2 \rightarrow \cov{\xv_n \res_n},
+<p>Again, if <span class="math inline">\(\boldsymbol{x}_n\)</span> is random and IID, then the preceding quantity is a single fixed number, or if <span class="math inline">\(\boldsymbol{x}_n\)</span> is non–random, then the preceding quantity is different for each <span class="math inline">\(\boldsymbol{x}_n\)</span>. But, in either case, by the LLN, <span class="math display">\[
+\frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\varepsilon_n^2 \rightarrow \mathrm{Cov}\left(\boldsymbol{x}_n \varepsilon_n\right),
 \]</span> as long as we can apply the LLN to each entry of the corresponding matrix. Furthermore, although we won’t prove it here, the plug–in estimate is also consistent as <span class="math inline">\(N \rightarrow \infty\)</span>: <span class="math display">\[
-\hat{S} := \meann \xv_n \xv_n^\trans \reshat_n^2 \rightarrow \cov{\xv_n \res_n},
+\hat{S} := \frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\hat{\varepsilon}_n^2 \rightarrow \mathrm{Cov}\left(\boldsymbol{x}_n \varepsilon_n\right),
 \]</span></p>
 <p>By the continuous mapping theorem, we thus see that, under the heteroskedastic assumptions, <span class="math display">\[
 \begin{aligned}
-\sqrt{N} (\betahat - \beta) \rightarrow{}&amp; \gauss{\zerov, \Covsand}
+\sqrt{N} (\hat{\beta}- \beta) \rightarrow{}&amp; \mathcal{N}\left(\boldsymbol{0}, \boldsymbol{\Sigma}_{\mathrm{sand}}\right)
   \quad\textrm{where}\\
-\Covsand :={}&amp; \Xcov^{-1}  \cov{\xv_n \res_n} \Xcov^{-1}
+\boldsymbol{\Sigma}_{\mathrm{sand}}:={}&amp; \boldsymbol{M}_{\boldsymbol{X}}^{-1}  \mathrm{Cov}\left(\boldsymbol{x}_n \varepsilon_n\right) \boldsymbol{M}_{\boldsymbol{X}}^{-1}
     \quad\textrm{and}\\
-\Covsandhat :={}&amp; \Xcovhat^{-1}  \hat{S} \Xcovhat^{-1}
-  \rightarrow \Covsand.
+\hat{\boldsymbol{\Sigma}}_{\mathrm{sand}}:={}&amp; \hat{\boldsymbol{M}}_{\boldsymbol{X}}^{-1}  \hat{S} \hat{\boldsymbol{M}}_{\boldsymbol{X}}^{-1}
+  \rightarrow \boldsymbol{\Sigma}_{\mathrm{sand}}.
 \end{aligned}
 \]</span></p>
-<p>The matrix <span class="math inline">\(\Covsand\)</span> is often called the “sandwich covariance matrix” and <span class="math inline">\(\Covsandhat\)</span> the “sandwich covariance estimator,”” since the <span class="math inline">\(\Xcov\)</span> term is like the “bread” and the <span class="math inline">\(\cov{\xv_n \res_n}\)</span> is like the “meat”. It’s also known as the “Huber-White covariance estimator” (after some of its first promoters), or the “heteroskedasticity-robust” covariance estimator, since it will give correct asymptotic intervals for the OLS coefficients even in the presence of heteroskedasticity.</p>
+<p>The matrix <span class="math inline">\(\boldsymbol{\Sigma}_{\mathrm{sand}}\)</span> is often called the “sandwich covariance matrix” and <span class="math inline">\(\hat{\boldsymbol{\Sigma}}_{\mathrm{sand}}\)</span> the “sandwich covariance estimator,”” since the <span class="math inline">\(\boldsymbol{M}_{\boldsymbol{X}}\)</span> term is like the “bread” and the <span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{x}_n \varepsilon_n\right)\)</span> is like the “meat”. It’s also known as the “Huber-White covariance estimator” (after some of its first promoters), or the “heteroskedasticity-robust” covariance estimator, since it will give correct asymptotic intervals for the OLS coefficients even in the presence of heteroskedasticity.</p>
 <p>Sandwich covariance estimators can be computed in <code>R</code> using the <a href="https://sandwich.r-forge.r-project.org/articles/sandwich.html"><code>sandwich</code></a> package.</p>
 <p>It is often — but not necessarily — the case that sandwich covariance estimates are larger than the “standard” homoskedastic estimates. You therefore pay a price for robustness. It is also the case that sandwich covariance matrices can be more unstable for small <span class="math inline">\(N\)</span>.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Exercise">
@@ -407,32 +407,32 @@ Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>When <span class="math inline">\(P = 1\)</span> (so <span class="math inline">\(\xv_n\)</span> is a scalar), prove that it is possible for <span class="math inline">\(\Covsandhat &lt; \sigmahat^2 \Xcovhat^{-1}\)</span>.</p>
+<p>When <span class="math inline">\(P = 1\)</span> (so <span class="math inline">\(\boldsymbol{x}_n\)</span> is a scalar), prove that it is possible for <span class="math inline">\(\hat{\boldsymbol{\Sigma}}_{\mathrm{sand}}&lt; \hat{\sigma}^2 \hat{\boldsymbol{M}}_{\boldsymbol{X}}^{-1}\)</span>.</p>
 </div>
 </div>
 <section id="checking-for-heteroskedasticity" class="level2">
 <h2 class="anchored" data-anchor-id="checking-for-heteroskedasticity">Checking for heteroskedasticity</h2>
-<p>For low–dimensional problems, is common to plot <span class="math inline">\(\xv_n\)</span> versus <span class="math inline">\(\reshat_n\)</span> to look for evidence of heteroskedasticity. But when <span class="math inline">\(\xv_n\)</span> is high–dimensional, this might be difficult to visualize. In that case, what should you plot?</p>
-<p>Note that an alternative formulation of the CLT for <span class="math inline">\(\betahat_p\)</span>, a particular component of <span class="math inline">\(\betavhat\)</span>, is</p>
+<p>For low–dimensional problems, is common to plot <span class="math inline">\(\boldsymbol{x}_n\)</span> versus <span class="math inline">\(\hat{\varepsilon}_n\)</span> to look for evidence of heteroskedasticity. But when <span class="math inline">\(\boldsymbol{x}_n\)</span> is high–dimensional, this might be difficult to visualize. In that case, what should you plot?</p>
+<p>Note that an alternative formulation of the CLT for <span class="math inline">\(\hat{\beta}_p\)</span>, a particular component of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, is</p>
 <p><span class="math display">\[
 \begin{aligned}
-\sqrt{N}(\betahat_p - \beta_p) ={}&amp;
-\sqrt{N} \ev_p^\trans \left( \X^\trans \X \right)^{-1} \X^\trans \resv
+\sqrt{N}(\hat{\beta}_p - \beta_p) ={}&amp;
+\sqrt{N} \boldsymbol{e}_p^\intercal\left( \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}
 \\={}&amp;
-\ev_p^\trans \left(\frac{1}{N} \X^\trans \X \right)^{-1} \cltn \xv_n \res_n
+\boldsymbol{e}_p^\intercal\left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \frac{1}{\sqrt{N}} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n
 \\\approx{}&amp;
-\ev_p^\trans \Xcov^{-1} \cltn \xv_n \res_n
+\boldsymbol{e}_p^\intercal\boldsymbol{M}_{\boldsymbol{X}}^{-1} \frac{1}{\sqrt{N}} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n
 \\={}&amp;
-\cltn \ev_p^\trans \Xcov^{-1} \xv_n \res_n.
+\frac{1}{\sqrt{N}} \sum_{n=1}^N\boldsymbol{e}_p^\intercal\boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsymbol{x}_n \varepsilon_n.
 \\={}&amp;
-\cltn \r_{n} \res_n
+\frac{1}{\sqrt{N}} \sum_{n=1}^Nr_{n} \varepsilon_n
 \quad\textrm{ where }
-\r_{n} := \ev_p^\trans \Xcov^{-1} \xv_n \in \mathbb{R}.
+r_{n} := \boldsymbol{e}_p^\intercal\boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsymbol{x}_n \in \mathbb{R}.
 \end{aligned}
 \]</span></p>
-<p>Ideally, for checking for heteroskedasticity in the <span class="math inline">\(p\)</span>–th component, we would then plot <span class="math inline">\(\res_n\)</span> versus the scalar <span class="math inline">\(\r_n\)</span>. Neither are observable, but can be approximated with <span class="math inline">\(\reshat_n\)</span> and</p>
+<p>Ideally, for checking for heteroskedasticity in the <span class="math inline">\(p\)</span>–th component, we would then plot <span class="math inline">\(\varepsilon_n\)</span> versus the scalar <span class="math inline">\(r_n\)</span>. Neither are observable, but can be approximated with <span class="math inline">\(\hat{\varepsilon}_n\)</span> and</p>
 <p><span class="math display">\[
-\hat{r}_n := \ev_p^\trans \left(\frac{1}{N} \X^\trans \X \right)^{-1} \xv_n.
+\hat{r}_n := \boldsymbol{e}_p^\intercal\left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \boldsymbol{x}_n.
 \]</span></p>
 <p>(I’m not sure whether this is standard practice, but it seems like a good idea.)</p>
 
@@ -917,12 +917,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="an">solutions:</span><span class="co"> false</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">solutions:</span><span class="co"> false</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Leave the normal assumption behind</span>

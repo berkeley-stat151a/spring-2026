@@ -250,7 +250,6 @@ window.Quarto = {
 </header>
 
 
-<p><span class="math inline">\(\,\)</span></p>
 <section id="goals" class="level1">
 <h1>Goals</h1>
 <ul>
@@ -265,16 +264,16 @@ window.Quarto = {
 </section>
 <section id="choosing-which-regressors-to-include" class="level1">
 <h1>Choosing which regressors to include</h1>
-<p>Let us assume that we’re operating under homoskedastic assumptions, so that <span class="math inline">\(\xv_n \in \rdom{P}\)</span>, and <span class="math display">\[
+<p>Let us assume that we’re operating under homoskedastic assumptions, so that <span class="math inline">\(\boldsymbol{x}_n \in \mathbb{R}^{P}\)</span>, and <span class="math display">\[
 \begin{aligned}
-\expect{\y_n \vert \x_n} ={}&amp; \betav^\trans \xv_n \Rightarrow \\
-\y_n ={}&amp; \betav^\trans \xv_n +  \res_n \textrm{ where}\\
-\res_n :={}&amp; \y_n - \expect{\y_n \vert \xv_n}.
+\mathbb{E}\left[y_n \vert x_n\right] ={}&amp; \boldsymbol{\beta}^\intercal\boldsymbol{x}_n \Rightarrow \\
+y_n ={}&amp; \boldsymbol{\beta}^\intercal\boldsymbol{x}_n +  \varepsilon_n \textrm{ where}\\
+\varepsilon_n :={}&amp; y_n - \mathbb{E}\left[y_n \vert \boldsymbol{x}_n\right].
 \end{aligned}
 \]</span></p>
 <p>Suppose we are trying to decide which regressors to include in our regression. Specifically, suppose that we have ordered our regressors somehow, and we want to select the first <span class="math inline">\(K\)</span> regressors, and want to choose <span class="math inline">\(K\)</span>. In the linear model, limiting to <span class="math inline">\(K\)</span> regressors is equivalent to defining</p>
 <p><span class="math display">\[
-\betav_K :=
+\boldsymbol{\beta}_K :=
 \begin{pmatrix}
 \beta_1 \\
 \vdots \\
@@ -283,76 +282,76 @@ window.Quarto = {
 \vdots \\
 0
 \end{pmatrix}.
-\]</span> Let <span class="math inline">\(\X_K = \X_{(1:N)(1:K)}\)</span> denote the <span class="math inline">\(N\times P\)</span> matrix consisting of the first <span class="math inline">\(K\)</span> columns of <span class="math inline">\(\X\)</span>.</p>
-<p>How should we choose <span class="math inline">\(K\)</span>? Just as we chose <span class="math inline">\(\betavhat\)</span> to minimize a notion of “loss” or “error”, we want to use the same notion of “loss” to try to choose <span class="math inline">\(K\)</span>. As we shall see, some extra complications arise.</p>
+\]</span> Let <span class="math inline">\(\boldsymbol{X}_K = \boldsymbol{X}_{(1:N)(1:K)}\)</span> denote the <span class="math inline">\(N\times P\)</span> matrix consisting of the first <span class="math inline">\(K\)</span> columns of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<p>How should we choose <span class="math inline">\(K\)</span>? Just as we chose <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> to minimize a notion of “loss” or “error”, we want to use the same notion of “loss” to try to choose <span class="math inline">\(K\)</span>. As we shall see, some extra complications arise.</p>
 </section>
 <section id="empirical-versus-observed-loss" class="level1">
 <h1>Empirical versus observed loss</h1>
 <p>Early in the class we motivated OLS by minimizing the sum of squared errors through the observed data: <span class="math display">\[
-\betavhat := \argmin{\betav} \losshat(\betav)
-\quad\textrm{where}\quad \losshat(\betav) := \meann \left(\y_n - \betav^\trans \xv_n\right)^2.
+\hat{\boldsymbol{\beta}}:= \underset{\boldsymbol{\beta}}{\mathrm{argmin}}\, \hat{\mathscr{L}}(\boldsymbol{\beta})
+\quad\textrm{where}\quad \hat{\mathscr{L}}(\boldsymbol{\beta}) := \frac{1}{N} \sum_{n=1}^N\left(y_n - \boldsymbol{\beta}^\intercal\boldsymbol{x}_n\right)^2.
 \]</span> Recall that this is a proxy for the “ideal” estimator <span class="math display">\[
-\betavstar := \argmin{\betav} \loss(\betav)
-\quad\textrm{where}\quad \loss(\betav) := \expect{\left(\y - \betav^\trans \xv \right)^2},
-\]</span> since, for any particular <span class="math inline">\(\betav\)</span>, <span class="math inline">\(\losshat(\betav) \approx \loss(\betav)\)</span> by the LLN. (Note: to make this rigorous, you need to show that the two are close <em>uniformly</em> in <span class="math inline">\(\betav\)</span>, but this stronger version of the LLN is beyond the scope of the present class.) Recall also that <span class="math inline">\(\betavstar\)</span> is the true value of <span class="math inline">\(\betav\)</span> under the LE assumption.</p>
+{\boldsymbol{\beta}^{*}}:= \underset{\boldsymbol{\beta}}{\mathrm{argmin}}\, \mathscr{L}(\boldsymbol{\beta})
+\quad\textrm{where}\quad \mathscr{L}(\boldsymbol{\beta}) := \mathbb{E}\left[\left(y- \boldsymbol{\beta}^\intercal\boldsymbol{x}\right)^2\right],
+\]</span> since, for any particular <span class="math inline">\(\boldsymbol{\beta}\)</span>, <span class="math inline">\(\hat{\mathscr{L}}(\boldsymbol{\beta}) \approx \mathscr{L}(\boldsymbol{\beta})\)</span> by the LLN. (Note: to make this rigorous, you need to show that the two are close <em>uniformly</em> in <span class="math inline">\(\boldsymbol{\beta}\)</span>, but this stronger version of the LLN is beyond the scope of the present class.) Recall also that <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> is the true value of <span class="math inline">\(\boldsymbol{\beta}\)</span> under the LE assumption.</p>
 </section>
 <section id="the-bias-variance-tradeoff" class="level1">
 <h1>The bias-variance tradeoff</h1>
-<p>Let us imagine that we could actually compute <span class="math inline">\(\loss(\betav)\)</span>, and suppose that we use <span class="math inline">\(\betavhat_K := (\X_K^\trans \X_K)^{-1}\X_K^\trans\Y\)</span> denote the estimator using only the first <span class="math inline">\(K\)</span> regressors. Let us directly compute how <span class="math inline">\(\loss(\betavhat_K)\)</span> depends on <span class="math inline">\(K\)</span>. Note that <span class="math display">\[
-\expect{\betavhat_K} := \bv_K \ne \betavstar,
-\]</span> since we assume that we may have an incorrectly specified model when using only <span class="math inline">\(K\)</span> regressors. That is, <span class="math inline">\(\betavhat_K\)</span> is <em>biased</em> as an estimator of <span class="math inline">\(\betavstar\)</span> — both because it sets to zero components in <span class="math inline">\(\betavstar\)</span> which might not be zero, and because it may be biased even for the non–zero components, to the extent that there is omitted variable bias due to correlation between the omitted and included regressors.</p>
-<p>Suppose that <span class="math inline">\(\y_\new\)</span> and <span class="math inline">\(\xv_\new\)</span> are new datapoints that were not used in the regression, and so are independent of <span class="math inline">\(\betavhat_K\)</span>. Then</p>
+<p>Let us imagine that we could actually compute <span class="math inline">\(\mathscr{L}(\boldsymbol{\beta})\)</span>, and suppose that we use <span class="math inline">\(\hat{\boldsymbol{\beta}}_K := (\boldsymbol{X}_K^\intercal\boldsymbol{X}_K)^{-1}\boldsymbol{X}_K^\intercal\boldsymbol{Y}\)</span> denote the estimator using only the first <span class="math inline">\(K\)</span> regressors. Let us directly compute how <span class="math inline">\(\mathscr{L}(\hat{\boldsymbol{\beta}}_K)\)</span> depends on <span class="math inline">\(K\)</span>. Note that <span class="math display">\[
+\mathbb{E}\left[\hat{\boldsymbol{\beta}}_K\right] := \boldsymbol{b}_K \ne {\boldsymbol{\beta}^{*}},
+\]</span> since we assume that we may have an incorrectly specified model when using only <span class="math inline">\(K\)</span> regressors. That is, <span class="math inline">\(\hat{\boldsymbol{\beta}}_K\)</span> is <em>biased</em> as an estimator of <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> — both because it sets to zero components in <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> which might not be zero, and because it may be biased even for the non–zero components, to the extent that there is omitted variable bias due to correlation between the omitted and included regressors.</p>
+<p>Suppose that <span class="math inline">\(y_\mathrm{new}\)</span> and <span class="math inline">\(\boldsymbol{x}_\mathrm{new}\)</span> are new datapoints that were not used in the regression, and so are independent of <span class="math inline">\(\hat{\boldsymbol{\beta}}_K\)</span>. Then</p>
 <p><span class="math display">\[
 \begin{aligned}
-\loss(\betavhat_K) :={}&amp;
-\expect{(\y_\new - \betahat_K^\trans \xv_\new)^2}
+\mathscr{L}(\hat{\boldsymbol{\beta}}_K) :={}&amp;
+\mathbb{E}\left[(y_\mathrm{new}- \hat{\beta}_K^\intercal\boldsymbol{x}_\mathrm{new})^2\right]
 \\={}&amp;
-\expect{\left(\y_\new - \bv_K^\trans \xv_\new +
-  \bv_K^\trans  \xv_\new - \betahat_K^\trans \xv_\new \right)^2} \\
+\mathbb{E}\left[\left(y_\mathrm{new}- \boldsymbol{b}_K^\intercal\boldsymbol{x}_\mathrm{new}+
+  \boldsymbol{b}_K^\intercal\boldsymbol{x}_\mathrm{new}- \hat{\beta}_K^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right] \\
 ={}&amp;
-\expect{\left(\y_\new - \bv_K^\trans \xv_\new \right)^2} +
-  \expect{\left(\bv_K^\trans  \xv_\new - \betahat_K^\trans \xv_\new \right)^2} +
+\mathbb{E}\left[\left(y_\mathrm{new}- \boldsymbol{b}_K^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right] +
+  \mathbb{E}\left[\left(\boldsymbol{b}_K^\intercal\boldsymbol{x}_\mathrm{new}- \hat{\beta}_K^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right] +
 \\&amp; 2
-  \expect{\y_\new - \bv_K^\trans \xv_\new}
-  \expect{\left(\bv_K^\trans - \betahat_K^\trans\right) \xv_\new}
+  \mathbb{E}\left[y_\mathrm{new}- \boldsymbol{b}_K^\intercal\boldsymbol{x}_\mathrm{new}\right]
+  \mathbb{E}\left[\left(\boldsymbol{b}_K^\intercal- \hat{\beta}_K^\intercal\right) \boldsymbol{x}_\mathrm{new}\right]
 \\={}&amp;
-\expect{\left(\y_\new - \bv_K^\trans \xv_\new \right)^2} +
-  \expect{\left( \left(\bv_K - \betahat_K\right)^\trans \xv_\new \right)^2}
+\mathbb{E}\left[\left(y_\mathrm{new}- \boldsymbol{b}_K^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right] +
+  \mathbb{E}\left[\left( \left(\boldsymbol{b}_K - \hat{\beta}_K\right)^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right]
 \end{aligned}
 \]</span></p>
-<p>because the training and test data are independent by assumption. Now, the first term can be further decomposed using the fact that <span class="math inline">\(\y_\new = \beta^\trans \xv_\new + \res_\new\)</span>:</p>
+<p>because the training and test data are independent by assumption. Now, the first term can be further decomposed using the fact that <span class="math inline">\(y_\mathrm{new}= \beta^\intercal\boldsymbol{x}_\mathrm{new}+ \varepsilon_\mathrm{new}\)</span>:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\expect{\left(\y_\new - \bv_K^\trans \xv_\new \right)^2}
+\mathbb{E}\left[\left(y_\mathrm{new}- \boldsymbol{b}_K^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right]
 ={}&amp;
-\expect{\left(\beta^\trans \xv_\new + \res_\new - \bv_K^\trans \xv_\new \right)^2}
+\mathbb{E}\left[\left(\beta^\intercal\boldsymbol{x}_\mathrm{new}+ \varepsilon_\mathrm{new}- \boldsymbol{b}_K^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right]
 \\={}&amp;
-\expect{\res_\new^2} +
-\expect{\left(\left(\beta - \bv_K\right)^\trans \xv_\new \right)^2}
-+ 2 \expect{\res_\new \left(\beta - \bv_K\right)^\trans \xv_\new}
+\mathbb{E}\left[\varepsilon_\mathrm{new}^2\right] +
+\mathbb{E}\left[\left(\left(\beta - \boldsymbol{b}_K\right)^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right]
++ 2 \mathbb{E}\left[\varepsilon_\mathrm{new}\left(\beta - \boldsymbol{b}_K\right)^\intercal\boldsymbol{x}_\mathrm{new}\right]
 \\={}&amp;
-\expect{\res_\new^2} +
-\expect{\left(\left(\beta - \bv_K\right)^\trans \xv_\new \right)^2},
+\mathbb{E}\left[\varepsilon_\mathrm{new}^2\right] +
+\mathbb{E}\left[\left(\left(\beta - \boldsymbol{b}_K\right)^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right],
 \end{aligned}
 \]</span></p>
-<p>where the final line follows from <span class="math inline">\(\expect{\xv_\new \res_\new} = \zerov\)</span>, independently of the training data. We have now decomposed the MSE into three terms, each with a distint intepretation:</p>
+<p>where the final line follows from <span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}_\mathrm{new}\varepsilon_\mathrm{new}\right] = \boldsymbol{0}\)</span>, independently of the training data. We have now decomposed the MSE into three terms, each with a distint intepretation:</p>
 <p><span class="math display">\[
 \begin{aligned}
-\loss(\betavhat_K) :={}&amp;
-\expect{\res_\new^2} &amp;+&amp;
-\expect{\left(\left(\beta - \bv_K\right)^\trans \xv_\new \right)^2} &amp;+&amp;
-\expect{\left( \left(\bv_K - \betahat_K\right)^\trans \xv_\new \right)^2}
+\mathscr{L}(\hat{\boldsymbol{\beta}}_K) :={}&amp;
+\mathbb{E}\left[\varepsilon_\mathrm{new}^2\right] &amp;+&amp;
+\mathbb{E}\left[\left(\left(\beta - \boldsymbol{b}_K\right)^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right] &amp;+&amp;
+\mathbb{E}\left[\left( \left(\boldsymbol{b}_K - \hat{\beta}_K\right)^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right]
 \\={}&amp;
-\expect{\res_\new^2} &amp;+&amp;
-\trace{
-  \left(\beta - \bv_K\right)
-          \left(\beta - \bv_K\right)^\trans
-          \expect{\xv_\new \xv_\new^\trans}
-} &amp;+&amp;
-\trace{
-  \cov{\betahat_K} \expect{\xv_\new \xv_\new^\trans}
-}\\
-=&amp; \textrm{Irreducible error} &amp;+&amp; \textrm{Squared bias of }\beta_K &amp;+&amp;\textrm{Variance of }\betahat_K.
+\mathbb{E}\left[\varepsilon_\mathrm{new}^2\right] &amp;+&amp;
+\mathrm{trace}\left(
+  \left(\beta - \boldsymbol{b}_K\right)
+          \left(\beta - \boldsymbol{b}_K\right)^\intercal
+          \mathbb{E}\left[\boldsymbol{x}_\mathrm{new}\boldsymbol{x}_\mathrm{new}^\intercal\right]
+\right) &amp;+&amp;
+\mathrm{trace}\left(
+  \mathrm{Cov}\left(\hat{\beta}_K\right) \mathbb{E}\left[\boldsymbol{x}_\mathrm{new}\boldsymbol{x}_\mathrm{new}^\intercal\right]
+\right)\\
+=&amp; \textrm{Irreducible error} &amp;+&amp; \textrm{Squared bias of }\beta_K &amp;+&amp;\textrm{Variance of }\hat{\beta}_K.
 \end{aligned}
 \]</span></p>
 <p>As <span class="math inline">\(K\)</span> gets larger, these terms can be expected to behave differently:</p>
@@ -361,131 +360,131 @@ window.Quarto = {
 <li>The bias will tend to decrease</li>
 <li>The variance will tend to increase.</li>
 </ul>
-<p>In particular, note that if <span class="math inline">\(\cov{\betahat_K} = \sigma^2 (\X_K^\trans \X_K)^{-1}\)</span>, then</p>
+<p>In particular, note that if <span class="math inline">\(\mathrm{Cov}\left(\hat{\beta}_K\right) = \sigma^2 (\boldsymbol{X}_K^\intercal\boldsymbol{X}_K)^{-1}\)</span>, then</p>
 <p><span class="math display">\[
 \begin{aligned}
-\trace{
-\cov{\betahat_K} \expect{\xv_\new \xv_\new^\trans}
-}
+\mathrm{trace}\left(
+\mathrm{Cov}\left(\hat{\beta}_K\right) \mathbb{E}\left[\boldsymbol{x}_\mathrm{new}\boldsymbol{x}_\mathrm{new}^\intercal\right]
+\right)
 \approx{}&amp;
-\trace{
+\mathrm{trace}\left(
 \begin{pmatrix}
-\frac{\sigma^2}{N} (\expect{\xv_{K} \xv_{K}^\trans})^{-1} &amp; \zerov_{K(P-K)} \\
-\zerov_{(P-K)K} &amp; \zerov_{(P-K)(P-K)}
+\frac{\sigma^2}{N} (\mathbb{E}\left[\boldsymbol{x}_{K} \boldsymbol{x}_{K}^\intercal\right])^{-1} &amp; \boldsymbol{0}_{K(P-K)} \\
+\boldsymbol{0}_{(P-K)K} &amp; \boldsymbol{0}_{(P-K)(P-K)}
 \end{pmatrix}
 \begin{pmatrix}
-\expect{\xv_K^\trans \xv_K} &amp; \expect{\xv_K^\trans \xv_{P-K}} \\
-\expect{\xv_{P-K}^\trans \xv_K} &amp; \expect{\xv_{P-K}^\trans \xv_{P-K}}
+\mathbb{E}\left[\boldsymbol{x}_K^\intercal\boldsymbol{x}_K\right] &amp; \mathbb{E}\left[\boldsymbol{x}_K^\intercal\boldsymbol{x}_{P-K}\right] \\
+\mathbb{E}\left[\boldsymbol{x}_{P-K}^\intercal\boldsymbol{x}_K\right] &amp; \mathbb{E}\left[\boldsymbol{x}_{P-K}^\intercal\boldsymbol{x}_{P-K}\right]
 \end{pmatrix}
-}
+\right)
 \\={}&amp;
-\trace{
+\mathrm{trace}\left(
 \begin{pmatrix}
-\frac{\sigma^2}{N} \id_K &amp; \zerov_{K(P-K)} \\
-\zerov_{(P-K)K} &amp; \zerov_{(P-K)(P-K)}
+\frac{\sigma^2}{N} \boldsymbol{I}_K &amp; \boldsymbol{0}_{K(P-K)} \\
+\boldsymbol{0}_{(P-K)K} &amp; \boldsymbol{0}_{(P-K)(P-K)}
 \end{pmatrix}
-}
+\right)
 \\={}&amp; \frac{K \sigma^2}{N}.
 \end{aligned}
 \]</span></p>
-<p>Further, notice that at <span class="math inline">\(K=0\)</span> the variance is zero, and the bias is simply <span class="math inline">\(\betavstar \betavstar^\trans\)</span>. Consequently, we might expect a “sweet spot” where the bias has decreased some but the variance has not yet increased too much.</p>
+<p>Further, notice that at <span class="math inline">\(K=0\)</span> the variance is zero, and the bias is simply <span class="math inline">\({\boldsymbol{\beta}^{*}}{\boldsymbol{\beta}^{*}}^\intercal\)</span>. Consequently, we might expect a “sweet spot” where the bias has decreased some but the variance has not yet increased too much.</p>
 </section>
 <section id="the-observed-loss-is-biased-downwards" class="level1">
 <h1>The observed loss is biased downwards</h1>
-<p>We have seen that <span class="math inline">\(\betavhat\)</span> is a good estimate of <span class="math inline">\(\betavstar\)</span>, in the sense that <span class="math inline">\(\expect{\betavhat} = \betavstar\)</span> and <span class="math inline">\(\betavhat \rightarrow \betavstar\)</span> as <span class="math inline">\(N \rightarrow \infty\)</span>. But is <span class="math inline">\(\losshat(\betavhat)\)</span> a good estimate of <span class="math inline">\(\loss(\betavstar)\)</span>?</p>
-<p>Note that we cannot use the LLN becuase <span class="math inline">\(\betavhat\)</span> depends on all the data, so <span class="math inline">\(\y_n - \betavhat^\trans \xv_n\)</span> are <em>not</em> independent. However, using results we’ve already shown, there are several ways to see that <span class="math inline">\(\losshat(\betavhat)\)</span> is downwardly biased as an estimator of <span class="math inline">\(\loss(\betavstar)\)</span>.</p>
+<p>We have seen that <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is a good estimate of <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span>, in the sense that <span class="math inline">\(\mathbb{E}\left[\hat{\boldsymbol{\beta}}\right] = {\boldsymbol{\beta}^{*}}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}\rightarrow {\boldsymbol{\beta}^{*}}\)</span> as <span class="math inline">\(N \rightarrow \infty\)</span>. But is <span class="math inline">\(\hat{\mathscr{L}}(\hat{\boldsymbol{\beta}})\)</span> a good estimate of <span class="math inline">\(\mathscr{L}({\boldsymbol{\beta}^{*}})\)</span>?</p>
+<p>Note that we cannot use the LLN becuase <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> depends on all the data, so <span class="math inline">\(y_n - \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n\)</span> are <em>not</em> independent. However, using results we’ve already shown, there are several ways to see that <span class="math inline">\(\hat{\mathscr{L}}(\hat{\boldsymbol{\beta}})\)</span> is downwardly biased as an estimator of <span class="math inline">\(\mathscr{L}({\boldsymbol{\beta}^{*}})\)</span>.</p>
 <section id="unbiasedness-of-the-residual-variance-estimator" class="level2">
 <h2 class="anchored" data-anchor-id="unbiasedness-of-the-residual-variance-estimator">Unbiasedness of the residual variance estimator</h2>
 <p><span class="math display">\[
 \begin{aligned}
-\loss(\betavstar) ={}&amp; \expect{(\y_n - \xv_n^\trans \betavstar)} = \sigma^2 \quad\textrm{and}\\
-\losshat(\betavhat) ={}&amp;
-  \meann (\y_n - \betavhat^\trans \xv_n)^2 =
-  \meann \reshat_n^2 =
-  \frac{N - P}{N} \sigmahat^2.
+\mathscr{L}({\boldsymbol{\beta}^{*}}) ={}&amp; \mathbb{E}\left[(y_n - \boldsymbol{x}_n^\intercal{\boldsymbol{\beta}^{*}})\right] = \sigma^2 \quad\textrm{and}\\
+\hat{\mathscr{L}}(\hat{\boldsymbol{\beta}}) ={}&amp;
+  \frac{1}{N} \sum_{n=1}^N(y_n - \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n)^2 =
+  \frac{1}{N} \sum_{n=1}^N\hat{\varepsilon}_n^2 =
+  \frac{N - P}{N} \hat{\sigma}^2.
 \end{aligned}
 \]</span></p>
-<p>Since <span class="math inline">\(\expect{\sigmahat^2} = \sigma^2\)</span>, we have</p>
+<p>Since <span class="math inline">\(\mathbb{E}\left[\hat{\sigma}^2\right] = \sigma^2\)</span>, we have</p>
 <p><span class="math display">\[
-\expect{\losshat(\betavhat)} = \frac{N - P}{N} \expect{\sigmahat^2} = \frac{N - P}{N} \sigma^2 &lt; \sigma^2 = \loss(\betavstar).
+\mathbb{E}\left[\hat{\mathscr{L}}(\hat{\boldsymbol{\beta}})\right] = \frac{N - P}{N} \mathbb{E}\left[\hat{\sigma}^2\right] = \frac{N - P}{N} \sigma^2 &lt; \sigma^2 = \mathscr{L}({\boldsymbol{\beta}^{*}}).
 \]</span></p>
-<p>The larger <span class="math inline">\(P\)</span> is, the greater the bias. In fact, when <span class="math inline">\(P = N\)</span>, <span class="math inline">\(\losshat(\betavhat) = 0\)</span>, no matter what <span class="math inline">\(\sigma^2\)</span> is.</p>
+<p>The larger <span class="math inline">\(P\)</span> is, the greater the bias. In fact, when <span class="math inline">\(P = N\)</span>, <span class="math inline">\(\hat{\mathscr{L}}(\hat{\boldsymbol{\beta}}) = 0\)</span>, no matter what <span class="math inline">\(\sigma^2\)</span> is.</p>
 </section>
 <section id="equivalence-to-r2" class="level2">
 <h2 class="anchored" data-anchor-id="equivalence-to-r2">Equivalence to <span class="math inline">\(R^2\)</span></h2>
-<p>Equivalently, <span class="math inline">\(\losshat(\betavhat) = ESS = TSS(1 - R^2)\)</span>, and we have already seen that we cannot use <span class="math inline">\(R^2\)</span> to choose which regressors to include, since it will always choose more regressors.</p>
+<p>Equivalently, <span class="math inline">\(\hat{\mathscr{L}}(\hat{\boldsymbol{\beta}}) = ESS = TSS(1 - R^2)\)</span>, and we have already seen that we cannot use <span class="math inline">\(R^2\)</span> to choose which regressors to include, since it will always choose more regressors.</p>
 </section>
 <section id="aligning-with-residuals" class="level2">
 <h2 class="anchored" data-anchor-id="aligning-with-residuals">Aligning with residuals</h2>
-<p>We can also show by direct computation that <span class="math inline">\(\losshat(\betavhat) &lt; \losshat(\betavstar)\)</span> by direct computation: <span class="math display">\[
+<p>We can also show by direct computation that <span class="math inline">\(\hat{\mathscr{L}}(\hat{\boldsymbol{\beta}}) &lt; \hat{\mathscr{L}}({\boldsymbol{\beta}^{*}})\)</span> by direct computation: <span class="math display">\[
 \begin{aligned}
-\losshat(\betavhat)
-={}&amp; \meann (\y_n - \xv_n^\trans \betavhat)^2
-={}&amp; \frac{1}{N} (\Y - \X\betavhat)^T (\Y - \X\betavhat)
+\hat{\mathscr{L}}(\hat{\boldsymbol{\beta}})
+={}&amp; \frac{1}{N} \sum_{n=1}^N(y_n - \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}})^2
+={}&amp; \frac{1}{N} (\boldsymbol{Y}- \boldsymbol{X}\hat{\boldsymbol{\beta}})^T (\boldsymbol{Y}- \boldsymbol{X}\hat{\boldsymbol{\beta}})
 \\={}&amp; \frac{1}{N}
-    (\Y - \X \betav + \X (\betavstar - \betavhat))^T
-    (\Y - \X \betav + \X(\betavstar - \betavhat))
-\\={}&amp; \frac{1}{N} \norm{\Y - \X \betavstar}^2 +
-  \frac{1}{N} (\betavstar - \betavhat)^\trans \X^\trans \X (\betavstar - \betavhat) +
-  \frac{1}{N} 2 (\Y - \X \betavstar)^\trans \X (\betavstar - \betavhat)
-\\={}&amp; \frac{1}{N} \norm{\resv}^2 +
-  \frac{1}{N} \resv^\trans \X (\X^\trans \X)^{-1} \X^\trans \X (\X^\trans \X)^{-1} \X^\trans \resv
-  - 2\frac{1}{N} \resv^\trans \X (\X^\trans \X)^{-1} \X^\trans \resv
-\\={}&amp; \frac{1}{N} \norm{\resv}^2 -
-  \frac{1}{N} \norm{(\X^\trans \X)^{-1/2} \X^\trans \resv}^2
-\\\le{}&amp; \frac{1}{N} \norm{\resv}^2
-\\={}&amp; \losshat(\betavstar) \approx \loss(\betavstar),
+    (\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{X}({\boldsymbol{\beta}^{*}}- \hat{\boldsymbol{\beta}}))^T
+    (\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{X}({\boldsymbol{\beta}^{*}}- \hat{\boldsymbol{\beta}}))
+\\={}&amp; \frac{1}{N} \left\Vert\boldsymbol{Y}- \boldsymbol{X}{\boldsymbol{\beta}^{*}}\right\Vert^2 +
+  \frac{1}{N} ({\boldsymbol{\beta}^{*}}- \hat{\boldsymbol{\beta}})^\intercal\boldsymbol{X}^\intercal\boldsymbol{X}({\boldsymbol{\beta}^{*}}- \hat{\boldsymbol{\beta}}) +
+  \frac{1}{N} 2 (\boldsymbol{Y}- \boldsymbol{X}{\boldsymbol{\beta}^{*}})^\intercal\boldsymbol{X}({\boldsymbol{\beta}^{*}}- \hat{\boldsymbol{\beta}})
+\\={}&amp; \frac{1}{N} \left\Vert\boldsymbol{\varepsilon}\right\Vert^2 +
+  \frac{1}{N} \boldsymbol{\varepsilon}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}
+  - 2\frac{1}{N} \boldsymbol{\varepsilon}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}
+\\={}&amp; \frac{1}{N} \left\Vert\boldsymbol{\varepsilon}\right\Vert^2 -
+  \frac{1}{N} \left\Vert(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1/2} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}\right\Vert^2
+\\\le{}&amp; \frac{1}{N} \left\Vert\boldsymbol{\varepsilon}\right\Vert^2
+\\={}&amp; \hat{\mathscr{L}}({\boldsymbol{\beta}^{*}}) \approx \mathscr{L}({\boldsymbol{\beta}^{*}}),
 \end{aligned}
-\]</span> where the final line follows from the LLN (because <span class="math inline">\(\betavstar\)</span> does not depend on the data).</p>
-<p>Note that the under-estimation is precisely to the extent that the columns of <span class="math inline">\(\X\)</span> are able to align with the true unobserved residual, <span class="math inline">\(\resv\)</span>.</p>
+\]</span> where the final line follows from the LLN (because <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> does not depend on the data).</p>
+<p>Note that the under-estimation is precisely to the extent that the columns of <span class="math inline">\(\boldsymbol{X}\)</span> are able to align with the true unobserved residual, <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>.</p>
 </section>
 </section>
 <section id="cross-validation-and-model-selection-criteria" class="level1">
 <h1>Cross-validation and model selection criteria</h1>
 <p>We might first think to use our F-test to test the null hypothesis that the last <span class="math inline">\(K\)</span> elements of <span class="math inline">\(\beta\)</span> are zero. However, the problem is that these hypothesis tests are not independent of one another. (Why?) Choosing the <span class="math inline">\(K\)</span> that minimizes the <span class="math inline">\(F\)</span> statistic will use the data twice in a way that invalidates the hypothesis test.</p>
 <p>Instead, we can form <em>estimates</em> of the MSE using held-out <span class="math display">\[
-\meann (\y_n - \xv_n^\trans \betavhat)^2 \le \meann (\y_n - \xv_n^\trans \betav)^2.
+\frac{1}{N} \sum_{n=1}^N(y_n - \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}})^2 \le \frac{1}{N} \sum_{n=1}^N(y_n - \boldsymbol{x}_n^\intercal\boldsymbol{\beta})^2.
 \]</span></p>
 <p>In fact,</p>
 <p><span class="math display">\[
 \begin{aligned}
-\meann (\y_n - \xv_n^\trans \betavhat)^2
-={}&amp; \frac{1}{N} (\Y - \X\betavhat)^T (\Y - \X\betavhat)
+\frac{1}{N} \sum_{n=1}^N(y_n - \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}})^2
+={}&amp; \frac{1}{N} (\boldsymbol{Y}- \boldsymbol{X}\hat{\boldsymbol{\beta}})^T (\boldsymbol{Y}- \boldsymbol{X}\hat{\boldsymbol{\beta}})
 \\={}&amp; \frac{1}{N}
-    (\Y - \X \betav + \X (\betav - \betavhat))^T
-    (\Y - \X \betav + \X(\betav - \betavhat))
-\\={}&amp; \frac{1}{N} \norm{\Y - \X \betav}^2 +
-  \frac{1}{N} (\betav - \betavhat)^\trans \X^\trans \X (\betav - \betavhat) +
-  \frac{1}{N} 2 (\Y - \X \betav)^\trans \X (\betav - \betavhat)
-\\={}&amp; \frac{1}{N} \norm{\resv}^2 +
-  \frac{1}{N} \resv^\trans \X (\X^\trans \X)^{-1} \X^\trans \X (\X^\trans \X)^{-1} \X^\trans \resv
-  - 2\frac{1}{N} \resv^\trans \X (\X^\trans \X)^{-1} \X^\trans \resv
-\\={}&amp; \frac{1}{N} \norm{\resv}^2 -
-  \frac{1}{N} \norm{(\X^\trans \X)^{-1/2} \X^\trans \resv}^2
-\\\le{}&amp; \frac{1}{N} \norm{\resv}^2 \approx \textrm{MSE}.
+    (\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{X}(\boldsymbol{\beta}- \hat{\boldsymbol{\beta}}))^T
+    (\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{X}(\boldsymbol{\beta}- \hat{\boldsymbol{\beta}}))
+\\={}&amp; \frac{1}{N} \left\Vert\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\beta}\right\Vert^2 +
+  \frac{1}{N} (\boldsymbol{\beta}- \hat{\boldsymbol{\beta}})^\intercal\boldsymbol{X}^\intercal\boldsymbol{X}(\boldsymbol{\beta}- \hat{\boldsymbol{\beta}}) +
+  \frac{1}{N} 2 (\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\beta})^\intercal\boldsymbol{X}(\boldsymbol{\beta}- \hat{\boldsymbol{\beta}})
+\\={}&amp; \frac{1}{N} \left\Vert\boldsymbol{\varepsilon}\right\Vert^2 +
+  \frac{1}{N} \boldsymbol{\varepsilon}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}
+  - 2\frac{1}{N} \boldsymbol{\varepsilon}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}
+\\={}&amp; \frac{1}{N} \left\Vert\boldsymbol{\varepsilon}\right\Vert^2 -
+  \frac{1}{N} \left\Vert(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1/2} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}\right\Vert^2
+\\\le{}&amp; \frac{1}{N} \left\Vert\boldsymbol{\varepsilon}\right\Vert^2 \approx \textrm{MSE}.
 \end{aligned}
 \]</span></p>
-<p>Note that the under-estimation is precisely to the extent that the columns of <span class="math inline">\(\X\)</span> are able to align with the true unobserved residual, <span class="math inline">\(\resv\)</span>.data. Note that the in-sample error underestimates the true MSE, simply because we find <span class="math inline">\(\betahat\)</span> to minimize it:</p>
+<p>Note that the under-estimation is precisely to the extent that the columns of <span class="math inline">\(\boldsymbol{X}\)</span> are able to align with the true unobserved residual, <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>.data. Note that the in-sample error underestimates the true MSE, simply because we find <span class="math inline">\(\hat{\beta}\)</span> to minimize it:</p>
 <p>There are a number of approximate criteria that try to correct the MSE for overfitting (AIC, BIC, adjusted <span class="math inline">\(R^2\)</span>), but they hold only approximately and asymptotically. Instead, one can approximate the MSE directly by holding out some data.</p>
-<p>In particular, if we leave out a single datapoint, and denote by <span class="math inline">\(\betavhat_{-n}\)</span> the fit without the <span class="math inline">\(n\)</span>–th datapoint, then the error on the left-out point is approximately unbiased for MSE, since <span class="math display">\[
+<p>In particular, if we leave out a single datapoint, and denote by <span class="math inline">\(\hat{\boldsymbol{\beta}}_{-n}\)</span> the fit without the <span class="math inline">\(n\)</span>–th datapoint, then the error on the left-out point is approximately unbiased for MSE, since <span class="math display">\[
 \begin{aligned}
-\textrm{MSE}_{-n} ={}&amp; (\y_n - \xv_n^\trans \betavhat_{-n})^2 \\
-\expect{\textrm{MSE}_{-n} \vert \y_n, \xv_n} ={}&amp;
-\y_n^2 - 2 \y_n \xv_n^\trans \expect{\betavhat_{-n}}
-+ \xv_n^\trans \expect{\betavhat_{-n} \betavhat_{-n}^\trans} \xv_n \\
-\expect{\textrm{MSE}_{-n}} ={}&amp;
-\expect{\y_n^2} - 2 \expect{\y_n \xv_n^\trans} \expect{\betavhat_{-n}}
-+ \trace{\expect{\betavhat_{-n} \betavhat_{-n}^\trans} \expect{\xv_n \xv_n^\trans} }
+\textrm{MSE}_{-n} ={}&amp; (y_n - \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}_{-n})^2 \\
+\mathbb{E}\left[\textrm{MSE}_{-n} \vert y_n, \boldsymbol{x}_n\right] ={}&amp;
+y_n^2 - 2 y_n \boldsymbol{x}_n^\intercal\mathbb{E}\left[\hat{\boldsymbol{\beta}}_{-n}\right]
++ \boldsymbol{x}_n^\intercal\mathbb{E}\left[\hat{\boldsymbol{\beta}}_{-n} \hat{\boldsymbol{\beta}}_{-n}^\intercal\right] \boldsymbol{x}_n \\
+\mathbb{E}\left[\textrm{MSE}_{-n}\right] ={}&amp;
+\mathbb{E}\left[y_n^2\right] - 2 \mathbb{E}\left[y_n \boldsymbol{x}_n^\intercal\right] \mathbb{E}\left[\hat{\boldsymbol{\beta}}_{-n}\right]
++ \mathrm{trace}\left(\mathbb{E}\left[\hat{\boldsymbol{\beta}}_{-n} \hat{\boldsymbol{\beta}}_{-n}^\intercal\right] \mathbb{E}\left[\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\right] \right)
 \\={}&amp;
-\expect{\y_\new^2} - 2 \expect{\y_\new \xv_\new^\trans} \expect{\betavhat_{-n}}
-+ \trace{\expect{\betavhat_{-n} \betavhat_{-n}^\trans} \expect{\xv_\new \xv_\new^\trans} }
+\mathbb{E}\left[y_\mathrm{new}^2\right] - 2 \mathbb{E}\left[y_\mathrm{new}\boldsymbol{x}_\mathrm{new}^\intercal\right] \mathbb{E}\left[\hat{\boldsymbol{\beta}}_{-n}\right]
++ \mathrm{trace}\left(\mathbb{E}\left[\hat{\boldsymbol{\beta}}_{-n} \hat{\boldsymbol{\beta}}_{-n}^\intercal\right] \mathbb{E}\left[\boldsymbol{x}_\mathrm{new}\boldsymbol{x}_\mathrm{new}^\intercal\right] \right)
 \\={}&amp;
-\expect{(\y_\new - \xv_\new^\trans \betavhat_{-n})^2},
+\mathbb{E}\left[(y_\mathrm{new}- \boldsymbol{x}_\mathrm{new}^\intercal\hat{\boldsymbol{\beta}}_{-n})^2\right],
 \end{aligned}
 \]</span></p>
-<p>where the final line follows from the fact that <span class="math inline">\(\x_n,\y_n\)</span> and <span class="math inline">\(\x_\new,\y_\new\)</span> have the same distribution. The only bias occurs from the fact that <span class="math inline">\(\betavhat_{-n}\)</span> has a different distribution from <span class="math inline">\(\betavhat\)</span> on the full data (in particular, it has a slightly larger variance). It follows that we can estimate the MSE using</p>
+<p>where the final line follows from the fact that <span class="math inline">\(x_n,y_n\)</span> and <span class="math inline">\(x_\mathrm{new},y_\mathrm{new}\)</span> have the same distribution. The only bias occurs from the fact that <span class="math inline">\(\hat{\boldsymbol{\beta}}_{-n}\)</span> has a different distribution from <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> on the full data (in particular, it has a slightly larger variance). It follows that we can estimate the MSE using</p>
 <p><span class="math display">\[
-\hat{MSE}_{LOO} := \meann \textrm{MSE}_{-n},
+\hat{MSE}_{LOO} := \frac{1}{N} \sum_{n=1}^N\textrm{MSE}_{-n},
 \]</span></p>
 <p>the “leave-one-out” cross-validation estimator.</p>
 
@@ -969,11 +968,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>$\,$</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Derive estimates of mean squared error that can be used for prediction</span>

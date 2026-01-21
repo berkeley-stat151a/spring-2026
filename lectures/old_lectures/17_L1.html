@@ -245,7 +245,6 @@ window.Quarto = {
 </header>
 
 
-<p><span class="math inline">\(\,\)</span></p>
 <section id="goals" class="level1">
 <h1>Goals</h1>
 <ul>
@@ -260,45 +259,45 @@ window.Quarto = {
 <section id="penalizing-large-regressors-slightly-different" class="level1">
 <h1>Penalizing large regressors (slightly different)</h1>
 <p>Recall last</p>
-<p>Recall that one perspective on regression is that we choose <span class="math inline">\(\betahat\)</span> to minimize the ridge or L2 loss,</p>
+<p>Recall that one perspective on regression is that we choose <span class="math inline">\(\hat{\beta}\)</span> to minimize the ridge or L2 loss,</p>
 <p><span class="math display">\[
-\betavhat_{L2}(\lambda) := \argmin{\betav}\left(  RSS(\betav) + \lambda \norm{\betav}_2^2 \right).
+\hat{\boldsymbol{\beta}}_{L2}(\lambda) := \underset{\boldsymbol{\beta}}{\mathrm{argmin}}\,\left(  RSS(\boldsymbol{\beta}) + \lambda \left\Vert\boldsymbol{\beta}\right\Vert_2^2 \right).
 \]</span></p>
 <p>and proved that <span class="math display">\[
-\betavhat_{L2}(\lambda) = \left(\X^\trans \X + \lambda \id \right)^{-1} \X^\trans \Y.
+\hat{\boldsymbol{\beta}}_{L2}(\lambda) = \left(\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}\right)^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}.
 \]</span></p>
-<p>One problem with this might be that the solution <span class="math inline">\(\betavhat_{L2}(\lambda)\)</span> is still “dense”, meaning that, in general, every entry of it is nonzero, and we still have to invert a <span class="math inline">\(P\times P\)</span> matrix.</p>
+<p>One problem with this might be that the solution <span class="math inline">\(\hat{\boldsymbol{\beta}}_{L2}(\lambda)\)</span> is still “dense”, meaning that, in general, every entry of it is nonzero, and we still have to invert a <span class="math inline">\(P\times P\)</span> matrix.</p>
 <p>For example, consider our highly correlated regressor example from the previous lecture. The ridge regression will still include both regressors, and their coefficient estimates will still be highly negatively correlated, but both will be shrunk towards zero. Maybe it would make more sense to select only one variable to include. Let us try to think of how we can change the penalty term to achieve this.</p>
 <div class="callout-info" title="Notation">
-<p>A “sparse” solution is an estimator <span class="math inline">\(\betavhat\)</span> in which many of the entries are zero — that is, an estimated regression line that does not use many of the available regressors.</p>
+<p>A “sparse” solution is an estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> in which many of the entries are zero — that is, an estimated regression line that does not use many of the available regressors.</p>
 </div>
 <p>In a word — ridge regression estimates are not sparse. Let’s try to derive one that is by changing the penalty.</p>
 <p>A very intuitive way to produce a sparse estimate is as follows: <span class="math display">\[
-\betavhat_{L0}(\lambda) := \argmin{\betav}\left(  
-  RSS(\betav) + \lambda \sum_{p} 1\left(\beta_p \ne 0\right) \right)
+\hat{\boldsymbol{\beta}}_{L0}(\lambda) := \underset{\boldsymbol{\beta}}{\mathrm{argmin}}\,\left(  
+  RSS(\boldsymbol{\beta}) + \lambda \sum_{p} 1\left(\beta_p \ne 0\right) \right)
   \quad\textrm{(practically difficult)}
 \]</span></p>
 <p>This finds a tradeoff between the best fit to the data, but with a penalty for using more regressors. This makes sense, but is very difficult to compute. In particular, this objective is very non-convex. Bayesian statisticians do attempt to estimate models with a similar kind of penalty (they are called “spike and slab” models), but they are extremeley computationally intensive and beyond the scope of this course.</p>
 <p>A convex approximation to the preceding loss is the L1 or Lasso loss, leading to Lasso or L1 regression:</p>
 <p><span class="math display">\[
-\betavhat_{L1}(\lambda) := \argmin{\betav}\left(  
-  RSS(\betav) + \lambda \sum_{p} \abs{\beta_b} \right) =
-\argmin{\betav}\left(  
-  RSS(\betav) + \lambda \norm{\betav}_1 \right).
+\hat{\boldsymbol{\beta}}_{L1}(\lambda) := \underset{\boldsymbol{\beta}}{\mathrm{argmin}}\,\left(  
+  RSS(\boldsymbol{\beta}) + \lambda \sum_{p} \left|\beta_b\right| \right) =
+\underset{\boldsymbol{\beta}}{\mathrm{argmin}}\,\left(  
+  RSS(\boldsymbol{\beta}) + \lambda \left\Vert\boldsymbol{\beta}\right\Vert_1 \right).
 \]</span></p>
 <p>This loss is convex (beacuse it is the sum of two convex functions), and so is much easier to minimize. Furthermore, as <span class="math inline">\(\lambda\)</span> grows, it does produce sparser and sparser solutions — though it may not be obvious at first.</p>
 <section id="the-lasso-produces-sparse-solutions" class="level2">
 <h2 class="anchored" data-anchor-id="the-lasso-produces-sparse-solutions">The Lasso produces sparse solutions</h2>
 <p>One way to see that the Lasso produces sparse solutions is to start with a very large <span class="math inline">\(\lambda\)</span> and see what happens as it is slowly decreased.</p>
-<p>Start at <span class="math inline">\(\lambda\)</span> very large, so that <span class="math inline">\(\betavhat_{L1}(\lambda) = \zerov\)</span>. If we take small step of size <span class="math inline">\(\varepsilon\)</span> in a particular direction away from zero in entry <span class="math inline">\(\beta_p\)</span>, then <span class="math inline">\(\lambda \norm{\betahat}_1\)</span> increases by <span class="math inline">\(\varepsilon \lambda\)</span>, and the RSS changes by the gradient of the squared error,</p>
+<p>Start at <span class="math inline">\(\lambda\)</span> very large, so that <span class="math inline">\(\hat{\boldsymbol{\beta}}_{L1}(\lambda) = \boldsymbol{0}\)</span>. If we take small step of size <span class="math inline">\(\varepsilon\)</span> in a particular direction away from zero in entry <span class="math inline">\(\beta_p\)</span>, then <span class="math inline">\(\lambda \left\Vert\hat{\beta}\right\Vert_1\)</span> increases by <span class="math inline">\(\varepsilon \lambda\)</span>, and the RSS changes by the gradient of the squared error,</p>
 <p><span class="math display">\[
-\varepsilon \sumn (\y_n - \betavhat(\lambda)^\trans\xv_n) \xv_{np} =
-\varepsilon \sumn \reshat_n \xv_{np} =
-\varepsilon \sumn \y_n \xv_{np}  
-\textrm{ (because $\betavhat(\lambda) = \zerov$)}.
+\varepsilon \sum_{n=1}^N(y_n - \hat{\boldsymbol{\beta}}(\lambda)^\intercal\boldsymbol{x}_n) \boldsymbol{x}_{np} =
+\varepsilon \sum_{n=1}^N\hat{\varepsilon}_n \boldsymbol{x}_{np} =
+\varepsilon \sum_{n=1}^Ny_n \boldsymbol{x}_{np}  
+\textrm{ (because $\hat{\boldsymbol{\beta}}(\lambda) = \boldsymbol{0}$)}.
 \]</span></p>
-<p>As long as <span class="math inline">\(\abs{ \sumn \y_n \xv_{np}} &lt; \lambda\)</span> for all <span class="math inline">\(p\)</span>, we cannot improve the loss by moving away from <span class="math inline">\(\zerov\)</span>. Since the loss is convex, that means <span class="math inline">\(\zerov\)</span> is the minimum.</p>
-<p>Eventually, we decrease <span class="math inline">\(\lambda\)</span> until <span class="math inline">\(\sumn \y_n \xv_{np} = \lambda\)</span> for some <span class="math inline">\(p\)</span>. At that point, <span class="math inline">\(\beta_p\)</span> moves away from zero as <span class="math inline">\(\lambda\)</span> decreases, and the <span class="math inline">\(\reshat_n\)</span> also change. However, until <span class="math inline">\(\sumn \reshat_n \xv_{nq} = \lambda\)</span> for some other <span class="math inline">\(q\)</span>, only <span class="math inline">\(\beta_p\)</span> will be nonzero. As <span class="math inline">\(\lambda\)</span> decreases more and more variables tend to get added to the model, until <span class="math inline">\(\lambda = 0\)</span>, when of course <span class="math inline">\(\betavhat_{L1}(0) = \betahat\)</span>, the OLS solution.</p>
+<p>As long as <span class="math inline">\(\left| \sum_{n=1}^Ny_n \boldsymbol{x}_{np}\right| &lt; \lambda\)</span> for all <span class="math inline">\(p\)</span>, we cannot improve the loss by moving away from <span class="math inline">\(\boldsymbol{0}\)</span>. Since the loss is convex, that means <span class="math inline">\(\boldsymbol{0}\)</span> is the minimum.</p>
+<p>Eventually, we decrease <span class="math inline">\(\lambda\)</span> until <span class="math inline">\(\sum_{n=1}^Ny_n \boldsymbol{x}_{np} = \lambda\)</span> for some <span class="math inline">\(p\)</span>. At that point, <span class="math inline">\(\beta_p\)</span> moves away from zero as <span class="math inline">\(\lambda\)</span> decreases, and the <span class="math inline">\(\hat{\varepsilon}_n\)</span> also change. However, until <span class="math inline">\(\sum_{n=1}^N\hat{\varepsilon}_n \boldsymbol{x}_{nq} = \lambda\)</span> for some other <span class="math inline">\(q\)</span>, only <span class="math inline">\(\beta_p\)</span> will be nonzero. As <span class="math inline">\(\lambda\)</span> decreases more and more variables tend to get added to the model, until <span class="math inline">\(\lambda = 0\)</span>, when of course <span class="math inline">\(\hat{\boldsymbol{\beta}}_{L1}(0) = \hat{\beta}\)</span>, the OLS solution.</p>
 </section>
 <section id="standardization" class="level2">
 <h2 class="anchored" data-anchor-id="standardization">Standardization</h2>
@@ -785,11 +784,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>$\,$</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Introduce lasso regression</span>

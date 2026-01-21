@@ -253,14 +253,14 @@ window.Quarto = {
 </section>
 <section id="machine-learning-assumption" class="level1">
 <h1>Machine learning assumption</h1>
-<p>What can we say about the OLS coefficients when we do not assume that <span class="math inline">\(\y_n = \beta^\trans \xv_n + \res_n\)</span> for any <span class="math inline">\(\beta\)</span>? In that case we have no model to compare to. However, we can still try to find the <em>best linear estimator</em> in terms of squared loss.</p>
-<p>Suppose we simply want to have a good fit to training data. That is, given some <span class="math inline">\(\y_\new\)</span>, we want to find a best guess <span class="math inline">\(f(\xv_\new)\)</span> for the value of <span class="math inline">\(\y_\new\)</span>: specifically, we want to find the function that minimizes the “loss”</p>
+<p>What can we say about the OLS coefficients when we do not assume that <span class="math inline">\(y_n = \beta^\intercal\boldsymbol{x}_n + \varepsilon_n\)</span> for any <span class="math inline">\(\beta\)</span>? In that case we have no model to compare to. However, we can still try to find the <em>best linear estimator</em> in terms of squared loss.</p>
+<p>Suppose we simply want to have a good fit to training data. That is, given some <span class="math inline">\(y_\mathrm{new}\)</span>, we want to find a best guess <span class="math inline">\(f(\boldsymbol{x}_\mathrm{new})\)</span> for the value of <span class="math inline">\(y_\mathrm{new}\)</span>: specifically, we want to find the function that minimizes the “loss”</p>
 <p><span class="math display">\[
-\hat{f}(\cdot) := \argmin{f} \expect{\left( \y_\new - f(\xv_\new) \right)^2}.
+\hat{f}(\cdot) := \underset{f}{\mathrm{argmin}}\, \mathbb{E}\left[\left( y_\mathrm{new}- f(\boldsymbol{x}_\mathrm{new}) \right)^2\right].
 \]</span></p>
 <p>This is a functional optimization problem over an infinite dimensional space! You can solve this using some fancy math, but you can also prove directly that the best choice is</p>
 <p><span class="math display">\[
-\hat{f}(\xv_\new)  = \expect{\y_\new | \xv_\new}.
+\hat{f}(\boldsymbol{x}_\mathrm{new})  = \mathbb{E}\left[y_\mathrm{new}| \boldsymbol{x}_\mathrm{new}\right].
 \]</span></p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
@@ -275,38 +275,38 @@ Exercise
 <p>Prove that any other <span class="math inline">\(f(\cdot)\)</span> results in larger loss.</p>
 </div>
 </div>
-<p>Of course, we don’t know the functional form of <span class="math inline">\(\expect{\y_\new | \xv_\new}\)</span>. But suppose we approximate it with</p>
+<p>Of course, we don’t know the functional form of <span class="math inline">\(\mathbb{E}\left[y_\mathrm{new}| \boldsymbol{x}_\mathrm{new}\right]\)</span>. But suppose we approximate it with</p>
 <p><span class="math display">\[
-\expect{\y_\new | \xv_\new} \approx \betav^\trans \xv_\new.
+\mathbb{E}\left[y_\mathrm{new}| \boldsymbol{x}_\mathrm{new}\right] \approx \boldsymbol{\beta}^\intercal\boldsymbol{x}_\mathrm{new}.
 \]</span></p>
-<p>Note that we are not assuming this is true, so this is different from our “correct specification” assumption before that <span class="math inline">\(\expect{\y_\new} = \betav^\trans \xv_\new\)</span>. Rather, we are finding the best approximation to the unknown <span class="math inline">\(\expect{\y_\new | \xv_\new}\)</span> amongst the class of functions of the form <span class="math inline">\(\betav^\trans \xv_\new\)</span>.</p>
+<p>Note that we are not assuming this is true, so this is different from our “correct specification” assumption before that <span class="math inline">\(\mathbb{E}\left[y_\mathrm{new}\right] = \boldsymbol{\beta}^\intercal\boldsymbol{x}_\mathrm{new}\)</span>. Rather, we are finding the best approximation to the unknown <span class="math inline">\(\mathbb{E}\left[y_\mathrm{new}| \boldsymbol{x}_\mathrm{new}\right]\)</span> amongst the class of functions of the form <span class="math inline">\(\boldsymbol{\beta}^\intercal\boldsymbol{x}_\mathrm{new}\)</span>.</p>
 <p>Under this approximation, the problem becomes <span class="math display">\[
 \begin{aligned}
-\betastar :={}&amp; \argmin{\beta} \expect{\left( \y_\new - \betav^\trans\xv_\new \right)^2} \\
-={}&amp; \argmin{\beta} \left(\expect{\y_\new^2} - 2 \betav^\trans \expect{\y_\new \xv_\new} +
-  \betav^\trans \expect{\xv_\new \xv_\new^\trans} \betav  \right).
+{\beta^{*}}:={}&amp; \underset{\beta}{\mathrm{argmin}}\, \mathbb{E}\left[\left( y_\mathrm{new}- \boldsymbol{\beta}^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right] \\
+={}&amp; \underset{\beta}{\mathrm{argmin}}\, \left(\mathbb{E}\left[y_\mathrm{new}^2\right] - 2 \boldsymbol{\beta}^\intercal\mathbb{E}\left[y_\mathrm{new}\boldsymbol{x}_\mathrm{new}\right] +
+  \boldsymbol{\beta}^\intercal\mathbb{E}\left[\boldsymbol{x}_\mathrm{new}\boldsymbol{x}_\mathrm{new}^\intercal\right] \boldsymbol{\beta}\right).
 \end{aligned}
 \]</span></p>
 <p>Differentiating with respect to <span class="math inline">\(\beta\)</span> and solving gives</p>
 <p><span class="math display">\[
-\betastar = \expect{\xv_\new \xv_\new^\trans} ^{-1} \expect{\y_\new \xv_\new}.
+{\beta^{*}}= \mathbb{E}\left[\boldsymbol{x}_\mathrm{new}\boldsymbol{x}_\mathrm{new}^\intercal\right] ^{-1} \mathbb{E}\left[y_\mathrm{new}\boldsymbol{x}_\mathrm{new}\right].
 \]</span></p>
-<p>This might look familiar. In fact, recall our first “useless” application of the LLN to <span class="math inline">\(\betahat\)</span>:</p>
+<p>This might look familiar. In fact, recall our first “useless” application of the LLN to <span class="math inline">\(\hat{\beta}\)</span>:</p>
 <p><span class="math display">\[
-\betahat = (\X^\trans \X)^{-1} \X^\trans \Y \rightarrow \expect{\xv_\new \xv_\new^\trans} ^{-1} \expect{\y_\new \xv_\new} = \betastar.
+\hat{\beta}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}\rightarrow \mathbb{E}\left[\boldsymbol{x}_\mathrm{new}\boldsymbol{x}_\mathrm{new}^\intercal\right] ^{-1} \mathbb{E}\left[y_\mathrm{new}\boldsymbol{x}_\mathrm{new}\right] = {\beta^{*}}.
 \]</span></p>
-<p>Finally, we have an interpretation — our <span class="math inline">\(\betahat\)</span> converges to the minimizer of the (intractable) expected loss. Why is this? We can’t compute the expectated loss, since we don’t know the joint distribution of <span class="math inline">\(\xv_\new\)</span> and <span class="math inline">\(\y_\new\)</span>. However, if we have a training set, we can <em>approximate</em> this expectation:</p>
+<p>Finally, we have an interpretation — our <span class="math inline">\(\hat{\beta}\)</span> converges to the minimizer of the (intractable) expected loss. Why is this? We can’t compute the expectated loss, since we don’t know the joint distribution of <span class="math inline">\(\boldsymbol{x}_\mathrm{new}\)</span> and <span class="math inline">\(y_\mathrm{new}\)</span>. However, if we have a training set, we can <em>approximate</em> this expectation:</p>
 <p><span class="math display">\[
-\betahat :=
-\argmin{\beta} \meann \left( \y_n - \betav^\trans\xv_n \right)^2
+\hat{\beta}:=
+\underset{\beta}{\mathrm{argmin}}\, \frac{1}{N} \sum_{n=1}^N\left( y_n - \boldsymbol{\beta}^\intercal\boldsymbol{x}_n \right)^2
 \approx
-\argmin{\beta} \expect{\left( \y_\new - \betav^\trans\xv_\new \right)^2}
-= \betastar.
+\underset{\beta}{\mathrm{argmin}}\, \mathbb{E}\left[\left( y_\mathrm{new}- \boldsymbol{\beta}^\intercal\boldsymbol{x}_\mathrm{new}\right)^2\right]
+= {\beta^{*}}.
 \]</span></p>
-<p>Here, we are not positing any true model — we are simply assuming that the draws <span class="math inline">\((\y_n, \xv_n)\)</span> are IID, and using an approximate loss. Still, we can analyze <span class="math inline">\(\betahat\)</span>’s asymptotic behavior, using the fact that it minimizes the empirical loss.</p>
+<p>Here, we are not positing any true model — we are simply assuming that the draws <span class="math inline">\((y_n, \boldsymbol{x}_n)\)</span> are IID, and using an approximate loss. Still, we can analyze <span class="math inline">\(\hat{\beta}\)</span>’s asymptotic behavior, using the fact that it minimizes the empirical loss.</p>
 <p>Define the gradient of the loss function: <span class="math display">\[
-G(\beta) := \frac{\partial}{\partial \beta} \meann \left( \y_n - \betav^\trans\xv_n \right)^2
-= -2 \meann \left( \y_n - \betav^\trans\xv_n \right) \xv_n.
+G(\beta) := \frac{\partial}{\partial \beta} \frac{1}{N} \sum_{n=1}^N\left( y_n - \boldsymbol{\beta}^\intercal\boldsymbol{x}_n \right)^2
+= -2 \frac{1}{N} \sum_{n=1}^N\left( y_n - \boldsymbol{\beta}^\intercal\boldsymbol{x}_n \right) \boldsymbol{x}_n.
 \]</span></p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
@@ -318,12 +318,12 @@ Exercise
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Prove that <span class="math inline">\(G(\betahat) = \zerov\)</span> and <span class="math inline">\(\expect{G(\betastar)} = 0\)</span>.</p>
+<p>Prove that <span class="math inline">\(G(\hat{\beta}) = \boldsymbol{0}\)</span> and <span class="math inline">\(\mathbb{E}\left[G({\beta^{*}})\right] = 0\)</span>.</p>
 </div>
 </div>
-<p>Noting that <span class="math inline">\(G(\beta)\)</span> is linear in <span class="math inline">\(\beta\)</span> (so the second derivative with respect to <span class="math inline">\(\beta\)</span> is zero), we can Taylor expand <span class="math inline">\(G(\cdot)\)</span> around <span class="math inline">\(\betahat\)</span>, giving</p>
+<p>Noting that <span class="math inline">\(G(\beta)\)</span> is linear in <span class="math inline">\(\beta\)</span> (so the second derivative with respect to <span class="math inline">\(\beta\)</span> is zero), we can Taylor expand <span class="math inline">\(G(\cdot)\)</span> around <span class="math inline">\(\hat{\beta}\)</span>, giving</p>
 <p><span class="math display">\[
-G(\betastar) = G(\betahat) + \frac{\partial G}{\partial \beta^\trans} (\betahat) (\betastar - \betahat).
+G({\beta^{*}}) = G(\hat{\beta}) + \frac{\partial G}{\partial \beta^\intercal} (\hat{\beta}) ({\beta^{*}}- \hat{\beta}).
 \]</span></p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
@@ -337,41 +337,41 @@ Exercise
 <div class="callout-body-container callout-body">
 <p>Derive the previous equation without using a Taylor series using <span class="math display">\[
 \begin{aligned}
-\meann \left( \y_n - \betavhat^\trans\xv_n \right) \xv_n ={}&amp; \zerov \Rightarrow \\
-\meann \left( \y_n - \betavhat^\trans\xv_n \right) \xv_n  -
-  \meann \left( \y_n - \betastar^\trans\xv_n \right) \xv_n
-  ={}&amp; - \meann \left( \y_n - \betastar^\trans\xv_n \right) \xv_n,
+\frac{1}{N} \sum_{n=1}^N\left( y_n - \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n \right) \boldsymbol{x}_n ={}&amp; \boldsymbol{0}\Rightarrow \\
+\frac{1}{N} \sum_{n=1}^N\left( y_n - \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n \right) \boldsymbol{x}_n  -
+  \frac{1}{N} \sum_{n=1}^N\left( y_n - {\beta^{*}}^\intercal\boldsymbol{x}_n \right) \boldsymbol{x}_n
+  ={}&amp; - \frac{1}{N} \sum_{n=1}^N\left( y_n - {\beta^{*}}^\intercal\boldsymbol{x}_n \right) \boldsymbol{x}_n,
 \end{aligned}
-\]</span> and collecting terms. The Taylor series version is more general, since the analysis here can also be applied to non-linear gradients as long as <span class="math inline">\(\betavhat - \betastar\)</span> is small and the second derivative bounded, so that the first-order series expansion becomes accurate to leading order as <span class="math inline">\(N\)</span> grows.</p>
+\]</span> and collecting terms. The Taylor series version is more general, since the analysis here can also be applied to non-linear gradients as long as <span class="math inline">\(\hat{\boldsymbol{\beta}}- {\beta^{*}}\)</span> is small and the second derivative bounded, so that the first-order series expansion becomes accurate to leading order as <span class="math inline">\(N\)</span> grows.</p>
 </div>
 </div>
-<p>Using the fact that <span class="math inline">\(G(\betahat) = \zerov\)</span>, we can solve</p>
+<p>Using the fact that <span class="math inline">\(G(\hat{\beta}) = \boldsymbol{0}\)</span>, we can solve</p>
 <p><span class="math display">\[
-\sqrt{N} (\betahat - \betastar) = - \left( \frac{\partial G}{\partial \beta^\trans}  (\betahat) \right)^{-1} \sqrt{N} G(\betastar).
+\sqrt{N} (\hat{\beta}- {\beta^{*}}) = - \left( \frac{\partial G}{\partial \beta^\intercal}  (\hat{\beta}) \right)^{-1} \sqrt{N} G({\beta^{*}}).
 \]</span></p>
 <p>Plugging in our particular loss gradient,</p>
 <p><span class="math display">\[
-- \frac{\partial G}{\partial \beta^\trans} = \meann \xv_n \xv_n^\trans
+- \frac{\partial G}{\partial \beta^\intercal} = \frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \boldsymbol{x}_n^\intercal
 \quad\textrm{and}\quad
-\sqrt{N} G(\betastar) =
-\cltn (\y_n - \betastar^\trans \xv_n) \xv_n.
+\sqrt{N} G({\beta^{*}}) =
+\frac{1}{\sqrt{N}} \sum_{n=1}^N(y_n - {\beta^{*}}^\intercal\boldsymbol{x}_n) \boldsymbol{x}_n.
 \]</span></p>
-<p>Because <span class="math inline">\(\expect{(\y_n - \betastar \xv_n)^\trans \xv_n} = \zerov\)</span>, we can apply the CLT to get</p>
+<p>Because <span class="math inline">\(\mathbb{E}\left[(y_n - {\beta^{*}}\boldsymbol{x}_n)^\intercal\boldsymbol{x}_n\right] = \boldsymbol{0}\)</span>, we can apply the CLT to get</p>
 <p><span class="math display">\[
-\sqrt{N} G(\betastar) \rightarrow \gauss{\zerov, \cov{(\y_n - \betastar^\trans \xv_n) \xv_n}}.
+\sqrt{N} G({\beta^{*}}) \rightarrow \mathcal{N}\left(\boldsymbol{0}, \mathrm{Cov}\left((y_n - {\beta^{*}}^\intercal\boldsymbol{x}_n) \boldsymbol{x}_n\right)\right).
 \]</span></p>
-<p>Finally, using the fact that <span class="math inline">\(\betahat \rightarrow \betastar\)</span> , we find that we can consistently estimate the covariance as</p>
+<p>Finally, using the fact that <span class="math inline">\(\hat{\beta}\rightarrow {\beta^{*}}\)</span> , we find that we can consistently estimate the covariance as</p>
 <p><span class="math display">\[
 \begin{aligned}
-\meann (\y_n - \betahat^\trans \xv_n) \xv_n ={}&amp;
-\meann (\y_n - \betastar^\trans \xv_n + (\betastar - \betahat)^\trans \xv_n)  \xv_n \\={}&amp;
-\meann (\y_n - \betastar^\trans \xv_n) \xv_n + \left(  \meann \xv_n  \xv_n^\trans \right) (\betastar - \betahat)
+\frac{1}{N} \sum_{n=1}^N(y_n - \hat{\beta}^\intercal\boldsymbol{x}_n) \boldsymbol{x}_n ={}&amp;
+\frac{1}{N} \sum_{n=1}^N(y_n - {\beta^{*}}^\intercal\boldsymbol{x}_n + ({\beta^{*}}- \hat{\beta})^\intercal\boldsymbol{x}_n)  \boldsymbol{x}_n \\={}&amp;
+\frac{1}{N} \sum_{n=1}^N(y_n - {\beta^{*}}^\intercal\boldsymbol{x}_n) \boldsymbol{x}_n + \left(  \frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n  \boldsymbol{x}_n^\intercal\right) ({\beta^{*}}- \hat{\beta})
 \\\rightarrow{}&amp;
-\cov{(\y_n - \betastar \xv_n)^\trans \xv_n}.
+\mathrm{Cov}\left((y_n - {\beta^{*}}\boldsymbol{x}_n)^\intercal\boldsymbol{x}_n\right).
 \end{aligned}
 \]</span></p>
-<p>If we call <span class="math inline">\(\reshat_n := \y_n - \betahat^\trans \xv_n\)</span>, we see that the estimator of the limiting covariance of <span class="math inline">\(\sqrt{N}( \betahat- \betastar)\)</span> is precisely the sandwich covariance.</p>
-<p>Note that we derived this result without any assumptions on the relationship between <span class="math inline">\(\y_n\)</span> and <span class="math inline">\(\xv_n\)</span>, other than moment conditions allowing us to apply the LLN and CLT.</p>
+<p>If we call <span class="math inline">\(\hat{\varepsilon}_n := y_n - \hat{\beta}^\intercal\boldsymbol{x}_n\)</span>, we see that the estimator of the limiting covariance of <span class="math inline">\(\sqrt{N}( \hat{\beta}- {\beta^{*}})\)</span> is precisely the sandwich covariance.</p>
+<p>Note that we derived this result without any assumptions on the relationship between <span class="math inline">\(y_n\)</span> and <span class="math inline">\(\boldsymbol{x}_n\)</span>, other than moment conditions allowing us to apply the LLN and CLT.</p>
 
 
 <!-- -->
@@ -853,11 +853,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Derive statistical measures under only independence assumptions</span>

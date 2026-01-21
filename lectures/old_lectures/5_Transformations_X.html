@@ -261,7 +261,6 @@ window.Quarto = {
 </header>
 
 
-<p><span class="math inline">\(\,\)</span> <!-- Prevent latex macros from showing --></p>
 <!--
 This beamer output never really worked and I gave up trying
 to get it to work.
@@ -290,12 +289,12 @@ text was too small, and LaTeX math didn't render at all.
 </section>
 <section id="define-r-squared" class="level1">
 <h1>Define R squared</h1>
-<p>We have defined <span class="math inline">\(\Yhat = \X \betavhat\)</span>, and shown that <span class="math inline">\(\Yhat = \proj{X} \betavhat = \X (\X^\trans\X)^{-1}\X^\trans \Y\)</span>. We can call</p>
+<p>We have defined <span class="math inline">\(\hat{\boldsymbol{Y}}= \boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>, and shown that <span class="math inline">\(\hat{\boldsymbol{Y}}= \underset{X}{\boldsymbol{P}} \hat{\boldsymbol{\beta}}= \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{X}^\intercal\boldsymbol{Y}\)</span>. We can call</p>
 <p><span class="math display">\[
 \begin{aligned}
-\Yhat^\trans \Yhat :={}&amp; ESS = \textrm{"Explained sum of squares"} \\
-\Y^\trans \Y :={}&amp; TSS = \textrm{"Total sum of squares"} \\
-\resvhat^\trans \resvhat :={}&amp; RSS = \textrm{"Residual sum of squares"}.
+\hat{\boldsymbol{Y}}^\intercal\hat{\boldsymbol{Y}}:={}&amp; ESS = \textrm{"Explained sum of squares"} \\
+\boldsymbol{Y}^\intercal\boldsymbol{Y}:={}&amp; TSS = \textrm{"Total sum of squares"} \\
+\hat{\boldsymbol{\varepsilon}}^\intercal\hat{\boldsymbol{\varepsilon}}:={}&amp; RSS = \textrm{"Residual sum of squares"}.
 \end{aligned}
 \]</span></p>
 <p>In your homework, you will show that <span class="math inline">\(TSS = ESS + RSS\)</span>. It follows immediately that <span class="math inline">\(0 \le ESS \le TSS\)</span>, and we can define <span class="math display">\[
@@ -308,8 +307,8 @@ R^2 := \frac{ESS}{TSS} \in [0, 1].
 <p>But high <span class="math inline">\(R^2\)</span> does not necessarily mean that the fit is accurate or useful! In particular, by increasing the number of regressors, you can only make <span class="math inline">\(R^2\)</span> increase, and there are clearly silly regressions with great <span class="math inline">\(R^2\)</span>.</p>
 <p>Here are two examples:</p>
 <ul>
-<li><span class="math inline">\(\Y \sim \Y\)</span></li>
-<li><span class="math inline">\(\Y \sim \id\)</span></li>
+<li><span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{Y}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{I}\)</span></li>
 </ul>
 <p>Today we will look at the effect of regressors on <span class="math inline">\(R^2\)</span>, and how to make new regressors from the ones you have. We will also talk about how to interpret such “interaction” regressors.</p>
 </section>
@@ -1127,486 +1126,485 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
 <span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.md</span></span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>$\,$  <span class="co">&lt;!-- Prevent latex macros from showing --&gt;</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co">This beamer output never really worked and I gave up trying</span></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co">to get it to work.</span></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co">The R output text was way too big, the figure</span></span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co">text was too small, and LaTeX math didn't render at all.</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!--</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="co">This beamer output never really worked and I gave up trying</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co">to get it to work.</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="co">The R output text was way too big, the figure</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co">text was too small, and LaTeX math didn't render at all.</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="co">  beamer:</span></span>
-<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="co">    slide-level: 1</span></span>
-<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
-<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.tex</span></span>
-<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-width: 6</span></span>
-<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-height: 3.5</span></span>
-<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="co">  beamer:</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a><span class="co">    slide-level: 1</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a><span class="co">    include-before-body:</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="co">     - file: ../macros.tex</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-width: 6</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a><span class="co">    fig-height: 3.5</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a><span class="co">--&gt;</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Raster is not included in the Quarto build environment :(</span></span>
-<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="co">#library(raster) # Load before tidyverse to avoid conflict with select</span></span>
-<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
-<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quarto)</span>
-<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>root_dir <span class="ot">&lt;-</span> quarto<span class="sc">::</span><span class="fu">find_project_root</span>()</span>
-<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>ames_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(root_dir, <span class="st">"datasets/ames_house/data/ames_de_cock.csv"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sale.Condition<span class="sc">==</span><span class="st">"Normal"</span>, </span>
-<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>         MS.Zoning <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"RH"</span>, <span class="st">"RL"</span>, <span class="st">"RP"</span>, <span class="st">"RM"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Kitchen.Qual <span class="sc">!=</span> <span class="st">"Po"</span>) <span class="sc">%&gt;%</span> <span class="co"># only one observation!</span></span>
-<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Garage.Qual))</span>
-<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-51"><a href="#cb30-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-58"><a href="#cb30-58" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="cn">FALSE</span>) {</span>
-<span id="cb30-59"><a href="#cb30-59" aria-hidden="true" tabindex="-1"></a>RasterizeMatrix <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
-<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a>  mat_df <span class="ot">&lt;-</span> </span>
-<span id="cb30-61"><a href="#cb30-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>(<span class="fu">raster</span>(mat), <span class="at">xy =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-62"><a href="#cb30-62" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">col_ind=</span><span class="fu">round</span>(x <span class="sc">*</span> <span class="fu">ncol</span>(mat) <span class="sc">+</span> <span class="fl">0.5</span>),</span>
-<span id="cb30-63"><a href="#cb30-63" aria-hidden="true" tabindex="-1"></a>             <span class="at">row_ind=</span><span class="fu">round</span>((<span class="dv">1</span> <span class="sc">-</span> y) <span class="sc">*</span> <span class="fu">nrow</span>(mat) <span class="sc">+</span> <span class="fl">0.5</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb30-64"><a href="#cb30-64" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">col_lab=</span><span class="fu">colnames</span>(mat)[col_ind]) <span class="sc">%&gt;%</span></span>
-<span id="cb30-65"><a href="#cb30-65" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">row_lab=</span><span class="fu">rownames</span>(mat)[row_ind])</span>
-<span id="cb30-66"><a href="#cb30-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mat_df)</span>
-<span id="cb30-67"><a href="#cb30-67" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb30-68"><a href="#cb30-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-69"><a href="#cb30-69" aria-hidden="true" tabindex="-1"></a>PlotMatrix <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
-<span id="cb30-70"><a href="#cb30-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">RasterizeMatrix</span>(mat) <span class="sc">%&gt;%</span></span>
-<span id="cb30-71"><a href="#cb30-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb30-72"><a href="#cb30-72" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_raster</span>(<span class="fu">aes</span>(<span class="at">x=</span>col_lab, <span class="at">y=</span>row_lab, <span class="at">fill=</span>layer))</span>
-<span id="cb30-73"><a href="#cb30-73" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb30-74"><a href="#cb30-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-75"><a href="#cb30-75" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb30-76"><a href="#cb30-76" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="cn">FALSE</span>) {</span>
-<span id="cb30-77"><a href="#cb30-77" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Test</span></span>
-<span id="cb30-78"><a href="#cb30-78" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">6</span>), <span class="at">nrow=</span><span class="dv">3</span>)</span>
-<span id="cb30-79"><a href="#cb30-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
-<span id="cb30-80"><a href="#cb30-80" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>)</span>
-<span id="cb30-81"><a href="#cb30-81" aria-hidden="true" tabindex="-1"></a>  mat_df <span class="ot">&lt;-</span> <span class="fu">RasterizeMatrix</span>(mat)</span>
-<span id="cb30-82"><a href="#cb30-82" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (col_lab <span class="cf">in</span> <span class="fu">colnames</span>(mat)) {</span>
-<span id="cb30-83"><a href="#cb30-83" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (row_lab <span class="cf">in</span> <span class="fu">rownames</span>(mat)) {</span>
-<span id="cb30-84"><a href="#cb30-84" aria-hidden="true" tabindex="-1"></a>      mat_val <span class="ot">&lt;-</span> mat_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(row_lab <span class="sc">==</span> <span class="sc">!!</span>row_lab, col_lab <span class="sc">==</span> <span class="sc">!!</span>col_lab) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(layer)</span>
-<span id="cb30-85"><a href="#cb30-85" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stopifnot</span>(<span class="fu">abs</span>(mat_val <span class="sc">-</span> mat[row_lab, col_lab]) <span class="sc">&lt;</span> <span class="fl">1e-8</span>)</span>
-<span id="cb30-86"><a href="#cb30-86" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb30-87"><a href="#cb30-87" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb30-88"><a href="#cb30-88" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb30-89"><a href="#cb30-89" aria-hidden="true" tabindex="-1"></a>PlotMatrix <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
-<span id="cb30-90"><a href="#cb30-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image</span>(mat)</span>
-<span id="cb30-91"><a href="#cb30-91" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb30-92"><a href="#cb30-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-93"><a href="#cb30-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Raster is not included in the Quarto build environment :(</span></span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a><span class="co">#library(raster) # Load before tidyverse to avoid conflict with select</span></span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quarto)</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>root_dir <span class="ot">&lt;-</span> quarto<span class="sc">::</span><span class="fu">find_project_root</span>()</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>ames_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(root_dir, <span class="st">"datasets/ames_house/data/ames_de_cock.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sale.Condition<span class="sc">==</span><span class="st">"Normal"</span>, </span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>         MS.Zoning <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"RH"</span>, <span class="st">"RL"</span>, <span class="st">"RP"</span>, <span class="st">"RM"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Kitchen.Qual <span class="sc">!=</span> <span class="st">"Po"</span>) <span class="sc">%&gt;%</span> <span class="co"># only one observation!</span></span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Garage.Qual))</span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="cn">FALSE</span>) {</span>
+<span id="cb30-58"><a href="#cb30-58" aria-hidden="true" tabindex="-1"></a>RasterizeMatrix <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
+<span id="cb30-59"><a href="#cb30-59" aria-hidden="true" tabindex="-1"></a>  mat_df <span class="ot">&lt;-</span> </span>
+<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>(<span class="fu">raster</span>(mat), <span class="at">xy =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-61"><a href="#cb30-61" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">col_ind=</span><span class="fu">round</span>(x <span class="sc">*</span> <span class="fu">ncol</span>(mat) <span class="sc">+</span> <span class="fl">0.5</span>),</span>
+<span id="cb30-62"><a href="#cb30-62" aria-hidden="true" tabindex="-1"></a>             <span class="at">row_ind=</span><span class="fu">round</span>((<span class="dv">1</span> <span class="sc">-</span> y) <span class="sc">*</span> <span class="fu">nrow</span>(mat) <span class="sc">+</span> <span class="fl">0.5</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb30-63"><a href="#cb30-63" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">col_lab=</span><span class="fu">colnames</span>(mat)[col_ind]) <span class="sc">%&gt;%</span></span>
+<span id="cb30-64"><a href="#cb30-64" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">row_lab=</span><span class="fu">rownames</span>(mat)[row_ind])</span>
+<span id="cb30-65"><a href="#cb30-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(mat_df)</span>
+<span id="cb30-66"><a href="#cb30-66" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-67"><a href="#cb30-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-68"><a href="#cb30-68" aria-hidden="true" tabindex="-1"></a>PlotMatrix <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
+<span id="cb30-69"><a href="#cb30-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">RasterizeMatrix</span>(mat) <span class="sc">%&gt;%</span></span>
+<span id="cb30-70"><a href="#cb30-70" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb30-71"><a href="#cb30-71" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_raster</span>(<span class="fu">aes</span>(<span class="at">x=</span>col_lab, <span class="at">y=</span>row_lab, <span class="at">fill=</span>layer))</span>
+<span id="cb30-72"><a href="#cb30-72" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-73"><a href="#cb30-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-74"><a href="#cb30-74" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-75"><a href="#cb30-75" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="cn">FALSE</span>) {</span>
+<span id="cb30-76"><a href="#cb30-76" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Test</span></span>
+<span id="cb30-77"><a href="#cb30-77" aria-hidden="true" tabindex="-1"></a>  mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">6</span>), <span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb30-78"><a href="#cb30-78" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(mat) <span class="ot">&lt;-</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span>
+<span id="cb30-79"><a href="#cb30-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>)</span>
+<span id="cb30-80"><a href="#cb30-80" aria-hidden="true" tabindex="-1"></a>  mat_df <span class="ot">&lt;-</span> <span class="fu">RasterizeMatrix</span>(mat)</span>
+<span id="cb30-81"><a href="#cb30-81" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (col_lab <span class="cf">in</span> <span class="fu">colnames</span>(mat)) {</span>
+<span id="cb30-82"><a href="#cb30-82" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (row_lab <span class="cf">in</span> <span class="fu">rownames</span>(mat)) {</span>
+<span id="cb30-83"><a href="#cb30-83" aria-hidden="true" tabindex="-1"></a>      mat_val <span class="ot">&lt;-</span> mat_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(row_lab <span class="sc">==</span> <span class="sc">!!</span>row_lab, col_lab <span class="sc">==</span> <span class="sc">!!</span>col_lab) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(layer)</span>
+<span id="cb30-84"><a href="#cb30-84" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stopifnot</span>(<span class="fu">abs</span>(mat_val <span class="sc">-</span> mat[row_lab, col_lab]) <span class="sc">&lt;</span> <span class="fl">1e-8</span>)</span>
+<span id="cb30-85"><a href="#cb30-85" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb30-86"><a href="#cb30-86" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb30-87"><a href="#cb30-87" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-88"><a href="#cb30-88" aria-hidden="true" tabindex="-1"></a>PlotMatrix <span class="ot">&lt;-</span> <span class="cf">function</span>(mat) {</span>
+<span id="cb30-89"><a href="#cb30-89" aria-hidden="true" tabindex="-1"></a>  <span class="fu">image</span>(mat)</span>
+<span id="cb30-90"><a href="#cb30-90" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-91"><a href="#cb30-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-92"><a href="#cb30-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-93"><a href="#cb30-93" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-94"><a href="#cb30-94" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-95"><a href="#cb30-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-96"><a href="#cb30-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-97"><a href="#cb30-97" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
-<span id="cb30-98"><a href="#cb30-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Discuss transformations of regressors</span>
-<span id="cb30-99"><a href="#cb30-99" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Define R2, and talk about its relationship to the regressors</span>
-<span id="cb30-100"><a href="#cb30-100" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Polynomial regressors</span>
-<span id="cb30-101"><a href="#cb30-101" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Interaction regressors</span>
+<span id="cb30-96"><a href="#cb30-96" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
+<span id="cb30-97"><a href="#cb30-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Discuss transformations of regressors</span>
+<span id="cb30-98"><a href="#cb30-98" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Define R2, and talk about its relationship to the regressors</span>
+<span id="cb30-99"><a href="#cb30-99" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Polynomial regressors</span>
+<span id="cb30-100"><a href="#cb30-100" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Interaction regressors</span>
+<span id="cb30-101"><a href="#cb30-101" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-102"><a href="#cb30-102" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-103"><a href="#cb30-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-104"><a href="#cb30-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-105"><a href="#cb30-105" aria-hidden="true" tabindex="-1"></a><span class="fu"># Define R squared</span></span>
-<span id="cb30-106"><a href="#cb30-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-107"><a href="#cb30-107" aria-hidden="true" tabindex="-1"></a>We have defined $\Yhat = \X \betavhat$, and shown that </span>
-<span id="cb30-108"><a href="#cb30-108" aria-hidden="true" tabindex="-1"></a>$\Yhat = \proj{X} \betavhat = \X (\X^\trans\X)^{-1}\X^\trans \Y$. We </span>
-<span id="cb30-109"><a href="#cb30-109" aria-hidden="true" tabindex="-1"></a>can call</span>
-<span id="cb30-110"><a href="#cb30-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-111"><a href="#cb30-111" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb30-112"><a href="#cb30-112" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb30-113"><a href="#cb30-113" aria-hidden="true" tabindex="-1"></a>\Yhat^\trans \Yhat :={}&amp; ESS = \textrm{"Explained sum of squares"} <span class="sc">\\</span></span>
-<span id="cb30-114"><a href="#cb30-114" aria-hidden="true" tabindex="-1"></a>\Y^\trans \Y :={}&amp; TSS = \textrm{"Total sum of squares"} <span class="sc">\\</span></span>
-<span id="cb30-115"><a href="#cb30-115" aria-hidden="true" tabindex="-1"></a>\resvhat^\trans \resvhat :={}&amp; RSS = \textrm{"Residual sum of squares"}.</span>
-<span id="cb30-116"><a href="#cb30-116" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb30-117"><a href="#cb30-117" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb30-118"><a href="#cb30-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-119"><a href="#cb30-119" aria-hidden="true" tabindex="-1"></a>In your homework, you will show that $TSS = ESS + RSS$.  It follows</span>
-<span id="cb30-120"><a href="#cb30-120" aria-hidden="true" tabindex="-1"></a>immediately that $0 \le ESS \le TSS$, and we can define</span>
-<span id="cb30-121"><a href="#cb30-121" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb30-122"><a href="#cb30-122" aria-hidden="true" tabindex="-1"></a>R^2 := \frac{ESS}{TSS} \in <span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span>.</span>
-<span id="cb30-123"><a href="#cb30-123" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb30-124"><a href="#cb30-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-125"><a href="#cb30-125" aria-hidden="true" tabindex="-1"></a>In a sense, high $R^2$ means a "good fit" in the sense that the least</span>
-<span id="cb30-126"><a href="#cb30-126" aria-hidden="true" tabindex="-1"></a>squares fit has low error.  </span>
+<span id="cb30-104"><a href="#cb30-104" aria-hidden="true" tabindex="-1"></a><span class="fu"># Define R squared</span></span>
+<span id="cb30-105"><a href="#cb30-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-106"><a href="#cb30-106" aria-hidden="true" tabindex="-1"></a>We have defined $\Yhat = \X \betavhat$, and shown that </span>
+<span id="cb30-107"><a href="#cb30-107" aria-hidden="true" tabindex="-1"></a>$\Yhat = \proj{X} \betavhat = \X (\X^\trans\X)^{-1}\X^\trans \Y$. We </span>
+<span id="cb30-108"><a href="#cb30-108" aria-hidden="true" tabindex="-1"></a>can call</span>
+<span id="cb30-109"><a href="#cb30-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-110"><a href="#cb30-110" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb30-111"><a href="#cb30-111" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb30-112"><a href="#cb30-112" aria-hidden="true" tabindex="-1"></a>\Yhat^\trans \Yhat :={}&amp; ESS = \textrm{"Explained sum of squares"} <span class="sc">\\</span></span>
+<span id="cb30-113"><a href="#cb30-113" aria-hidden="true" tabindex="-1"></a>\Y^\trans \Y :={}&amp; TSS = \textrm{"Total sum of squares"} <span class="sc">\\</span></span>
+<span id="cb30-114"><a href="#cb30-114" aria-hidden="true" tabindex="-1"></a>\resvhat^\trans \resvhat :={}&amp; RSS = \textrm{"Residual sum of squares"}.</span>
+<span id="cb30-115"><a href="#cb30-115" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb30-116"><a href="#cb30-116" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb30-117"><a href="#cb30-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-118"><a href="#cb30-118" aria-hidden="true" tabindex="-1"></a>In your homework, you will show that $TSS = ESS + RSS$.  It follows</span>
+<span id="cb30-119"><a href="#cb30-119" aria-hidden="true" tabindex="-1"></a>immediately that $0 \le ESS \le TSS$, and we can define</span>
+<span id="cb30-120"><a href="#cb30-120" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb30-121"><a href="#cb30-121" aria-hidden="true" tabindex="-1"></a>R^2 := \frac{ESS}{TSS} \in <span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span>.</span>
+<span id="cb30-122"><a href="#cb30-122" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb30-123"><a href="#cb30-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-124"><a href="#cb30-124" aria-hidden="true" tabindex="-1"></a>In a sense, high $R^2$ means a "good fit" in the sense that the least</span>
+<span id="cb30-125"><a href="#cb30-125" aria-hidden="true" tabindex="-1"></a>squares fit has low error.  </span>
+<span id="cb30-126"><a href="#cb30-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-127"><a href="#cb30-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-128"><a href="#cb30-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-129"><a href="#cb30-129" aria-hidden="true" tabindex="-1"></a><span class="fu"># High $R^2$ is not necessarily a good fit</span></span>
-<span id="cb30-130"><a href="#cb30-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-131"><a href="#cb30-131" aria-hidden="true" tabindex="-1"></a>But high $R^2$ does not necessarily mean that the fit is accurate or useful!  In</span>
-<span id="cb30-132"><a href="#cb30-132" aria-hidden="true" tabindex="-1"></a>particular, by increasing the number of regressors, you can only make</span>
-<span id="cb30-133"><a href="#cb30-133" aria-hidden="true" tabindex="-1"></a>$R^2$ increase, and there are clearly silly regressions with great $R^2$.</span>
-<span id="cb30-134"><a href="#cb30-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-135"><a href="#cb30-135" aria-hidden="true" tabindex="-1"></a>Here are two examples:</span>
-<span id="cb30-136"><a href="#cb30-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-137"><a href="#cb30-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\Y \sim \Y$</span>
-<span id="cb30-138"><a href="#cb30-138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\Y \sim \id$</span>
-<span id="cb30-139"><a href="#cb30-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-140"><a href="#cb30-140" aria-hidden="true" tabindex="-1"></a>Today we will look at the effect of regressors on $R^2$, and how to </span>
-<span id="cb30-141"><a href="#cb30-141" aria-hidden="true" tabindex="-1"></a>make new regressors from the ones you have.  We will also talk about</span>
-<span id="cb30-142"><a href="#cb30-142" aria-hidden="true" tabindex="-1"></a>how to interpret such "interaction" regressors.</span>
+<span id="cb30-128"><a href="#cb30-128" aria-hidden="true" tabindex="-1"></a><span class="fu"># High $R^2$ is not necessarily a good fit</span></span>
+<span id="cb30-129"><a href="#cb30-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-130"><a href="#cb30-130" aria-hidden="true" tabindex="-1"></a>But high $R^2$ does not necessarily mean that the fit is accurate or useful!  In</span>
+<span id="cb30-131"><a href="#cb30-131" aria-hidden="true" tabindex="-1"></a>particular, by increasing the number of regressors, you can only make</span>
+<span id="cb30-132"><a href="#cb30-132" aria-hidden="true" tabindex="-1"></a>$R^2$ increase, and there are clearly silly regressions with great $R^2$.</span>
+<span id="cb30-133"><a href="#cb30-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-134"><a href="#cb30-134" aria-hidden="true" tabindex="-1"></a>Here are two examples:</span>
+<span id="cb30-135"><a href="#cb30-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-136"><a href="#cb30-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\Y \sim \Y$</span>
+<span id="cb30-137"><a href="#cb30-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\Y \sim \id$</span>
+<span id="cb30-138"><a href="#cb30-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-139"><a href="#cb30-139" aria-hidden="true" tabindex="-1"></a>Today we will look at the effect of regressors on $R^2$, and how to </span>
+<span id="cb30-140"><a href="#cb30-140" aria-hidden="true" tabindex="-1"></a>make new regressors from the ones you have.  We will also talk about</span>
+<span id="cb30-141"><a href="#cb30-141" aria-hidden="true" tabindex="-1"></a>how to interpret such "interaction" regressors.</span>
+<span id="cb30-142"><a href="#cb30-142" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-143"><a href="#cb30-143" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-144"><a href="#cb30-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-145"><a href="#cb30-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-146"><a href="#cb30-146" aria-hidden="true" tabindex="-1"></a><span class="fu"># Recall the Ames data</span></span>
-<span id="cb30-147"><a href="#cb30-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-148"><a href="#cb30-148" aria-hidden="true" tabindex="-1"></a>Let's try to predict <span class="in">`SalePrice`</span> using the regressors in the Ames dataset.  We'll</span>
-<span id="cb30-149"><a href="#cb30-149" aria-hidden="true" tabindex="-1"></a>explore some different ways to include more regressors.</span>
-<span id="cb30-152"><a href="#cb30-152" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-153"><a href="#cb30-153" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df) <span class="sc">+</span></span>
-<span id="cb30-154"><a href="#cb30-154" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Gr.Liv.Area, <span class="at">y=</span>SalePrice))</span>
-<span id="cb30-155"><a href="#cb30-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-145"><a href="#cb30-145" aria-hidden="true" tabindex="-1"></a><span class="fu"># Recall the Ames data</span></span>
+<span id="cb30-146"><a href="#cb30-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-147"><a href="#cb30-147" aria-hidden="true" tabindex="-1"></a>Let's try to predict <span class="in">`SalePrice`</span> using the regressors in the Ames dataset.  We'll</span>
+<span id="cb30-148"><a href="#cb30-148" aria-hidden="true" tabindex="-1"></a>explore some different ways to include more regressors.</span>
+<span id="cb30-151"><a href="#cb30-151" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-152"><a href="#cb30-152" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df) <span class="sc">+</span></span>
+<span id="cb30-153"><a href="#cb30-153" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Gr.Liv.Area, <span class="at">y=</span>SalePrice))</span>
+<span id="cb30-154"><a href="#cb30-154" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-155"><a href="#cb30-155" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-156"><a href="#cb30-156" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-157"><a href="#cb30-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-158"><a href="#cb30-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-159"><a href="#cb30-159" aria-hidden="true" tabindex="-1"></a><span class="fu"># Let's run on a bunch of regressors</span></span>
-<span id="cb30-160"><a href="#cb30-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-163"><a href="#cb30-163" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-164"><a href="#cb30-164" aria-hidden="true" tabindex="-1"></a>regs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Neighborhood"</span>, <span class="st">"Bldg.Type"</span>, <span class="st">"Overall.Qual"</span>, <span class="st">"Overall.Cond"</span>, </span>
-<span id="cb30-165"><a href="#cb30-165" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Exter.Qual"</span>, <span class="st">"Exter.Cond"</span>, </span>
-<span id="cb30-166"><a href="#cb30-166" aria-hidden="true" tabindex="-1"></a>          <span class="st">"X1st.Flr.SF"</span>, <span class="st">"X2nd.Flr.SF"</span>, <span class="st">"Gr.Liv.Area"</span>, <span class="st">"Low.Qual.Fin.SF"</span>,</span>
-<span id="cb30-167"><a href="#cb30-167" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Kitchen.Qual"</span>, </span>
-<span id="cb30-168"><a href="#cb30-168" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Garage.Area"</span>, <span class="st">"Garage.Qual"</span>, <span class="st">"Garage.Cond"</span>,</span>
-<span id="cb30-169"><a href="#cb30-169" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Paved.Drive"</span>, <span class="st">"Open.Porch.SF"</span>, <span class="st">"Enclosed.Porch"</span>,</span>
-<span id="cb30-170"><a href="#cb30-170" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Pool.Area"</span>, <span class="st">"Yr.Sold"</span>)</span>
-<span id="cb30-171"><a href="#cb30-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-172"><a href="#cb30-172" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span>(regs <span class="sc">%in%</span> <span class="fu">names</span>(ames_df)))) {</span>
-<span id="cb30-173"><a href="#cb30-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">setdiff</span>(regs, <span class="fu">names</span>(ames_df)))</span>
-<span id="cb30-174"><a href="#cb30-174" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb30-175"><a href="#cb30-175" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-176"><a href="#cb30-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-177"><a href="#cb30-177" aria-hidden="true" tabindex="-1"></a>I'll run a bunch of regressions, including more and more</span>
-<span id="cb30-178"><a href="#cb30-178" aria-hidden="true" tabindex="-1"></a>regressors, and see what happens.</span>
+<span id="cb30-158"><a href="#cb30-158" aria-hidden="true" tabindex="-1"></a><span class="fu"># Let's run on a bunch of regressors</span></span>
+<span id="cb30-159"><a href="#cb30-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-162"><a href="#cb30-162" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-163"><a href="#cb30-163" aria-hidden="true" tabindex="-1"></a>regs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Neighborhood"</span>, <span class="st">"Bldg.Type"</span>, <span class="st">"Overall.Qual"</span>, <span class="st">"Overall.Cond"</span>, </span>
+<span id="cb30-164"><a href="#cb30-164" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Exter.Qual"</span>, <span class="st">"Exter.Cond"</span>, </span>
+<span id="cb30-165"><a href="#cb30-165" aria-hidden="true" tabindex="-1"></a>          <span class="st">"X1st.Flr.SF"</span>, <span class="st">"X2nd.Flr.SF"</span>, <span class="st">"Gr.Liv.Area"</span>, <span class="st">"Low.Qual.Fin.SF"</span>,</span>
+<span id="cb30-166"><a href="#cb30-166" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Kitchen.Qual"</span>, </span>
+<span id="cb30-167"><a href="#cb30-167" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Garage.Area"</span>, <span class="st">"Garage.Qual"</span>, <span class="st">"Garage.Cond"</span>,</span>
+<span id="cb30-168"><a href="#cb30-168" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Paved.Drive"</span>, <span class="st">"Open.Porch.SF"</span>, <span class="st">"Enclosed.Porch"</span>,</span>
+<span id="cb30-169"><a href="#cb30-169" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Pool.Area"</span>, <span class="st">"Yr.Sold"</span>)</span>
+<span id="cb30-170"><a href="#cb30-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-171"><a href="#cb30-171" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(<span class="sc">!</span>(regs <span class="sc">%in%</span> <span class="fu">names</span>(ames_df)))) {</span>
+<span id="cb30-172"><a href="#cb30-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">setdiff</span>(regs, <span class="fu">names</span>(ames_df)))</span>
+<span id="cb30-173"><a href="#cb30-173" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-174"><a href="#cb30-174" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-175"><a href="#cb30-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-176"><a href="#cb30-176" aria-hidden="true" tabindex="-1"></a>I'll run a bunch of regressions, including more and more</span>
+<span id="cb30-177"><a href="#cb30-177" aria-hidden="true" tabindex="-1"></a>regressors, and see what happens.</span>
+<span id="cb30-178"><a href="#cb30-178" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-179"><a href="#cb30-179" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-180"><a href="#cb30-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-181"><a href="#cb30-181" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-184"><a href="#cb30-184" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-185"><a href="#cb30-185" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-186"><a href="#cb30-186" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
-<span id="cb30-187"><a href="#cb30-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-188"><a href="#cb30-188" aria-hidden="true" tabindex="-1"></a>fits_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb30-189"><a href="#cb30-189" aria-hidden="true" tabindex="-1"></a>r2_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
-<span id="cb30-190"><a href="#cb30-190" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(regs)) {</span>
-<span id="cb30-191"><a href="#cb30-191" aria-hidden="true" tabindex="-1"></a>  reg_form <span class="ot">&lt;-</span> <span class="fu">paste</span>(regs[<span class="dv">1</span><span class="sc">:</span>i], <span class="at">collapse=</span><span class="st">" + "</span>)</span>
-<span id="cb30-192"><a href="#cb30-192" aria-hidden="true" tabindex="-1"></a>  lm_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"SalePrice ~ "</span>, reg_form)), ames_df)</span>
-<span id="cb30-193"><a href="#cb30-193" aria-hidden="true" tabindex="-1"></a>  fits_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(fits_df,</span>
-<span id="cb30-194"><a href="#cb30-194" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">data.frame</span>(<span class="at">x=</span>ames_df<span class="sc">$</span>Gr.Liv.Area, </span>
-<span id="cb30-195"><a href="#cb30-195" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">y=</span>ames_df<span class="sc">$</span>SalePrice, </span>
-<span id="cb30-196"><a href="#cb30-196" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">yhat=</span><span class="fu">fitted</span>(lm_fit), </span>
-<span id="cb30-197"><a href="#cb30-197" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">num_regs=</span>i))</span>
-<span id="cb30-198"><a href="#cb30-198" aria-hidden="true" tabindex="-1"></a>  r2_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(r2_df, <span class="fu">data.frame</span>(</span>
-<span id="cb30-199"><a href="#cb30-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">r2=</span><span class="fu">summary</span>(lm_fit)<span class="sc">$</span>r.squared,</span>
-<span id="cb30-200"><a href="#cb30-200" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_regs=</span>i</span>
-<span id="cb30-201"><a href="#cb30-201" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb30-202"><a href="#cb30-202" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb30-203"><a href="#cb30-203" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-204"><a href="#cb30-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-205"><a href="#cb30-205" aria-hidden="true" tabindex="-1"></a><span class="fu"># How does the "fit" change?</span></span>
-<span id="cb30-208"><a href="#cb30-208" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-209"><a href="#cb30-209" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-210"><a href="#cb30-210" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(r2_df) <span class="sc">+</span></span>
-<span id="cb30-211"><a href="#cb30-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>num_regs, <span class="at">y=</span>r2)) <span class="sc">+</span></span>
-<span id="cb30-212"><a href="#cb30-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb30-213"><a href="#cb30-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Number of regressors included"</span>) <span class="sc">+</span></span>
-<span id="cb30-214"><a href="#cb30-214" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"R2"</span>)</span>
-<span id="cb30-215"><a href="#cb30-215" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-216"><a href="#cb30-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-217"><a href="#cb30-217" aria-hidden="true" tabindex="-1"></a><span class="fu"># How does the "fit" change?</span></span>
-<span id="cb30-220"><a href="#cb30-220" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-221"><a href="#cb30-221" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-222"><a href="#cb30-222" aria-hidden="true" tabindex="-1"></a>fits_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(num_regs <span class="sc">%%</span> <span class="dv">4</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb30-223"><a href="#cb30-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb30-224"><a href="#cb30-224" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>y, <span class="at">y=</span>yhat)) <span class="sc">+</span></span>
-<span id="cb30-225"><a href="#cb30-225" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">slope=</span><span class="dv">1</span>, <span class="at">intercept=</span><span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb30-226"><a href="#cb30-226" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(<span class="sc">~</span> num_regs) </span>
-<span id="cb30-227"><a href="#cb30-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-228"><a href="#cb30-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-229"><a href="#cb30-229" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>You can't use R2 alone to determine which regressors to include,</span>
-<span id="cb30-230"><a href="#cb30-230" aria-hidden="true" tabindex="-1"></a>  since R2 will always tell you to add more</span>
-<span id="cb30-231"><a href="#cb30-231" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It helps to be smart about what regressors you include</span>
-<span id="cb30-232"><a href="#cb30-232" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How to make more regressors from the regressors we have?</span>
+<span id="cb30-183"><a href="#cb30-183" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-184"><a href="#cb30-184" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-185"><a href="#cb30-185" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb30-186"><a href="#cb30-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-187"><a href="#cb30-187" aria-hidden="true" tabindex="-1"></a>fits_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb30-188"><a href="#cb30-188" aria-hidden="true" tabindex="-1"></a>r2_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb30-189"><a href="#cb30-189" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(regs)) {</span>
+<span id="cb30-190"><a href="#cb30-190" aria-hidden="true" tabindex="-1"></a>  reg_form <span class="ot">&lt;-</span> <span class="fu">paste</span>(regs[<span class="dv">1</span><span class="sc">:</span>i], <span class="at">collapse=</span><span class="st">" + "</span>)</span>
+<span id="cb30-191"><a href="#cb30-191" aria-hidden="true" tabindex="-1"></a>  lm_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">formula</span>(<span class="fu">paste0</span>(<span class="st">"SalePrice ~ "</span>, reg_form)), ames_df)</span>
+<span id="cb30-192"><a href="#cb30-192" aria-hidden="true" tabindex="-1"></a>  fits_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(fits_df,</span>
+<span id="cb30-193"><a href="#cb30-193" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">data.frame</span>(<span class="at">x=</span>ames_df<span class="sc">$</span>Gr.Liv.Area, </span>
+<span id="cb30-194"><a href="#cb30-194" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">y=</span>ames_df<span class="sc">$</span>SalePrice, </span>
+<span id="cb30-195"><a href="#cb30-195" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">yhat=</span><span class="fu">fitted</span>(lm_fit), </span>
+<span id="cb30-196"><a href="#cb30-196" aria-hidden="true" tabindex="-1"></a>                                  <span class="at">num_regs=</span>i))</span>
+<span id="cb30-197"><a href="#cb30-197" aria-hidden="true" tabindex="-1"></a>  r2_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(r2_df, <span class="fu">data.frame</span>(</span>
+<span id="cb30-198"><a href="#cb30-198" aria-hidden="true" tabindex="-1"></a>    <span class="at">r2=</span><span class="fu">summary</span>(lm_fit)<span class="sc">$</span>r.squared,</span>
+<span id="cb30-199"><a href="#cb30-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_regs=</span>i</span>
+<span id="cb30-200"><a href="#cb30-200" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb30-201"><a href="#cb30-201" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb30-202"><a href="#cb30-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-203"><a href="#cb30-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-204"><a href="#cb30-204" aria-hidden="true" tabindex="-1"></a><span class="fu"># How does the "fit" change?</span></span>
+<span id="cb30-207"><a href="#cb30-207" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-208"><a href="#cb30-208" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-209"><a href="#cb30-209" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(r2_df) <span class="sc">+</span></span>
+<span id="cb30-210"><a href="#cb30-210" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>num_regs, <span class="at">y=</span>r2)) <span class="sc">+</span></span>
+<span id="cb30-211"><a href="#cb30-211" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb30-212"><a href="#cb30-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Number of regressors included"</span>) <span class="sc">+</span></span>
+<span id="cb30-213"><a href="#cb30-213" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"R2"</span>)</span>
+<span id="cb30-214"><a href="#cb30-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-215"><a href="#cb30-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-216"><a href="#cb30-216" aria-hidden="true" tabindex="-1"></a><span class="fu"># How does the "fit" change?</span></span>
+<span id="cb30-219"><a href="#cb30-219" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-220"><a href="#cb30-220" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-221"><a href="#cb30-221" aria-hidden="true" tabindex="-1"></a>fits_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(num_regs <span class="sc">%%</span> <span class="dv">4</span> <span class="sc">==</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb30-222"><a href="#cb30-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb30-223"><a href="#cb30-223" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>y, <span class="at">y=</span>yhat)) <span class="sc">+</span></span>
+<span id="cb30-224"><a href="#cb30-224" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_abline</span>(<span class="fu">aes</span>(<span class="at">slope=</span><span class="dv">1</span>, <span class="at">intercept=</span><span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb30-225"><a href="#cb30-225" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_grid</span>(<span class="sc">~</span> num_regs) </span>
+<span id="cb30-226"><a href="#cb30-226" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-227"><a href="#cb30-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-228"><a href="#cb30-228" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>You can't use R2 alone to determine which regressors to include,</span>
+<span id="cb30-229"><a href="#cb30-229" aria-hidden="true" tabindex="-1"></a>  since R2 will always tell you to add more</span>
+<span id="cb30-230"><a href="#cb30-230" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>It helps to be smart about what regressors you include</span>
+<span id="cb30-231"><a href="#cb30-231" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>How to make more regressors from the regressors we have?</span>
+<span id="cb30-232"><a href="#cb30-232" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-233"><a href="#cb30-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-234"><a href="#cb30-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-235"><a href="#cb30-235" aria-hidden="true" tabindex="-1"></a><span class="fu"># Polynomial regressors</span></span>
-<span id="cb30-236"><a href="#cb30-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-239"><a href="#cb30-239" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-240"><a href="#cb30-240" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area, ames_df)</span>
-<span id="cb30-241"><a href="#cb30-241" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-242"><a href="#cb30-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-245"><a href="#cb30-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-246"><a href="#cb30-246" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-247"><a href="#cb30-247" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area), ames_df) <span class="sc">+</span></span>
-<span id="cb30-248"><a href="#cb30-248" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb30-249"><a href="#cb30-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Linear fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>)</span>
-<span id="cb30-250"><a href="#cb30-250" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-251"><a href="#cb30-251" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-252"><a href="#cb30-252" aria-hidden="true" tabindex="-1"></a>It looks like there may be non-linear dependence.  How can we fit</span>
-<span id="cb30-253"><a href="#cb30-253" aria-hidden="true" tabindex="-1"></a>a nonlinear curve with "linear regression"?</span>
-<span id="cb30-254"><a href="#cb30-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-255"><a href="#cb30-255" aria-hidden="true" tabindex="-1"></a><span class="fu"># Regress on the square too</span></span>
+<span id="cb30-234"><a href="#cb30-234" aria-hidden="true" tabindex="-1"></a><span class="fu"># Polynomial regressors</span></span>
+<span id="cb30-235"><a href="#cb30-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-238"><a href="#cb30-238" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-239"><a href="#cb30-239" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area, ames_df)</span>
+<span id="cb30-240"><a href="#cb30-240" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-241"><a href="#cb30-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-244"><a href="#cb30-244" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-245"><a href="#cb30-245" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-246"><a href="#cb30-246" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area), ames_df) <span class="sc">+</span></span>
+<span id="cb30-247"><a href="#cb30-247" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb30-248"><a href="#cb30-248" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Linear fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb30-249"><a href="#cb30-249" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-250"><a href="#cb30-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-251"><a href="#cb30-251" aria-hidden="true" tabindex="-1"></a>It looks like there may be non-linear dependence.  How can we fit</span>
+<span id="cb30-252"><a href="#cb30-252" aria-hidden="true" tabindex="-1"></a>a nonlinear curve with "linear regression"?</span>
+<span id="cb30-253"><a href="#cb30-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-254"><a href="#cb30-254" aria-hidden="true" tabindex="-1"></a><span class="fu"># Regress on the square too</span></span>
+<span id="cb30-255"><a href="#cb30-255" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-256"><a href="#cb30-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-257"><a href="#cb30-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-260"><a href="#cb30-260" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-261"><a href="#cb30-261" aria-hidden="true" tabindex="-1"></a>reg_sq <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>), ames_df)</span>
-<span id="cb30-262"><a href="#cb30-262" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-263"><a href="#cb30-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-266"><a href="#cb30-266" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-267"><a href="#cb30-267" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-268"><a href="#cb30-268" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area), ames_df) <span class="sc">+</span></span>
-<span id="cb30-269"><a href="#cb30-269" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb30-270"><a href="#cb30-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Linear fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-271"><a href="#cb30-271" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_sq, ames_df), <span class="at">color=</span><span class="st">"Quadratic fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>)</span>
-<span id="cb30-272"><a href="#cb30-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-273"><a href="#cb30-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-274"><a href="#cb30-274" aria-hidden="true" tabindex="-1"></a>It looks like there may be non-linear dependence.  How can we fit</span>
-<span id="cb30-275"><a href="#cb30-275" aria-hidden="true" tabindex="-1"></a>a nonlinear curve with "linear regression"?</span>
+<span id="cb30-259"><a href="#cb30-259" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-260"><a href="#cb30-260" aria-hidden="true" tabindex="-1"></a>reg_sq <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>), ames_df)</span>
+<span id="cb30-261"><a href="#cb30-261" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-262"><a href="#cb30-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-265"><a href="#cb30-265" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-266"><a href="#cb30-266" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-267"><a href="#cb30-267" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area), ames_df) <span class="sc">+</span></span>
+<span id="cb30-268"><a href="#cb30-268" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb30-269"><a href="#cb30-269" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Linear fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb30-270"><a href="#cb30-270" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_sq, ames_df), <span class="at">color=</span><span class="st">"Quadratic fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>)</span>
+<span id="cb30-271"><a href="#cb30-271" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-272"><a href="#cb30-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-273"><a href="#cb30-273" aria-hidden="true" tabindex="-1"></a>It looks like there may be non-linear dependence.  How can we fit</span>
+<span id="cb30-274"><a href="#cb30-274" aria-hidden="true" tabindex="-1"></a>a nonlinear curve with "linear regression"?</span>
+<span id="cb30-275"><a href="#cb30-275" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-276"><a href="#cb30-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-277"><a href="#cb30-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-278"><a href="#cb30-278" aria-hidden="true" tabindex="-1"></a><span class="fu"># Regress on the higher-order polynomials</span></span>
+<span id="cb30-277"><a href="#cb30-277" aria-hidden="true" tabindex="-1"></a><span class="fu"># Regress on the higher-order polynomials</span></span>
+<span id="cb30-278"><a href="#cb30-278" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-279"><a href="#cb30-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-280"><a href="#cb30-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-283"><a href="#cb30-283" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-284"><a href="#cb30-284" aria-hidden="true" tabindex="-1"></a>reg_order1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area, ames_df)</span>
-<span id="cb30-285"><a href="#cb30-285" aria-hidden="true" tabindex="-1"></a>reg_order2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>), ames_df)</span>
-<span id="cb30-286"><a href="#cb30-286" aria-hidden="true" tabindex="-1"></a>reg_order3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">3</span>), ames_df)</span>
-<span id="cb30-287"><a href="#cb30-287" aria-hidden="true" tabindex="-1"></a>reg_order4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> </span>
-<span id="cb30-288"><a href="#cb30-288" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">4</span>), ames_df)</span>
-<span id="cb30-289"><a href="#cb30-289" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-282"><a href="#cb30-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-283"><a href="#cb30-283" aria-hidden="true" tabindex="-1"></a>reg_order1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area, ames_df)</span>
+<span id="cb30-284"><a href="#cb30-284" aria-hidden="true" tabindex="-1"></a>reg_order2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>), ames_df)</span>
+<span id="cb30-285"><a href="#cb30-285" aria-hidden="true" tabindex="-1"></a>reg_order3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">3</span>), ames_df)</span>
+<span id="cb30-286"><a href="#cb30-286" aria-hidden="true" tabindex="-1"></a>reg_order4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb30-287"><a href="#cb30-287" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">4</span>), ames_df)</span>
+<span id="cb30-288"><a href="#cb30-288" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-289"><a href="#cb30-289" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-290"><a href="#cb30-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-291"><a href="#cb30-291" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-294"><a href="#cb30-294" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-295"><a href="#cb30-295" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-296"><a href="#cb30-296" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-297"><a href="#cb30-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-298"><a href="#cb30-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_order1, ames_df), <span class="at">color=</span><span class="st">"Order 1"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-299"><a href="#cb30-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_order2, ames_df), <span class="at">color=</span><span class="st">"Order 2"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-300"><a href="#cb30-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_order3, ames_df), <span class="at">color=</span><span class="st">"Order 3"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-301"><a href="#cb30-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_order4, ames_df), <span class="at">color=</span><span class="st">"Order 4"</span>), <span class="at">lwd=</span><span class="dv">3</span>) </span>
-<span id="cb30-302"><a href="#cb30-302" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-303"><a href="#cb30-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-304"><a href="#cb30-304" aria-hidden="true" tabindex="-1"></a>What will happen if you regress on higher and higher-order polynomials? How</span>
-<span id="cb30-305"><a href="#cb30-305" aria-hidden="true" tabindex="-1"></a>do you decide when to stop?</span>
+<span id="cb30-293"><a href="#cb30-293" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-294"><a href="#cb30-294" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-295"><a href="#cb30-295" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-296"><a href="#cb30-296" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-297"><a href="#cb30-297" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_order1, ames_df), <span class="at">color=</span><span class="st">"Order 1"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb30-298"><a href="#cb30-298" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_order2, ames_df), <span class="at">color=</span><span class="st">"Order 2"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb30-299"><a href="#cb30-299" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_order3, ames_df), <span class="at">color=</span><span class="st">"Order 3"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb30-300"><a href="#cb30-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_order4, ames_df), <span class="at">color=</span><span class="st">"Order 4"</span>), <span class="at">lwd=</span><span class="dv">3</span>) </span>
+<span id="cb30-301"><a href="#cb30-301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-302"><a href="#cb30-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-303"><a href="#cb30-303" aria-hidden="true" tabindex="-1"></a>What will happen if you regress on higher and higher-order polynomials? How</span>
+<span id="cb30-304"><a href="#cb30-304" aria-hidden="true" tabindex="-1"></a>do you decide when to stop?</span>
+<span id="cb30-305"><a href="#cb30-305" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-306"><a href="#cb30-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-307"><a href="#cb30-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-308"><a href="#cb30-308" aria-hidden="true" tabindex="-1"></a><span class="fu"># Regress on the higher-order polynomials</span></span>
+<span id="cb30-307"><a href="#cb30-307" aria-hidden="true" tabindex="-1"></a><span class="fu"># Regress on the higher-order polynomials</span></span>
+<span id="cb30-308"><a href="#cb30-308" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-309"><a href="#cb30-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-310"><a href="#cb30-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-311"><a href="#cb30-311" aria-hidden="true" tabindex="-1"></a>The poly function does the same thing more compactly.  It</span>
-<span id="cb30-312"><a href="#cb30-312" aria-hidden="true" tabindex="-1"></a>also uses "orthogonal polynomials," which can help fitting.</span>
-<span id="cb30-313"><a href="#cb30-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-316"><a href="#cb30-316" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-317"><a href="#cb30-317" aria-hidden="true" tabindex="-1"></a>reg_order4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> </span>
-<span id="cb30-318"><a href="#cb30-318" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">4</span>), ames_df)</span>
-<span id="cb30-319"><a href="#cb30-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-320"><a href="#cb30-320" aria-hidden="true" tabindex="-1"></a>reg_order4_v2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> <span class="fu">poly</span>(Gr.Liv.Area, <span class="dv">4</span>), ames_df)</span>
-<span id="cb30-321"><a href="#cb30-321" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">max</span>(<span class="fu">abs</span>(<span class="fu">fitted</span>(reg_order4) <span class="sc">-</span> <span class="fu">fitted</span>(reg_order4_v2))))</span>
-<span id="cb30-322"><a href="#cb30-322" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-310"><a href="#cb30-310" aria-hidden="true" tabindex="-1"></a>The poly function does the same thing more compactly.  It</span>
+<span id="cb30-311"><a href="#cb30-311" aria-hidden="true" tabindex="-1"></a>also uses "orthogonal polynomials," which can help fitting.</span>
+<span id="cb30-312"><a href="#cb30-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-315"><a href="#cb30-315" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-316"><a href="#cb30-316" aria-hidden="true" tabindex="-1"></a>reg_order4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb30-317"><a href="#cb30-317" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">I</span>(Gr.Liv.Area<span class="sc">^</span><span class="dv">4</span>), ames_df)</span>
+<span id="cb30-318"><a href="#cb30-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-319"><a href="#cb30-319" aria-hidden="true" tabindex="-1"></a>reg_order4_v2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> <span class="fu">poly</span>(Gr.Liv.Area, <span class="dv">4</span>), ames_df)</span>
+<span id="cb30-320"><a href="#cb30-320" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">max</span>(<span class="fu">abs</span>(<span class="fu">fitted</span>(reg_order4) <span class="sc">-</span> <span class="fu">fitted</span>(reg_order4_v2))))</span>
+<span id="cb30-321"><a href="#cb30-321" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-322"><a href="#cb30-322" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-323"><a href="#cb30-323" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-324"><a href="#cb30-324" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-325"><a href="#cb30-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-326"><a href="#cb30-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-327"><a href="#cb30-327" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
-<span id="cb30-328"><a href="#cb30-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-331"><a href="#cb30-331" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-332"><a href="#cb30-332" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-333"><a href="#cb30-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-334"><a href="#cb30-334" aria-hidden="true" tabindex="-1"></a><span class="co"># But there may be some grouping with Kitchen.Qual</span></span>
-<span id="cb30-335"><a href="#cb30-335" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-336"><a href="#cb30-336" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.5</span>, <span class="fu">aes</span>(<span class="at">color=</span>Kitchen.Qual)) <span class="sc">+</span></span>
-<span id="cb30-337"><a href="#cb30-337" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df)), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb30-338"><a href="#cb30-338" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-339"><a href="#cb30-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-340"><a href="#cb30-340" aria-hidden="true" tabindex="-1"></a>Recall that we found some grouping by kitchen quality.  Let's</span>
-<span id="cb30-341"><a href="#cb30-341" aria-hidden="true" tabindex="-1"></a>include the indicator in the regression:</span>
-<span id="cb30-342"><a href="#cb30-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-345"><a href="#cb30-345" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-346"><a href="#cb30-346" aria-hidden="true" tabindex="-1"></a>reg_additive <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> Kitchen.Qual, ames_df)</span>
-<span id="cb30-347"><a href="#cb30-347" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-326"><a href="#cb30-326" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
+<span id="cb30-327"><a href="#cb30-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-330"><a href="#cb30-330" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-331"><a href="#cb30-331" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-332"><a href="#cb30-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-333"><a href="#cb30-333" aria-hidden="true" tabindex="-1"></a><span class="co"># But there may be some grouping with Kitchen.Qual</span></span>
+<span id="cb30-334"><a href="#cb30-334" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-335"><a href="#cb30-335" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.5</span>, <span class="fu">aes</span>(<span class="at">color=</span>Kitchen.Qual)) <span class="sc">+</span></span>
+<span id="cb30-336"><a href="#cb30-336" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df)), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb30-337"><a href="#cb30-337" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-338"><a href="#cb30-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-339"><a href="#cb30-339" aria-hidden="true" tabindex="-1"></a>Recall that we found some grouping by kitchen quality.  Let's</span>
+<span id="cb30-340"><a href="#cb30-340" aria-hidden="true" tabindex="-1"></a>include the indicator in the regression:</span>
+<span id="cb30-341"><a href="#cb30-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-344"><a href="#cb30-344" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-345"><a href="#cb30-345" aria-hidden="true" tabindex="-1"></a>reg_additive <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> Kitchen.Qual, ames_df)</span>
+<span id="cb30-346"><a href="#cb30-346" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-347"><a href="#cb30-347" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-348"><a href="#cb30-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-349"><a href="#cb30-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-350"><a href="#cb30-350" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
-<span id="cb30-351"><a href="#cb30-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-354"><a href="#cb30-354" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-355"><a href="#cb30-355" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-356"><a href="#cb30-356" aria-hidden="true" tabindex="-1"></a>additive_plot <span class="ot">&lt;-</span></span>
-<span id="cb30-357"><a href="#cb30-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-358"><a href="#cb30-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-359"><a href="#cb30-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Original fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-360"><a href="#cb30-360" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_additive, ames_df), </span>
-<span id="cb30-361"><a href="#cb30-361" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb30-362"><a href="#cb30-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-363"><a href="#cb30-363" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(additive_plot)</span>
-<span id="cb30-364"><a href="#cb30-364" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-365"><a href="#cb30-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-366"><a href="#cb30-366" aria-hidden="true" tabindex="-1"></a>The fit is now different for each kitchen quality, and the </span>
-<span id="cb30-367"><a href="#cb30-367" aria-hidden="true" tabindex="-1"></a>overall slope changed too!</span>
-<span id="cb30-368"><a href="#cb30-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-369"><a href="#cb30-369" aria-hidden="true" tabindex="-1"></a>However, the slope is still the same within each kitchen</span>
-<span id="cb30-370"><a href="#cb30-370" aria-hidden="true" tabindex="-1"></a>quality group.  **Why?**</span>
+<span id="cb30-349"><a href="#cb30-349" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
+<span id="cb30-350"><a href="#cb30-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-353"><a href="#cb30-353" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-354"><a href="#cb30-354" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-355"><a href="#cb30-355" aria-hidden="true" tabindex="-1"></a>additive_plot <span class="ot">&lt;-</span></span>
+<span id="cb30-356"><a href="#cb30-356" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-357"><a href="#cb30-357" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-358"><a href="#cb30-358" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Original fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb30-359"><a href="#cb30-359" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_additive, ames_df), </span>
+<span id="cb30-360"><a href="#cb30-360" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb30-361"><a href="#cb30-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-362"><a href="#cb30-362" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(additive_plot)</span>
+<span id="cb30-363"><a href="#cb30-363" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-364"><a href="#cb30-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-365"><a href="#cb30-365" aria-hidden="true" tabindex="-1"></a>The fit is now different for each kitchen quality, and the </span>
+<span id="cb30-366"><a href="#cb30-366" aria-hidden="true" tabindex="-1"></a>overall slope changed too!</span>
+<span id="cb30-367"><a href="#cb30-367" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-368"><a href="#cb30-368" aria-hidden="true" tabindex="-1"></a>However, the slope is still the same within each kitchen</span>
+<span id="cb30-369"><a href="#cb30-369" aria-hidden="true" tabindex="-1"></a>quality group.  **Why?**</span>
+<span id="cb30-370"><a href="#cb30-370" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-371"><a href="#cb30-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-372"><a href="#cb30-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-373"><a href="#cb30-373" aria-hidden="true" tabindex="-1"></a><span class="fu"># XTX plot</span></span>
-<span id="cb30-374"><a href="#cb30-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-375"><a href="#cb30-375" aria-hidden="true" tabindex="-1"></a>We can see in the XTX matrix that there is some association</span>
-<span id="cb30-376"><a href="#cb30-376" aria-hidden="true" tabindex="-1"></a>between living area and kitchen quality.</span>
-<span id="cb30-377"><a href="#cb30-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-378"><a href="#cb30-378" aria-hidden="true" tabindex="-1"></a>**How would we expect the slope to have changed if this matrix were diagonal?**</span>
-<span id="cb30-379"><a href="#cb30-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-382"><a href="#cb30-382" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-383"><a href="#cb30-383" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(reg_additive) <span class="sc">%&gt;%</span> <span class="fu">scale</span>(<span class="at">center=</span><span class="cn">FALSE</span>)</span>
-<span id="cb30-384"><a href="#cb30-384" aria-hidden="true" tabindex="-1"></a>xtx <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> x <span class="sc">/</span> <span class="fu">nrow</span>(ames_df)</span>
-<span id="cb30-385"><a href="#cb30-385" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMatrix</span>(xtx)</span>
-<span id="cb30-386"><a href="#cb30-386" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-372"><a href="#cb30-372" aria-hidden="true" tabindex="-1"></a><span class="fu"># XTX plot</span></span>
+<span id="cb30-373"><a href="#cb30-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-374"><a href="#cb30-374" aria-hidden="true" tabindex="-1"></a>We can see in the XTX matrix that there is some association</span>
+<span id="cb30-375"><a href="#cb30-375" aria-hidden="true" tabindex="-1"></a>between living area and kitchen quality.</span>
+<span id="cb30-376"><a href="#cb30-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-377"><a href="#cb30-377" aria-hidden="true" tabindex="-1"></a>**How would we expect the slope to have changed if this matrix were diagonal?**</span>
+<span id="cb30-378"><a href="#cb30-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-381"><a href="#cb30-381" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-382"><a href="#cb30-382" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(reg_additive) <span class="sc">%&gt;%</span> <span class="fu">scale</span>(<span class="at">center=</span><span class="cn">FALSE</span>)</span>
+<span id="cb30-383"><a href="#cb30-383" aria-hidden="true" tabindex="-1"></a>xtx <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> x <span class="sc">/</span> <span class="fu">nrow</span>(ames_df)</span>
+<span id="cb30-384"><a href="#cb30-384" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMatrix</span>(xtx)</span>
+<span id="cb30-385"><a href="#cb30-385" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-386"><a href="#cb30-386" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-387"><a href="#cb30-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-388"><a href="#cb30-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-389"><a href="#cb30-389" aria-hidden="true" tabindex="-1"></a><span class="fu"># Level dropping</span></span>
-<span id="cb30-390"><a href="#cb30-390" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-391"><a href="#cb30-391" aria-hidden="true" tabindex="-1"></a>Note that one of the levels is automatically dropped?  **Why?**</span>
-<span id="cb30-392"><a href="#cb30-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-395"><a href="#cb30-395" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-396"><a href="#cb30-396" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Kitchen.Qual)</span>
-<span id="cb30-397"><a href="#cb30-397" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">coefficients</span>(reg_additive))</span>
-<span id="cb30-398"><a href="#cb30-398" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-388"><a href="#cb30-388" aria-hidden="true" tabindex="-1"></a><span class="fu"># Level dropping</span></span>
+<span id="cb30-389"><a href="#cb30-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-390"><a href="#cb30-390" aria-hidden="true" tabindex="-1"></a>Note that one of the levels is automatically dropped?  **Why?**</span>
+<span id="cb30-391"><a href="#cb30-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-394"><a href="#cb30-394" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-395"><a href="#cb30-395" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Kitchen.Qual)</span>
+<span id="cb30-396"><a href="#cb30-396" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">coefficients</span>(reg_additive))</span>
+<span id="cb30-397"><a href="#cb30-397" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-398"><a href="#cb30-398" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-399"><a href="#cb30-399" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-400"><a href="#cb30-400" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-401"><a href="#cb30-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-402"><a href="#cb30-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-403"><a href="#cb30-403" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
+<span id="cb30-402"><a href="#cb30-402" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
+<span id="cb30-403"><a href="#cb30-403" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-404"><a href="#cb30-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-405"><a href="#cb30-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-406"><a href="#cb30-406" aria-hidden="true" tabindex="-1"></a>How would you fit a different slope for each kitchen quality?</span>
-<span id="cb30-407"><a href="#cb30-407" aria-hidden="true" tabindex="-1"></a>Use an interaction term.  You can use the <span class="in">`R`</span> notation <span class="in">`:`</span></span>
-<span id="cb30-408"><a href="#cb30-408" aria-hidden="true" tabindex="-1"></a>and it will construct the interaction automatically for you.</span>
-<span id="cb30-409"><a href="#cb30-409" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-412"><a href="#cb30-412" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-413"><a href="#cb30-413" aria-hidden="true" tabindex="-1"></a>reg_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area<span class="sc">:</span>Kitchen.Qual, ames_df)</span>
-<span id="cb30-414"><a href="#cb30-414" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(<span class="fu">select</span>(ames_df, Gr.Liv.Area, Kitchen.Qual), </span>
-<span id="cb30-415"><a href="#cb30-415" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.data.frame</span>(<span class="fu">model.matrix</span>(reg_inter)))[<span class="dv">1</span>,] <span class="sc">%&gt;%</span></span>
-<span id="cb30-416"><a href="#cb30-416" aria-hidden="true" tabindex="-1"></a>          <span class="fu">t</span>()</span>
-<span id="cb30-417"><a href="#cb30-417" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-418"><a href="#cb30-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-419"><a href="#cb30-419" aria-hidden="true" tabindex="-1"></a>Here's a good cheat sheet for <span class="in">`R`</span> formulas:</span>
-<span id="cb30-420"><a href="#cb30-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-421"><a href="#cb30-421" aria-hidden="true" tabindex="-1"></a><span class="in">`https://www.econometrics.blog/post/the-r-formula-cheatsheet/`</span></span>
+<span id="cb30-405"><a href="#cb30-405" aria-hidden="true" tabindex="-1"></a>How would you fit a different slope for each kitchen quality?</span>
+<span id="cb30-406"><a href="#cb30-406" aria-hidden="true" tabindex="-1"></a>Use an interaction term.  You can use the <span class="in">`R`</span> notation <span class="in">`:`</span></span>
+<span id="cb30-407"><a href="#cb30-407" aria-hidden="true" tabindex="-1"></a>and it will construct the interaction automatically for you.</span>
+<span id="cb30-408"><a href="#cb30-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-411"><a href="#cb30-411" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-412"><a href="#cb30-412" aria-hidden="true" tabindex="-1"></a>reg_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area<span class="sc">:</span>Kitchen.Qual, ames_df)</span>
+<span id="cb30-413"><a href="#cb30-413" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(<span class="fu">select</span>(ames_df, Gr.Liv.Area, Kitchen.Qual), </span>
+<span id="cb30-414"><a href="#cb30-414" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.data.frame</span>(<span class="fu">model.matrix</span>(reg_inter)))[<span class="dv">1</span>,] <span class="sc">%&gt;%</span></span>
+<span id="cb30-415"><a href="#cb30-415" aria-hidden="true" tabindex="-1"></a>          <span class="fu">t</span>()</span>
+<span id="cb30-416"><a href="#cb30-416" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-417"><a href="#cb30-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-418"><a href="#cb30-418" aria-hidden="true" tabindex="-1"></a>Here's a good cheat sheet for <span class="in">`R`</span> formulas:</span>
+<span id="cb30-419"><a href="#cb30-419" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-420"><a href="#cb30-420" aria-hidden="true" tabindex="-1"></a><span class="in">`https://www.econometrics.blog/post/the-r-formula-cheatsheet/`</span></span>
+<span id="cb30-421"><a href="#cb30-421" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-422"><a href="#cb30-422" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-423"><a href="#cb30-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-424"><a href="#cb30-424" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interaction XTX matrix</span></span>
-<span id="cb30-425"><a href="#cb30-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-428"><a href="#cb30-428" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-429"><a href="#cb30-429" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(reg_inter) <span class="sc">%&gt;%</span> <span class="fu">scale</span>(<span class="at">center=</span><span class="cn">FALSE</span>)</span>
-<span id="cb30-430"><a href="#cb30-430" aria-hidden="true" tabindex="-1"></a>xtx <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> x <span class="sc">/</span> <span class="fu">nrow</span>(ames_df)</span>
-<span id="cb30-431"><a href="#cb30-431" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMatrix</span>(xtx)</span>
-<span id="cb30-432"><a href="#cb30-432" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-423"><a href="#cb30-423" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interaction XTX matrix</span></span>
+<span id="cb30-424"><a href="#cb30-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-427"><a href="#cb30-427" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-428"><a href="#cb30-428" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(reg_inter) <span class="sc">%&gt;%</span> <span class="fu">scale</span>(<span class="at">center=</span><span class="cn">FALSE</span>)</span>
+<span id="cb30-429"><a href="#cb30-429" aria-hidden="true" tabindex="-1"></a>xtx <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> x <span class="sc">/</span> <span class="fu">nrow</span>(ames_df)</span>
+<span id="cb30-430"><a href="#cb30-430" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMatrix</span>(xtx)</span>
+<span id="cb30-431"><a href="#cb30-431" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-432"><a href="#cb30-432" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-433"><a href="#cb30-433" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-434"><a href="#cb30-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-435"><a href="#cb30-435" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interaction plot</span></span>
-<span id="cb30-436"><a href="#cb30-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-439"><a href="#cb30-439" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-440"><a href="#cb30-440" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-441"><a href="#cb30-441" aria-hidden="true" tabindex="-1"></a>interaction_plot <span class="ot">&lt;-</span></span>
-<span id="cb30-442"><a href="#cb30-442" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-443"><a href="#cb30-443" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-444"><a href="#cb30-444" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Overall fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-445"><a href="#cb30-445" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_inter, ames_df), </span>
-<span id="cb30-446"><a href="#cb30-446" aria-hidden="true" tabindex="-1"></a>                  <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb30-447"><a href="#cb30-447" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(interaction_plot <span class="sc">+</span> </span>
-<span id="cb30-448"><a href="#cb30-448" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes"</span>) <span class="sc">+</span> </span>
-<span id="cb30-449"><a href="#cb30-449" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
-<span id="cb30-450"><a href="#cb30-450" aria-hidden="true" tabindex="-1"></a>             additive_plot <span class="sc">+</span> </span>
-<span id="cb30-451"><a href="#cb30-451" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="st">"Interaction offsets"</span>) <span class="sc">+</span> </span>
-<span id="cb30-452"><a href="#cb30-452" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
-<span id="cb30-453"><a href="#cb30-453" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">2</span>)</span>
-<span id="cb30-454"><a href="#cb30-454" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-455"><a href="#cb30-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-456"><a href="#cb30-456" aria-hidden="true" tabindex="-1"></a>**Is there a point where all the slope interaction lines cross?**</span>
+<span id="cb30-434"><a href="#cb30-434" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interaction plot</span></span>
+<span id="cb30-435"><a href="#cb30-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-438"><a href="#cb30-438" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-439"><a href="#cb30-439" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-440"><a href="#cb30-440" aria-hidden="true" tabindex="-1"></a>interaction_plot <span class="ot">&lt;-</span></span>
+<span id="cb30-441"><a href="#cb30-441" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-442"><a href="#cb30-442" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-443"><a href="#cb30-443" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Overall fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb30-444"><a href="#cb30-444" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_inter, ames_df), </span>
+<span id="cb30-445"><a href="#cb30-445" aria-hidden="true" tabindex="-1"></a>                  <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb30-446"><a href="#cb30-446" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(interaction_plot <span class="sc">+</span> </span>
+<span id="cb30-447"><a href="#cb30-447" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes"</span>) <span class="sc">+</span> </span>
+<span id="cb30-448"><a href="#cb30-448" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
+<span id="cb30-449"><a href="#cb30-449" aria-hidden="true" tabindex="-1"></a>             additive_plot <span class="sc">+</span> </span>
+<span id="cb30-450"><a href="#cb30-450" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="st">"Interaction offsets"</span>) <span class="sc">+</span> </span>
+<span id="cb30-451"><a href="#cb30-451" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
+<span id="cb30-452"><a href="#cb30-452" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb30-453"><a href="#cb30-453" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-454"><a href="#cb30-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-455"><a href="#cb30-455" aria-hidden="true" tabindex="-1"></a>**Is there a point where all the slope interaction lines cross?**</span>
+<span id="cb30-456"><a href="#cb30-456" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-457"><a href="#cb30-457" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-458"><a href="#cb30-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-459"><a href="#cb30-459" aria-hidden="true" tabindex="-1"></a><span class="fu"># Both slopes and offsets</span></span>
-<span id="cb30-460"><a href="#cb30-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-461"><a href="#cb30-461" aria-hidden="true" tabindex="-1"></a>Using the <span class="in">`R`</span> notation <span class="in">`*`</span>, we can add both constant interactions</span>
-<span id="cb30-462"><a href="#cb30-462" aria-hidden="true" tabindex="-1"></a>and slope interactions:</span>
-<span id="cb30-463"><a href="#cb30-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-466"><a href="#cb30-466" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-467"><a href="#cb30-467" aria-hidden="true" tabindex="-1"></a>reg_add_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area<span class="sc">*</span>Kitchen.Qual, ames_df)</span>
-<span id="cb30-468"><a href="#cb30-468" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">model.matrix</span>(reg_add_inter))</span>
-<span id="cb30-469"><a href="#cb30-469" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-470"><a href="#cb30-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-473"><a href="#cb30-473" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-474"><a href="#cb30-474" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-475"><a href="#cb30-475" aria-hidden="true" tabindex="-1"></a>additive_and_interaction_plot <span class="ot">&lt;-</span></span>
-<span id="cb30-476"><a href="#cb30-476" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-477"><a href="#cb30-477" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-478"><a href="#cb30-478" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Overall fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-479"><a href="#cb30-479" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_add_inter, ames_df), </span>
-<span id="cb30-480"><a href="#cb30-480" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb30-481"><a href="#cb30-481" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-482"><a href="#cb30-482" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(interaction_plot <span class="sc">+</span> </span>
-<span id="cb30-483"><a href="#cb30-483" aria-hidden="true" tabindex="-1"></a>             <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes"</span>) <span class="sc">+</span></span>
-<span id="cb30-484"><a href="#cb30-484" aria-hidden="true" tabindex="-1"></a>             <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
-<span id="cb30-485"><a href="#cb30-485" aria-hidden="true" tabindex="-1"></a>             additive_and_interaction_plot <span class="sc">+</span> </span>
-<span id="cb30-486"><a href="#cb30-486" aria-hidden="true" tabindex="-1"></a>               <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes and offsets"</span>) <span class="sc">+</span></span>
-<span id="cb30-487"><a href="#cb30-487" aria-hidden="true" tabindex="-1"></a>               <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
-<span id="cb30-488"><a href="#cb30-488" aria-hidden="true" tabindex="-1"></a>               <span class="at">ncol=</span><span class="dv">2</span>)</span>
-<span id="cb30-489"><a href="#cb30-489" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-458"><a href="#cb30-458" aria-hidden="true" tabindex="-1"></a><span class="fu"># Both slopes and offsets</span></span>
+<span id="cb30-459"><a href="#cb30-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-460"><a href="#cb30-460" aria-hidden="true" tabindex="-1"></a>Using the <span class="in">`R`</span> notation <span class="in">`*`</span>, we can add both constant interactions</span>
+<span id="cb30-461"><a href="#cb30-461" aria-hidden="true" tabindex="-1"></a>and slope interactions:</span>
+<span id="cb30-462"><a href="#cb30-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-465"><a href="#cb30-465" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-466"><a href="#cb30-466" aria-hidden="true" tabindex="-1"></a>reg_add_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area<span class="sc">*</span>Kitchen.Qual, ames_df)</span>
+<span id="cb30-467"><a href="#cb30-467" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">model.matrix</span>(reg_add_inter))</span>
+<span id="cb30-468"><a href="#cb30-468" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-469"><a href="#cb30-469" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-472"><a href="#cb30-472" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-473"><a href="#cb30-473" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-474"><a href="#cb30-474" aria-hidden="true" tabindex="-1"></a>additive_and_interaction_plot <span class="ot">&lt;-</span></span>
+<span id="cb30-475"><a href="#cb30-475" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-476"><a href="#cb30-476" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-477"><a href="#cb30-477" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Overall fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb30-478"><a href="#cb30-478" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_add_inter, ames_df), </span>
+<span id="cb30-479"><a href="#cb30-479" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb30-480"><a href="#cb30-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-481"><a href="#cb30-481" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(interaction_plot <span class="sc">+</span> </span>
+<span id="cb30-482"><a href="#cb30-482" aria-hidden="true" tabindex="-1"></a>             <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes"</span>) <span class="sc">+</span></span>
+<span id="cb30-483"><a href="#cb30-483" aria-hidden="true" tabindex="-1"></a>             <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
+<span id="cb30-484"><a href="#cb30-484" aria-hidden="true" tabindex="-1"></a>             additive_and_interaction_plot <span class="sc">+</span> </span>
+<span id="cb30-485"><a href="#cb30-485" aria-hidden="true" tabindex="-1"></a>               <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes and offsets"</span>) <span class="sc">+</span></span>
+<span id="cb30-486"><a href="#cb30-486" aria-hidden="true" tabindex="-1"></a>               <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
+<span id="cb30-487"><a href="#cb30-487" aria-hidden="true" tabindex="-1"></a>               <span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb30-488"><a href="#cb30-488" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-489"><a href="#cb30-489" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-490"><a href="#cb30-490" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-491"><a href="#cb30-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-492"><a href="#cb30-492" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-493"><a href="#cb30-493" aria-hidden="true" tabindex="-1"></a><span class="fu"># Higher--order interactions</span></span>
-<span id="cb30-494"><a href="#cb30-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-495"><a href="#cb30-495" aria-hidden="true" tabindex="-1"></a>We can create still higher--order interactions with the</span>
-<span id="cb30-496"><a href="#cb30-496" aria-hidden="true" tabindex="-1"></a>symbol <span class="in">`^`</span>:</span>
-<span id="cb30-497"><a href="#cb30-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-500"><a href="#cb30-500" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-501"><a href="#cb30-501" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Garage.Qual)</span>
-<span id="cb30-502"><a href="#cb30-502" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Exter.Qual)</span>
-<span id="cb30-503"><a href="#cb30-503" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Kitchen.Qual)</span>
-<span id="cb30-504"><a href="#cb30-504" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-505"><a href="#cb30-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-508"><a href="#cb30-508" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-509"><a href="#cb30-509" aria-hidden="true" tabindex="-1"></a>reg_higher <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb30-510"><a href="#cb30-510" aria-hidden="true" tabindex="-1"></a>  SalePrice <span class="sc">~</span> (Exter.Qual <span class="sc">+</span> Kitchen.Qual <span class="sc">+</span> Garage.Qual)<span class="sc">^</span><span class="dv">3</span>,</span>
-<span id="cb30-511"><a href="#cb30-511" aria-hidden="true" tabindex="-1"></a>  ames_df)</span>
-<span id="cb30-512"><a href="#cb30-512" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-513"><a href="#cb30-513" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-514"><a href="#cb30-514" aria-hidden="true" tabindex="-1"></a><span class="fu"># Three--way interactions have a lot of NA estimates.</span></span>
-<span id="cb30-515"><a href="#cb30-515" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-518"><a href="#cb30-518" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-519"><a href="#cb30-519" aria-hidden="true" tabindex="-1"></a>coeff_names <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">coefficients</span>(reg_higher))</span>
-<span id="cb30-520"><a href="#cb30-520" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(coeff_names[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], coeff_names[<span class="dv">21</span><span class="sc">:</span><span class="dv">25</span>], coeff_names[<span class="dv">71</span><span class="sc">:</span><span class="dv">75</span>])</span>
-<span id="cb30-521"><a href="#cb30-521" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-524"><a href="#cb30-524" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-525"><a href="#cb30-525" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sum</span>(<span class="fu">is.na</span>(<span class="fu">coefficients</span>(reg_higher))))</span>
-<span id="cb30-526"><a href="#cb30-526" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-527"><a href="#cb30-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-528"><a href="#cb30-528" aria-hidden="true" tabindex="-1"></a>**Why are there so many NA coefficients?**</span>
+<span id="cb30-492"><a href="#cb30-492" aria-hidden="true" tabindex="-1"></a><span class="fu"># Higher--order interactions</span></span>
+<span id="cb30-493"><a href="#cb30-493" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-494"><a href="#cb30-494" aria-hidden="true" tabindex="-1"></a>We can create still higher--order interactions with the</span>
+<span id="cb30-495"><a href="#cb30-495" aria-hidden="true" tabindex="-1"></a>symbol <span class="in">`^`</span>:</span>
+<span id="cb30-496"><a href="#cb30-496" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-499"><a href="#cb30-499" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-500"><a href="#cb30-500" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Garage.Qual)</span>
+<span id="cb30-501"><a href="#cb30-501" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Exter.Qual)</span>
+<span id="cb30-502"><a href="#cb30-502" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Kitchen.Qual)</span>
+<span id="cb30-503"><a href="#cb30-503" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-504"><a href="#cb30-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-507"><a href="#cb30-507" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-508"><a href="#cb30-508" aria-hidden="true" tabindex="-1"></a>reg_higher <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb30-509"><a href="#cb30-509" aria-hidden="true" tabindex="-1"></a>  SalePrice <span class="sc">~</span> (Exter.Qual <span class="sc">+</span> Kitchen.Qual <span class="sc">+</span> Garage.Qual)<span class="sc">^</span><span class="dv">3</span>,</span>
+<span id="cb30-510"><a href="#cb30-510" aria-hidden="true" tabindex="-1"></a>  ames_df)</span>
+<span id="cb30-511"><a href="#cb30-511" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-512"><a href="#cb30-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-513"><a href="#cb30-513" aria-hidden="true" tabindex="-1"></a><span class="fu"># Three--way interactions have a lot of NA estimates.</span></span>
+<span id="cb30-514"><a href="#cb30-514" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-517"><a href="#cb30-517" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-518"><a href="#cb30-518" aria-hidden="true" tabindex="-1"></a>coeff_names <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">coefficients</span>(reg_higher))</span>
+<span id="cb30-519"><a href="#cb30-519" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(coeff_names[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], coeff_names[<span class="dv">21</span><span class="sc">:</span><span class="dv">25</span>], coeff_names[<span class="dv">71</span><span class="sc">:</span><span class="dv">75</span>])</span>
+<span id="cb30-520"><a href="#cb30-520" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-523"><a href="#cb30-523" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-524"><a href="#cb30-524" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sum</span>(<span class="fu">is.na</span>(<span class="fu">coefficients</span>(reg_higher))))</span>
+<span id="cb30-525"><a href="#cb30-525" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-526"><a href="#cb30-526" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-527"><a href="#cb30-527" aria-hidden="true" tabindex="-1"></a>**Why are there so many NA coefficients?**</span>
+<span id="cb30-528"><a href="#cb30-528" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-529"><a href="#cb30-529" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-530"><a href="#cb30-530" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-531"><a href="#cb30-531" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-532"><a href="#cb30-532" aria-hidden="true" tabindex="-1"></a><span class="fu"># Higher--order Interaction Plot</span></span>
-<span id="cb30-533"><a href="#cb30-533" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-534"><a href="#cb30-534" aria-hidden="true" tabindex="-1"></a>**Why do the higher--order interactions look like step functions?**</span>
-<span id="cb30-537"><a href="#cb30-537" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-538"><a href="#cb30-538" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-539"><a href="#cb30-539" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-540"><a href="#cb30-540" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-541"><a href="#cb30-541" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Linear fit"</span>), <span class="at">lwd=</span><span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb30-542"><a href="#cb30-542" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_higher, ames_df), </span>
-<span id="cb30-543"><a href="#cb30-543" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">"Higher order indicator interactions"</span>))</span>
-<span id="cb30-544"><a href="#cb30-544" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-531"><a href="#cb30-531" aria-hidden="true" tabindex="-1"></a><span class="fu"># Higher--order Interaction Plot</span></span>
+<span id="cb30-532"><a href="#cb30-532" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-533"><a href="#cb30-533" aria-hidden="true" tabindex="-1"></a>**Why do the higher--order interactions look like step functions?**</span>
+<span id="cb30-536"><a href="#cb30-536" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-537"><a href="#cb30-537" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-538"><a href="#cb30-538" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-539"><a href="#cb30-539" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-540"><a href="#cb30-540" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Linear fit"</span>), <span class="at">lwd=</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb30-541"><a href="#cb30-541" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_higher, ames_df), </span>
+<span id="cb30-542"><a href="#cb30-542" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">"Higher order indicator interactions"</span>))</span>
+<span id="cb30-543"><a href="#cb30-543" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
