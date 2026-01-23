@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>STAT151A Homework 0 (prerequisites review).</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-MMK2VCM6EW"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
+</script>
+<script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../assets/stat_bear.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Spring 2026 STAT151A</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../schedule.html"> 
+<span class="menu-text">Course schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../lectures/index.html"> 
+<span class="menu-text">Lectures</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../assignments/index.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../labs/index.html"> 
+<span class="menu-text">Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../datasets/index.html"> 
+<span class="menu-text">Datasets</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../course_policies.html"> 
+<span class="menu-text">Course Policies</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#linear-systems" id="toc-linear-systems" class="nav-link active" data-scroll-target="#linear-systems"><span class="header-section-number">1</span> Linear systems</a></li>
+  <li><a href="#dimensions-of-linear-algebra-expressions" id="toc-dimensions-of-linear-algebra-expressions" class="nav-link" data-scroll-target="#dimensions-of-linear-algebra-expressions"><span class="header-section-number">2</span> Dimensions of linear algebra expressions</a></li>
+  <li><a href="#orthonormal-vectors-and-bases" id="toc-orthonormal-vectors-and-bases" class="nav-link" data-scroll-target="#orthonormal-vectors-and-bases"><span class="header-section-number">3</span> Orthonormal vectors and bases</a></li>
+  <li><a href="#eigenvalues-and-eigenvectors-of-square-symmetric-matrices" id="toc-eigenvalues-and-eigenvectors-of-square-symmetric-matrices" class="nav-link" data-scroll-target="#eigenvalues-and-eigenvectors-of-square-symmetric-matrices"><span class="header-section-number">4</span> Eigenvalues and eigenvectors of square symmetric matrices</a></li>
+  <li><a href="#statistical-asymptotics" id="toc-statistical-asymptotics" class="nav-link" data-scroll-target="#statistical-asymptotics"><span class="header-section-number">5</span> Statistical asymptotics</a></li>
+  <li><a href="#conditional-probability" id="toc-conditional-probability" class="nav-link" data-scroll-target="#conditional-probability"><span class="header-section-number">6</span> Conditional probability</a></li>
+  <li><a href="#problems-from-freedman2009statistical" id="toc-problems-from-freedman2009statistical" class="nav-link" data-scroll-target="#problems-from-freedman2009statistical"><span class="header-section-number">7</span> Problems from <span class="citation" data-cites="freedman:2009:statistical">Freedman (2009)</span></a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">STAT151A Homework 0 (prerequisites review).</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!---------------------------------------------->
+<!---------------------------------------------->
+<!---------------------------------------------->
+<section id="linear-systems" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Linear systems</h1>
+<p>Write the following system of equations in matrix form. Say whether each system has no solutions, a single solution, or an infinite number of solutions, and how you know.</p>
+<ol type="1">
+<li><span class="math display">\[
+\begin{aligned}
+a_1 + 2 a_2 ={}&amp; 1 \\
+a_1 + 3 a_2 ={}&amp; 0 \\
+\end{aligned}
+\]</span></li>
+</ol>
+<ol start="2" type="1">
+<li><span class="math display">\[
+\begin{aligned}
+a_1 + 2 a_2 + 3 a_3 ={}&amp; 1 \\
+a_1 + 3 a_2 + 3 a_3 ={}&amp; 0 \\
+2 a_1 + 4 a_2 + 3 a_3 ={}&amp; 5 \\
+\end{aligned}
+\]</span></li>
+</ol>
+<ol start="3" type="1">
+<li><span class="math display">\[
+\begin{aligned}
+a_1 + 2 a_2 + 3 a_3 ={}&amp; 1 \\
+a_1 + 3 a_2 + 3 a_3 ={}&amp; 0 \\
+\end{aligned}
+\]</span></li>
+</ol>
+<ol start="4" type="1">
+<li><span class="math display">\[
+\begin{aligned}
+a_1 + 2 a_2  ={}&amp; 1 \\
+a_1 + 3 a_2  ={}&amp; 0 \\
+2 a_1 + 4 a_2  ={}&amp; 5 \\
+\end{aligned}
+\]</span></li>
+</ol>
+<ol start="5" type="1">
+<li><span class="math display">\[
+\begin{aligned}
+a_1 + 2 a_2 ={}&amp; 1 \\
+\end{aligned}
+\]</span></li>
+</ol>
+<ol start="6" type="1">
+<li><span class="math display">\[
+\begin{aligned}
+a_1 + 2 a_2 ={}&amp; 1 \\
+a_1 + 2 a_2 ={}&amp; 1 \\
+a_1 + 2 a_2 ={}&amp; 1 \\
+a_1 + 2 a_2 ={}&amp; 1 \\
+a_1 + 2 a_2 ={}&amp; 1 \\
+\end{aligned}
+\]</span></li>
+</ol>
+<ol start="7" type="1">
+<li><span class="math display">\[
+\begin{aligned}
+a_1 + 2 a_2 ={}&amp; 1 \\
+a_1 + 2 a_2 ={}&amp; 2 \\
+a_1 + 2 a_2 ={}&amp; 3 \\
+a_1 + 2 a_2 ={}&amp; 4 \\
+a_1 + 2 a_2 ={}&amp; 5 \\
+\end{aligned}
+\]</span></li>
+</ol>
+<ol start="8" type="1">
+<li><span class="math display">\[
+\begin{aligned}
+a_1 + 2 a_2 ={}&amp; 1 \\
+a_1 + 3 a_2 ={}&amp; 1 \\
+a_1 + 4 a_2 ={}&amp; 1 \\
+a_1 + 5 a_2 ={}&amp; 1 \\
+a_1 + 6 a_2 ={}&amp; 5 \\
+\end{aligned}
+\]</span></li>
+</ol>
+<!---------------------------------------------->
+<!---------------------------------------------->
+<!---------------------------------------------->
+</section>
+<section id="dimensions-of-linear-algebra-expressions" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Dimensions of linear algebra expressions</h1>
+<p>For this problem, I will use the following definitions.</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{X}\)</span> denotes an <span class="math inline">\(N \times P\)</span> matrix</li>
+<li><span class="math inline">\(\boldsymbol{y}\)</span> denotes an <span class="math inline">\(N\)</span>–vector (i.e.&nbsp;an <span class="math inline">\(N \times 1\)</span> matrix)</li>
+<li><span class="math inline">\(\boldsymbol{1}\)</span> denotes an <span class="math inline">\(N\)</span>–vector containging all ones</li>
+<li><span class="math inline">\(\boldsymbol{\beta}\)</span> denotes a <span class="math inline">\(P\)</span>–vector</li>
+</ul>
+<p>I will take <span class="math inline">\(N &gt; P &gt; 1\)</span>. A transpose is denoted with a superscript <span class="math inline">\(\intercal\)</span>, and an inverse by a superscipt <span class="math inline">\(-1\)</span>. A matrix trace is denoted <span class="math inline">\(\mathrm{trace}\left(\right)\)</span>. You may assume that each matrix is full column rank.</p>
+<p>For each expression, write the dimension of the result, or write “badly formed” if the expression is not a valid matrix expression.</p>
+<p><strong>Tip:</strong> For this assignment, and throughout the class, it can be very helpful to write the dimensions of a matrix or vector underneath to help make sure your matrix expressions are valid. For example, we can write <span class="math inline">\(\underset{PN}{\boldsymbol{X}^\intercal} \underset{NP}{\boldsymbol{X}}\)</span>, which we can see is valid because the <span class="math inline">\(N\)</span>’s are next to one another. Similarly, we can see immediately that the expression <span class="math inline">\(\underset{NP}{\boldsymbol{X}} \underset{NP}{\boldsymbol{X}}\)</span> is invalid because <span class="math inline">\(P\)</span> is next to <span class="math inline">\(N\)</span> in the matrix multiplication, which is not allowed.</p>
+<ol type="1">
+<li><span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{y}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}+ \boldsymbol{y}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{\beta}\boldsymbol{\beta}^\intercal\)</span></li>
+<li><span class="math inline">\(\boldsymbol{\beta}^\intercal\boldsymbol{\beta}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}^\intercal\boldsymbol{y}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{y}\)</span> (Duplicate — that’s okay, just repeat the other answer)</li>
+<li><span class="math inline">\(\left(\boldsymbol{X}^\intercal\boldsymbol{X}\right)^\intercal\)</span></li>
+<li><span class="math inline">\(\left(\boldsymbol{X}^\intercal\boldsymbol{y}\right)^\intercal\)</span></li>
+<li><span class="math inline">\(\left(\boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1}\)</span></li>
+<li><span class="math inline">\(\left(\boldsymbol{X}^\intercal\boldsymbol{y}\right)^{-1}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^{-1}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}^{-1} \boldsymbol{y}\)</span></li>
+<li><span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\)</span></li>
+<li><span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{y}\)</span></li>
+<li><span class="math inline">\(\left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{y}\right)^\intercal\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}\beta\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}- \boldsymbol{X}\beta\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}- \boldsymbol{X}^\intercal\beta\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}^\intercal- \beta^\intercal\boldsymbol{X}^\intercal\)</span></li>
+<li><span class="math inline">\(\boldsymbol{\beta}- (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}  \boldsymbol{X}^\intercal\boldsymbol{y}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}\left( \boldsymbol{\beta}- (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}  \boldsymbol{X}^\intercal\boldsymbol{y}\right)\)</span></li>
+<li><span class="math inline">\(\boldsymbol{1}^\intercal\boldsymbol{y}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}- (\boldsymbol{1}^\intercal\boldsymbol{y}) \boldsymbol{y}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}\)</span> (Duplicate — that’s okay, just repeat the other answer)</li>
+<li><span class="math inline">\(\boldsymbol{\beta}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\)</span></li>
+<li><span class="math inline">\(\left( \boldsymbol{\beta}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\right)^{-1}\)</span></li>
+<li><span class="math inline">\(\mathrm{trace}\left( \boldsymbol{\beta}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\right)\)</span></li>
+<li><span class="math inline">\(\mathrm{trace}\left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\boldsymbol{\beta}^\intercal\right)\)</span></li>
+</ol>
+<!---------------------------------------------->
+<!---------------------------------------------->
+<!---------------------------------------------->
+</section>
+<section id="orthonormal-vectors-and-bases" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Orthonormal vectors and bases</h1>
+<p>For this problem, assume that <span class="math inline">\(\boldsymbol{u}= (u_1, u_2)^\intercal\)</span> and <span class="math inline">\(\boldsymbol{v}= (v_1, v_2)^\intercal\)</span> are orthonormal. That is, <span class="math inline">\(\boldsymbol{u}^\intercal\boldsymbol{u}= \boldsymbol{v}^\intercal\boldsymbol{v}= 1\)</span>, and <span class="math inline">\(\boldsymbol{u}^\intercal\boldsymbol{v}= 0\)</span>. Let <span class="math inline">\(\boldsymbol{a}= (a_1, a_2)^\intercal\)</span> denote a generic <span class="math inline">\(2\)</span>–dimensional vector.</p>
+<ol type="1">
+<li>Write an expression for the length of <span class="math inline">\(\boldsymbol{a}\)</span> in terms of its entries <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span>.</li>
+<li>Write an expression for the length of <span class="math inline">\(\boldsymbol{a}\)</span>, using only matrix operations (i.e., without explicit reference to the entries of <span class="math inline">\(\boldsymbol{a}\)</span>).</li>
+<li>Write an explicit expression for a vector pointing in the same direction as <span class="math inline">\(\boldsymbol{a}\)</span> but with unit length. (Hint: show that, for a scalar <span class="math inline">\(\alpha\)</span>, the length of <span class="math inline">\(\alpha \boldsymbol{a}\)</span> is <span class="math inline">\(\alpha\)</span> times the length of <span class="math inline">\(\boldsymbol{a}\)</span>, and then make a clever choice for <span class="math inline">\(\alpha\)</span>.)</li>
+<li>Write an explicit expression for a vector pointing in the same direction as <span class="math inline">\(\boldsymbol{v}\)</span> but with the same length as <span class="math inline">\(\boldsymbol{a}\)</span>.</li>
+<li>Suppose that I tell you that <span class="math inline">\(\boldsymbol{a}= \alpha \boldsymbol{u}+ \gamma \boldsymbol{v}\)</span>. Find an explicit expression for <span class="math inline">\(\alpha\)</span> in terms of <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{u}\)</span> alone.</li>
+<li>Find explicit expressions for scalars <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\gamma\)</span> such that <span class="math inline">\(\boldsymbol{a}= \alpha \boldsymbol{u}+ \gamma \boldsymbol{v}\)</span>.</li>
+<li>Let <span class="math inline">\(\begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix} := \begin{pmatrix}
+u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="math inline">\(2 \times 2\)</span> matrix with <span class="math inline">\(\boldsymbol{u}\)</span> in the first column and <span class="math inline">\(\boldsymbol{v}\)</span> in the second column. Show that <span class="math inline">\(\begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}^\intercal= \begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}^{-1}\)</span>.</li>
+<li>Observe that <span class="math inline">\(\alpha \boldsymbol{u}+ \gamma \boldsymbol{v}=
+\begin{pmatrix}
+\boldsymbol{u}&amp;
+\boldsymbol{v}
+\end{pmatrix}
+\begin{pmatrix}
+\alpha \\
+\gamma
+\end{pmatrix}.\)</span> Using this, write an explicit expression for the coefficient vector <span class="math inline">\((\alpha, \gamma)^\intercal\)</span> in terms of <span class="math inline">\(\begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}\)</span> and <span class="math inline">\(\boldsymbol{a}\)</span>.</li>
+<li>Show that <span class="math inline">\(\begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}^{-1} = \begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}^\intercal\)</span>.</li>
+<li>Suppose I tell you that that <span class="math inline">\(\boldsymbol{u}= (1, 0)^\intercal\)</span>. In terms of <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span>, what is <span class="math inline">\(\alpha\)</span> in the decomposition <span class="math inline">\(\boldsymbol{a}= \alpha \boldsymbol{u}+ \gamma \boldsymbol{v}\)</span>?</li>
+</ol>
+<!---------------------------------------------->
+<!---------------------------------------------->
+<!---------------------------------------------->
+</section>
+<section id="eigenvalues-and-eigenvectors-of-square-symmetric-matrices" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Eigenvalues and eigenvectors of square symmetric matrices</h1>
+<p>Let <span class="math inline">\(\boldsymbol{A}\)</span> denote a <span class="math inline">\(P \times P\)</span> symmetric, square matrix. Recall that an “eigenvalue” <span class="math inline">\(\lambda_k\)</span> of and its associated “eigenvector” <span class="math inline">\(\boldsymbol{u}_k\)</span> of <span class="math inline">\(\boldsymbol{A}\)</span> satisfy <span class="math inline">\(\boldsymbol{A}\boldsymbol{u}_k = \lambda_k \boldsymbol{u}_k\)</span>. (In this definition, <span class="math inline">\(\boldsymbol{u}_k\)</span> must be non–degenerate, i.e., it must have some nonzero entries.)</p>
+<p>Let <span class="math inline">\(\boldsymbol{U}= (\boldsymbol{u}_1 \ldots \boldsymbol{u}_P)\)</span> denote the <span class="math inline">\(P \times P\)</span> matrix with eigenvector <span class="math inline">\(\boldsymbol{u}_k\)</span> in the <span class="math inline">\(k\)</span>–th column, and let <span class="math inline">\(\Lambda\)</span> denote the <span class="math inline">\(P \times P\)</span> diagonal matrix with <span class="math inline">\(\lambda_k\)</span> in the <span class="math inline">\(k\)</span>–th diagonal entry. Let <span class="math inline">\(\boldsymbol{a}\)</span> denote a generic <span class="math inline">\(P\)</span>–vector.</p>
+<ul>
+<li>If <span class="math inline">\(\boldsymbol{A}\)</span> is the identity matrix (i.e., the matrix with ones on the diagonal and zeros elsewhere), what are its eigenvalues?</li>
+</ul>
+<ul>
+<li>If <span class="math inline">\(\boldsymbol{A}\)</span> is the zero matrix (i.e., the matrix containing only zeros), what are its eigenvalues?</li>
+</ul>
+<ul>
+<li>If <span class="math inline">\(\boldsymbol{A}\)</span> is a diagonal matrix with the entries <span class="math inline">\(a_1, \ldots, a_P\)</span> on the diagonal, what are its eigenvalues?</li>
+</ul>
+<ul>
+<li>Let us prove that the eigenvectors can be taken to be unit vectors without loss of generality.
+<ul>
+<li>Show that, if <span class="math inline">\(\boldsymbol{u}_k\)</span> is an eigenvector, then <span class="math inline">\(\alpha \boldsymbol{u}_k\)</span> is also an eigenvector with the same eigenvalue as <span class="math inline">\(\boldsymbol{u}_k\)</span> for any scalar <span class="math inline">\(\alpha \ne 0\)</span>.</li>
+<li>In particular, show that <span class="math inline">\(\boldsymbol{u}_k' = \boldsymbol{u}_k / \sqrt{\boldsymbol{u}_k^\intercal\boldsymbol{u}_k}\)</span> is also an eigenvector with eigenvalue <span class="math inline">\(\lambda_k\)</span>, and that <span class="math inline">\((\boldsymbol{u}_k')^\intercal\boldsymbol{u}'_k = 1\)</span>.</li>
+</ul></li>
+</ul>
+<ul>
+<li>Let us prove that, for a general symmetric matrix, eigenvectors with distinct eigenvalues are orthogonal. That is, if <span class="math inline">\(\lambda_k \ne \lambda_j\)</span> for some <span class="math inline">\(k \ne j\)</span>, we will show that <span class="math inline">\(\boldsymbol{u}_k^\intercal\boldsymbol{u}_j = 0\)</span>. Carefully justify each step in the following proof.
+<ul>
+<li>We have <span class="math inline">\(\boldsymbol{u}_j^\intercal\boldsymbol{A}\boldsymbol{u}_k = (\boldsymbol{u}_j^\intercal\boldsymbol{A}\boldsymbol{u}_k)^\intercal\)</span>. (Why?)</li>
+<li>We also have <span class="math inline">\((\boldsymbol{u}_j^\intercal\boldsymbol{A}\boldsymbol{u}_k)^\intercal= \boldsymbol{u}_k^\intercal\boldsymbol{A}^\intercal\boldsymbol{u}_j\)</span>. (Why?)</li>
+<li>We then have <span class="math inline">\(\boldsymbol{u}_j^\intercal\boldsymbol{A}\boldsymbol{u}_k = \boldsymbol{u}_k^\intercal\boldsymbol{A}\boldsymbol{u}_j\)</span>. (Why?)</li>
+<li>We then have <span class="math inline">\(\lambda_k \boldsymbol{u}_j^\intercal\boldsymbol{u}_k = \lambda_j \boldsymbol{u}_k^\intercal\boldsymbol{u}_j\)</span>. (Why?)</li>
+<li>We then have <span class="math inline">\(\boldsymbol{u}_k^\intercal\boldsymbol{u}_j = 0\)</span>. (Why?)</li>
+<li><strong>Bonus question</strong>: If the eigenvalues are not distinct, then the corresponding eigenvectors may not be orthogonal. However, one can always find an orthogonal set of eigenvectors for each repeated eigenvalue, though we won’t prove this here. See a linear algebra text for the proof, or try yourself! Hint: if <span class="math inline">\(\lambda_k = \lambda_j\)</span> for some <span class="math inline">\(k \ne j\)</span>, then <span class="math inline">\(\alpha \boldsymbol{u}_k + \gamma \boldsymbol{u}_j\)</span> is also an eigenvector with eigenvalue <span class="math inline">\(\lambda_k\)</span> for any <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\gamma\)</span>.</li>
+</ul></li>
+</ul>
+<ul>
+<li>Suppose that each <span class="math inline">\(\lambda_k \ne 0\)</span>. Show that the inverse of <span class="math inline">\(\Lambda\)</span> is given by the diagonal matrix with <span class="math inline">\(1  / \lambda_k\)</span> in the <span class="math inline">\(k\)</span>–th diagonal entry and zero elsewhere.</li>
+</ul>
+<ul>
+<li>Suppose that <span class="math inline">\(\lambda_k = 0\)</span> for some <span class="math inline">\(k\)</span>. Show that <span class="math inline">\(\Lambda\)</span> is not invertible. Hint: find a vector <span class="math inline">\(\boldsymbol{b}\)</span> such that <span class="math inline">\(\Lambda \boldsymbol{a}= \boldsymbol{b}\)</span> has no solution. From this it would follow that <span class="math inline">\(\Lambda\)</span> is not invertible by contradiction for, if <span class="math inline">\(\Lambda\)</span> were invertible, <span class="math inline">\(\boldsymbol{a}= \Lambda^{-1} \boldsymbol{b}\)</span> would be a solution.</li>
+</ul>
+<ul>
+<li>Assume that <span class="math inline">\(\boldsymbol{A}\)</span> has <span class="math inline">\(P\)</span> orthonormal eigenvectors (it always does; we have proved some parts of this assertion above). We will prove that we then have <span class="math inline">\(\boldsymbol{A}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span>. Carefully justify each step in the following proof.
+<ul>
+<li>For any <span class="math inline">\(\boldsymbol{a}\)</span>, we can write <span class="math inline">\(\boldsymbol{a}= \sum_{p=1}^P \alpha_p \boldsymbol{u}_p\)</span> for some scalars <span class="math inline">\(\alpha_p\)</span>. (Why?)</li>
+<li>Using the previous expansion, we thus have <span class="math inline">\(\boldsymbol{A}\boldsymbol{a}= \sum_{p=1}^P \lambda_p \alpha_p \boldsymbol{u}_p\)</span>. (Why?)</li>
+<li>Let <span class="math inline">\(\boldsymbol{\alpha}= (\alpha_1, \ldots, \alpha_P)^\intercal\)</span>. Then <span class="math inline">\(\boldsymbol{a}= \boldsymbol{U}\boldsymbol{\alpha}\)</span>. (Why?)</li>
+<li>Similarly, we have <span class="math inline">\(\boldsymbol{A}\boldsymbol{a}= \boldsymbol{U}\Lambda \boldsymbol{\alpha}\)</span>. (Why?)</li>
+<li>We also have <span class="math inline">\(\boldsymbol{u}_p^\intercal\boldsymbol{a}= \alpha_p\)</span>. (Why?)</li>
+<li>We then have <span class="math inline">\(\boldsymbol{\alpha}= \boldsymbol{U}^\intercal\boldsymbol{a}\)</span>. (Why?)</li>
+<li>Combining, we have <span class="math inline">\(\boldsymbol{A}\boldsymbol{a}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\boldsymbol{a}\)</span>. (Why?)</li>
+<li>Since the preceding expression is true for any <span class="math inline">\(\boldsymbol{a}\)</span>, we must have <span class="math inline">\(\boldsymbol{A}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span>. (Why? Hint: if you take <span class="math inline">\(\boldsymbol{a}\)</span> to be <span class="math inline">\(1\)</span> in the first entry and zeros elsewhere, then we have that the first columns match. Continue in this fashion to show that each entry of the matrices are the same.)</li>
+</ul></li>
+</ul>
+<!---------------------------------------------->
+<!---------------------------------------------->
+<!---------------------------------------------->
+</section>
+<section id="statistical-asymptotics" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Statistical asymptotics</h1>
+<p>For this problem, suppose that <span class="math inline">\(x_n\)</span> are independent and identically distributed random variables, with <span class="math inline">\(\mathbb{E}\left[x_n\right] = 3\)</span>, and <span class="math inline">\(\mathrm{Var}\left(x_n\right) = 4\)</span>. You should not assume that the <span class="math inline">\(x_n\)</span> are normally distributed.</p>
+<p>Recall that <span class="math inline">\(\mathrm{Var}\left(x_n\right) = \mathbb{E}\left[x_n^2\right] - \mathbb{E}\left[x_n\right]^2\)</span>. Also recall that, for any scalar <span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\mathbb{E}\left[\alpha x_n\right] = \alpha \mathbb{E}\left[x_n\right]\)</span>, and <span class="math inline">\(\mathrm{Var}\left(\alpha x_n\right) = \mathbb{E}\left[(\alpha x_n)^2\right] - \mathbb{E}\left[\alpha x_n\right]^2 = \alpha^2 \mathrm{Var}\left(x_n\right)\)</span>.</p>
+<p>For each limiting statement, state clearly whether your answer is a constant, a random variable, or that the limit does not exist. If the limit is a random variable, give its distribution. If it is a constant, give its value. If it does not exist, argue why. You may refer to known results from probability theory, particularly the law of large numbers and the central limit theorem.</p>
+<ol type="1">
+<li>For any particular (finite) value of <span class="math inline">\(N\)</span>, is <span class="math inline">\(\frac{1}{N} \sum_{n=1}^Nx_n\)</span> a constant or a random variable?</li>
+<li>For any particular (finite) value of <span class="math inline">\(N\)</span>, is <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N\mathbb{E}\left[x_n\right]\)</span> a constant or a random variable?</li>
+<li>Compute the expectation <span class="math inline">\(\mathbb{E}\left[x_1 + x_2\right]\)</span>.</li>
+<li>Compute the expectation <span class="math inline">\(\mathbb{E}\left[\frac{1}{2} (x_1 + x_2)\right]\)</span>.</li>
+<li>Compute the expectation <span class="math inline">\(\mathbb{E}\left[\frac{1}{3} (x_1 + x_2 + x_3)\right]\)</span>.</li>
+<li>Compute the expectation <span class="math inline">\(\mathbb{E}\left[\frac{1}{N} \sum_{n=1}^Nx_n\right]\)</span>.</li>
+<li>Compute the variance <span class="math inline">\(\mathrm{Var}\left(x_1 + x_2\right)\)</span>.</li>
+<li>Compute the variance <span class="math inline">\(\mathrm{Var}\left(\frac{1}{2} (x_1 + x_2)\right)\)</span>.</li>
+<li>Compute the variance <span class="math inline">\(\mathrm{Var}\left(\frac{1}{3} (x_1 + x_2 + x_3)\right)\)</span>.</li>
+<li>Compute the variance <span class="math inline">\(\mathrm{Var}\left(\frac{1}{N} \sum_{n=1}^Nx_n\right)\)</span>.</li>
+<li>As <span class="math inline">\(N \rightarrow \infty\)</span>, what (if anything) does <span class="math inline">\(\frac{1}{N} \sum_{n=1}^Nx_n\)</span> converge to?</li>
+<li>As <span class="math inline">\(N \rightarrow \infty\)</span>, what (if anything) does <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N(x_n - 3)\)</span> converge to?</li>
+<li>As <span class="math inline">\(N \rightarrow \infty\)</span>, what (if anything) does <span class="math inline">\(\frac{1}{\sqrt{N}} \sum_{n=1}^N(x_n - 3)\)</span> converge to?</li>
+<li>As <span class="math inline">\(N \rightarrow \infty\)</span>, what (if anything) does <span class="math inline">\(\frac{1}{\sqrt{N}} \sum_{n=1}^Nx_n\)</span> converge to?</li>
+<li>As <span class="math inline">\(N \rightarrow \infty\)</span>, what (if anything) does <span class="math inline">\(\sum_{n=1}^Nx_n\)</span> converge to?</li>
+</ol>
+<!---------------------------------------------->
+<!---------------------------------------------->
+<!---------------------------------------------->
+</section>
+<section id="conditional-probability" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Conditional probability</h1>
+<p>Suppose we have scalar-valued, independent random variables <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> satisfying</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[a\right] ={}&amp; 1   &amp;   \mathbb{E}\left[b\right] ={}&amp; 2 \\
+\mathrm{Var}\left(a\right) ={}&amp; 9   &amp;   \mathrm{Var}\left(b\right) ={}&amp; 25.
+\end{aligned}
+\]</span></p>
+<p>Additionally, let <span class="math inline">\(c = 2 a + b\)</span>.</p>
+<p><strong>(a)</strong> Evaluate the following expressions. Each answer should be a number.</p>
+<ol type="1">
+<li><span class="math inline">\(\mathbb{E}\left[a + b\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[2 a - b\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[a b\right]\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(2 a\right)\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(a + b\right)\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[a^2\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[b a^2\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[c\right]\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(c\right)\)</span></li>
+</ol>
+<p><strong>(b)</strong> Evaluate the following expressions. For this problem, Now, the answers may be numbers or random variables.</p>
+<ol type="1">
+<li><span class="math inline">\(\mathbb{E}\left[a | b\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[a b | b\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[5 b | a\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[c | a\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[c | a,b\right]\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(c | a\right)\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(c | a,b\right)\)</span></li>
+</ol>
+<!---------------------------------------------->
+<!---------------------------------------------->
+<!---------------------------------------------->
+</section>
+<section id="problems-from-freedman2009statistical" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Problems from <span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span></h1>
+<ul>
+<li>Chapter 2 set B exercise 12</li>
+<li>Chapter 2 set B exercise 14</li>
+</ul>
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-freedman:2009:statistical" class="csl-entry" role="listitem">
+Freedman, David. 2009. <em>Statistical Models: <span>Theory</span> and Practice</em>. cambridge university press.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
