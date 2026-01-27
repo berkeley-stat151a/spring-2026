@@ -197,8 +197,12 @@ window.Quarto = {
   <li><a href="#ordinary-least-squares-in-matrix-form" id="toc-ordinary-least-squares-in-matrix-form" class="nav-link active" data-scroll-target="#ordinary-least-squares-in-matrix-form"><span class="header-section-number">1</span> Ordinary least squares in matrix form</a></li>
   <li><a href="#one-hot-encoding" id="toc-one-hot-encoding" class="nav-link" data-scroll-target="#one-hot-encoding"><span class="header-section-number">2</span> One-hot encoding</a></li>
   <li><a href="#correlated-regressors" id="toc-correlated-regressors" class="nav-link" data-scroll-target="#correlated-regressors"><span class="header-section-number">3</span> Correlated regressors</a></li>
-  <li><a href="#matrix-square-roots" id="toc-matrix-square-roots" class="nav-link" data-scroll-target="#matrix-square-roots"><span class="header-section-number">4</span> Matrix square roots</a></li>
-  <li><a href="#problems-from-freedman2009statistical" id="toc-problems-from-freedman2009statistical" class="nav-link" data-scroll-target="#problems-from-freedman2009statistical"><span class="header-section-number">5</span> Problems from <span class="citation" data-cites="freedman:2009:statistical">Freedman (2009)</span></a></li>
+  <li><a href="#linear-regression-as-projections" id="toc-linear-regression-as-projections" class="nav-link" data-scroll-target="#linear-regression-as-projections"><span class="header-section-number">4</span> Linear regression as projections</a></li>
+  <li><a href="#changes-of-basis" id="toc-changes-of-basis" class="nav-link" data-scroll-target="#changes-of-basis"><span class="header-section-number">5</span> Changes of basis</a></li>
+  <li><a href="#changes-of-basis-continued" id="toc-changes-of-basis-continued" class="nav-link" data-scroll-target="#changes-of-basis-continued"><span class="header-section-number">6</span> Changes of basis continued</a>
+  <ul class="collapse">
+  <li><a href="#linear-combinations-of-regressors-based-on-freedman2009statistical-chapter-4-set-b-exercise-14" id="toc-linear-combinations-of-regressors-based-on-freedman2009statistical-chapter-4-set-b-exercise-14" class="nav-link" data-scroll-target="#linear-combinations-of-regressors-based-on-freedman2009statistical-chapter-4-set-b-exercise-14">Linear combinations of regressors (based on <span class="citation" data-cites="freedman:2009:statistical">Freedman (2009)</span> Chapter 4 set B exercise 14)</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -230,6 +234,9 @@ window.Quarto = {
 </header>
 
 
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
 <section id="ordinary-least-squares-in-matrix-form" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Ordinary least squares in matrix form</h1>
 <p>Consider simple least squares regression <span class="math inline">\(y_n = \beta_1 + \beta_2 x_n + \varepsilon_n\)</span>, where <span class="math inline">\(x_n\)</span> is a scalar. Assume that we have <span class="math inline">\(N\)</span> datapoints. We showed directly that the least–squares solution is given by</p>
@@ -243,13 +250,8 @@ window.Quarto = {
 \end{aligned}
 \]</span></p>
 <p>Let us re–derive this using matrix notation.</p>
-<section id="a" class="level4">
-<h4 class="anchored" data-anchor-id="a">(a)</h4>
-<p>Write simple linear regression in the form <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\)</span>. Be precise about what goes into each entry of <span class="math inline">\(\boldsymbol{Y}\)</span>, <span class="math inline">\(\boldsymbol{X}\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span>, and <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>. What are the dimensions of each?</p>
-</section>
-<section id="b" class="level4">
-<h4 class="anchored" data-anchor-id="b">(b)</h4>
-<p>We proved that the optimal <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> satisfies <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\hat{\boldsymbol{\beta}}= \boldsymbol{X}^\intercal\boldsymbol{Y}\)</span>. Define the “barred quantities” <span class="math display">\[
+<p><strong>(a)</strong> Write simple linear regression in the form <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\)</span>. Be precise about what goes into each entry of <span class="math inline">\(\boldsymbol{Y}\)</span>, <span class="math inline">\(\boldsymbol{X}\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span>, and <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>. What are the dimensions of each?</p>
+<p><strong>(b)</strong> We proved that the optimal <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> satisfies <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\hat{\boldsymbol{\beta}}= \boldsymbol{X}^\intercal\boldsymbol{Y}\)</span>. Define the “barred quantities” <span class="math display">\[
 \begin{aligned}
 \overline{y} ={}&amp; \frac{1}{N} \sum_{n=1}^Ny_n \\
 \overline{x} ={}&amp; \frac{1}{N} \sum_{n=1}^Nx_n \\
@@ -258,19 +260,12 @@ window.Quarto = {
 \end{aligned}
 \]</span></p>
 <p>In terms of the barred quantities and the number of datpoints <span class="math inline">\(N\)</span>, write expressions for <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{Y}\)</span>.</p>
-</section>
-<section id="c" class="level4">
-<h4 class="anchored" data-anchor-id="c">(c)</h4>
-<p>When is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> invertible? Write a formal expression in terms of the barred quantities. Interpret this condition intuitively in terms of the distribution of the regressors <span class="math inline">\(x_n\)</span>.</p>
-</section>
-<section id="d" class="level4">
-<h4 class="anchored" data-anchor-id="d">(d)</h4>
-<p>Using the formula for the inverse of a <span class="math inline">\(2\times 2\)</span> matrix, find an expression for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, and confirm that we get the same answer that we got by solving directly.</p>
-</section>
-<section id="e" class="level4">
-<h4 class="anchored" data-anchor-id="e">(e)</h4>
-<p>In the case where <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is <em>not</em> invertible, find three distinct values of <span class="math inline">\(\boldsymbol{\beta}\)</span> that all achieve the same sum of squared residuals <span class="math inline">\(\boldsymbol{\varepsilon}^\intercal\boldsymbol{\varepsilon}\)</span>.</p>
-</section>
+<p><strong>(c)</strong> When is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> invertible? Write a formal expression in terms of the barred quantities. Interpret this condition intuitively in terms of the distribution of the regressors <span class="math inline">\(x_n\)</span>.</p>
+<p><strong>(d)</strong> Using the formula for the inverse of a <span class="math inline">\(2\times 2\)</span> matrix, find an expression for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, and confirm that we get the same answer that we got by solving directly.</p>
+<p><strong>(e)</strong> In the case where <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is <em>not</em> invertible, find three distinct values of <span class="math inline">\(\boldsymbol{\beta}\)</span> that all achieve the same sum of squared residuals <span class="math inline">\(\boldsymbol{\varepsilon}^\intercal\boldsymbol{\varepsilon}\)</span>.</p>
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
 </section>
 <section id="one-hot-encoding" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> One-hot encoding</h1>
@@ -289,29 +284,32 @@ window.Quarto = {
 \end{cases}
 \]</span></p>
 <p>Let <span class="math inline">\(\boldsymbol{X}\)</span> be the regressor matrix with <span class="math inline">\(\boldsymbol{x}_n^\intercal\)</span> in row <span class="math inline">\(n\)</span>.</p>
-<section id="a-2" class="level4">
-<h4 class="anchored" data-anchor-id="a-2">(a)</h4>
+<section id="a-1" class="level4">
+<h4 class="anchored" data-anchor-id="a-1">(a)</h4>
 <p>Let <span class="math inline">\(N_a\)</span> be the number of observations with <span class="math inline">\(z_n\)</span> = a, and let <span class="math inline">\(\sum_{n:z_n = a}\)</span> denote a sum over rows with <span class="math inline">\(z_n\)</span> = a, with analogous definitions for b and c.&nbsp;In terms of these quantities, write expressions for <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{Y}\)</span>.</p>
 </section>
-<section id="b-2" class="level4">
-<h4 class="anchored" data-anchor-id="b-2">(b)</h4>
+<section id="b-1" class="level4">
+<h4 class="anchored" data-anchor-id="b-1">(b)</h4>
 <p>When is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> invertible? Explain intuitively why the regression problem cannot be solved when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible. Write an explicit expression for <span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\)</span> when it is invertible.</p>
 </section>
-<section id="c-2" class="level4">
-<h4 class="anchored" data-anchor-id="c-2">(c)</h4>
+<section id="c-1" class="level4">
+<h4 class="anchored" data-anchor-id="c-1">(c)</h4>
 <p>Using your previous answer, show that the least squares vector <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is the mean of <span class="math inline">\(y_n\)</span> within distinct values of <span class="math inline">\(z_n\)</span>.</p>
 </section>
-<section id="d-2" class="level4">
-<h4 class="anchored" data-anchor-id="d-2">(d)</h4>
+<section id="d-1" class="level4">
+<h4 class="anchored" data-anchor-id="d-1">(d)</h4>
 <p>Suppose now you include a constant in the regression, so that</p>
 <p><span class="math display">\[
 y_n = \alpha + \boldsymbol{\beta}^\intercal\boldsymbol{x}_n + \varepsilon_n,
 \]</span></p>
 <p>and let <span class="math inline">\(\boldsymbol{X}'\)</span> denote the regressor matrix for this regression with coefficient vector <span class="math inline">\((\alpha, \boldsymbol{\beta}^\intercal)^\intercal\)</span>. Write an expression for <span class="math inline">\(\boldsymbol{X}'^\intercal\boldsymbol{X}'\)</span> and show that it is not invertible.</p>
 </section>
-<section id="e-1" class="level4">
-<h4 class="anchored" data-anchor-id="e-1">(e)</h4>
+<section id="e" class="level4">
+<h4 class="anchored" data-anchor-id="e">(e)</h4>
 <p>Find three distinct values of <span class="math inline">\((\alpha, \boldsymbol{\beta}^\intercal)\)</span> that all give the exact same fit <span class="math inline">\(\alpha + \boldsymbol{\beta}^\intercal\boldsymbol{x}_n\)</span>.</p>
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
 </section>
 </section>
 <section id="correlated-regressors" class="level1" data-number="3">
@@ -324,49 +322,185 @@ y_n = \alpha + \boldsymbol{\beta}^\intercal\boldsymbol{x}_n + \varepsilon_n,
 <li><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{x}_{n1}\right) = \mathrm{Var}\left(\boldsymbol{x}_{n2}\right) = 1\)</span>, and</li>
 <li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}_{n1} \boldsymbol{x}_{n2}\right] = \rho\)</span>.</li>
 </ul>
-<section id="a-4" class="level4">
-<h4 class="anchored" data-anchor-id="a-4">(a)</h4>
+<section id="a-3" class="level4">
+<h4 class="anchored" data-anchor-id="a-3">(a)</h4>
 <p>If <span class="math inline">\(\left|\rho\right| &lt; 1\)</span>, is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> always, sometimes, or never invertible?</p>
 </section>
-<section id="b-4" class="level4">
-<h4 class="anchored" data-anchor-id="b-4">(b)</h4>
+<section id="b-3" class="level4">
+<h4 class="anchored" data-anchor-id="b-3">(b)</h4>
 <p>If <span class="math inline">\(\left|\rho\right| = 1\)</span>, is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> always, sometimes, or never invertible?</p>
 </section>
-<section id="c-4" class="level4">
-<h4 class="anchored" data-anchor-id="c-4">(c)</h4>
+<section id="c-3" class="level4">
+<h4 class="anchored" data-anchor-id="c-3">(c)</h4>
 <p>What is <span class="math inline">\(\lim_{N \rightarrow \infty} \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\)</span>? When is the limit invertible?</p>
 </section>
-<section id="d-4" class="level4">
-<h4 class="anchored" data-anchor-id="d-4">(d)</h4>
+<section id="d-3" class="level4">
+<h4 class="anchored" data-anchor-id="d-3">(d)</h4>
 <p>State intuitively why there is no unique <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> when <span class="math inline">\(\rho = 1\)</span>. When <span class="math inline">\(\rho = 1\)</span>, give two distinct values of <span class="math inline">\(\boldsymbol{\beta}\)</span> that result in the same fit <span class="math inline">\(\boldsymbol{\beta}^\intercal\boldsymbol{x}_n\)</span>.</p>
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
+<!--
+# Matrix square roots
+
+Recall that, if $\A$ is a square
+symmetric matrix with eigenvalues $\uv_p$ and eigenvectors
+$\lambda_p$, then we can write $\A = \U \Lambda \U^\trans$,
+where $\U = (\uv_1 \ldots \uv_p)$ has $\uv_p$ in its $p$--th
+column, and $\Lambda$ is diagonal with $\lambda_p$ in the
+$p$--th diagonal entry.  We also have that the eigenvectors
+can be taken to be orthonormal without loss of generality.
+
+We will additionally assume that $\A = \X^\trans \X$ for
+some (possibly non--square) matrix $\X$.
+
+Define $\Lambda^{1/2}$ to be the diagonal matrix with
+$\sqrt{\lambda_p}$ on the $p$--th diagonal.
+
+- Prove that, since $\A = \X^\trans \X$,
+  $\lambda_p \ge 0$, and so $\Lambda^{1/2}$ is always real--valued.
+  When the eignevalues are non--negative, we say that $\A$ is
+  "positive semi--definite."
+  (Hint: using the fact that $\lambda_p = \uv_p^\trans \A \uv_p$,
+  show that $\lambda_p$ is the square of something.)
+- Show that if we take $\Q = \U \Lambda^{1/2} \U^\trans$
+  then $\A = \Q \Q^\trans$.  We say that $\Q$ is a "matrix
+  square root" of $\A$.
+- Show that we also have $\A = \Q \Q$ (without the second transpose).
+- Show that, if $\V$ is any orthonormal matrix (a matrix with
+  orthonormal columns), then $\Q' = \Q \V \ne \Q$ also satisfies
+  $\A = \Q' \Q'^\trans$.  This shows that the matrix square root
+  is not unique.  (This fact can be thought of as the
+  matrix analogue of the fact that
+  $4 = 2 \cdot 2$ but also $4 = (-2) \cdot (-2)$).
+- Show that if $\lambda_p > 0$ then $\Q$ is invertible.
+- Show that, if $\Q$ is invertible, then the columns of
+  $\X \Q^{-1}$ are orthonormal.  (Hint:
+  show that $(\X \Q^{-1})^\trans (\X \Q^{-1})$ is the identity matrix.)
+
+::: {.content-hidden unless-meta="solutions"}
+**Solutions**
+
+**(1)**
+
+Suppose that $\vv$ is an eigenvector with eigenvalue $\lambda$.  Then
+
+$$
+\lambda \norm{\vv}^2 = \vv^\trans \A \vv = \vv^\trans \X^\trans \X \vv =
+\norm{\X \vv}^2 \ge 0.
+$$
+
+Since $\norm{\vv}^2 \ge 0$, we must have $\lambda \ge 0$ as well.
+
+
+**(2)**
+
+We already know that $\Lambda^{1/2} \Lambda^{1/2} = \Lambda$ because
+the matrices are diagonal.  Because the eigenvector matrices are orthonormal,
+
+$$
+ \Q \Q^\trans =
+ \U \Lambda^{1/2} \U^\trans  \U \Lambda^{1/2} \U^\trans =
+ \U \Lambda^{1/2} \Lambda^{1/2} \U^\trans =
+ \U \Lambda \U^\trans = \A.
+$$
+
+**(3)**
+
+Show directly that $\Q$ is symmetric.
+
+
+**(4)**
+
+$$
+ \Q' \Q'^\trans = \Q \V \V^\trans \Q^\trans = \Q \Q^\trans = \A,
+$$
+
+since $\V^\trans = \V^{-1}$ and left and right inverses are the same.
+
+
+**(5)**
+
+The inverse is given by the matrix with $1/\sqrt{\lambda_p}$ on the diagonal,
+which can be verified by direct multiplication.
+
+
+**(5)**
+
+$$
+\begin{aligned}
+(\X \Q^{-1})^\trans (\X \Q^{-1}) ={}&
+(\X (\X^\trans \X)^{-1/2})^\trans \X (\X^\trans \X)^{-1/2}
+\\={}&
+(\X^\trans \X)^{-1/2} \X^\trans \X (\X^\trans \X)^{-1/2}
+\\={}&
+(\X^\trans \X)^{-1/2} (\X^\trans \X)^{1/2} (\X^\trans \X)^{1/2} (\X^\trans \X)^{-1/2}
+\\={}&
+\id.
+\end{aligned}
+$$
+
+
+::: -->
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
 </section>
 </section>
-<section id="matrix-square-roots" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Matrix square roots</h1>
-<p>Recall that, if <span class="math inline">\(\boldsymbol{A}\)</span> is a square symmetric matrix with eigenvalues <span class="math inline">\(\boldsymbol{u}_p\)</span> and eigenvectors <span class="math inline">\(\lambda_p\)</span>, then we can write <span class="math inline">\(\boldsymbol{A}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span>, where <span class="math inline">\(\boldsymbol{U}= (\boldsymbol{u}_1 \ldots \boldsymbol{u}_p)\)</span> has <span class="math inline">\(\boldsymbol{u}_p\)</span> in its <span class="math inline">\(p\)</span>–th column, and <span class="math inline">\(\Lambda\)</span> is diagonal with <span class="math inline">\(\lambda_p\)</span> in the <span class="math inline">\(p\)</span>–th diagonal entry. We also have that the eigenvectors can be taken to be orthonormal without loss of generality.</p>
-<p>We will additionally assume that <span class="math inline">\(\boldsymbol{A}= \boldsymbol{X}^\intercal\boldsymbol{X}\)</span> for some (possibly non–square) matrix <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
-<p>Define <span class="math inline">\(\Lambda^{1/2}\)</span> to be the diagonal matrix with <span class="math inline">\(\sqrt{\lambda_p}\)</span> on the <span class="math inline">\(p\)</span>–th diagonal.</p>
-<ul>
-<li>Prove that, since <span class="math inline">\(\boldsymbol{A}= \boldsymbol{X}^\intercal\boldsymbol{X}\)</span>, <span class="math inline">\(\lambda_p \ge 0\)</span>, and so <span class="math inline">\(\Lambda^{1/2}\)</span> is always real–valued. When the eignevalues are non–negative, we say that <span class="math inline">\(\boldsymbol{A}\)</span> is “positive semi–definite.” (Hint: using the fact that <span class="math inline">\(\lambda_p = \boldsymbol{u}_p^\intercal\boldsymbol{A}\boldsymbol{u}_p\)</span>, show that <span class="math inline">\(\lambda_p\)</span> is the square of something.)</li>
-<li>Show that if we take <span class="math inline">\(\boldsymbol{Q}= \boldsymbol{U}\Lambda^{1/2} \boldsymbol{U}^\intercal\)</span> then <span class="math inline">\(\boldsymbol{A}= \boldsymbol{Q}\boldsymbol{Q}^\intercal\)</span>. We say that <span class="math inline">\(\boldsymbol{Q}\)</span> is a “matrix square root” of <span class="math inline">\(\boldsymbol{A}\)</span>.</li>
-<li>Show that we also have <span class="math inline">\(\boldsymbol{A}= \boldsymbol{Q}\boldsymbol{Q}\)</span> (without the second transpose).</li>
-<li>Show that, if <span class="math inline">\(\boldsymbol{V}\)</span> is any orthonormal matrix (a matrix with orthonormal columns), then <span class="math inline">\(\boldsymbol{Q}' = \boldsymbol{Q}\boldsymbol{V}\ne \boldsymbol{Q}\)</span> also satisfies <span class="math inline">\(\boldsymbol{A}= \boldsymbol{Q}' \boldsymbol{Q}'^\intercal\)</span>. This shows that the matrix square root is not unique. (This fact can be thought of as the matrix analogue of the fact that <span class="math inline">\(4 = 2 \cdot 2\)</span> but also <span class="math inline">\(4 = (-2) \cdot (-2)\)</span>).</li>
-<li>Show that if <span class="math inline">\(\lambda_p &gt; 0\)</span> then <span class="math inline">\(\boldsymbol{Q}\)</span> is invertible.</li>
-<li>Show that, if <span class="math inline">\(\boldsymbol{Q}\)</span> is invertible, then the columns of <span class="math inline">\(\boldsymbol{X}\boldsymbol{Q}^{-1}\)</span> are orthonormal. (Hint: show that <span class="math inline">\((\boldsymbol{X}\boldsymbol{Q}^{-1})^\intercal(\boldsymbol{X}\boldsymbol{Q}^{-1})\)</span> is the identity matrix.)</li>
-</ul>
+<section id="linear-regression-as-projections" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Linear regression as projections</h1>
+<p>In this problem, we show that the OLS regression acts like a “projection,” breaking <span class="math inline">\(\boldsymbol{Y}\)</span> up into two orthogonal components: a component <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span> that is in the span of the columns of <span class="math inline">\(\boldsymbol{X}\)</span>, and a component <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> that is orthogonal to the columns of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<p>Consider a regression setup where <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank with <span class="math inline">\(P &lt; N\)</span>. Let <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span>, and <span class="math inline">\(\hat{\varepsilon}\)</span> denote the usual quanties. Let <span class="math inline">\(\boldsymbol{A}\)</span> denote an invertible <span class="math inline">\(P \times P\)</span> matrix, and</p>
+<p><strong>(a)</strong> Show that <span class="math inline">\(\hat{\varepsilon}^\intercal\boldsymbol{X}= \boldsymbol{0}\)</span>. This means that <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> is orthogonal to each column of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<p><strong>(b)</strong> Show that <span class="math inline">\(\left\Vert\boldsymbol{Y}\right\Vert_2^2 = \left\Vert\hat{\boldsymbol{Y}}\right\Vert_2^2 + \left\Vert\hat{\varepsilon}\right\Vert_2^2\)</span>.</p>
+<p><strong>(c)</strong> Let <span class="math inline">\(\boldsymbol{\gamma}\)</span> denote a <span class="math inline">\(P \times 1\)</span> vector. Using (b), show directly that <span class="math inline">\(\left\Vert\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\gamma}\right\Vert_2^2\)</span> is smallest when <span class="math inline">\(\boldsymbol{\gamma}= \hat{\boldsymbol{\beta}}\)</span>. <strong>Hint:</strong> Plug in <span class="math inline">\(\boldsymbol{Y}= \hat{\varepsilon}+ \boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>, use <span class="math inline">\(\boldsymbol{X}\hat{\boldsymbol{\beta}}- \boldsymbol{X}\boldsymbol{\gamma}= \boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma})\)</span>, and expand the square.</p>
+<p><strong>(d)</strong> Suppose that <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{a}\)</span> for some <span class="math inline">\(\boldsymbol{a}\)</span>. Show that in this case <span class="math inline">\(\hat{\boldsymbol{Y}}= \boldsymbol{Y}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}= \boldsymbol{0}\)</span>.</p>
+<p><strong>(e)</strong> As a special case of (a), show that <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N\hat{\varepsilon}_n = 0\)</span> when the regression includes an intercept term. <strong>Hint:</strong> When the regression includes an intercept, then <span class="math inline">\(\boldsymbol{1}\)</span> is a column of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
 </section>
-<section id="problems-from-freedman2009statistical" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Problems from <span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span></h1>
-<ul>
-<li>Chapter 4 set B exercise 14</li>
-<li>Chapter 4 set B exercise 15</li>
-<li>Chapter 4 set B exercise 16</li>
-<li>Chapter 4 set C exercise 1–5</li>
-<li>Chapter 4 set E exercise 1</li>
-</ul>
+<section id="changes-of-basis" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Changes of basis</h1>
+<p>In this problem, we show how rewriting a regression problem using an invertible linear transformation of the regressors changes the estimated coefficients, but does not change the fit.</p>
+<p>Consider a regression setup where <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank with <span class="math inline">\(P &lt; N\)</span>. Let <span class="math inline">\(\boldsymbol{z}_n = \boldsymbol{A}^\intercal\boldsymbol{x}_n\)</span> for each <span class="math inline">\(n\)</span>, so that <span class="math inline">\(\boldsymbol{Z}= \boldsymbol{X}\boldsymbol{A}\)</span>. Consider the regressions <span class="math display">\[
+\boldsymbol{Y}\sim \boldsymbol{X}\boldsymbol{\beta}\quad\textrm{and}\quad \boldsymbol{Y}\sim \boldsymbol{Z}\boldsymbol{\gamma},
+\]</span> with corresponding OLS estimates <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span>.</p>
+<p><strong>(a)</strong> Find an explicit expression for <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span> in terms of <span class="math inline">\(\boldsymbol{A}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. <strong>Hint:</strong> Plug in <span class="math inline">\(\boldsymbol{Z}= \boldsymbol{X}\boldsymbol{A}\)</span> and simplify using the linear algebra fact that <span class="math inline">\((\boldsymbol{A}\boldsymbol{B}\boldsymbol{Q})^{-1} = \boldsymbol{Q}^{-1} \boldsymbol{B}^{-1} \boldsymbol{A}^{-1}\)</span> when all inverses exist.</p>
+<p><strong>(b)</strong> Using your result from (a), show that <span class="math inline">\(\boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}= \boldsymbol{z}_n^\intercal\hat{\boldsymbol{\gamma}}\)</span>. In other words, show that <span class="math inline">\(\hat{y}_n\)</span> is the same whether you regress on <span class="math inline">\(\boldsymbol{X}\)</span> or on <span class="math inline">\(\boldsymbol{Z}\)</span>.</p>
+<p><strong>(c)</strong> Let <span class="math inline">\(R^2_x\)</span> and <span class="math inline">\(R^2_z\)</span> denote the <span class="math inline">\(R^2\)</span> fits from the regression on <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{Z}\)</span> respectively. Show that <span class="math inline">\(R^2_x= R^2_z\)</span>. <strong>Hint:</strong> Using (b), what do you know about the residuals for the two regressions?</p>
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
+</section>
+<section id="changes-of-basis-continued" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Changes of basis continued</h1>
+<p>This is an application of the change of basis problem to one-hot indicators with a constant. Let <span class="math inline">\(\boldsymbol{z}_n\)</span> be a one-hot encoding of a binary regressor, so that <span class="math inline">\(\boldsymbol{z}_n = (1, 0)^\intercal\)</span> or <span class="math inline">\(\boldsymbol{z}_n = (0, 1)^\intercal\)</span>, which encodes a binary variable <span class="math inline">\(a_n \in \{A, B\}\)</span>. For example, <span class="math inline">\(\boldsymbol{z}_n\)</span> might encode <span class="math inline">\(\textrm{Kitchen Quality} \in \{\textrm{Good}, \textrm{Excellent}\}\)</span>, where <span class="math inline">\(a_n = \textrm{Kitchen Quality}\)</span>, <span class="math inline">\(A = \textrm{Good}\)</span>, and <span class="math inline">\(B = \textrm{Excellent}\)</span>.</p>
+<p>Let <span class="math inline">\(\boldsymbol{x}_n\)</span> be the regressor for the regression <span class="math inline">\(y\sim 1 + z_2\)</span>, the regression on a constant and the <em>second</em> component of <span class="math inline">\(\boldsymbol{z}_n\)</span>, so <span class="math inline">\(\boldsymbol{x}_n = (1, \ind{a_n = B})\)</span>.</p>
+<p><strong>(a)</strong> Find an <span class="math inline">\(\boldsymbol{A}\)</span> such that <span class="math inline">\(\boldsymbol{z}_n = \boldsymbol{A}^\intercal\boldsymbol{x}_n\)</span> in this case, and prove that it’s invertible.</p>
+<p><strong>(b)</strong> Write an expression for <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span> in terms of <span class="math inline">\(\bar{y}_A\)</span> and <span class="math inline">\(\bar{y}_B\)</span>, which are respectively the average responses when <span class="math inline">\(a_n = A\)</span> and <span class="math inline">\(a_n = B\)</span>.</p>
+<p><strong>(c)</strong> Write an expression for <span class="math inline">\(\hat{\beta}_2\)</span> in terms of <span class="math inline">\(\bar{y}_A\)</span> and <span class="math inline">\(\bar{y}_B\)</span> using the fact that <span class="math inline">\(\hat{y}_n\)</span> must be the same for the two regressions.</p>
+<p><strong>(d)</strong> In ordinary language, what is the difference in the interpretation of the coefficient <span class="math inline">\(\hat{\beta}_2\)</span> and <span class="math inline">\(\hat{\gamma}_2\)</span>?</p>
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
+<!--
+_freedman/08.0_pp_41_60_Multiple_Regression.pdf
+-->
+<section id="linear-combinations-of-regressors-based-on-freedman2009statistical-chapter-4-set-b-exercise-14" class="level2">
+<h2 class="anchored" data-anchor-id="linear-combinations-of-regressors-based-on-freedman2009statistical-chapter-4-set-b-exercise-14">Linear combinations of regressors (based on <span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span> Chapter 4 set B exercise 14)</h2>
+<p>Let <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> be the OLS estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}\)</span>, where the design matrix <span class="math inline">\(\boldsymbol{X}\)</span> has full rank <span class="math inline">\(P &lt; N\)</span>. Assume that, for each <span class="math inline">\(n\)</span> and some <span class="math inline">\(\boldsymbol{\beta}\)</span>, that <span class="math inline">\(y_n = \boldsymbol{x}_n \boldsymbol{\beta}+ \varepsilon_n\)</span>, where <span class="math inline">\(\mathbb{E}\left[\varepsilon_n \vert \boldsymbol{x}_n\right] = 0\)</span>, <span class="math inline">\(\varepsilon_n\)</span> are IID, and <span class="math inline">\(\mathrm{Var}\left(\varepsilon_n \vert \boldsymbol{x}_n\right) = \sigma^2\)</span>.</p>
+<p><strong>(a)</strong> Write an expression for <span class="math inline">\(\boldsymbol{Y}\)</span> in terms of <span class="math inline">\(\boldsymbol{X}\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span>, and <span class="math inline">\(\boldsymbol{\varepsilon}\)</span>.</p>
+<p><strong>(b)</strong> Plug your result from (a) in to get an expression for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
+<p><strong>(c)</strong> Using your result from (b), what is <span class="math inline">\(\mathbb{E}\left[\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right]\)</span>?</p>
+<p><strong>(d)</strong> Using your result from (b), what is <span class="math inline">\(\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right)\)</span> in terms of <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\(\boldsymbol{X}\)</span>?</p>
+<p><strong>(e)</strong> Find a <span class="math inline">\(\boldsymbol{a}\)</span> such that <span class="math inline">\(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 - \hat{\beta}_2\)</span>.</p>
+<p><strong>(f)</strong> For a given <span class="math inline">\(\boldsymbol{a}\)</span>, find an expression for <span class="math inline">\(\mathbb{E}\left[\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right]\)</span></p>
+<p><strong>(g)</strong> For a given <span class="math inline">\(\boldsymbol{a}\)</span>, find an expression for <span class="math inline">\(\mathrm{Var}\left(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right)\)</span>.</p>
 
 
 
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">

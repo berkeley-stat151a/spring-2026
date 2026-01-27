@@ -20,7 +20,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -174,21 +228,21 @@ window.Quarto = {
    
   <ul>
   <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
+  <li><a href="#have-my-grades-been-increasing-over-time" id="toc-have-my-grades-been-increasing-over-time" class="nav-link" data-scroll-target="#have-my-grades-been-increasing-over-time">Have my grades been increasing over time?</a></li>
   <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation">Matrix notation</a></li>
   <li><a href="#least-squares-in-matrix-notation" id="toc-least-squares-in-matrix-notation" class="nav-link" data-scroll-target="#least-squares-in-matrix-notation">Least squares in matrix notation</a></li>
-  <li><a href="#some-examples" id="toc-some-examples" class="nav-link" data-scroll-target="#some-examples">Some examples</a>
+  <li><a href="#some-simple-familiar-examples-in-matrix-form" id="toc-some-simple-familiar-examples-in-matrix-form" class="nav-link" data-scroll-target="#some-simple-familiar-examples-in-matrix-form">Some simple familiar examples in matrix form</a>
   <ul class="collapse">
   <li><a href="#the-sample-mean" id="toc-the-sample-mean" class="nav-link" data-scroll-target="#the-sample-mean">The sample mean</a></li>
   <li><a href="#a-single-regressor" id="toc-a-single-regressor" class="nav-link" data-scroll-target="#a-single-regressor">A single regressor</a></li>
-  <li><a href="#onehot-encodings" id="toc-onehot-encodings" class="nav-link" data-scroll-target="#onehot-encodings">One–hot encodings</a></li>
-  <li><a href="#onehot-encodings-and-constants" id="toc-onehot-encodings-and-constants" class="nav-link" data-scroll-target="#onehot-encodings-and-constants">One–hot encodings and constants</a></li>
-  <li><a href="#redundant-regressors" id="toc-redundant-regressors" class="nav-link" data-scroll-target="#redundant-regressors">Redundant regressors</a></li>
-  <li><a href="#redundant-regressors-and-zero-eigenvalues" id="toc-redundant-regressors-and-zero-eigenvalues" class="nav-link" data-scroll-target="#redundant-regressors-and-zero-eigenvalues">Redundant regressors and zero eigenvalues</a></li>
-  <li><a href="#zero-variance-regressors" id="toc-zero-variance-regressors" class="nav-link" data-scroll-target="#zero-variance-regressors">Zero variance regressors</a></li>
-  <li><a href="#orthogonal-regressors" id="toc-orthogonal-regressors" class="nav-link" data-scroll-target="#orthogonal-regressors">Orthogonal regressors</a></li>
+  </ul></li>
+  <li><a href="#common-quantities" id="toc-common-quantities" class="nav-link" data-scroll-target="#common-quantities">Common quantities</a>
+  <ul class="collapse">
+  <li><a href="#high-r2-is-not-necessarily-a-good-fit" id="toc-high-r2-is-not-necessarily-a-good-fit" class="nav-link" data-scroll-target="#high-r2-is-not-necessarily-a-good-fit">High <span class="math inline">\(R^2\)</span> is not necessarily a good fit</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="multilinear_regression.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -217,21 +271,158 @@ window.Quarto = {
 <ul>
 <li>Derive the general form of the ordinary least squares (OLS) estimator in matrix notation
 <ul>
-<li>Review simple least squares derivation</li>
-<li>Review matrix notation</li>
-<li>Review vector calculus</li>
+<li>Introduce the multilinear regression problem as a generalization of simple linear regression</li>
+<li>Review matrix notation in the context of multilinear regression</li>
 <li>Derive the general OLS formula and show that the simple least squares is a special case</li>
 </ul></li>
 </ul>
+</section>
+<section id="reading" class="level1">
+<h1>Reading</h1>
+<p>These notes are a supplement for the following readings:</p>
+<ul>
+<li><span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span> Section 4.1</li>
+<li><span class="citation" data-cites="ding:2024:linear">Ding (<a href="#ref-ding:2024:linear" role="doc-biblioref">2024</a>)</span> Section 3.1</li>
+<li><span class="citation" data-cites="davidson2004econometric">Davidson, MacKinnon, et al. (<a href="#ref-davidson2004econometric" role="doc-biblioref">2004</a>)</span> Sections 1.4–1.5</li>
+</ul>
+</section>
+<section id="have-my-grades-been-increasing-over-time" class="level1">
+<h1>Have my grades been increasing over time?</h1>
+<p>Let’s look again at the grades dataset, and consider the question: “have my grades been increasing over time?” I personally am interested in whether some aspect of my courses has been causing an upward trend, and maybe you are interested in extrapolating such a trend to the present semester.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>grade_v_time <span class="ot">&lt;-</span> <span class="fu">lm</span>(grade <span class="sc">~</span> time, all_grades_df)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(grade_v_time))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = grade ~ time, data = all_grades_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.86223 -0.03835  0.03343  0.07532  0.13777 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 0.846658   0.020112  42.098   &lt;2e-16 ***
+time        0.015571   0.007198   2.163   0.0315 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1234 on 252 degrees of freedom
+Multiple R-squared:  0.01823,   Adjusted R-squared:  0.01434 
+F-statistic:  4.68 on 1 and 252 DF,  p-value: 0.03146</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>grade_pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(grade_v_time, all_grades_df)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>all_grades_df <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>grade, <span class="at">group=</span>time)) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>grade)) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>grade_pred), <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="multilinear_regression_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here, we see a very weak but increasing trend, probably driven by some very low grades in the first two semesters.</p>
+<p>However, this comparison, even as it is, is complicated by the fact that time periods 1 and 2 were 151A, and time periods 3 and 4 were 154. In fact, if regress on the class label instead, I get a simliar result:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>grade_v_class <span class="ot">&lt;-</span> <span class="fu">lm</span>(grade <span class="sc">~</span> class, all_grades_df)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(grade_v_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = grade ~ class, data = all_grades_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.86777 -0.04168  0.03599  0.07514  0.13223 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  0.86777    0.01120  77.479   &lt;2e-16 ***
+class154     0.03636    0.01548   2.349   0.0196 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1232 on 252 degrees of freedom
+Multiple R-squared:  0.02143,   Adjusted R-squared:  0.01755 
+F-statistic: 5.519 on 1 and 252 DF,  p-value: 0.01958</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>grade_v_class <span class="ot">&lt;-</span> <span class="fu">lm</span>(grade <span class="sc">~</span> class, all_grades_df)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>grade_v_time <span class="ot">&lt;-</span> <span class="fu">lm</span>(grade <span class="sc">~</span> time, all_grades_df)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>grade_pred_class <span class="ot">&lt;-</span> <span class="fu">predict</span>(grade_v_class, all_grades_df)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>grade_pred_time <span class="ot">&lt;-</span> <span class="fu">predict</span>(grade_v_time, all_grades_df)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>all_grades_df <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>grade_pred_class, <span class="at">color=</span><span class="st">"Class regression"</span>)) <span class="sc">+</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>grade_pred_time, <span class="at">color=</span><span class="st">"Time regression"</span>)) <span class="sc">+</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>grade_pred_class, <span class="at">color=</span><span class="st">"Class regression"</span>)) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>time, <span class="at">y=</span>grade_pred_time, <span class="at">color=</span><span class="st">"Time regression"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="multilinear_regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here, we can see how the two fits differ. The prediction for regression on class is a step function for the change in which class is being taught, where the time trend is continuous.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Question:
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Can we possibly disentangle the effect of time from which class is being taught? How?</p>
+</div>
+</div>
+<p>One way to ask this formally is to run the regression on both:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(grade <span class="sc">~</span> time <span class="sc">+</span> class, all_grades_df) <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = grade ~ time + class, data = all_grades_df)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.86615 -0.04175  0.03580  0.07452  0.13385 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 0.863349   0.027039  31.930   &lt;2e-16 ***
+time        0.002801   0.015584   0.180    0.858    
+class154    0.031012   0.033566   0.924    0.356    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1234 on 251 degrees of freedom
+Multiple R-squared:  0.02156,   Adjusted R-squared:  0.01376 
+F-statistic: 2.765 on 2 and 251 DF,  p-value: 0.06488</code></pre>
+</div>
+</div>
+<p>Interestingly, we see that though each regression is statistically significant separately, in the combined regression neither are significant. <strong>This is one way of saying, using regression, that we cannot disentangle the effect of class and time with this dataset.</strong> In other words, without more data, the answer to our question is inconclusive — although there certainly doesn’t seem to be strong evidence for marked trends.</p>
+<p>This is no longer simple linear regression! In this unit, we will study versions of regression that include more than one covariate in this way.</p>
 </section>
 <section id="matrix-notation" class="level1">
 <h1>Matrix notation</h1>
 <p>The simple linear regression formula came from combining the equations that set the univariate gradients equal to zero, and then recognizing a matrix equation. We can in fact do both at the same time! But first we need some notation</p>
 <p>Here is a formal definition of the type of model that we will study for the vast majority of the semester:</p>
 <p><span id="eq-lm-scalar"><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 y_n ={}&amp; \beta_1 x_{n1} + \beta_2 x_{n2} + \ldots + x_{nP} + \varepsilon_{n}, \quad\textrm{For }n=1,\ldots,N.
-\end{align*}
+\end{aligned}
 \tag{1}\]</span></span></p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Notation">
 <div class="callout-header d-flex align-content-center">
@@ -248,20 +439,20 @@ Notation
 </div>
 <p><a href="#eq-lm-scalar" class="quarto-xref">Equation&nbsp;1</a> is a general form of simpler cases. For example, if we take <span class="math inline">\(x_{n1} \equiv 1\)</span>, <span class="math inline">\(x_{n2}= x_n\)</span> to be some scalar, and <span class="math inline">\(P = 2\)</span>, then <a href="#eq-lm-scalar" class="quarto-xref">Equation&nbsp;1</a> becomes <strong>?@eq-lm-simple</strong>:</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 y_n ={}&amp; \beta_1  + \beta_2 x_{n} + \varepsilon_{n}, \quad\textrm{For }n=1,\ldots,N.
-\end{align*}
+\end{aligned}
 \]</span></p>
 <p>The residuals <span class="math inline">\(\varepsilon_n\)</span> measure the “misfit” of the line. If you know <span class="math inline">\(\beta_1, \ldots, \beta_P\)</span>, then you can compute</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \varepsilon_n ={}&amp; y_n -  (\beta_1 x_{n1} + \beta_2 x_{n2} + \ldots + x_{nP}).
-\end{align*}
+\end{aligned}
 \]</span></p>
 <p>But in general we only observe <span class="math inline">\(y_n\)</span> and <span class="math inline">\(x_{n1}, \ldots, x_{nP}\)</span>, and we choose <span class="math inline">\(\beta_1, \ldots, \beta_P\)</span> to make the residuals small. (How we do this precisely will be something we talk about at great length.)</p>
 <p>The general form of <a href="#eq-lm-scalar" class="quarto-xref">Equation&nbsp;1</a> can be written more compactly using matrix and vector notation. Specifically, if we let</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \boldsymbol{x}_n :=
 \begin{pmatrix}
   x_{n1} \\ x_{n2} \\ \vdots \\ x_{nP}
@@ -273,7 +464,7 @@ y_n ={}&amp; \beta_1  + \beta_2 x_{n} + \varepsilon_{n}, \quad\textrm{For }n=1,\
 \begin{pmatrix}
   \beta_{1} \\ \beta_2 \\ \vdots \\ \beta_{P}
 \end{pmatrix}
-\end{align*}
+\end{aligned}
 \]</span></p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Notation">
 <div class="callout-header d-flex align-content-center">
@@ -290,16 +481,16 @@ Notation
 </div>
 <p>Recall that the “transpose” operator <span class="math inline">\((\cdot)^\intercal\)</span> flips the row and columns of a matrix. For example,</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \boldsymbol{x}_n ^\intercal=
 \begin{pmatrix}
   x_{n1} &amp; x_{n2} &amp; \ldots &amp; x_{nP}
 \end{pmatrix}.
-\end{align*}
+\end{aligned}
 \]</span></p>
 <p>By matrix multiplication rules,</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \boldsymbol{x}_n^\intercal\boldsymbol{\beta}=
 \begin{pmatrix}
   x_{n1} &amp; x_{n2} &amp; \ldots &amp; x_{nP}
@@ -309,7 +500,7 @@ Notation
   \beta_{1} \\ \beta_2 \\ \vdots \\ \beta_{P}
 \end{pmatrix}
 = \beta_1 x_{n1} + \beta_2 x_{n2} + \ldots + x_{nP}.
-\end{align*}
+\end{aligned}
 \]</span></p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Notation">
 <div class="callout-header d-flex align-content-center">
@@ -327,21 +518,21 @@ Notation
 </div>
 <p>Then we can compactly write</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 y_n ={}&amp; \boldsymbol{x}_n ^\intercal\boldsymbol{\beta}+ \varepsilon_{n}, \quad\textrm{For }n=1,\ldots,N.
-\end{align*}
+\end{aligned}
 \]</span></p>
 <p>We can compactify it even further if we stack the <span class="math inline">\(n\)</span> observations: % <span class="math display">\[
-\begin{align*}
+\begin{aligned}
 y_1 ={}&amp; \boldsymbol{x}_1 ^\intercal\boldsymbol{\beta}+ \varepsilon_{1} \\
 y_2 ={}&amp; \boldsymbol{x}_2 ^\intercal\boldsymbol{\beta}+ \varepsilon_{2} \\
 \vdots\\
 y_N ={}&amp; \boldsymbol{x}_N ^\intercal\boldsymbol{\beta}+ \varepsilon_{N} \\
-\end{align*}
+\end{aligned}
 \]</span></p>
 <p>As before we can stack the responses and residuals:</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \boldsymbol{Y}:=
 \begin{pmatrix}
   y_{1} \\ y_2 \\ \vdots \\ y_{P}
@@ -353,11 +544,11 @@ y_N ={}&amp; \boldsymbol{x}_N ^\intercal\boldsymbol{\beta}+ \varepsilon_{N} \\
 \begin{pmatrix}
   \varepsilon_{1} \\ \varepsilon_2 \\ \vdots \\ \varepsilon_{P}
 \end{pmatrix}
-\end{align*}
+\end{aligned}
 \]</span></p>
 <p>We can also stack the regressors:</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \boldsymbol{X}:=
 \begin{pmatrix}
   x_{11} &amp; x_{12} &amp; \ldots &amp; x_{1P}\\
@@ -371,7 +562,7 @@ y_N ={}&amp; \boldsymbol{x}_N ^\intercal\boldsymbol{\beta}+ \varepsilon_{N} \\
 \begin{pmatrix}
   \boldsymbol{x}_{1}^\intercal\\ \boldsymbol{x}_{2}^\intercal\\ \vdots \\ \boldsymbol{x}_n^\intercal\\ \vdots \\ \boldsymbol{x}_{N}^\intercal
 \end{pmatrix}
-\end{align*}
+\end{aligned}
 \]</span></p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Notation">
 <div class="callout-header d-flex align-content-center">
@@ -388,7 +579,7 @@ Notation
 </div>
 <p>Note that by matrix multiplication rules,</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \boldsymbol{X}=
 \begin{pmatrix}
   \boldsymbol{x}_{1}^\intercal\\ \boldsymbol{x}_{2}^\intercal\\ \vdots \\ \boldsymbol{x}_n^\intercal\\ \vdots \\ \boldsymbol{x}_{N}^\intercal
@@ -399,19 +590,19 @@ Notation
 \begin{pmatrix}
   \boldsymbol{x}_{1}^\intercal\boldsymbol{\beta}\\ \boldsymbol{x}_{2}^\intercal\boldsymbol{\beta}\\ \vdots \\ \boldsymbol{x}_n^\intercal\boldsymbol{\beta}\\ \vdots \\ \boldsymbol{x}_{N}^\intercal\boldsymbol{\beta}
 \end{pmatrix}
-\end{align*}
+\end{aligned}
 \]</span></p>
 <p>so we end up with the extremely tidy expression</p>
 <p><span id="eq-y-matrix"><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 y_n ={}&amp; \beta_1 x_{n1} + \beta_2 x_{n2} + \ldots + x_{nP} + \varepsilon_{n}, \quad\textrm{For }n=1,\ldots,N
 \\\\&amp;\textrm{is the same as}\quad\\\\
 \boldsymbol{Y}={}&amp; \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}.
-\end{align*}
+\end{aligned}
 \tag{2}\]</span></span></p>
 <p>In the case of simple least squares, we can write</p>
 <p><span id="eq-simple_matrix"><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \boldsymbol{X}:=
 \begin{pmatrix}
   1 &amp; x_{1}\\
@@ -419,7 +610,7 @@ y_n ={}&amp; \beta_1 x_{n1} + \beta_2 x_{n2} + \ldots + x_{nP} + \varepsilon_{n}
   \vdots &amp; \vdots\\
   1 &amp; x_{N}\\
 \end{pmatrix},
-\end{align*}
+\end{aligned}
 \tag{3}\]</span></span></p>
 <p>and verify that the <span class="math inline">\(n\)</span>–th row of <a href="#eq-y-matrix" class="quarto-xref">Equation&nbsp;2</a> is the same as <strong>?@eq-lm-simple</strong>.</p>
 </section>
@@ -463,11 +654,11 @@ Notation
 </div>
 <p>Recall a couple rules from vector calculus. Let <span class="math inline">\(\boldsymbol{v}\)</span> denote a <span class="math inline">\(P\)</span>–vector and <span class="math inline">\(\boldsymbol{A}\)</span> a symmetric matrix. Then</p>
 <p><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \frac{\partial \boldsymbol{v}^\intercal\boldsymbol{z}}{\partial \boldsymbol{z}}  = \boldsymbol{v}
 \quad\textrm{and}\quad
 \frac{\partial \boldsymbol{z}^\intercal\boldsymbol{A}\boldsymbol{z}}{\partial \boldsymbol{z}}  = 2 \boldsymbol{A}\boldsymbol{z}.
-\end{align*}
+\end{aligned}
 \]</span></p>
 <div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
 <div class="callout-header d-flex align-content-center">
@@ -495,9 +686,9 @@ Exercise
 \]</span></p>
 <p>Assuming our estimator <span class="math inline">\(\hat{\beta}\)</span> sets these partial derivatives are equal to zero, we then get</p>
 <p><span id="eq-ols-esteq"><span class="math display">\[
-\begin{align*}
+\begin{aligned}
 \boldsymbol{X}^\intercal\boldsymbol{X}\hat{\boldsymbol{\beta}}={}&amp; \boldsymbol{X}^\intercal\boldsymbol{Y}.
-\end{align*}
+\end{aligned}
 \tag{4}\]</span></span></p>
 <p>This is a set of <span class="math inline">\(P\)</span> equations in <span class="math inline">\(P\)</span> unknowns. If it is not degenerate, one can solve for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. That is, if the matrix <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible, then we can multiply both sides of <a href="#eq-ols-esteq" class="quarto-xref">Equation&nbsp;4</a> by <span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\)</span> to get</p>
 <p><span id="eq-ols-betahat"><span class="math display">\[
@@ -549,22 +740,11 @@ Notation
 </div>
 </div>
 </section>
-<section id="some-examples" class="level1">
-<h1>Some examples</h1>
-<p>The formulas given in <a href="#eq-ols-esteq" class="quarto-xref">Equation&nbsp;4</a> and <a href="#eq-ols-betahat" class="quarto-xref">Equation&nbsp;5</a> are enough to calculate every least squares estimator we’ll encounter. But we’d like to have intuition for the meaning of the formulas, and for that it will be useful to start by applying the formulas in some familiar settings.</p>
-<p>Recall that, any fit of the form <span class="math inline">\(\boldsymbol{X}\boldsymbol{\beta}\)</span> that minimizes the sum of squared errors must take the form <span class="math inline">\(\boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span> where <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> satisfies</p>
-<p><span class="math display">\[
-\begin{align*}
-\boldsymbol{X}^\intercal\boldsymbol{X}\hat{\boldsymbol{\beta}}={}&amp; \boldsymbol{X}^\intercal\boldsymbol{Y}.
-\end{align*}
-\]</span></p>
-<p>However, there may in general be many <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> that satisfy the preceding equation. But if <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible, then <span class="math display">\[
-\hat{\boldsymbol{\beta}}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y},
-\]</span></p>
-<p>and there is only one <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> that minimizes the sum of squared error.</p>
-<p>Let’s take a careful look at what <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is measuring, what it means for it to be invertible, as well as what it means when it is <em>not</em> invertible.</p>
+<section id="some-simple-familiar-examples-in-matrix-form" class="level1">
+<h1>Some simple familiar examples in matrix form</h1>
 <section id="the-sample-mean" class="level2">
 <h2 class="anchored" data-anchor-id="the-sample-mean">The sample mean</h2>
+<p>Sample means are in fact a special case of multi linear regression. Seeing this will be helpful when we interpret categorical variables.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Notation">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -594,7 +774,21 @@ Notation
 </section>
 <section id="a-single-regressor" class="level2">
 <h2 class="anchored" data-anchor-id="a-single-regressor">A single regressor</h2>
-<p>Suppose that we regress <span class="math inline">\(y_n \sim x_n\)</span> where <span class="math inline">\(x_n\)</span> is a scalar. Let’s suppose that <span class="math inline">\(\mathbb{E}\left[x_n\right] = 0\)</span> and <span class="math inline">\(\mathrm{Var}\left(x_n\right) = \sigma^2 &gt; 0\)</span>. We have</p>
+<p>For completness, let’s also see what happens when we omit the constant from simple linear regression. Suppose that we regress <span class="math inline">\(y_n \sim x_n\)</span> where <span class="math inline">\(x_n\)</span> is a scalar.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>R</code> adds a constant by default! To remove it, run something like <code>lm(y ~ x - 1, my_dataframe)</code>.</p>
+</div>
+</div>
+<p>Let’s suppose that <span class="math inline">\(\mathbb{E}\left[x_n\right] = 0\)</span> and <span class="math inline">\(\mathrm{Var}\left(x_n\right) = \sigma^2 &gt; 0\)</span>. We have</p>
 <p><span class="math display">\[
 \boldsymbol{X}= \begin{pmatrix}
 x_1 \\
@@ -623,353 +817,59 @@ Exercise
 </div>
 <p>However, as <span class="math inline">\(N \rightarrow \infty\)</span>, <span class="math inline">\(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\rightarrow \sigma^2\)</span> by the LLN, and since <span class="math inline">\(\sigma^2 &gt; 0\)</span>, <span class="math inline">\(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\)</span> will be invertible with probability approaching one as <span class="math inline">\(N\)</span> goes to infinity.</p>
 </section>
-<section id="onehot-encodings" class="level2">
-<h2 class="anchored" data-anchor-id="onehot-encodings">One–hot encodings</h2>
-<p>We discussed one-hot encodings in the context of the Ames housing data. Suppose we have a columns <span class="math inline">\(k_n \in \{ g, e\}\)</span> indicating whether a kitchen is “good” or “excellent”. A one–hot encoding of this categorical variable is given by</p>
+</section>
+<section id="common-quantities" class="level1">
+<h1>Common quantities</h1>
+<p>Given a regression fit, there are a few key quantities that we’ll use over and over again.</p>
+<p>First of all, the fit is given by</p>
 <p><span class="math display">\[
-\begin{aligned}
-x_{ng} =
-\begin{cases}
-1 &amp; \textrm{ if }k_n = g \\
-0 &amp; \textrm{ if }k_n \ne g \\
-\end{cases}
-&amp;&amp;
-x_{ne} =
-\begin{cases}
-1 &amp; \textrm{ if }k_n = e \\
-0 &amp; \textrm{ if }k_n \ne e \\
-\end{cases}
-\end{aligned}.
+\hat{\boldsymbol{Y}}= \boldsymbol{X}\hat{\boldsymbol{\beta}}
+\quad\Leftrightarrow\quad
+\hat{y}_n = \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}.
 \]</span></p>
-<p>We can then regress <span class="math inline">\(y_n \sim \beta_g x_{ng} + \beta_e x_{ne} = x_n^\intercal\boldsymbol{\beta}\)</span>. The corresponding <span class="math inline">\(\boldsymbol{X}\)</span> matrix might look like</p>
+<p>This is the regressions’ “guess” at the response for a given value of <span class="math inline">\(\boldsymbol{x}_n\)</span>. Analogously, we can define the “error”, “residual”, or “fitted residual:”</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\varepsilon}}= \boldsymbol{Y}- \hat{\boldsymbol{Y}}
+\quad\Leftrightarrow\quad
+\hat{\varepsilon}_n = y_n - \hat{y}_n.
+\]</span></p>
+<p>We can call</p>
 <p><span class="math display">\[
 \begin{aligned}
-\boldsymbol{k} =
-\begin{pmatrix}
-g \\
-e \\
-g \\
-g \\
-\vdots
-\end{pmatrix}
-&amp;&amp;
-\boldsymbol{X}= (\boldsymbol{x}_g \quad \boldsymbol{x}_e) =
-\begin{pmatrix}
-1 &amp; 0 \\
-0 &amp; 1 \\
-1 &amp; 0 \\
-1 &amp; 0 \\
-\vdots
-\end{pmatrix}
+\hat{\boldsymbol{Y}}^\intercal\hat{\boldsymbol{Y}}:={}&amp; ESS = \textrm{"Explained sum of squares"} \\
+\boldsymbol{Y}^\intercal\boldsymbol{Y}:={}&amp; TSS = \textrm{"Total sum of squares"} \\
+\hat{\boldsymbol{\varepsilon}}^\intercal\hat{\boldsymbol{\varepsilon}}:={}&amp; RSS = \textrm{"Residual sum of squares"}.
 \end{aligned}
 \]</span></p>
-<p>Note that <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{x}_g\)</span> is just the number of entries with <span class="math inline">\(k_n = g\)</span>, and <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{x}_e = 0\)</span> because a kitchen is either good or excellent but never both.</p>
-<p>We then have</p>
-<p><span class="math display">\[
-\boldsymbol{X}^\intercal\boldsymbol{X}=
-\begin{pmatrix}
-\boldsymbol{x}_g^\intercal\boldsymbol{x}_g  &amp; \boldsymbol{x}_g^\intercal\boldsymbol{x}_e \\
-\boldsymbol{x}_e^\intercal\boldsymbol{x}_g  &amp; \boldsymbol{x}_e^\intercal\boldsymbol{x}_e \\
-\end{pmatrix} =
-\begin{pmatrix}
-N_g  &amp; 0 \\
-0  &amp; N_e \\
-\end{pmatrix}.
+<p>In your homework, you will show that <span class="math inline">\(TSS = ESS + RSS\)</span>. It follows immediately that <span class="math inline">\(0 \le ESS \le TSS\)</span>, and we can define <span class="math display">\[
+R^2 := \frac{ESS}{TSS} \in [0, 1].
 \]</span></p>
-<p>Then <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible as long as <span class="math inline">\(N_g &gt; 0\)</span> and <span class="math inline">\(N_e &gt; 0\)</span>, that is, as long as we have at least one observation of each kitchen type, and</p>
-<p><span class="math display">\[
-\left(\boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} =
-\begin{pmatrix}
-\frac{1}{N_g}  &amp; 0 \\
-0  &amp; \frac{1}{N_e} \\
-\end{pmatrix}.
-\]</span></p>
-<p>Similarly, <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{Y}\)</span> is just the sum of entries of <span class="math inline">\(\boldsymbol{Y}\)</span> where <span class="math inline">\(k_n = g\)</span>, with the analogous conclusion for <span class="math inline">\(\boldsymbol{x}_e\)</span>. From this we recover the result that</p>
-<p><span class="math display">\[
-\hat{\boldsymbol{\beta}}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}
-=
-\begin{pmatrix}
-\frac{1}{N_g}  &amp; 0 \\
-0  &amp; \frac{1}{N_e} \\
-\end{pmatrix}
-\begin{pmatrix}
-\sum_{n: k_n=g} y_n \\
-\sum_{n: k_n=e} y_n
-\end{pmatrix}
-=
-\begin{pmatrix}
-\frac{1}{N_g} \sum_{n: k_n=g} y_n \\
-\frac{1}{N_e} \sum_{n: k_n=e} y_n
-\end{pmatrix}.
-\]</span></p>
-<p>If we let <span class="math inline">\(\bar{y}_e\)</span> and <span class="math inline">\(\bar{y}_g\)</span> denote the sample means within each group, we have shows that <span class="math inline">\(\hat{\beta}_g = \bar{y}_g\)</span> and <span class="math inline">\(\hat{\beta}_e = \bar{y}_e\)</span>, as we proved before without using the matrix formulation.</p>
-</section>
-<section id="onehot-encodings-and-constants" class="level2">
-<h2 class="anchored" data-anchor-id="onehot-encodings-and-constants">One–hot encodings and constants</h2>
-<p>Recall in the Ames housing data, we ran the following two regressions:</p>
-<p><span class="math display">\[
-\begin{aligned}
-y_n \sim{}&amp; \beta_e x_{ne} + \beta_g x_{ng}  \\
-y_n \sim{}&amp; \gamma_0  + \gamma_g x_{ng} + \varepsilon_n = z_n^\intercal\boldsymbol{\gamma},
-\end{aligned}
-\]</span> where I take <span class="math inline">\(\boldsymbol{\gamma}= (\gamma_0, \gamma_g)^\intercal\)</span> and <span class="math inline">\(z_n = (1, x_{ng})^\intercal\)</span>.</p>
-<p>We found using <code>R</code> that the best fits were given by</p>
-<p><span class="math display">\[
-\begin{aligned}
-\hat{\beta}_e =&amp; \bar{y}_e  &amp; \hat{\beta}_g =&amp; \bar{y}_g \\
-\hat{\gamma}_0 =&amp; \bar{y}_e  &amp; \hat{\gamma}_g =&amp; \bar{y}_g - \bar{y}_e \\
-\end{aligned}
-\]</span></p>
-<p>We can compute the latter by constructing the <span class="math inline">\(\boldsymbol{Z}\)</span> matrix whose rows are <span class="math inline">\(z_n^\intercal\)</span>. (We use <span class="math inline">\(\boldsymbol{Z}\)</span> to differentiate the <span class="math inline">\(\boldsymbol{X}\)</span> matrix from the previous example.) Using similar reasoning to the one–hot encoding, we see that</p>
-<p><span class="math display">\[
-\boldsymbol{Z}^\intercal\boldsymbol{Z}=
-\begin{pmatrix}
-N &amp; N_g \\
-N_g &amp; N_g
-\end{pmatrix}.
-\]</span></p>
-<p>This is invertible as long as <span class="math inline">\(N_g \ne N\)</span>, i.e., as long as there is at least one <span class="math inline">\(k_n = e\)</span>. We have</p>
-<p><span class="math display">\[
-(\boldsymbol{Z}^\intercal\boldsymbol{Z})^{-1} =
-\frac{1}{N_g (N - N_g)}
-\begin{pmatrix}
-N_g &amp; -N_g \\
--N_g &amp; N
-\end{pmatrix}
-\quad\textrm{and}\quad
-\boldsymbol{Z}^\intercal\boldsymbol{Y}=
-\begin{pmatrix}
-\sum_{n=1}^Ny_n \\
-\sum_{n: k_n=g} y_n \\
-\end{pmatrix}
-\]</span></p>
-<p>It is possible (but a little tedious) to prove <span class="math inline">\(\hat{\gamma}_0 = \bar{y}_e\)</span> and <span class="math inline">\(\hat{\gamma}_g = \bar{y}_g - \bar{y}_e\)</span> using these formulas. But an easier way to see it is as follows.</p>
-<p>Note that <span class="math inline">\(x_{ne} + x_{ng} = 1\)</span>. That means we can always re-write the regression with a constant as</p>
-<p><span class="math display">\[
-y_n \sim \gamma_0 + \gamma_g x_{ng} = \gamma_0 (x_{ne} + x_{ng}) + \gamma_g x_{ng} =
-\gamma_0 x_{ne} + (\gamma_0 + \gamma_g) x_{ng}.
-\]</span></p>
-<p>Now, we already know from the one–hot encoding case that the sum of squared residuals is minimized by setting <span class="math inline">\(\hat{\gamma}_0 = \bar{y}_e\)</span> and <span class="math inline">\(\hat{\gamma}_0 + \hat{\gamma}_g = \bar{y}_g\)</span>. We can then solve for <span class="math inline">\(\hat{\gamma}_g = \bar{y}_g - \bar{y}_e\)</span>, as expected.</p>
-<p>This is case where we have two regressions whose regressors are invertible linear combinations of one another:</p>
-<p><span class="math display">\[
-\boldsymbol{z}_n =
-\begin{pmatrix}
-1 \\
-x_{ng}
-\end{pmatrix} =
-\begin{pmatrix}
-x_{ne} + x_{ng} \\
-x_{ng}
-\end{pmatrix}
-=
-\begin{pmatrix}
-1 &amp; 1 \\
-1 &amp; 0\\
-\end{pmatrix}
-\begin{pmatrix}
-x_{ng} \\
-x_{ne}
-\end{pmatrix}
-=
-\begin{pmatrix}
-1 &amp; 1 \\
-1 &amp; 0\\
-\end{pmatrix}
-\boldsymbol{x}_n.
-\]</span></p>
-<p>It follows that if you can acheive a least squares fit with <span class="math inline">\(\boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}\)</span>, you can achieve exactly the same fit with</p>
-<p><span class="math display">\[
-\hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n =  
-\hat{\boldsymbol{\beta}}^\intercal
-\begin{pmatrix}
-1 &amp; 1 \\
-1 &amp; 0\\
-\end{pmatrix}^{-1} \boldsymbol{z}_n,
-\]</span></p>
-<p>which can be achieved by taking</p>
-<p><span class="math display">\[
-\hat{\boldsymbol{\gamma}}^\intercal=
-\hat{\boldsymbol{\beta}}^\intercal
-\begin{pmatrix}
-1 &amp; 1 \\
-1 &amp; 0\\
-\end{pmatrix}^{-1} \Rightarrow
-\hat{\boldsymbol{\gamma}}=
-\begin{pmatrix}
-1 &amp; 1 \\
-1 &amp; 0\\
-\end{pmatrix}^{-T} \hat{\boldsymbol{\beta}}
-=
-\frac{1}{-1}
-\begin{pmatrix}
-0 &amp; -1 \\
--1 &amp; 1\\
-\end{pmatrix} \hat{\boldsymbol{\beta}}
-=
-\begin{pmatrix}
-\hat{\beta}_2 \\
-\hat{\beta}_1 - \hat{\beta}_2 \\
-\end{pmatrix},
-\]</span></p>
-<p>exactly as expected.</p>
-<p>We will see this is an entirely general result: when regressions are related by invertible linear transformations of regressors, the fit does not change, but the optimal coefficients are linear transforms of one another.</p>
-</section>
-<section id="redundant-regressors" class="level2">
-<h2 class="anchored" data-anchor-id="redundant-regressors">Redundant regressors</h2>
-<p>Suppose we run the (silly) regression <span class="math inline">\(y\sim \alpha \cdot 1 + \gamma \cdot 3 + \varepsilon_n\)</span>. That is, we regress on both the constant <span class="math inline">\(1\)</span> and the constant <span class="math inline">\(3\)</span>. We have</p>
-<p><span class="math display">\[
-\boldsymbol{X}=
-\begin{pmatrix}
-1 &amp; 3 \\
-1 &amp; 3 \\
-1 &amp; 3 \\
-\vdots
-\end{pmatrix}
-=
-(\boldsymbol{1}\quad 3 \boldsymbol{1})
-\]</span></p>
-<p>and so</p>
-<p><span class="math display">\[
-\boldsymbol{X}^\intercal\boldsymbol{X}=
-\begin{pmatrix}
-\boldsymbol{1}^\intercal\boldsymbol{1}&amp; 3 \boldsymbol{1}^\intercal\boldsymbol{1}\\
-3 \boldsymbol{1}^\intercal\boldsymbol{1}&amp; 9 \boldsymbol{1}^\intercal\boldsymbol{1}\\
-\end{pmatrix}
-=
-N \begin{pmatrix}
-1 &amp; 3  \\
-3 &amp; 9  \\
-\end{pmatrix}
-\]</span></p>
-<p>This is not invertible (the second row is <span class="math inline">\(3\)</span> times the first, and the determinant is <span class="math inline">\(9 - 3 \cdot 3 = 0\)</span>). So <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is not defined. What went wrong?</p>
-<p>One way to see this is to define <span class="math inline">\(\beta = \alpha + 3 \gamma\)</span> and write</p>
-<p><span class="math display">\[
-y_n = (\alpha + 3 \gamma) + \varepsilon_n = \beta + \varepsilon_n.
-\]</span></p>
-<p>There is obviously only one <span class="math inline">\(\hat{\beta}\)</span> that minimizes <span class="math inline">\(\sum_{n=1}^N\varepsilon_n^2\)</span>, <span class="math inline">\(\hat{\beta}= \bar{y}\)</span>. But there are an infinite set of choices for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\gamma\)</span> satisfying</p>
-<p><span class="math display">\[
-\alpha + 3 \gamma = \hat{\beta}= \bar{y}.
-\]</span></p>
-<p>Specifically, for any value of <span class="math inline">\(\gamma\)</span> we can take <span class="math inline">\(\alpha = \bar{y}- 3 \gamma\)</span>, leaving <span class="math inline">\(\beta\)</span> unchanged. All of these choices for <span class="math inline">\(\alpha,\gamma\)</span> acheive the same <span class="math inline">\(\sum_{n=1}^N\varepsilon_n^2\)</span>! So the least squares criterion cannot distinguish among them.</p>
-<p>In general, this is what it means for <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> to be non–invertibile. It happens precisely when there are redundant regressors, and many regression coefficients that result in the same fit.</p>
-</section>
-<section id="redundant-regressors-and-zero-eigenvalues" class="level2">
-<h2 class="anchored" data-anchor-id="redundant-regressors-and-zero-eigenvalues">Redundant regressors and zero eigenvalues</h2>
-<p>In fact, <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible precisely when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> has a zero eigenvalue. In the preceding example, we can see that</p>
-<p><span class="math display">\[
-\boldsymbol{X}^\intercal\boldsymbol{X}
-\begin{pmatrix}
-3 \\ -1
-\end{pmatrix}
-=
-N \begin{pmatrix}
-1 &amp; 3  \\
-3 &amp; 9  \\
-\end{pmatrix}
-\begin{pmatrix}
-3 \\ -1
-\end{pmatrix}
-=
-\begin{pmatrix}
-0 \\ 0
-\end{pmatrix},
-\]</span></p>
-<p>so <span class="math inline">\((3, -1)^\intercal\)</span> is a zero eigenvector. (In general you might find this by numerical eigenvalue decomposition, but in this case you can just guess the zero eigenvalue.)</p>
-<p>Going back to <a href="#eq-ols-esteq" class="quarto-xref">Equation&nbsp;4</a>, we see that this means that</p>
-<p><span class="math display">\[
-\boldsymbol{X}^\intercal\boldsymbol{Y}=
-(\boldsymbol{X}^\intercal\boldsymbol{X})
-\begin{pmatrix}
-\hat{\alpha}\\ \hat{\gamma}
-\end{pmatrix}
-=
-N \begin{pmatrix}
-1 &amp; 3  \\
-3 &amp; 9  \\
-\end{pmatrix}
-\begin{pmatrix}
-\hat{\alpha}\\ \hat{\gamma}
-\end{pmatrix}
-=
-N \begin{pmatrix}
-1 &amp; 3  \\
-3 &amp; 9  \\
-\end{pmatrix}
-\left(
-\begin{pmatrix}
-\hat{\alpha}\\ \hat{\gamma}
-\end{pmatrix}
-+ C
-\begin{pmatrix}
-3 \\ -1
-\end{pmatrix}
-\right)
-\]</span></p>
-<p>for <em>any</em> value of <span class="math inline">\(C\)</span>. This means there are an infinite set of “optimal” values, all of which set the gradient of the loss to zero, and all of which have the same value of the loss function (i.e.&nbsp;acheive the same fit). And you can check that these family of values are exactly the ones that satisfy <span class="math inline">\(\alpha + 3 \gamma = \hat{\beta}= \bar{y}\)</span>, since</p>
-<p><span class="math display">\[
-\alpha + 3 \gamma =
-\begin{pmatrix}
-1 &amp; 3
-\end{pmatrix}
-\begin{pmatrix}
-\alpha \\ \gamma
-\end{pmatrix}
-\quad\quad\textrm{and}\quad\quad
-\begin{pmatrix}
-1 &amp; 3
-\end{pmatrix}
-\begin{pmatrix}
-3 \\ -1
-\end{pmatrix} = 0.
-\]</span></p>
-<p>Soon, we will see that this is a general result: when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible, that means there are many equivalent least squares fits, all characterized precisely by the zero eigenvectors of <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span>.</p>
-</section>
-<section id="zero-variance-regressors" class="level2">
-<h2 class="anchored" data-anchor-id="zero-variance-regressors">Zero variance regressors</h2>
-<p>An example of redundant regressors occurs when the sample variance of <span class="math inline">\(x_n\)</span> is zero and a constant is included in the regression. Specifically, suppose that <span class="math inline">\(\overline{xx} - \overline{x}^2 = 0\)</span>.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Prove that <span class="math inline">\(\overline{xx} - \overline{x}^2 = 0\)</span> means <span class="math inline">\(x_n\)</span> is a constant with <span class="math inline">\(x_n = \bar{x}\)</span>. Hint: look at the sample variance of <span class="math inline">\(x_n\)</span>.</p>
-</div>
-</div>
-<p>Let’s regress <span class="math inline">\(y_n \sim \beta_1 + \beta_2 x_n\)</span>.</p>
-<p>For simplicity, let’s take <span class="math inline">\(x_n = 3\)</span>. In that case we can rewrite our estimating equation as</p>
-<p><span class="math display">\[
-y_n = \beta_1 + \beta_2 x_n + \varepsilon_n
-     = (\beta_1 + \beta_2 \bar{x}) + \varepsilon_n.
-\]</span></p>
-<p>We’re thus in the previous setting with <span class="math inline">\(\bar{x}\)</span> in place of the number <span class="math inline">\(3\)</span>.</p>
-</section>
-<section id="orthogonal-regressors" class="level2">
-<h2 class="anchored" data-anchor-id="orthogonal-regressors">Orthogonal regressors</h2>
-<p>Suppose we have regressors such that the columns of <span class="math inline">\(\boldsymbol{X}\)</span> are orthonormal. This seems strange at first, since we usually specify the <em>rows</em> of the regressors, not the columns. But in fact we have seen a near–example with one–hot encodings, which are defined row–wise, but which produce orthogonal column vectors in <span class="math inline">\(\boldsymbol{X}\)</span>. If we divide a one–hot encoding by the square root of the number of ones in the whole dataset, we produce an normal column vector.</p>
-<p>If <span class="math inline">\(\boldsymbol{X}\)</span> has orthonormal columns, then <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{I}\)</span>, the identity matrix, and so</p>
-<p><span class="math display">\[
-\hat{\boldsymbol{\beta}}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}= \boldsymbol{X}^\intercal\boldsymbol{Y}.
-\]</span></p>
-<p>This is of course the same answer we would have gotten if we had tried to write <span class="math inline">\(\boldsymbol{Y}\)</span> in the basis of the column vectors of <span class="math inline">\(\boldsymbol{X}\)</span>:</p>
-<p><span class="math display">\[
-\begin{aligned}
-\boldsymbol{Y}={}&amp; \hat{\beta}_1 \boldsymbol{X}_{\cdot 1} + \ldots + \hat{\beta}_P \boldsymbol{X}_{\cdot P} = \boldsymbol{X}\hat{\boldsymbol{\beta}}\Rightarrow \\
-\boldsymbol{X}^\intercal\boldsymbol{Y}={}&amp; \boldsymbol{X}^\intercal\boldsymbol{X}\hat{\boldsymbol{\beta}}= \hat{\boldsymbol{\beta}}
-\end{aligned}
-\]</span></p>
-<p>This regression is particularly simple — each component of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> depends only on its corresponding column of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
-<p>Note that if each entry of <span class="math inline">\(\boldsymbol{x}_n\)</span> is mean zero, unit variance, and uncorrelated with the other entries, then <span class="math inline">\(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\rightarrow \boldsymbol{I}\)</span> by the LLN. Such a regressor matrix is not typically orthogonal for any particular <span class="math inline">\(N\)</span>, but it approaches orthogonality as <span class="math inline">\(N\)</span> grows.</p>
+<p>In a sense, high <span class="math inline">\(R^2\)</span> means a “good fit” in the sense that the least squares fit has low error.</p>
+<section id="high-r2-is-not-necessarily-a-good-fit" class="level2">
+<h2 class="anchored" data-anchor-id="high-r2-is-not-necessarily-a-good-fit">High <span class="math inline">\(R^2\)</span> is not necessarily a good fit</h2>
+<p>But high <span class="math inline">\(R^2\)</span> does not necessarily mean that the fit is accurate or useful! In particular, by increasing the number of regressors, you can only make <span class="math inline">\(R^2\)</span> increase, and there are clearly silly regressions with great <span class="math inline">\(R^2\)</span>.</p>
+<p>Here are two examples:</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{Y}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{I}\)</span></li>
+</ul>
+
 
 
 </section>
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-davidson2004econometric" class="csl-entry" role="listitem">
+Davidson, Russell, James G MacKinnon, et al. 2004. <em>Econometric Theory and Methods</em>. Vol. 5. Oxford University Press New York.
+</div>
+<div id="ref-ding:2024:linear" class="csl-entry" role="listitem">
+Ding, Peng. 2024. <span>“Linear Model and Extensions.”</span> <em>arXiv Preprint arXiv:2401.00649</em>.
+</div>
+<div id="ref-freedman:2009:statistical" class="csl-entry" role="listitem">
+Freedman, David. 2009. <em>Statistical Models: <span>Theory</span> and Practice</em>. cambridge university press.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

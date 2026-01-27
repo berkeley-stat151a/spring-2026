@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>grading</title>
+<title>Linear transformations of regressors.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,22 +23,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -77,6 +77,35 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 </script>
 <script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -87,10 +116,10 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="./assets/stat_bear.png" alt="" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/stat_bear.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Spring 2026 STAT151A</span>
     </a>
   </div>
@@ -101,31 +130,31 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./schedule.html"> 
+    <a class="nav-link" href="../../schedule.html"> 
 <span class="menu-text">Course schedule</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./lectures/index.html"> 
+    <a class="nav-link" href="../../lectures/index.html"> 
 <span class="menu-text">Lectures</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./assignments/index.html"> 
+    <a class="nav-link" href="../../assignments/index.html"> 
 <span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./labs/index.html"> 
+    <a class="nav-link" href="../../labs/index.html"> 
 <span class="menu-text">Labs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./datasets/index.html"> 
+    <a class="nav-link" href="../../datasets/index.html"> 
 <span class="menu-text">Datasets</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./course_policies.html"> 
+    <a class="nav-link" href="../../course_policies.html"> 
 <span class="menu-text">Course Policies</span></a>
   </li>  
 </ul>
@@ -140,23 +169,309 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="grading.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#transformations-of-regressors" id="toc-transformations-of-regressors" class="nav-link active" data-scroll-target="#transformations-of-regressors">Transformations of regressors</a>
+  <ul class="collapse">
+  <li><a href="#onehot-encodings-and-constants" id="toc-onehot-encodings-and-constants" class="nav-link" data-scroll-target="#onehot-encodings-and-constants">One–hot encodings and constants</a></li>
+  <li><a href="#redundant-regressors" id="toc-redundant-regressors" class="nav-link" data-scroll-target="#redundant-regressors">Redundant regressors</a></li>
+  <li><a href="#redundant-regressors-and-zero-eigenvalues" id="toc-redundant-regressors-and-zero-eigenvalues" class="nav-link" data-scroll-target="#redundant-regressors-and-zero-eigenvalues">Redundant regressors and zero eigenvalues</a></li>
+  <li><a href="#zero-variance-regressors" id="toc-zero-variance-regressors" class="nav-link" data-scroll-target="#zero-variance-regressors">Zero variance regressors</a></li>
+  <li><a href="#orthogonal-regressors" id="toc-orthogonal-regressors" class="nav-link" data-scroll-target="#orthogonal-regressors">Orthogonal regressors</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="linear_transformations.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Linear transformations of regressors.</h1>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<ul>
-<li>Homework completion: 25%</li>
-<li>Lab assignment completion: 25%</li>
-<li>Quizzes (each weighted equally): 25%</li>
-<li>Final exam: 15%</li>
-<li>Final project: 10%</li>
-</ul>
+    
+  
+    
+  </div>
+  
 
 
+</header>
+
+
+<section id="transformations-of-regressors" class="level1">
+<h1>Transformations of regressors</h1>
+<section id="onehot-encodings-and-constants" class="level2">
+<h2 class="anchored" data-anchor-id="onehot-encodings-and-constants">One–hot encodings and constants</h2>
+<p>Recall in the Ames housing data, we ran the following two regressions:</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_n \sim{}&amp; \beta_e x_{ne} + \beta_g x_{ng}  \\
+y_n \sim{}&amp; \gamma_0  + \gamma_g x_{ng} + \varepsilon_n = z_n^\intercal\boldsymbol{\gamma},
+\end{aligned}
+\]</span> where I take <span class="math inline">\(\boldsymbol{\gamma}= (\gamma_0, \gamma_g)^\intercal\)</span> and <span class="math inline">\(z_n = (1, x_{ng})^\intercal\)</span>.</p>
+<p>We found using <code>R</code> that the best fits were given by</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\beta}_e =&amp; \bar{y}_e  &amp; \hat{\beta}_g =&amp; \bar{y}_g \\
+\hat{\gamma}_0 =&amp; \bar{y}_e  &amp; \hat{\gamma}_g =&amp; \bar{y}_g - \bar{y}_e \\
+\end{aligned}
+\]</span></p>
+<p>We can compute the latter by constructing the <span class="math inline">\(\boldsymbol{Z}\)</span> matrix whose rows are <span class="math inline">\(z_n^\intercal\)</span>. (We use <span class="math inline">\(\boldsymbol{Z}\)</span> to differentiate the <span class="math inline">\(\boldsymbol{X}\)</span> matrix from the previous example.) Using similar reasoning to the one–hot encoding, we see that</p>
+<p><span class="math display">\[
+\boldsymbol{Z}^\intercal\boldsymbol{Z}=
+\begin{pmatrix}
+N &amp; N_g \\
+N_g &amp; N_g
+\end{pmatrix}.
+\]</span></p>
+<p>This is invertible as long as <span class="math inline">\(N_g \ne N\)</span>, i.e., as long as there is at least one <span class="math inline">\(k_n = e\)</span>. We have</p>
+<p><span class="math display">\[
+(\boldsymbol{Z}^\intercal\boldsymbol{Z})^{-1} =
+\frac{1}{N_g (N - N_g)}
+\begin{pmatrix}
+N_g &amp; -N_g \\
+-N_g &amp; N
+\end{pmatrix}
+\quad\textrm{and}\quad
+\boldsymbol{Z}^\intercal\boldsymbol{Y}=
+\begin{pmatrix}
+\sum_{n=1}^Ny_n \\
+\sum_{n: k_n=g} y_n \\
+\end{pmatrix}
+\]</span></p>
+<p>It is possible (but a little tedious) to prove <span class="math inline">\(\hat{\gamma}_0 = \bar{y}_e\)</span> and <span class="math inline">\(\hat{\gamma}_g = \bar{y}_g - \bar{y}_e\)</span> using these formulas. But an easier way to see it is as follows.</p>
+<p>Note that <span class="math inline">\(x_{ne} + x_{ng} = 1\)</span>. That means we can always re-write the regression with a constant as</p>
+<p><span class="math display">\[
+y_n \sim \gamma_0 + \gamma_g x_{ng} = \gamma_0 (x_{ne} + x_{ng}) + \gamma_g x_{ng} =
+\gamma_0 x_{ne} + (\gamma_0 + \gamma_g) x_{ng}.
+\]</span></p>
+<p>Now, we already know from the one–hot encoding case that the sum of squared residuals is minimized by setting <span class="math inline">\(\hat{\gamma}_0 = \bar{y}_e\)</span> and <span class="math inline">\(\hat{\gamma}_0 + \hat{\gamma}_g = \bar{y}_g\)</span>. We can then solve for <span class="math inline">\(\hat{\gamma}_g = \bar{y}_g - \bar{y}_e\)</span>, as expected.</p>
+<p>This is case where we have two regressions whose regressors are invertible linear combinations of one another:</p>
+<p><span class="math display">\[
+\boldsymbol{z}_n =
+\begin{pmatrix}
+1 \\
+x_{ng}
+\end{pmatrix} =
+\begin{pmatrix}
+x_{ne} + x_{ng} \\
+x_{ng}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; 1 \\
+1 &amp; 0\\
+\end{pmatrix}
+\begin{pmatrix}
+x_{ng} \\
+x_{ne}
+\end{pmatrix}
+=
+\begin{pmatrix}
+1 &amp; 1 \\
+1 &amp; 0\\
+\end{pmatrix}
+\boldsymbol{x}_n.
+\]</span></p>
+<p>It follows that if you can acheive a least squares fit with <span class="math inline">\(\boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}\)</span>, you can achieve exactly the same fit with</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n =
+\hat{\boldsymbol{\beta}}^\intercal
+\begin{pmatrix}
+1 &amp; 1 \\
+1 &amp; 0\\
+\end{pmatrix}^{-1} \boldsymbol{z}_n,
+\]</span></p>
+<p>which can be achieved by taking</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\gamma}}^\intercal=
+\hat{\boldsymbol{\beta}}^\intercal
+\begin{pmatrix}
+1 &amp; 1 \\
+1 &amp; 0\\
+\end{pmatrix}^{-1} \Rightarrow
+\hat{\boldsymbol{\gamma}}=
+\begin{pmatrix}
+1 &amp; 1 \\
+1 &amp; 0\\
+\end{pmatrix}^{-T} \hat{\boldsymbol{\beta}}
+=
+\frac{1}{-1}
+\begin{pmatrix}
+0 &amp; -1 \\
+-1 &amp; 1\\
+\end{pmatrix} \hat{\boldsymbol{\beta}}
+=
+\begin{pmatrix}
+\hat{\beta}_2 \\
+\hat{\beta}_1 - \hat{\beta}_2 \\
+\end{pmatrix},
+\]</span></p>
+<p>exactly as expected.</p>
+<p>We will see this is an entirely general result: when regressions are related by invertible linear transformations of regressors, the fit does not change, but the optimal coefficients are linear transforms of one another.</p>
+</section>
+<section id="redundant-regressors" class="level2">
+<h2 class="anchored" data-anchor-id="redundant-regressors">Redundant regressors</h2>
+<p>Suppose we run the (silly) regression <span class="math inline">\(y\sim \alpha \cdot 1 + \gamma \cdot 3 + \varepsilon_n\)</span>. That is, we regress on both the constant <span class="math inline">\(1\)</span> and the constant <span class="math inline">\(3\)</span>. We have</p>
+<p><span class="math display">\[
+\boldsymbol{X}=
+\begin{pmatrix}
+1 &amp; 3 \\
+1 &amp; 3 \\
+1 &amp; 3 \\
+\vdots
+\end{pmatrix}
+=
+(\boldsymbol{1}\quad 3 \boldsymbol{1})
+\]</span></p>
+<p>and so</p>
+<p><span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{X}=
+\begin{pmatrix}
+\boldsymbol{1}^\intercal\boldsymbol{1}&amp; 3 \boldsymbol{1}^\intercal\boldsymbol{1}\\
+3 \boldsymbol{1}^\intercal\boldsymbol{1}&amp; 9 \boldsymbol{1}^\intercal\boldsymbol{1}\\
+\end{pmatrix}
+=
+N \begin{pmatrix}
+1 &amp; 3  \\
+3 &amp; 9  \\
+\end{pmatrix}
+\]</span></p>
+<p>This is not invertible (the second row is <span class="math inline">\(3\)</span> times the first, and the determinant is <span class="math inline">\(9 - 3 \cdot 3 = 0\)</span>). So <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is not defined. What went wrong?</p>
+<p>One way to see this is to define <span class="math inline">\(\beta = \alpha + 3 \gamma\)</span> and write</p>
+<p><span class="math display">\[
+y_n = (\alpha + 3 \gamma) + \varepsilon_n = \beta + \varepsilon_n.
+\]</span></p>
+<p>There is obviously only one <span class="math inline">\(\hat{\beta}\)</span> that minimizes <span class="math inline">\(\sum_{n=1}^N\varepsilon_n^2\)</span>, <span class="math inline">\(\hat{\beta}= \bar{y}\)</span>. But there are an infinite set of choices for <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\gamma\)</span> satisfying</p>
+<p><span class="math display">\[
+\alpha + 3 \gamma = \hat{\beta}= \bar{y}.
+\]</span></p>
+<p>Specifically, for any value of <span class="math inline">\(\gamma\)</span> we can take <span class="math inline">\(\alpha = \bar{y}- 3 \gamma\)</span>, leaving <span class="math inline">\(\beta\)</span> unchanged. All of these choices for <span class="math inline">\(\alpha,\gamma\)</span> acheive the same <span class="math inline">\(\sum_{n=1}^N\varepsilon_n^2\)</span>! So the least squares criterion cannot distinguish among them.</p>
+<p>In general, this is what it means for <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> to be non–invertibile. It happens precisely when there are redundant regressors, and many regression coefficients that result in the same fit.</p>
+</section>
+<section id="redundant-regressors-and-zero-eigenvalues" class="level2">
+<h2 class="anchored" data-anchor-id="redundant-regressors-and-zero-eigenvalues">Redundant regressors and zero eigenvalues</h2>
+<p>In fact, <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible precisely when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> has a zero eigenvalue. In the preceding example, we can see that</p>
+<p><span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{X}
+\begin{pmatrix}
+3 \\ -1
+\end{pmatrix}
+=
+N \begin{pmatrix}
+1 &amp; 3  \\
+3 &amp; 9  \\
+\end{pmatrix}
+\begin{pmatrix}
+3 \\ -1
+\end{pmatrix}
+=
+\begin{pmatrix}
+0 \\ 0
+\end{pmatrix},
+\]</span></p>
+<p>so <span class="math inline">\((3, -1)^\intercal\)</span> is a zero eigenvector. (In general you might find this by numerical eigenvalue decomposition, but in this case you can just guess the zero eigenvalue.)</p>
+<p>Going back to <strong>?@eq-ols-esteq</strong>, we see that this means that</p>
+<p><span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{Y}=
+(\boldsymbol{X}^\intercal\boldsymbol{X})
+\begin{pmatrix}
+\hat{\alpha}\\ \hat{\gamma}
+\end{pmatrix}
+=
+N \begin{pmatrix}
+1 &amp; 3  \\
+3 &amp; 9  \\
+\end{pmatrix}
+\begin{pmatrix}
+\hat{\alpha}\\ \hat{\gamma}
+\end{pmatrix}
+=
+N \begin{pmatrix}
+1 &amp; 3  \\
+3 &amp; 9  \\
+\end{pmatrix}
+\left(
+\begin{pmatrix}
+\hat{\alpha}\\ \hat{\gamma}
+\end{pmatrix}
++ C
+\begin{pmatrix}
+3 \\ -1
+\end{pmatrix}
+\right)
+\]</span></p>
+<p>for <em>any</em> value of <span class="math inline">\(C\)</span>. This means there are an infinite set of “optimal” values, all of which set the gradient of the loss to zero, and all of which have the same value of the loss function (i.e.&nbsp;acheive the same fit). And you can check that these family of values are exactly the ones that satisfy <span class="math inline">\(\alpha + 3 \gamma = \hat{\beta}= \bar{y}\)</span>, since</p>
+<p><span class="math display">\[
+\alpha + 3 \gamma =
+\begin{pmatrix}
+1 &amp; 3
+\end{pmatrix}
+\begin{pmatrix}
+\alpha \\ \gamma
+\end{pmatrix}
+\quad\quad\textrm{and}\quad\quad
+\begin{pmatrix}
+1 &amp; 3
+\end{pmatrix}
+\begin{pmatrix}
+3 \\ -1
+\end{pmatrix} = 0.
+\]</span></p>
+<p>Soon, we will see that this is a general result: when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible, that means there are many equivalent least squares fits, all characterized precisely by the zero eigenvectors of <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span>.</p>
+</section>
+<section id="zero-variance-regressors" class="level2">
+<h2 class="anchored" data-anchor-id="zero-variance-regressors">Zero variance regressors</h2>
+<p>An example of redundant regressors occurs when the sample variance of <span class="math inline">\(x_n\)</span> is zero and a constant is included in the regression. Specifically, suppose that <span class="math inline">\(\overline{xx} - \overline{x}^2 = 0\)</span>.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove that <span class="math inline">\(\overline{xx} - \overline{x}^2 = 0\)</span> means <span class="math inline">\(x_n\)</span> is a constant with <span class="math inline">\(x_n = \bar{x}\)</span>. Hint: look at the sample variance of <span class="math inline">\(x_n\)</span>.</p>
+</div>
+</div>
+<p>Let’s regress <span class="math inline">\(y_n \sim \beta_1 + \beta_2 x_n\)</span>.</p>
+<p>For simplicity, let’s take <span class="math inline">\(x_n = 3\)</span>. In that case we can rewrite our estimating equation as</p>
+<p><span class="math display">\[
+y_n = \beta_1 + \beta_2 x_n + \varepsilon_n
+     = (\beta_1 + \beta_2 \bar{x}) + \varepsilon_n.
+\]</span></p>
+<p>We’re thus in the previous setting with <span class="math inline">\(\bar{x}\)</span> in place of the number <span class="math inline">\(3\)</span>.</p>
+</section>
+<section id="orthogonal-regressors" class="level2">
+<h2 class="anchored" data-anchor-id="orthogonal-regressors">Orthogonal regressors</h2>
+<p>Suppose we have regressors such that the columns of <span class="math inline">\(\boldsymbol{X}\)</span> are orthonormal. This seems strange at first, since we usually specify the <em>rows</em> of the regressors, not the columns. But in fact we have seen a near–example with one–hot encodings, which are defined row–wise, but which produce orthogonal column vectors in <span class="math inline">\(\boldsymbol{X}\)</span>. If we divide a one–hot encoding by the square root of the number of ones in the whole dataset, we produce an normal column vector.</p>
+<p>If <span class="math inline">\(\boldsymbol{X}\)</span> has orthonormal columns, then <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{I}\)</span>, the identity matrix, and so</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}= \boldsymbol{X}^\intercal\boldsymbol{Y}.
+\]</span></p>
+<p>This is of course the same answer we would have gotten if we had tried to write <span class="math inline">\(\boldsymbol{Y}\)</span> in the basis of the column vectors of <span class="math inline">\(\boldsymbol{X}\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{Y}={}&amp; \hat{\beta}_1 \boldsymbol{X}_{\cdot 1} + \ldots + \hat{\beta}_P \boldsymbol{X}_{\cdot P} = \boldsymbol{X}\hat{\boldsymbol{\beta}}\Rightarrow \\
+\boldsymbol{X}^\intercal\boldsymbol{Y}={}&amp; \boldsymbol{X}^\intercal\boldsymbol{X}\hat{\boldsymbol{\beta}}= \hat{\boldsymbol{\beta}}
+\end{aligned}
+\]</span></p>
+<p>This regression is particularly simple — each component of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> depends only on its corresponding column of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<p>Note that if each entry of <span class="math inline">\(\boldsymbol{x}_n\)</span> is mean zero, unit variance, and uncorrelated with the other entries, then <span class="math inline">\(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\rightarrow \boldsymbol{I}\)</span> by the LLN. Such a regressor matrix is not typically orthogonal for any particular <span class="math inline">\(N\)</span>, but it approaches orthogonality as <span class="math inline">\(N\)</span> grows.</p>
+
+
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

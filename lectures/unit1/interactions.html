@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Review: Linear algebra</title>
+<title>Multilinear regression as loss minimization.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -229,21 +229,21 @@ window.Quarto = {
   <ul>
   <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
   <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
-  <li><a href="#linear-algebra-review" id="toc-linear-algebra-review" class="nav-link" data-scroll-target="#linear-algebra-review">Linear algebra review</a></li>
-  <li><a href="#generic-random-vectors" id="toc-generic-random-vectors" class="nav-link" data-scroll-target="#generic-random-vectors">Generic random vectors</a>
+  <li><a href="#ames-housing-data" id="toc-ames-housing-data" class="nav-link" data-scroll-target="#ames-housing-data">Ames housing data</a></li>
+  <li><a href="#onehot-encodings" id="toc-onehot-encodings" class="nav-link" data-scroll-target="#onehot-encodings">One–hot encodings</a>
   <ul class="collapse">
-  <li><a href="#the-law-of-large-numbers-for-vectors" id="toc-the-law-of-large-numbers-for-vectors" class="nav-link" data-scroll-target="#the-law-of-large-numbers-for-vectors">The law of large numbers for vectors</a></li>
-  <li><a href="#extensions" id="toc-extensions" class="nav-link" data-scroll-target="#extensions">Extensions</a></li>
+  <li><a href="#ames-example" id="toc-ames-example" class="nav-link" data-scroll-target="#ames-example">Ames example</a></li>
   </ul></li>
+  <li><a href="#controlling-for-multiple-variables" id="toc-controlling-for-multiple-variables" class="nav-link" data-scroll-target="#controlling-for-multiple-variables">Controlling for multiple variables</a></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="interactions.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title">Review: Linear algebra</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<h1 class="title">Multilinear regression as loss minimization.</h1>
 </div>
 
 
@@ -263,94 +263,313 @@ window.Quarto = {
 <section id="goals" class="level1">
 <h1>Goals</h1>
 <ul>
-<li>Review linear algebra.
+<li>Adding regressors based on discrete random variables
 <ul>
-<li>Matrices and vectors</li>
-<li>Basic operations: multiplication, transpose, inverse</li>
-<li>Geometry: length, orthogonality, and projections</li>
-<li>Eigenvalues and eigenvectors</li>
+<li>The one-hot encoding trick</li>
+<li>Sample means and one-hot encoding</li>
+<li>Adding interactions to fit different slopes</li>
 </ul></li>
 </ul>
 </section>
 <section id="reading" class="level1">
 <h1>Reading</h1>
-<p>This lecture supplements the reading</p>
+<p>These notes are supplementary for the reading</p>
 <ul>
-<li><span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span> Chapter 3</li>
-</ul>
-<p>Additional linear algebra review materials are described in <a href="../../lectures/unit0/linalg_review.html">this page</a>.</p>
-</section>
-<section id="linear-algebra-review" class="level1">
-<h1>Linear algebra review</h1>
-<p>These lecture notes won’t replace the readings. The topics I’ll review are:</p>
-<ul>
-<li>Dimensions of matrices and vectors</li>
-<li>Multiplication, transposes, and inner products</li>
-<li>Linear systems and inverses of matrices</li>
-<li>Inner products and lengths</li>
-<li>Inner products and orthogonality</li>
-<li>Basis vectors and orthogonal matrices</li>
-<li>Eigenvalues and eigenvectors</li>
+<li><span class="citation" data-cites="gelman:2021:regression">Gelman, Hill, and Vehtari (<a href="#ref-gelman:2021:regression" role="doc-biblioref">2021</a>)</span> Sections 10.3–10.4</li>
+<li><span class="citation" data-cites="ding:2024:linear">Ding (<a href="#ref-ding:2024:linear" role="doc-biblioref">2024</a>)</span> Section 17.3 also has some interesting reading</li>
 </ul>
 </section>
-<section id="generic-random-vectors" class="level1">
-<h1>Generic random vectors</h1>
-<p>In general, we can consider a random vector — or a random matrix — as a collection of potentially non-independent random values. For such a vector <span class="math inline">\({\boldsymbol{z}} \in \mathbb{R}^{P}\)</span>, we can speak about its expectation and covariance. Specifically,</p>
+<section id="ames-housing-data" class="level1">
+<h1>Ames housing data</h1>
+<p>Let’s consider an example of the <a href="../../datasets/">Ames housing data</a>, restricted to normal sales condition and considering only residential sales with either good or excellent condition kitchens. I’ll be particularly interested in whether there’s evidence that the cost of a kitchen upgrade is reflected in the sale value of the house.</p>
+<div class="cell" data-display="false">
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors
+
+Attaching package: 'gridExtra'
+
+
+The following object is masked from 'package:dplyr':
+
+    combine</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>housing_dir <span class="ot">&lt;-</span> <span class="fu">file.path</span>(root_dir, <span class="st">"datasets/ames_house/data"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ames_orig <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="fu">file.path</span>(housing_dir, <span class="st">"AmesHousing.txt"</span>), <span class="at">sep=</span><span class="st">"</span><span class="sc">\t</span><span class="st">"</span>, <span class="at">header=</span>T)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> ames_orig <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Sale.Condition <span class="sc">==</span> <span class="st">"Normal"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>         <span class="co"># remove agricultural, commercial and industrial</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>         <span class="sc">!</span>(MS.Zoning <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"A (agr)"</span>, <span class="st">"C (all)"</span>, <span class="st">"I (all)"</span>))) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Kitchen.Qual <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Gd"</span>, <span class="st">"Ex"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Overall.Qual=</span><span class="fu">factor</span>(Overall.Qual))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>SalePrice), <span class="at">bins=</span><span class="dv">50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interactions_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here’s a histogram of the sales price:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Kitchen.Qual, <span class="at">y=</span>SalePrice, <span class="at">fill=</span>Kitchen.Qual))<span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">expand_limits</span>(<span class="at">y=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interactions_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The average difference between Excellent and Good kitchens is $119179, which is a huge amount of money. However, this difference mostly vanishes when we look only at differences within “Overall Quality:”</p>
+<div class="cell" data-display="false" data-warn="false">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="interactions_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>How can we study this using regression? Note that “Kitchen Quality” and “Overall Quality” are discrete variables. Here, they do have an ordering, but suppose we just want to treat them as distinct categories — in this way, we can learn how to account for other discrete variables, such as neighborhood, that are harder to visualize.</p>
+</section>
+<section id="onehot-encodings" class="level1">
+<h1>One–hot encodings</h1>
+<p>How can we use categorical variables in a regression? Suppose we have a columns <span class="math inline">\(k_n \in \{ g, e\}\)</span> indicating whether a kitchen is “good” or “excellent”. A one–hot encoding of this categorical variable is given by</p>
 <p><span class="math display">\[
-\mathbb{E}\left[{\boldsymbol{z}}\right] =
+\begin{aligned}
+x_{ng} =
+\begin{cases}
+1 &amp; \textrm{ if }k_n = g \\
+0 &amp; \textrm{ if }k_n \ne g \\
+\end{cases}
+&amp;&amp;
+x_{ne} =
+\begin{cases}
+1 &amp; \textrm{ if }k_n = e \\
+0 &amp; \textrm{ if }k_n \ne e \\
+\end{cases}
+\end{aligned}.
+\]</span></p>
+<p>We can then regress <span class="math inline">\(y_n \sim \beta_g x_{ng} + \beta_e x_{ne} = x_n^\intercal\boldsymbol{\beta}\)</span>. The corresponding <span class="math inline">\(\boldsymbol{X}\)</span> matrix might look like</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{k} =
 \begin{pmatrix}
-\mathbb{E}\left[{z}_1\right] \\
-\vdots \\
-\mathbb{E}\left[{z}_P\right] \\
+g \\
+e \\
+g \\
+g \\
+\vdots
 \end{pmatrix}
-\quad\textrm{and}\quad
-\mathrm{Cov}\left({\boldsymbol{z}}\right) =
-\mathbb{E}\left[\left({\boldsymbol{z}} - \mathbb{E}\left[{\boldsymbol{z}}\right] \right)
-        \left({\boldsymbol{z}} - \mathbb{E}\left[{\boldsymbol{z}}\right] \right)^\intercal\right] =
+&amp;&amp;
+\boldsymbol{X}= (\boldsymbol{x}_g \quad \boldsymbol{x}_e) =
 \begin{pmatrix}
-\mathrm{Var}\left({z_1}\right) &amp; \mathrm{Cov}\left({z_1}, {z_2}\right) &amp; \ldots &amp; \mathrm{Cov}\left({z_1}, {z_P}\right) \\
-\mathrm{Cov}\left({z_2}, {z_1}\right) &amp; \ldots &amp; \ldots &amp; \mathrm{Cov}\left({z_2}, {z_P}\right) \\
-\vdots &amp; &amp; &amp; \vdots \\
-\mathrm{Cov}\left({z_P}, {z_1}\right) &amp; \ldots &amp; \ldots &amp; \mathrm{Var}\left({z_P}\right) \\
+1 &amp; 0 \\
+0 &amp; 1 \\
+1 &amp; 0 \\
+1 &amp; 0 \\
+\vdots
+\end{pmatrix}
+\end{aligned}
+\]</span></p>
+<p>Note that <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{x}_g\)</span> is just the number of entries with <span class="math inline">\(k_n = g\)</span>, and <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{x}_e = 0\)</span> because a kitchen is either good or excellent but never both.</p>
+<p>We then have</p>
+<p><span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{X}=
+\begin{pmatrix}
+\boldsymbol{x}_g^\intercal\boldsymbol{x}_g  &amp; \boldsymbol{x}_g^\intercal\boldsymbol{x}_e \\
+\boldsymbol{x}_e^\intercal\boldsymbol{x}_g  &amp; \boldsymbol{x}_e^\intercal\boldsymbol{x}_e \\
+\end{pmatrix} =
+\begin{pmatrix}
+N_g  &amp; 0 \\
+0  &amp; N_e \\
 \end{pmatrix}.
 \]</span></p>
-<p>For these expressions to exist, it suffices for <span class="math inline">\(\mathbb{E}\left[{z}_p^2\right] &lt; \infty\)</span> for all <span class="math inline">\(p \in \{1,\ldots,P\}\)</span>.</p>
-<p>We will at times talk about the expectation of a random matrix, <span class="math inline">\({\boldsymbol{Z}}\)</span>, which is simply the matrix of expectations. The notation for covariances of course doesn’t make sense for matrices, but it won’t be needed. (In fact, in cases where the covariance of a random matrix is needed in statistics, the matrix is typically stacked into a vector first.)</p>
-<section id="the-law-of-large-numbers-for-vectors" class="level2">
-<h2 class="anchored" data-anchor-id="the-law-of-large-numbers-for-vectors">The law of large numbers for vectors</h2>
-<p>The law of large numbers is particularly simple for vectors — as long as the dimension stays fixed as <span class="math inline">\(N \rightarrow \infty\)</span>, you can simply apply the LLN to each component separately. Suppose you’re given a sequence of vector-valued random variables, <span class="math inline">\({\boldsymbol{z}}_n \in \mathbb{R}^{P}\)</span>. Write <span class="math inline">\(\mathbb{E}\left[{\boldsymbol{z}}_n\right] = \boldsymbol{\mu}_n\)</span>. Then, as long as we can apply the LLN to each component, we get</p>
+<p>Then <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible as long as <span class="math inline">\(N_g &gt; 0\)</span> and <span class="math inline">\(N_e &gt; 0\)</span>, that is, as long as we have at least one observation of each kitchen type, and</p>
 <p><span class="math display">\[
-\overline{{\boldsymbol{z}}} :=
-\frac{1}{N} \sum_{n=1}^N{\boldsymbol{z}}_n \rightarrow \overline{\boldsymbol{\mu}}
-\quad\textrm{as }N\rightarrow \infty.
+\left(\boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} =
+\begin{pmatrix}
+\frac{1}{N_g}  &amp; 0 \\
+0  &amp; \frac{1}{N_e} \\
+\end{pmatrix}.
 \]</span></p>
+<p>Similarly, <span class="math inline">\(\boldsymbol{x}_g^\intercal\boldsymbol{Y}\)</span> is just the sum of entries of <span class="math inline">\(\boldsymbol{Y}\)</span> where <span class="math inline">\(k_n = g\)</span>, with the analogous conclusion for <span class="math inline">\(\boldsymbol{x}_e\)</span>. From this we recover the result that</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}
+=
+\begin{pmatrix}
+\frac{1}{N_g}  &amp; 0 \\
+0  &amp; \frac{1}{N_e} \\
+\end{pmatrix}
+\begin{pmatrix}
+\sum_{n: k_n=g} y_n \\
+\sum_{n: k_n=e} y_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+\frac{1}{N_g} \sum_{n: k_n=g} y_n \\
+\frac{1}{N_e} \sum_{n: k_n=e} y_n
+\end{pmatrix}.
+\]</span></p>
+<p>If we let <span class="math inline">\(\bar{y}_e\)</span> and <span class="math inline">\(\bar{y}_g\)</span> denote the sample means within each group, we have shows that <span class="math inline">\(\hat{\beta}_g = \bar{y}_g\)</span> and <span class="math inline">\(\hat{\beta}_e = \bar{y}_e\)</span>, as we proved before without using the matrix formulation.</p>
+<section id="ames-example" class="level3">
+<h3 class="anchored" data-anchor-id="ames-example">Ames example</h3>
+<p>Note that we get the same thing by just computing means and running a regression in the Ames data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ames <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Kitchen.Qual) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_price=</span><span class="fu">mean</span>(SalePrice)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from=</span>Kitchen.Qual, <span class="at">values_from=</span>mean_price) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+       Ex      Gd
+    &lt;dbl&gt;   &lt;dbl&gt;
+1 327007. 207828.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Kitchen.Qual <span class="sc">-</span> <span class="dv">1</span>, ames)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">coefficients</span>(reg))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Kitchen.QualEx Kitchen.QualGd 
+      327006.5       207828.0 </code></pre>
+</div>
+</div>
+<p>And when we look at the model matrix for the regression, we see the one-hot encoding in action:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(SalePrice <span class="sc">~</span> Kitchen.Qual <span class="sc">-</span> <span class="dv">1</span>, ames)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(ames, Kitchen.Qual),</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  x) <span class="sc">%&gt;%</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Kitchen.Qual Kitchen.QualEx Kitchen.QualGd
+1            Gd              0              1
+2            Ex              1              0
+3            Gd              0              1
+4            Gd              0              1
+5            Gd              0              1
+6            Gd              0              1
+7            Gd              0              1
+8            Gd              0              1
+9            Gd              0              1
+10           Ex              1              0</code></pre>
+</div>
+</div>
+<p>What if we included a constant?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>reg_const <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Kitchen.Qual, ames)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">coefficients</span>(reg_const))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   (Intercept) Kitchen.QualGd 
+      327006.5      -119178.5 </code></pre>
+</div>
+</div>
+<p>You will show in your homework that these two regressions are equivalent, but that the interpretaion of their coefficients is different. In this case, the equivalence is clearest from the prediction function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>reg <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Kitchen.Qual <span class="sc">-</span> <span class="dv">1</span>, ames)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>reg_const <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Kitchen.Qual, ames)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>good_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Kitchen.Qual=</span><span class="st">"Gd"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>ex_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Kitchen.Qual=</span><span class="st">"Ex"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Estimated difference without regressing on a constant: "</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(reg, ex_df) <span class="sc">-</span> <span class="fu">predict</span>(reg, good_df), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated difference without regressing on a constant:  119178.5 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Estimated difference regressing on a constant: "</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(reg_const, ex_df) <span class="sc">-</span> <span class="fu">predict</span>(reg_const, good_df), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Estimated difference regressing on a constant:  119178.5 </code></pre>
+</div>
+</div>
+<p>The key is to interpret the coefficients by plugging in multiple values and seeing what the fitted model predicts. Depending on how you set up your regression, this may or may not correspond to a particular coefficient value!</p>
 </section>
-<section id="extensions" class="level2">
-<h2 class="anchored" data-anchor-id="extensions">Extensions</h2>
-<p>Since we see that the shape of the vector doesn’t matter, we can also apply the LLN to matrices. For example, if <span class="math inline">\({z}_n\)</span> is a sequence of random matrices, with <span class="math inline">\(\mathbb{E}\left[{z}_n\right] = \boldsymbol{A}\)</span>, then</p>
-<p><span class="math display">\[
-\frac{1}{N} \sum_{n=1}^N{z}_n \rightarrow \boldsymbol{A}.
-\]</span></p>
-<p>We will also use (without proof) a theorem called the <strong>continuous mapping theorem</strong>, which says that, for a continous function <span class="math inline">\(f(\cdot)\)</span>, then</p>
-<p><span class="math display">\[
-f\left(\frac{1}{N} \sum_{n=1}^N{\boldsymbol{z}}_n\right) \rightarrow f(\overline{\mu}).
-\]</span></p>
-<p>Note that the preceding statment is different than saying</p>
-<p><span class="math display">\[
-\frac{1}{N} \sum_{n=1}^Nf\left( {\boldsymbol{z}}_n \right) \rightarrow \mathbb{E}\left[f\left( {\boldsymbol{z}}_n \right)\right],
-\]</span></p>
-<p>which may also be true, but which applies the LLN to the random variables <span class="math inline">\(f\left( {\boldsymbol{z}}_n \right)\)</span>.</p>
-
-
-<!-- -->
-
-
 </section>
+<section id="controlling-for-multiple-variables" class="level1">
+<h1>Controlling for multiple variables</h1>
+<p>We can now regress on kitchen quality “controlling for” overall quality (scare quotes intentional). One way to do this is to regress on one-hot indicators for both:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>reg_qual <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Overall.Qual <span class="sc">+</span> Kitchen.Qual, ames)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">coefficients</span>(reg_qual))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   (Intercept)  Overall.Qual3  Overall.Qual4  Overall.Qual5  Overall.Qual6 
+      89395.19       22100.00       73468.42       86982.22      119942.62 
+ Overall.Qual7  Overall.Qual8  Overall.Qual9 Overall.Qual10 Kitchen.QualGd 
+     150197.56      206392.52      266350.76      392470.83      -30395.19 </code></pre>
+</div>
+</div>
+<p>Note that the increase in sales price associated with an Excellent kitchen is much lower after you control for overall quality of the house in this way. <strong>It appears that much of the difference in cost in the above regression may be attributed to correlation between kitchen quality and overall house quality.</strong></p>
+<p>Note that the above regression assumes that the “effect” of overall quality is the same irrespective of the kitchen quality. We could run a regression with all the interactions to separately estimate the change in kitchen quality for each house quality. This is what actually corresponds to the graph above:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>reg_qual <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Overall.Qual <span class="sc">*</span> Kitchen.Qual <span class="sc">-</span> <span class="dv">1</span>, ames)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(reg_qual))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = SalePrice ~ Overall.Qual * Kitchen.Qual - 1, data = ames)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-168246  -29701   -4211   22776  276754 
+
+Coefficients: (3 not defined because of singularities)
+                              Estimate Std. Error t value Pr(&gt;|t|)    
+Overall.Qual2                    62246      59361   1.049 0.294604    
+Overall.Qual3                    84346      45100   1.870 0.061737 .  
+Overall.Qual4                   135715      37507   3.618 0.000311 ***
+Overall.Qual5                   169931      16713  10.168  &lt; 2e-16 ***
+Overall.Qual6                   142425      23636   6.026 2.33e-09 ***
+Overall.Qual7                   239900      13646  17.580  &lt; 2e-16 ***
+Overall.Qual8                   311166       9271  33.565  &lt; 2e-16 ***
+Overall.Qual9                   355043       6493  54.679  &lt; 2e-16 ***
+Overall.Qual10                  478246      13111  36.478  &lt; 2e-16 ***
+Kitchen.QualGd                   -3246      35905  -0.090 0.927979    
+Overall.Qual3:Kitchen.QualGd        NA         NA      NA       NA    
+Overall.Qual4:Kitchen.QualGd        NA         NA      NA       NA    
+Overall.Qual5:Kitchen.QualGd    -20254      39849  -0.508 0.611362    
+Overall.Qual6:Kitchen.QualGd     41057      43112   0.952 0.341146    
+Overall.Qual7:Kitchen.QualGd    -27466      38491  -0.714 0.475649    
+Overall.Qual8:Kitchen.QualGd    -44328      37218  -1.191 0.233910    
+Overall.Qual9:Kitchen.QualGd    -23061      39172  -0.589 0.556178    
+Overall.Qual10:Kitchen.QualGd       NA         NA      NA       NA    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 47270 on 1041 degrees of freedom
+Multiple R-squared:  0.9598,    Adjusted R-squared:  0.9592 
+F-statistic:  1657 on 15 and 1041 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The problem is these are extremely variable. Using additive effects can be thought of smoothing out the data so you can do “as-if” comparisons within a particular bucket.</p>
+
+
+
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-freedman:2009:statistical" class="csl-entry" role="listitem">
-Freedman, David. 2009. <em>Statistical Models: <span>Theory</span> and Practice</em>. cambridge university press.
+<div id="ref-ding:2024:linear" class="csl-entry" role="listitem">
+Ding, Peng. 2024. <span>“Linear Model and Extensions.”</span> <em>arXiv Preprint arXiv:2401.00649</em>.
+</div>
+<div id="ref-gelman:2021:regression" class="csl-entry" role="listitem">
+Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other Stories</em>. Cambridge University Press.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -440,57 +659,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       container: window.document.getElementById('quarto-embedded-source-code-modal')
     });
     clipboardModal.on('success', onCopySuccess);
-  }
-  const viewSource = window.document.getElementById('quarto-view-source') ||
-                     window.document.getElementById('quarto-code-tools-source');
-  if (viewSource) {
-    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
-    viewSource.addEventListener("click", function(e) {
-      if (sourceUrl) {
-        // rstudio viewer pane
-        if (/\bcapabilities=\b/.test(window.location)) {
-          window.open(sourceUrl);
-        } else {
-          window.location.href = sourceUrl;
-        }
-      } else {
-        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
-        modal.show();
-      }
-      return false;
-    });
-  }
-  function toggleCodeHandler(show) {
-    return function(e) {
-      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
-      for (let i=0; i<detailsSrc.length; i++) {
-        const details = detailsSrc[i].parentElement;
-        if (show) {
-          details.open = true;
-        } else {
-          details.removeAttribute("open");
-        }
-      }
-      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
-      const fromCls = show ? "hidden" : "unhidden";
-      const toCls = show ? "unhidden" : "hidden";
-      for (let i=0; i<cellCodeDivs.length; i++) {
-        const codeDiv = cellCodeDivs[i];
-        if (codeDiv.classList.contains(fromCls)) {
-          codeDiv.classList.remove(fromCls);
-          codeDiv.classList.add(toCls);
-        } 
-      }
-      return false;
-    }
-  }
-  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
-  if (hideAllCode) {
-    hideAllCode.addEventListener("click", toggleCodeHandler(false));
-  }
-  const showAllCode = window.document.getElementById("quarto-show-all-code");
-  if (showAllCode) {
-    showAllCode.addEventListener("click", toggleCodeHandler(true));
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
@@ -820,139 +988,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Review: Linear algebra"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">  enabled: true</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="an">theme:</span><span class="co"> [sandstone]</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="an">sidebar:</span><span class="co"> true</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Review linear algebra.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Matrices and vectors</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Basic operations: multiplication, transpose, inverse</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Geometry: length, orthogonality, and projections</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    - </span>Eigenvalues and eigenvectors</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu"># Reading</span></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>This lecture supplements the reading</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>@freedman:2009:statistical Chapter 3</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>Additional linear algebra review materials are described</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>in <span class="co">[</span><span class="ot">this page</span><span class="co">](/lectures/unit0/linalg_review.qmd)</span>.</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu"># Linear algebra review</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>These lecture notes won't replace the readings.  The topics I'll review are:</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Dimensions of matrices and vectors</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Multiplication, transposes, and inner products</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Linear systems and inverses of matrices</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Inner products and lengths</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Inner products and orthogonality</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Basis vectors and orthogonal matrices</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Eigenvalues and eigenvectors</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="fu"># Generic random vectors</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>In general, we can consider a random vector --- or a random matrix ---</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>as a collection of potentially non-independent random values.</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>For such a vector ${\zv} \in \rdom{P}$, we can speak about its expectation</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>and covariance. Specifically,</span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>\expect{{\zv}} =</span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>\expect{{\z}_1} <span class="sc">\\</span></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>\vdots <span class="sc">\\</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>\expect{{\z}_P} <span class="sc">\\</span></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>\quad\textrm{and}\quad</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>\cov{{\zv}} =</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>\expect{\left({\zv} - \expect{{\zv}} \right)</span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>        \left({\zv} - \expect{{\zv}} \right)^\trans} =</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>\var{{\z_1}} &amp; \cov{{\z_1}, {\z_2}} &amp; \ldots &amp; \cov{{\z_1}, {\z_P}} <span class="sc">\\</span></span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>\cov{{\z_2}, {\z_1}} &amp; \ldots &amp; \ldots &amp; \cov{{\z_2}, {\z_P}} <span class="sc">\\</span></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>\vdots &amp; &amp; &amp; \vdots <span class="sc">\\</span></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>\cov{{\z_P}, {\z_1}} &amp; \ldots &amp; \ldots &amp; \var{{\z_P}} <span class="sc">\\</span></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}.</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>For these expressions to exist, it suffices for $\expect{{\z}_p^2} &lt; \infty$</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>for all $p \in <span class="sc">\{</span>1,\ldots,P<span class="sc">\}</span>$.</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>We will at times talk about the expectation of a random matrix,</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>${\Z}$, which is simply the matrix of expectations.  The notation</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>for covariances of course doesn't make sense for matrices, but it</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>won't be needed.  (In fact, in cases where the covariance of a random matrix</span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>is needed in statistics, the matrix is typically stacked into a vector first.)</span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="fu">## The law of large numbers for vectors</span></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>The law of large numbers is particularly simple for vectors --- as</span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>long as the dimension stays fixed as $N \rightarrow \infty$, you can</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>simply apply the LLN to each component separately.  Suppose you're</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>given a sequence of vector-valued random variables, ${\zv}_n \in \rdom{P}$.</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>Write $\expect{{\zv}_n} = \muv_n$.  Then, as long as we can apply the LLN to</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>each component, we get</span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>\overline{{\zv}} :=</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>\meann {\zv}_n \rightarrow \overline{\muv}</span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>\quad\textrm{as }N\rightarrow \infty.</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extensions</span></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>Since we see that the shape of the vector doesn't matter, we</span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>can also apply the LLN to matrices.  For example, if ${\z}_n$</span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>is a sequence of random matrices, with $\expect{{\z}_n} = \A$,</span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>then</span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>\meann {\z}_n \rightarrow \A.</span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>We will also use (without proof) a theorem called the **continuous</span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>mapping theorem**, which says that, for a continous function $f(\cdot)$,</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>then</span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>f\left(\meann {\zv}_n\right) \rightarrow f(\overline{\mu}).</span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>Note that the preceding statment is different than saying</span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>\meann  f\left( {\zv}_n \right) \rightarrow \expect{f\left( {\zv}_n \right)},</span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>which may also be true, but which applies the LLN to the random variables</span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>$f\left( {\zv}_n \right)$.</span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
-</div></div></div></div></div>
+</script>
 </div> <!-- /content -->
 
 
