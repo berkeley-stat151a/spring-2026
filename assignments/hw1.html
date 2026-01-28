@@ -196,13 +196,13 @@ window.Quarto = {
   <ul>
   <li><a href="#ordinary-least-squares-in-matrix-form" id="toc-ordinary-least-squares-in-matrix-form" class="nav-link active" data-scroll-target="#ordinary-least-squares-in-matrix-form"><span class="header-section-number">1</span> Ordinary least squares in matrix form</a></li>
   <li><a href="#one-hot-encoding" id="toc-one-hot-encoding" class="nav-link" data-scroll-target="#one-hot-encoding"><span class="header-section-number">2</span> One-hot encoding</a></li>
-  <li><a href="#correlated-regressors" id="toc-correlated-regressors" class="nav-link" data-scroll-target="#correlated-regressors"><span class="header-section-number">3</span> Correlated regressors</a></li>
-  <li><a href="#linear-regression-as-projections" id="toc-linear-regression-as-projections" class="nav-link" data-scroll-target="#linear-regression-as-projections"><span class="header-section-number">4</span> Linear regression as projections</a></li>
-  <li><a href="#changes-of-basis" id="toc-changes-of-basis" class="nav-link" data-scroll-target="#changes-of-basis"><span class="header-section-number">5</span> Changes of basis</a></li>
-  <li><a href="#changes-of-basis-continued" id="toc-changes-of-basis-continued" class="nav-link" data-scroll-target="#changes-of-basis-continued"><span class="header-section-number">6</span> Changes of basis continued</a>
+  <li><a href="#linear-regression-as-projections" id="toc-linear-regression-as-projections" class="nav-link" data-scroll-target="#linear-regression-as-projections"><span class="header-section-number">3</span> Linear regression as projections</a></li>
+  <li><a href="#changes-of-basis" id="toc-changes-of-basis" class="nav-link" data-scroll-target="#changes-of-basis"><span class="header-section-number">4</span> Changes of basis</a></li>
+  <li><a href="#changes-of-basis-continued" id="toc-changes-of-basis-continued" class="nav-link" data-scroll-target="#changes-of-basis-continued"><span class="header-section-number">5</span> Changes of basis continued</a>
   <ul class="collapse">
   <li><a href="#linear-combinations-of-regressors-based-on-freedman2009statistical-chapter-4-set-b-exercise-14" id="toc-linear-combinations-of-regressors-based-on-freedman2009statistical-chapter-4-set-b-exercise-14" class="nav-link" data-scroll-target="#linear-combinations-of-regressors-based-on-freedman2009statistical-chapter-4-set-b-exercise-14">Linear combinations of regressors (based on <span class="citation" data-cites="freedman:2009:statistical">Freedman (2009)</span> Chapter 4 set B exercise 14)</a></li>
   </ul></li>
+  <li><a href="#correlated-regressors" id="toc-correlated-regressors" class="nav-link" data-scroll-target="#correlated-regressors"><span class="header-section-number">6</span> Correlated regressors</a></li>
   </ul>
 </nav>
     </div>
@@ -307,36 +307,6 @@ y_n = \alpha + \boldsymbol{\beta}^\intercal\boldsymbol{x}_n + \varepsilon_n,
 <section id="e" class="level4">
 <h4 class="anchored" data-anchor-id="e">(e)</h4>
 <p>Find three distinct values of <span class="math inline">\((\alpha, \boldsymbol{\beta}^\intercal)\)</span> that all give the exact same fit <span class="math inline">\(\alpha + \boldsymbol{\beta}^\intercal\boldsymbol{x}_n\)</span>.</p>
-<!-------------------------------------->
-<!-------------------------------------->
-<!-------------------------------------->
-</section>
-</section>
-<section id="correlated-regressors" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Correlated regressors</h1>
-<p>Suppose that <span class="math inline">\(y_n = \boldsymbol{x}_n^\intercal\boldsymbol{\beta}+ \varepsilon_n\)</span> for some <span class="math inline">\(\boldsymbol{\beta}\)</span>. Suppose that <span class="math inline">\(\mathbb{E}\left[\varepsilon_n\right] = 0\)</span> and <span class="math inline">\(\mathrm{Var}\left(\varepsilon_n\right) = \sigma^2\)</span>, and <span class="math inline">\(\varepsilon_n\)</span> are independent of each other and the <span class="math inline">\(\boldsymbol{x}_n\)</span>.</p>
-<p>Let <span class="math inline">\(\boldsymbol{x}_n \in \mathbb{R}^{2}\)</span>, where</p>
-<ul>
-<li><span class="math inline">\(\boldsymbol{x}_n\)</span> is independent of <span class="math inline">\(\boldsymbol{x}_m\)</span> for <span class="math inline">\(n \ne m\)</span>,</li>
-<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}_{n1}\right] = \mathbb{E}\left[\boldsymbol{x}_{n2}\right] = 0\)</span>,</li>
-<li><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{x}_{n1}\right) = \mathrm{Var}\left(\boldsymbol{x}_{n2}\right) = 1\)</span>, and</li>
-<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}_{n1} \boldsymbol{x}_{n2}\right] = \rho\)</span>.</li>
-</ul>
-<section id="a-3" class="level4">
-<h4 class="anchored" data-anchor-id="a-3">(a)</h4>
-<p>If <span class="math inline">\(\left|\rho\right| &lt; 1\)</span>, is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> always, sometimes, or never invertible?</p>
-</section>
-<section id="b-3" class="level4">
-<h4 class="anchored" data-anchor-id="b-3">(b)</h4>
-<p>If <span class="math inline">\(\left|\rho\right| = 1\)</span>, is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> always, sometimes, or never invertible?</p>
-</section>
-<section id="c-3" class="level4">
-<h4 class="anchored" data-anchor-id="c-3">(c)</h4>
-<p>What is <span class="math inline">\(\lim_{N \rightarrow \infty} \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\)</span>? When is the limit invertible?</p>
-</section>
-<section id="d-3" class="level4">
-<h4 class="anchored" data-anchor-id="d-3">(d)</h4>
-<p>State intuitively why there is no unique <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> when <span class="math inline">\(\rho = 1\)</span>. When <span class="math inline">\(\rho = 1\)</span>, give two distinct values of <span class="math inline">\(\boldsymbol{\beta}\)</span> that result in the same fit <span class="math inline">\(\boldsymbol{\beta}^\intercal\boldsymbol{x}_n\)</span>.</p>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -447,21 +417,27 @@ $$
 <!-------------------------------------->
 </section>
 </section>
-<section id="linear-regression-as-projections" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Linear regression as projections</h1>
+<section id="linear-regression-as-projections" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Linear regression as projections</h1>
 <p>In this problem, we show that the OLS regression acts like a “projection,” breaking <span class="math inline">\(\boldsymbol{Y}\)</span> up into two orthogonal components: a component <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span> that is in the span of the columns of <span class="math inline">\(\boldsymbol{X}\)</span>, and a component <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> that is orthogonal to the columns of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
-<p>Consider a regression setup where <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank with <span class="math inline">\(P &lt; N\)</span>. Let <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span>, and <span class="math inline">\(\hat{\varepsilon}\)</span> denote the usual quanties. Let <span class="math inline">\(\boldsymbol{A}\)</span> denote an invertible <span class="math inline">\(P \times P\)</span> matrix, and</p>
-<p><strong>(a)</strong> Show that <span class="math inline">\(\hat{\varepsilon}^\intercal\boldsymbol{X}= \boldsymbol{0}\)</span>. This means that <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> is orthogonal to each column of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
-<p><strong>(b)</strong> Show that <span class="math inline">\(\left\Vert\boldsymbol{Y}\right\Vert_2^2 = \left\Vert\hat{\boldsymbol{Y}}\right\Vert_2^2 + \left\Vert\hat{\varepsilon}\right\Vert_2^2\)</span>.</p>
-<p><strong>(c)</strong> Let <span class="math inline">\(\boldsymbol{\gamma}\)</span> denote a <span class="math inline">\(P \times 1\)</span> vector. Using (b), show directly that <span class="math inline">\(\left\Vert\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\gamma}\right\Vert_2^2\)</span> is smallest when <span class="math inline">\(\boldsymbol{\gamma}= \hat{\boldsymbol{\beta}}\)</span>. <strong>Hint:</strong> Plug in <span class="math inline">\(\boldsymbol{Y}= \hat{\varepsilon}+ \boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>, use <span class="math inline">\(\boldsymbol{X}\hat{\boldsymbol{\beta}}- \boldsymbol{X}\boldsymbol{\gamma}= \boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma})\)</span>, and expand the square.</p>
-<p><strong>(d)</strong> Suppose that <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{a}\)</span> for some <span class="math inline">\(\boldsymbol{a}\)</span>. Show that in this case <span class="math inline">\(\hat{\boldsymbol{Y}}= \boldsymbol{Y}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}= \boldsymbol{0}\)</span>.</p>
-<p><strong>(e)</strong> As a special case of (a), show that <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N\hat{\varepsilon}_n = 0\)</span> when the regression includes an intercept term. <strong>Hint:</strong> When the regression includes an intercept, then <span class="math inline">\(\boldsymbol{1}\)</span> is a column of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<p>Consider a regression setup where <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank with <span class="math inline">\(P &lt; N\)</span>. Let <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span>, and <span class="math inline">\(\hat{\varepsilon}\)</span> denote the usual quantities. Write the <span class="math inline">\(p\)</span>-th column of <span class="math inline">\(\boldsymbol{X}\)</span> as <span class="math inline">\(\boldsymbol{X}_p\)</span>, so that <span class="math inline">\(\boldsymbol{X}= (\boldsymbol{X}_1, \ldots, \boldsymbol{X}_P)\)</span>, and define the <span class="math inline">\(N \times N\)</span> “projection matrix” <span class="math inline">\(\underset{\boldsymbol{X}}{\boldsymbol{P}} := \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\)</span>.</p>
+<p><strong>(a)</strong> An <span class="math inline">\(N\)</span>-vector <span class="math inline">\(\boldsymbol{v}\)</span> is said to be “in the linear span of the columns of <span class="math inline">\(\boldsymbol{X}\)</span>” if it can be written as <span class="math inline">\(\boldsymbol{v}= \sum_{p=1}^P a_p \boldsymbol{X}_p\)</span> for some <span class="math inline">\(a_1,\ldots,a_P\)</span>. Show that such a vector can be written in the form <span class="math inline">\(\boldsymbol{X}\boldsymbol{a}\)</span> for some <span class="math inline">\(P\)</span>-vector <span class="math inline">\(\boldsymbol{a}\)</span>.</p>
+<p><strong>(b)</strong> Show that if <span class="math inline">\(\boldsymbol{v}\)</span> is in the in the linear span of the columns of <span class="math inline">\(\boldsymbol{X}\)</span>, then <span class="math inline">\(\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{v}= \boldsymbol{v}\)</span>. That is, <span class="math inline">\(\underset{\boldsymbol{X}}{\boldsymbol{P}}\)</span> leaves <span class="math inline">\(\boldsymbol{v}\)</span> unchanged.</p>
+<p><strong>(c)</strong> Show that if an <span class="math inline">\(N\)</span>-vector <span class="math inline">\(\boldsymbol{q}\)</span> is orthogonal to each column of <span class="math inline">\(\boldsymbol{X}\)</span>, then <span class="math inline">\(\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{q}= \boldsymbol{0}\)</span>.</p>
+<p><strong>(d)</strong> Show that <span class="math inline">\(\boldsymbol{v}^\intercal\boldsymbol{q}= \boldsymbol{0}\)</span>, where <span class="math inline">\(\boldsymbol{v}\)</span> and <span class="math inline">\(\boldsymbol{q}\)</span> are given in the preceding problems.</p>
+<p><strong>(e)</strong> Note that, in general, the response vector <span class="math inline">\(\boldsymbol{Y}\)</span> is just an <span class="math inline">\(N\)</span>-vector. Write <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{Y}_{\parallel} + \boldsymbol{Y}_{\perp}\)</span>, where <span class="math inline">\(\boldsymbol{Y}_{\parallel}\)</span> is in the linear span of the columns of <span class="math inline">\(\boldsymbol{X}\)</span>, and <span class="math inline">\(\boldsymbol{Y}_{\perp}\)</span> is orthogonal to the columns of <span class="math inline">\(\boldsymbol{X}\)</span>. We call <span class="math inline">\(\boldsymbol{Y}_{\parallel}\)</span> the “projection of <span class="math inline">\(\boldsymbol{Y}\)</span> onto the span of the columns of <span class="math inline">\(\boldsymbol{X}\)</span>.”</p>
+<p><strong>(f)</strong> Show that <span class="math inline">\(\hat{\boldsymbol{Y}}= \boldsymbol{Y}_{\parallel}\)</span> and <span class="math inline">\(\hat{\varepsilon}= \boldsymbol{Y}_{\perp}\)</span>.</p>
+<p><strong>(g)</strong> Show that <span class="math inline">\(\hat{\varepsilon}^\intercal\boldsymbol{X}= \boldsymbol{0}\)</span>.</p>
+<p><strong>(h)</strong> Show that <span class="math inline">\(\left\Vert\boldsymbol{Y}\right\Vert_2^2 = \left\Vert\hat{\boldsymbol{Y}}\right\Vert_2^2 + \left\Vert\hat{\varepsilon}\right\Vert_2^2\)</span>.</p>
+<p><strong>(i)</strong> Let <span class="math inline">\(\boldsymbol{\gamma}\)</span> denote a <span class="math inline">\(P \times 1\)</span> vector. Using (b), show directly that <span class="math inline">\(\left\Vert\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\gamma}\right\Vert_2^2\)</span> is smallest when <span class="math inline">\(\boldsymbol{\gamma}= \hat{\boldsymbol{\beta}}\)</span>. <strong>Hint:</strong> Plug in <span class="math inline">\(\boldsymbol{Y}= \hat{\varepsilon}+ \boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>, use <span class="math inline">\(\boldsymbol{X}\hat{\boldsymbol{\beta}}- \boldsymbol{X}\boldsymbol{\gamma}= \boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma})\)</span>, and expand the square.</p>
+<p><strong>(j)</strong> Suppose that <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{a}\)</span> for some <span class="math inline">\(\boldsymbol{a}\)</span>. Show that in this case <span class="math inline">\(\hat{\boldsymbol{Y}}= \boldsymbol{Y}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}= \boldsymbol{0}\)</span>.</p>
+<p><strong>(k)</strong> As a special case of (a), show that <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N\hat{\varepsilon}_n = 0\)</span> when the regression includes an intercept term. <strong>Hint:</strong> When the regression includes an intercept, then <span class="math inline">\(\boldsymbol{1}\)</span> is a column of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
 </section>
-<section id="changes-of-basis" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Changes of basis</h1>
+<section id="changes-of-basis" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Changes of basis</h1>
 <p>In this problem, we show how rewriting a regression problem using an invertible linear transformation of the regressors changes the estimated coefficients, but does not change the fit.</p>
 <p>Consider a regression setup where <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank with <span class="math inline">\(P &lt; N\)</span>. Let <span class="math inline">\(\boldsymbol{z}_n = \boldsymbol{A}^\intercal\boldsymbol{x}_n\)</span> for each <span class="math inline">\(n\)</span>, so that <span class="math inline">\(\boldsymbol{Z}= \boldsymbol{X}\boldsymbol{A}\)</span>. Consider the regressions <span class="math display">\[
 \boldsymbol{Y}\sim \boldsymbol{X}\boldsymbol{\beta}\quad\textrm{and}\quad \boldsymbol{Y}\sim \boldsymbol{Z}\boldsymbol{\gamma},
@@ -473,8 +449,8 @@ $$
 <!-------------------------------------->
 <!-------------------------------------->
 </section>
-<section id="changes-of-basis-continued" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Changes of basis continued</h1>
+<section id="changes-of-basis-continued" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Changes of basis continued</h1>
 <p>This is an application of the change of basis problem to one-hot indicators with a constant. Let <span class="math inline">\(\boldsymbol{z}_n\)</span> be a one-hot encoding of a binary regressor, so that <span class="math inline">\(\boldsymbol{z}_n = (1, 0)^\intercal\)</span> or <span class="math inline">\(\boldsymbol{z}_n = (0, 1)^\intercal\)</span>, which encodes a binary variable <span class="math inline">\(a_n \in \{A, B\}\)</span>. For example, <span class="math inline">\(\boldsymbol{z}_n\)</span> might encode <span class="math inline">\(\textrm{Kitchen Quality} \in \{\textrm{Good}, \textrm{Excellent}\}\)</span>, where <span class="math inline">\(a_n = \textrm{Kitchen Quality}\)</span>, <span class="math inline">\(A = \textrm{Good}\)</span>, and <span class="math inline">\(B = \textrm{Excellent}\)</span>.</p>
 <p>Let <span class="math inline">\(\boldsymbol{x}_n\)</span> be the regressor for the regression <span class="math inline">\(y\sim 1 + z_2\)</span>, the regression on a constant and the <em>second</em> component of <span class="math inline">\(\boldsymbol{z}_n\)</span>, so <span class="math inline">\(\boldsymbol{x}_n = (1, \ind{a_n = B})\)</span>.</p>
 <p><strong>(a)</strong> Find an <span class="math inline">\(\boldsymbol{A}\)</span> such that <span class="math inline">\(\boldsymbol{z}_n = \boldsymbol{A}^\intercal\boldsymbol{x}_n\)</span> in this case, and prove that it’s invertible.</p>
@@ -497,10 +473,31 @@ _freedman/08.0_pp_41_60_Multiple_Regression.pdf
 <p><strong>(e)</strong> Find a <span class="math inline">\(\boldsymbol{a}\)</span> such that <span class="math inline">\(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 - \hat{\beta}_2\)</span>.</p>
 <p><strong>(f)</strong> For a given <span class="math inline">\(\boldsymbol{a}\)</span>, find an expression for <span class="math inline">\(\mathbb{E}\left[\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right]\)</span></p>
 <p><strong>(g)</strong> For a given <span class="math inline">\(\boldsymbol{a}\)</span>, find an expression for <span class="math inline">\(\mathrm{Var}\left(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right)\)</span>.</p>
-
-
-
+<!-------------------------------------->
+<!-------------------------------------->
+<!-------------------------------------->
 </section>
+</section>
+<section id="correlated-regressors" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Correlated regressors</h1>
+<p>Suppose that <span class="math inline">\(y_n = \boldsymbol{x}_n^\intercal\boldsymbol{\beta}+ \varepsilon_n\)</span> for some <span class="math inline">\(\boldsymbol{\beta}\)</span>. Suppose that <span class="math inline">\(\mathbb{E}\left[\varepsilon_n\right] = 0\)</span> and <span class="math inline">\(\mathrm{Var}\left(\varepsilon_n\right) = \sigma^2\)</span>, and <span class="math inline">\(\varepsilon_n\)</span> are independent of each other and the <span class="math inline">\(\boldsymbol{x}_n\)</span>.</p>
+<p>Let <span class="math inline">\(\boldsymbol{x}_n \in \mathbb{R}^{2}\)</span>, where</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{x}_n\)</span> is independent of <span class="math inline">\(\boldsymbol{x}_m\)</span> for <span class="math inline">\(n \ne m\)</span>,</li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}_{n1}\right] = \mathbb{E}\left[\boldsymbol{x}_{n2}\right] = 0\)</span>,</li>
+<li><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{x}_{n1}\right) = \mathrm{Var}\left(\boldsymbol{x}_{n2}\right) = 1\)</span>, and</li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}_{n1} \boldsymbol{x}_{n2}\right] = \rho\)</span>.</li>
+</ul>
+<p><strong>(a)</strong> If <span class="math inline">\(\left|\rho\right| &lt; 1\)</span>, is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> always, sometimes, or never invertible?</p>
+<p><strong>(b)</strong> If <span class="math inline">\(\left|\rho\right| = 1\)</span>, is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> always, sometimes, or never invertible?</p>
+<p><strong>(c)</strong> What is <span class="math inline">\(\lim_{N \rightarrow \infty} \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\)</span>? When is the limit invertible?</p>
+<p><strong>(d)</strong> State intuitively why there is no unique <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> when <span class="math inline">\(\rho = 1\)</span>. When <span class="math inline">\(\rho = 1\)</span>, give two distinct values of <span class="math inline">\(\boldsymbol{\beta}\)</span> that result in the same fit <span class="math inline">\(\boldsymbol{\beta}^\intercal\boldsymbol{x}_n\)</span>.</p>
+<p>The remaining questions use results from the previous homework question.</p>
+<p><strong>(e)</strong> Find a <span class="math inline">\(\boldsymbol{a}\)</span> such that <span class="math inline">\(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 - \hat{\beta}_2\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> such that <span class="math inline">\(\boldsymbol{b}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 + \hat{\beta}_2\)</span>.</p>
+<p><strong>(f)</strong> For fixed large <span class="math inline">\(N\)</span>, so that <span class="math inline">\(\left( \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)\approx \mathbb{E}\left[\boldsymbol{x}\boldsymbol{x}^\intercal\right]^{-1}\)</span>, what happens to <span class="math inline">\(N \mathrm{Var}\left(\hat{\beta}_1 - \hat{\beta}_2 \vert \boldsymbol{X}\right)\)</span> and <span class="math inline">\(N \mathrm{Var}\left(\hat{\beta}_1 + \hat{\beta}_2 \vert \boldsymbol{X}\right)\)</span> as <span class="math inline">\(\rho\)</span> varies from zero to one?</p>
+
+
+
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
