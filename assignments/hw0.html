@@ -199,7 +199,11 @@ window.Quarto = {
   <li><a href="#eigenvalues-and-eigenvectors-of-square-symmetric-matrices" id="toc-eigenvalues-and-eigenvectors-of-square-symmetric-matrices" class="nav-link" data-scroll-target="#eigenvalues-and-eigenvectors-of-square-symmetric-matrices"><span class="header-section-number">4</span> Eigenvalues and eigenvectors of square symmetric matrices</a></li>
   <li><a href="#statistical-asymptotics" id="toc-statistical-asymptotics" class="nav-link" data-scroll-target="#statistical-asymptotics"><span class="header-section-number">5</span> Statistical asymptotics</a></li>
   <li><a href="#conditional-probability" id="toc-conditional-probability" class="nav-link" data-scroll-target="#conditional-probability"><span class="header-section-number">6</span> Conditional probability</a></li>
-  <li><a href="#problems-from-freedman2009statistical" id="toc-problems-from-freedman2009statistical" class="nav-link" data-scroll-target="#problems-from-freedman2009statistical"><span class="header-section-number">7</span> Problems from <span class="citation" data-cites="freedman:2009:statistical">Freedman (2009)</span></a></li>
+  <li><a href="#problems-from-freedman2009statistical" id="toc-problems-from-freedman2009statistical" class="nav-link" data-scroll-target="#problems-from-freedman2009statistical"><span class="header-section-number">7</span> Problems from <span class="citation" data-cites="freedman:2009:statistical">Freedman (2009)</span></a>
+  <ul class="collapse">
+  <li><a href="#freedman2009statistical-chapter-2-set-b-exercise-1" id="toc-freedman2009statistical-chapter-2-set-b-exercise-1" class="nav-link" data-scroll-target="#freedman2009statistical-chapter-2-set-b-exercise-1"><span class="citation" data-cites="freedman:2009:statistical">Freedman (2009)</span> Chapter 2 set B exercise 1</a></li>
+  <li><a href="#freedman2009statistical-chapter-2-set-b-exercise-14" id="toc-freedman2009statistical-chapter-2-set-b-exercise-14" class="nav-link" data-scroll-target="#freedman2009statistical-chapter-2-set-b-exercise-14"><span class="citation" data-cites="freedman:2009:statistical">Freedman (2009)</span> Chapter 2 set B exercise 14</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -315,7 +319,7 @@ a_1 + 6 a_2 ={}&amp; 5 \\
 <ul>
 <li><span class="math inline">\(\boldsymbol{X}\)</span> denotes an <span class="math inline">\(N \times P\)</span> matrix</li>
 <li><span class="math inline">\(\boldsymbol{y}\)</span> denotes an <span class="math inline">\(N\)</span>–vector (i.e.&nbsp;an <span class="math inline">\(N \times 1\)</span> matrix)</li>
-<li><span class="math inline">\(\boldsymbol{1}\)</span> denotes an <span class="math inline">\(N\)</span>–vector containging all ones</li>
+<li><span class="math inline">\(\boldsymbol{1}\)</span> denotes an <span class="math inline">\(N\)</span>–vector containing all ones</li>
 <li><span class="math inline">\(\boldsymbol{\beta}\)</span> denotes a <span class="math inline">\(P\)</span>–vector</li>
 </ul>
 <p>I will take <span class="math inline">\(N &gt; P &gt; 1\)</span>. A transpose is denoted with a superscript <span class="math inline">\(\intercal\)</span>, and an inverse by a superscipt <span class="math inline">\(-1\)</span>. A matrix trace is denoted <span class="math inline">\(\mathrm{trace}\left(\right)\)</span>. You may assume that each matrix is full column rank.</p>
@@ -505,13 +509,31 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 </section>
 <section id="problems-from-freedman2009statistical" class="level1" data-number="7">
 <h1 data-number="7"><span class="header-section-number">7</span> Problems from <span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span></h1>
-<ul>
-<li>Chapter 2 set B exercise 12</li>
-<li>Chapter 2 set B exercise 14</li>
-</ul>
+<section id="freedman2009statistical-chapter-2-set-b-exercise-1" class="level2">
+<h2 class="anchored" data-anchor-id="freedman2009statistical-chapter-2-set-b-exercise-1"><span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span> Chapter 2 set B exercise 1</h2>
+<p>Suppose <span class="math inline">\(x_1, \ldots x_N\)</span> are real numbers. Let <span class="math inline">\(\boldsymbol{X}= (x_1 + \ldots + x_N) / N\)</span>. Let <span class="math inline">\(c\)</span> be a real number.</p>
+<p><strong>(a)</strong> Show that <span class="math inline">\(\sum_{n=1}^N(x_n - \bar{x}) = 0\)</span>.</p>
+<ol start="2" type="a">
+<li><p>Show that <span class="math inline">\(\sum_{n=1}^N(x_n - c)^2 = \sum_{n=1}^N(x_n - \bar{x})^2 + N (c - \bar{x})^2\)</span>. <strong>Hint:</strong> <span class="math inline">\(x_n - c = x_n - \bar{x}+ \bar{x}- c\)</span>.</p></li>
+<li><p>Show that <span class="math inline">\(\sum_{n=1}^N(x_n - c)^2\)</span>, as a function of <span class="math inline">\(c\)</span>, has a unique minimum at <span class="math inline">\(c = \bar{x}\)</span>.</p></li>
+<li><p>Show that <span class="math inline">\(\sum_{n=1}^Nx_n^2 = \sum_{n=1}^N(x_n - \bar{x})^2 + n \bar{x}^2\)</span>.</p></li>
+</ol>
+</section>
+<section id="freedman2009statistical-chapter-2-set-b-exercise-14" class="level2">
+<h2 class="anchored" data-anchor-id="freedman2009statistical-chapter-2-set-b-exercise-14"><span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span> Chapter 2 set B exercise 14</h2>
+<p>Suppose that <span class="math inline">\(x_1, \ldots, x_N\)</span> and <span class="math inline">\(y_1, \ldots, y_N\)</span> have sample means <span class="math inline">\(\bar{x}\)</span> and <span class="math inline">\(\bar{y}\)</span> respectively; the sample standard deviations are <span class="math inline">\(s_x &gt; 0\)</span> and <span class="math inline">\(s_y &gt; 0\)</span>, and the sample correlation is <span class="math inline">\(r\)</span>. Note that here <span class="math inline">\(\widehat{\mathrm{Var}}\left(x\right) = \frac{1}{N} \sum_{n=1}^N(x_n - \bar{x})^2\)</span>, with an analogous formula for <span class="math inline">\(\widehat{\mathrm{Var}}\left(y\right)\)</span>, and that <span class="math inline">\(s_x = \sqrt{\widehat{\mathrm{Var}}\left(x\right)}\)</span> and <span class="math inline">\(s_y = \sqrt{\widehat{\mathrm{Var}}\left(y\right)}\)</span>.</p>
+<p>Let <span class="math display">\[
+\widehat{\mathrm{Cov}}\left(x, y\right) = \frac{1}{N} \sum_{n=1}^N(x_n - \bar{x}) (y_n - \bar{y}).
+\]</span> Show that:</p>
+<p><strong>(a)</strong> <span class="math inline">\(\widehat{\mathrm{Cov}}\left(x, y\right) = rs_x s_y\)</span>.</p>
+<p><strong>(b)</strong> The slope of the regression line for predicting <span class="math inline">\(y\)</span> from <span class="math inline">\(x\)</span> is <span class="math inline">\(\mathrm{Cov}\left((\right)x, y) / \widehat{\mathrm{Var}}\left(x\right)\)</span>.</p>
+<p><strong>(c)</strong> <span class="math inline">\(\widehat{\mathrm{Var}}\left(x\right) = \widehat{\mathrm{Cov}}\left(x,x\right)\)</span>.</p>
+<p><strong>(d)</strong> <span class="math inline">\(\widehat{\mathrm{Cov}}\left(x, y\right) = \overline{xy}  - \bar{x}\,\bar{y}\)</span></p>
+<p><strong>(e)</strong> <span class="math inline">\(\widehat{\mathrm{Var}}\left(x\right) = \overline{x^2} - \bar{x}\,\bar{x}\)</span>.</p>
 
 
 
+</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
