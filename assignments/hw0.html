@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -235,6 +269,26 @@ window.Quarto = {
 <section id="linear-systems" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Linear systems</h1>
 <p>Write the following system of equations in matrix form. Say whether each system has no solutions, a single solution, or an infinite number of solutions, and how you know.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The purpose of this exercise, in addition to reminding yourself how to write out equations in matrix form, is to remember that if there are <span class="math inline">\(P\)</span> unknowns and <span class="math inline">\(Q\)</span> equations:</p>
+<ul>
+<li>If <span class="math inline">\(P &gt; Q\)</span> there are an infinite number of solutions</li>
+<li>If <span class="math inline">\(P = Q\)</span> there are either an infinite number or one solution</li>
+<li>If <span class="math inline">\(P &lt; Q\)</span> there are either an infinite number, one, or no solutions.</li>
+</ul>
+<p>The key to note is that <span class="math inline">\(Q\)</span> may be made “artifically large” by repeating equations or including redundant equations.</p>
+<p>Formally, for a system of equations of the form <span class="math inline">\(\boldsymbol{A}b= c\)</span>, the singular value decomposition of <span class="math inline">\(\boldsymbol{A}\)</span> is the easiest way to characterize the number of solutions, but that’s beyond the scope of the class.</p>
+</div>
+</div>
 <ol type="1">
 <li><span class="math display">\[
 \begin{aligned}
@@ -243,6 +297,35 @@ a_1 + 3 a_2 ={}&amp; 0 \\
 \end{aligned}
 \]</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One solution. (You can difference the equations to solve for <span class="math inline">\(a_2\)</span> then plug in.)</p>
+<p>The matrix solution is</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+1 &amp; 2 \\
+1 &amp; 3 \\
+\end{pmatrix}
+\begin{pmatrix}
+a_1 \\
+a_2 \\
+\end{pmatrix} =
+\begin{pmatrix}
+1 \\
+0 \\
+\end{pmatrix}.
+\]</span></p>
+<p>I won’t write out all the matrix solutions since they’re obvious once you get the pattern. The coefficients go into the first matrix, then a vector of the unknowns, then a vector of the right hand side terms.</p>
+</div>
+</div>
 <ol start="2" type="1">
 <li><span class="math display">\[
 \begin{aligned}
@@ -252,6 +335,22 @@ a_1 + 3 a_2 + 3 a_3 ={}&amp; 0 \\
 \end{aligned}
 \]</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This code helps show that there is one solution with <span class="math inline">\(a_3 \ne 0\)</span>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">3</span>), <span class="at">ncol=</span><span class="dv">3</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">det</span>(a)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(a, <span class="fu">c</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">5</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 <ol start="3" type="1">
 <li><span class="math display">\[
 \begin{aligned}
@@ -260,6 +359,19 @@ a_1 + 3 a_2 + 3 a_3 ={}&amp; 0 \\
 \end{aligned}
 \]</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are two equations and three unknowns and so an infinite number of solutions. (E.g., starting from the solution to the previous one, add <span class="math inline">\(x\)</span> to <span class="math inline">\(a_3\)</span> and <span class="math inline">\(-x/3\)</span> to <span class="math inline">\(a_1\)</span>.)</p>
+</div>
+</div>
 <ol start="4" type="1">
 <li><span class="math display">\[
 \begin{aligned}
@@ -269,6 +381,19 @@ a_1 + 3 a_2  ={}&amp; 0 \\
 \end{aligned}
 \]</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are three equations and two unknowns. There are no solutions. This is the same as (2) but with <span class="math inline">\(a_3\)</span> removed, and the solution to (2) had <span class="math inline">\(a_3 \ne 0\)</span>.</p>
+</div>
+</div>
 <ol start="5" type="1">
 <li><span class="math display">\[
 \begin{aligned}
@@ -276,6 +401,19 @@ a_1 + 2 a_2 ={}&amp; 1 \\
 \end{aligned}
 \]</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is one equation and two unknowns, so an infinite number of solutions.</p>
+</div>
+</div>
 <ol start="6" type="1">
 <li><span class="math display">\[
 \begin{aligned}
@@ -287,6 +425,19 @@ a_1 + 2 a_2 ={}&amp; 1 \\
 \end{aligned}
 \]</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Although there are five equations and two unknowns, they are all the same equation repeated, so there is still an infinite number of solutions.</p>
+</div>
+</div>
 <ol start="7" type="1">
 <li><span class="math display">\[
 \begin{aligned}
@@ -298,6 +449,19 @@ a_1 + 2 a_2 ={}&amp; 5 \\
 \end{aligned}
 \]</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are no solutions. The reason this is not the same as the previous question is that here the right hand side is different.</p>
+</div>
+</div>
 <ol start="8" type="1">
 <li><span class="math display">\[
 \begin{aligned}
@@ -309,6 +473,19 @@ a_1 + 6 a_2 ={}&amp; 5 \\
 \end{aligned}
 \]</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There are no solutions. For the first four, we’d have to have <span class="math inline">\(a_2 = 0\)</span>, but then we’d have to have <span class="math inline">\(a_1 = 5\)</span> and <span class="math inline">\(a_1 = 1\)</span>, which is impossible. It’s interesting to see that if the last right-hand-side term were <span class="math inline">\(1\)</span> then there would in fact be a solution.</p>
+</div>
+</div>
 <!---------------------------------------------->
 <!---------------------------------------------->
 <!---------------------------------------------->
@@ -359,6 +536,52 @@ a_1 + 6 a_2 ={}&amp; 5 \\
 <li><span class="math inline">\(\mathrm{trace}\left( \boldsymbol{\beta}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\right)\)</span></li>
 <li><span class="math inline">\(\mathrm{trace}\left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\boldsymbol{\beta}^\intercal\right)\)</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{y}: P \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}: P \times P\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}+ \boldsymbol{y}: \textrm{Invalid}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{\beta}\boldsymbol{\beta}^\intercal: P \times P\)</span></li>
+<li><span class="math inline">\(\boldsymbol{\beta}^\intercal\boldsymbol{\beta}: 1 \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}^\intercal\boldsymbol{y}: 1 \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{y}\)</span> (Duplicate)</li>
+<li><span class="math inline">\(\left(\boldsymbol{X}^\intercal\boldsymbol{X}\right)^\intercal: P \times P\)</span></li>
+<li><span class="math inline">\(\left(\boldsymbol{X}^\intercal\boldsymbol{y}\right)^\intercal: 1 \times P\)</span></li>
+<li><span class="math inline">\(\left(\boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1}: P \times P\)</span></li>
+<li><span class="math inline">\(\left(\boldsymbol{X}^\intercal\boldsymbol{y}\right)^{-1}: \textrm{Invalid (only square matrices are invertible)}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^{-1}: \textrm{Invalid (only square matrices are invertible)}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}^{-1} \boldsymbol{y}: \textrm{Invalid (only square matrices are invertible)}\)</span></li>
+<li><span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal: P \times N\)</span></li>
+<li><span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{y}: P \times 1\)</span></li>
+<li><span class="math inline">\(\left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{y}\right)^\intercal: 1 \times P\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}: 1 \times P\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}\beta: N \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}- \boldsymbol{X}\beta: N \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}- \boldsymbol{X}^\intercal\beta: \textrm{Invalid}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}^\intercal- \beta^\intercal\boldsymbol{X}^\intercal: 1 \times N\)</span></li>
+<li><span class="math inline">\(\boldsymbol{\beta}- (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}  \boldsymbol{X}^\intercal\boldsymbol{y}: P \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}\left( \boldsymbol{\beta}- (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}  \boldsymbol{X}^\intercal\boldsymbol{y}\right): N \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{1}^\intercal\boldsymbol{y}: 1 \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{y}- (\boldsymbol{1}^\intercal\boldsymbol{y}) \boldsymbol{y}: N \times 1\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal: N \times N\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}: \textrm{Invalid}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{X}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}\)</span> (Duplicate)</li>
+<li><span class="math inline">\(\boldsymbol{\beta}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}: 1 \times 1\)</span></li>
+<li><span class="math inline">\(\left( \boldsymbol{\beta}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\right)^{-1}: 1 \times 1\)</span></li>
+<li><span class="math inline">\(\mathrm{trace}\left( \boldsymbol{\beta}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\right): 1 \times 1\)</span></li>
+<li><span class="math inline">\(\mathrm{trace}\left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{\beta}\boldsymbol{\beta}^\intercal\right): 1 \times 1\)</span></li>
+</ol>
+</div>
+</div>
 <!---------------------------------------------->
 <!---------------------------------------------->
 <!---------------------------------------------->
@@ -387,6 +610,32 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <li>Show that <span class="math inline">\(\begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}^{-1} = \begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}^\intercal\)</span>.</li>
 <li>Suppose I tell you that that <span class="math inline">\(\boldsymbol{u}= (1, 0)^\intercal\)</span>. In terms of <span class="math inline">\(a_1\)</span> and <span class="math inline">\(a_2\)</span>, what is <span class="math inline">\(\alpha\)</span> in the decomposition <span class="math inline">\(\boldsymbol{a}= \alpha \boldsymbol{u}+ \gamma \boldsymbol{v}\)</span>?</li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><span class="math inline">\(\sqrt{a_1^2 + a_2^2}\)</span></li>
+<li><span class="math inline">\(\sqrt{\boldsymbol{a}^\intercal\boldsymbol{a}}\)</span></li>
+<li><span class="math inline">\(\boldsymbol{a}/ \sqrt{\boldsymbol{a}^\intercal\boldsymbol{a}}\)</span>. From now on, <span class="math inline">\(\left\Vert\boldsymbol{a}\right\Vert := \sqrt{\boldsymbol{a}^\intercal\boldsymbol{a}}\)</span></li>
+<li><span class="math inline">\(\left\Vert\boldsymbol{a}\right\Vert \boldsymbol{v}\)</span> (since <span class="math inline">\(\boldsymbol{v}\)</span> has unit length already)</li>
+<li><span class="math inline">\(\alpha = \boldsymbol{a}^\intercal\boldsymbol{u}\)</span></li>
+<li><span class="math inline">\(\gamma = \boldsymbol{a}^\intercal\boldsymbol{v}\)</span> and <span class="math inline">\(\alpha = \boldsymbol{a}^\intercal\boldsymbol{u}\)</span></li>
+<li><span class="math inline">\(\begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}^\intercal\begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix} =
+  \begin{pmatrix} \boldsymbol{u}^\intercal\boldsymbol{u}&amp; \boldsymbol{u}^\intercal\boldsymbol{v}\\ \boldsymbol{v}^\intercal\boldsymbol{u}&amp; \boldsymbol{v}^\intercal\boldsymbol{v}\end{pmatrix} =
+  \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{pmatrix}\)</span>. Since inverses are unique, the transpose must be the inverse.</li>
+<li><span class="math inline">\(\begin{pmatrix} \boldsymbol{u}&amp; \boldsymbol{v}\end{pmatrix}^\intercal\boldsymbol{a}= \begin{pmatrix}\alpha \\ \gamma \end{pmatrix}\)</span></li>
+<li>Repeated question (sorry)</li>
+<li><span class="math inline">\(\alpha = a_1\)</span></li>
+</ol>
+</div>
+</div>
 <!---------------------------------------------->
 <!---------------------------------------------->
 <!---------------------------------------------->
@@ -398,12 +647,51 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <ul>
 <li>If <span class="math inline">\(\boldsymbol{A}\)</span> is the identity matrix (i.e., the matrix with ones on the diagonal and zeros elsewhere), what are its eigenvalues?</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>They are all <span class="math inline">\(1\)</span>.</p>
+</div>
+</div>
 <ul>
 <li>If <span class="math inline">\(\boldsymbol{A}\)</span> is the zero matrix (i.e., the matrix containing only zeros), what are its eigenvalues?</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>They are all <span class="math inline">\(0\)</span>.</p>
+</div>
+</div>
 <ul>
 <li>If <span class="math inline">\(\boldsymbol{A}\)</span> is a diagonal matrix with the entries <span class="math inline">\(a_1, \ldots, a_P\)</span> on the diagonal, what are its eigenvalues?</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>They are the values <span class="math inline">\(a_p\)</span>. (The eigenvectors are vectors with exactly one non-zero element.)</p>
+</div>
+</div>
 <ul>
 <li>Let us prove that the eigenvectors can be taken to be unit vectors without loss of generality.
 <ul>
@@ -411,6 +699,19 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <li>In particular, show that <span class="math inline">\(\boldsymbol{u}_k' = \boldsymbol{u}_k / \sqrt{\boldsymbol{u}_k^\intercal\boldsymbol{u}_k}\)</span> is also an eigenvector with eigenvalue <span class="math inline">\(\lambda_k\)</span>, and that <span class="math inline">\((\boldsymbol{u}_k')^\intercal\boldsymbol{u}'_k = 1\)</span>.</li>
 </ul></li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math inline">\(\boldsymbol{A}(\alpha \boldsymbol{u}_k) = \alpha \boldsymbol{A}\boldsymbol{u}_k = \alpha \lambda_k \boldsymbol{u}_k = \lambda_k (\alpha \boldsymbol{u}_k)\)</span>. Then take <span class="math inline">\(\alpha = 1 / \left\Vert\boldsymbol{u}_k\right\Vert\)</span>.</p>
+</div>
+</div>
 <ul>
 <li>Let us prove that, for a general symmetric matrix, eigenvectors with distinct eigenvalues are orthogonal. That is, if <span class="math inline">\(\lambda_k \ne \lambda_j\)</span> for some <span class="math inline">\(k \ne j\)</span>, we will show that <span class="math inline">\(\boldsymbol{u}_k^\intercal\boldsymbol{u}_j = 0\)</span>. Carefully justify each step in the following proof.
 <ul>
@@ -422,12 +723,69 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <li><strong>Bonus question</strong>: If the eigenvalues are not distinct, then the corresponding eigenvectors may not be orthogonal. However, one can always find an orthogonal set of eigenvectors for each repeated eigenvalue, though we won’t prove this here. See a linear algebra text for the proof, or try yourself! Hint: if <span class="math inline">\(\lambda_k = \lambda_j\)</span> for some <span class="math inline">\(k \ne j\)</span>, then <span class="math inline">\(\alpha \boldsymbol{u}_k + \gamma \boldsymbol{u}_j\)</span> is also an eigenvector with eigenvalue <span class="math inline">\(\lambda_k\)</span> for any <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\gamma\)</span>.</li>
 </ul></li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>The transpose of a scalar is the same scalar</li>
+<li>In general, <span class="math inline">\((\boldsymbol{R}\boldsymbol{S})^\intercal= \boldsymbol{S}^\intercal\boldsymbol{R}^\intercal\)</span> (transposes reverse the order of matrix multiplication). Apply this rule twice.</li>
+<li>Combine the first two results</li>
+<li><span class="math inline">\(\boldsymbol{u}_k\)</span> and <span class="math inline">\(\boldsymbol{u}_j\)</span> are eigenvectors</li>
+<li>Because <span class="math inline">\(\lambda_k \ne \lambda_j\)</span>, and so the only way the preceding equation can be true is if <span class="math inline">\(\boldsymbol{u}_k^\intercal\boldsymbol{u}_j = 0\)</span>.</li>
+</ul>
+</div>
+</div>
 <ul>
 <li>Suppose that each <span class="math inline">\(\lambda_k \ne 0\)</span>. Show that the inverse of <span class="math inline">\(\Lambda\)</span> is given by the diagonal matrix with <span class="math inline">\(1  / \lambda_k\)</span> in the <span class="math inline">\(k\)</span>–th diagonal entry and zero elsewhere.</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\begin{pmatrix}
+1 / \lambda_1 &amp; 0 &amp; \ldots &amp; 0 \\
+0 &amp; 1 / \lambda_2 &amp; 0 \ldots &amp; 0 \\
+&amp;  &amp; \ddots &amp;  \\
+&amp;  &amp; \ldots 0 &amp; 1 / \lambda_P  \\
+\end{pmatrix} \Lambda =
+\begin{pmatrix}
+\lambda_1 / \lambda_1 &amp; 0 &amp; \ldots &amp; 0 \\
+0 &amp; \lambda_2 / \lambda_2 &amp; 0 \ldots &amp; 0 \\
+&amp;  &amp; \ddots &amp;  \\
+&amp;  &amp; \ldots 0 &amp; \lambda_P / \lambda_P  \\
+\end{pmatrix} = \boldsymbol{I}\]</span></p>
+</div>
+</div>
 <ul>
 <li>Suppose that <span class="math inline">\(\lambda_k = 0\)</span> for some <span class="math inline">\(k\)</span>. Show that <span class="math inline">\(\Lambda\)</span> is not invertible. Hint: find a vector <span class="math inline">\(\boldsymbol{b}\)</span> such that <span class="math inline">\(\Lambda \boldsymbol{a}= \boldsymbol{b}\)</span> has no solution. From this it would follow that <span class="math inline">\(\Lambda\)</span> is not invertible by contradiction for, if <span class="math inline">\(\Lambda\)</span> were invertible, <span class="math inline">\(\boldsymbol{a}= \Lambda^{-1} \boldsymbol{b}\)</span> would be a solution.</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Set <span class="math inline">\(\boldsymbol{b}\)</span> to be zeros except in the <span class="math inline">\(k\)</span>–th entry. Since <span class="math inline">\(\Lambda \boldsymbol{a}\)</span> is zero in the <span class="math inline">\(k\)</span>–th entry no matter what <span class="math inline">\(\boldsymbol{a}\)</span> is, and so not equal to <span class="math inline">\(\boldsymbol{b}\)</span>, <span class="math inline">\(\Lambda\)</span> cannot be invertible.</p>
+</div>
+</div>
 <ul>
 <li>Assume that <span class="math inline">\(\boldsymbol{A}\)</span> has <span class="math inline">\(P\)</span> orthonormal eigenvectors (it always does; we have proved some parts of this assertion above). We will prove that we then have <span class="math inline">\(\boldsymbol{A}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span>. Carefully justify each step in the following proof.
 <ul>
@@ -441,6 +799,28 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <li>Since the preceding expression is true for any <span class="math inline">\(\boldsymbol{a}\)</span>, we must have <span class="math inline">\(\boldsymbol{A}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span>. (Why? Hint: if you take <span class="math inline">\(\boldsymbol{a}\)</span> to be <span class="math inline">\(1\)</span> in the first entry and zeros elsewhere, then we have that the first columns match. Continue in this fashion to show that each entry of the matrices are the same.)</li>
 </ul></li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>The <span class="math inline">\(P\)</span> eigenvectors span <span class="math inline">\(P\)</span> dimensional space, so every <span class="math inline">\(P\)</span>–vector can be written as a linear combination of them.</li>
+<li><span class="math inline">\(\boldsymbol{A}\boldsymbol{a}= \boldsymbol{A}\sum_{p=1}^P \alpha_p \boldsymbol{u}_p = \sum_{p=1}^P \alpha_p \boldsymbol{A}\boldsymbol{u}_p = \sum_{p=1}^P \alpha_p \lambda_p \boldsymbol{u}_p\)</span> because the <span class="math inline">\(\boldsymbol{u}_p\)</span> are eigenvectors.</li>
+<li>This is just a matrix way of writing the the first result <span class="math inline">\(\sum_{p=1}^P \alpha_p \boldsymbol{u}_p\)</span>.</li>
+<li>This is just a matrix way of writing the the second result (since <span class="math inline">\(\Lambda\)</span> is diagonal, its diagonal entries just multiply each corresponding row of <span class="math inline">\(\boldsymbol{a}\)</span>).</li>
+<li>We have <span class="math inline">\(\boldsymbol{u}_p^\intercal\boldsymbol{a}= \sum_{q=1}^P \alpha_q \boldsymbol{u}_p^\intercal\boldsymbol{u}_q = \alpha_p\)</span> by orthogonality</li>
+<li>This is the matrix version of the preceding result stacked row–wise</li>
+<li>Combining, <span class="math inline">\(\boldsymbol{A}\boldsymbol{a}= \boldsymbol{U}\Lambda \boldsymbol{\alpha}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\boldsymbol{a}\)</span>.</li>
+<li>If <span class="math inline">\(\boldsymbol{a}\)</span> is 1 in row <span class="math inline">\(k\)</span> and zeros elsewhere, it says that the <span class="math inline">\(k\)</span>–th column of <span class="math inline">\(\boldsymbol{A}\)</span> must be the same as the <span class="math inline">\(k\)</span>–th column of <span class="math inline">\(\boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span>. Since this is true for each <span class="math inline">\(k\)</span>, the entire matrices must be the same.</li>
+</ul>
+</div>
+</div>
 <!---------------------------------------------->
 <!---------------------------------------------->
 <!---------------------------------------------->
@@ -467,6 +847,36 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <li>As <span class="math inline">\(N \rightarrow \infty\)</span>, what (if anything) does <span class="math inline">\(\frac{1}{\sqrt{N}} \sum_{n=1}^Nx_n\)</span> converge to?</li>
 <li>As <span class="math inline">\(N \rightarrow \infty\)</span>, what (if anything) does <span class="math inline">\(\sum_{n=1}^Nx_n\)</span> converge to?</li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>Random variable</li>
+<li>Constant (<span class="math inline">\(\mathbb{E}\left[x_n\right]\)</span> is a constant, not a random variable)</li>
+<li><span class="math inline">\(3 + 3 = 6\)</span></li>
+<li><span class="math inline">\(\frac{3 + 3}{2} = 3\)</span></li>
+<li><span class="math inline">\(\frac{3 + 3 + 3}{3} = 3\)</span></li>
+<li><span class="math inline">\(\frac{N 3}{N} = 3\)</span></li>
+<li><span class="math inline">\(4 + 4 = 8\)</span></li>
+<li><span class="math inline">\(\frac{4 + 4}{2^2} = 8/4 = 2\)</span></li>
+<li><span class="math inline">\(\frac{4 + 4 + 4}{3^2} = 12 / 9 = 4/3\)</span></li>
+<li><span class="math inline">\(\frac{1}{N^2} \mathrm{Var}\left(\sum_{n=1}^Nx_n^2\right) = \frac{1}{N^2} N \mathrm{Var}\left(x\right) = \frac{4 \cdot N}{N^2} = 4 / N\)</span></li>
+<li>3</li>
+<li>0</li>
+<li><span class="math inline">\(\mathcal{N}\left(0,4\right)\)</span></li>
+<li><span class="math inline">\(\frac{1}{\sqrt{N}} \sum_{n=1}^Nx_n = \frac{1}{\sqrt{N}} \sum_{n=1}^N(x_n - 3) + \frac{N}{\sqrt{N}} 3 = \textrm{CLT term} + 3 \sqrt{N}\rightarrow \infty\)</span>.</li>
+<li><span class="math inline">\(\sum_{n=1}^Nx_n = N (\frac{1}{N} \sum_{n=1}^Nx_n - 3 + 3) = \textrm{LLN term going to zero} \cdot N + 3 \cdot N  \rightarrow \infty\)</span></li>
+</ol>
+<p><strong>Note:</strong> In more advanced classes, instead of “CLT term” you would write <span class="math inline">\(O_p(1)\)</span>, which is a shorthand for a quantity whose precise value is unimportant, but which is bounded by some multiple of <span class="math inline">\(1\)</span> with arbitrarily high probability as <span class="math inline">\(N \rightarrow \infty\)</span>. Similarly, for “LLN term going to zero” you would write <span class="math inline">\(o_p(1)\)</span>, which means something that goes to zero with high probabilty as <span class="math inline">\(N \rightarrow \infty\)</span>.</p>
+</div>
+</div>
 <!---------------------------------------------->
 <!---------------------------------------------->
 <!---------------------------------------------->
@@ -493,6 +903,29 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <li><span class="math inline">\(\mathbb{E}\left[c\right]\)</span></li>
 <li><span class="math inline">\(\mathrm{Var}\left(c\right)\)</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions (a)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions (a)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><span class="math inline">\(\mathbb{E}\left[a + b\right] = \mathbb{E}\left[a\right] + \mathbb{E}\left[b\right] = 1 + 2 = 3\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[2 a - b\right] = 2\mathbb{E}\left[a\right] - \mathbb{E}\left[b\right] = 2(1) - 2 = 0\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[a b\right] = \mathbb{E}\left[a\right]\mathbb{E}\left[b\right] = 1 \cdot 2 = 2\)</span> (by independence)</li>
+<li><span class="math inline">\(\mathrm{Var}\left(2 a\right) = 4\mathrm{Var}\left(a\right) = 4 \cdot 9 = 36\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(a + b\right) = \mathrm{Var}\left(a\right) + \mathrm{Var}\left(b\right) = 9 + 25 = 34\)</span> (by independence)</li>
+<li><span class="math inline">\(\mathbb{E}\left[a^2\right] = \mathrm{Var}\left(a\right) + (\mathbb{E}\left[a\right])^2 = 9 + 1 = 10\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[b a^2\right] = \mathbb{E}\left[b\right]\mathbb{E}\left[a^2\right] = 2 \cdot 10 = 20\)</span> (by independence)</li>
+<li><span class="math inline">\(\mathbb{E}\left[c\right] = \mathbb{E}\left[2a + b\right] = 2\mathbb{E}\left[a\right] + \mathbb{E}\left[b\right] = 2(1) + 2 = 4\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(c\right) = \mathrm{Var}\left(2a + b\right) = 4\mathrm{Var}\left(a\right) + \mathrm{Var}\left(b\right) = 36 + 25 = 61\)</span> (by independence)</li>
+</ol>
+</div>
+</div>
 <p><strong>(b)</strong> Evaluate the following expressions. For this problem, Now, the answers may be numbers or random variables.</p>
 <ol type="1">
 <li><span class="math inline">\(\mathbb{E}\left[a | b\right]\)</span></li>
@@ -503,6 +936,27 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <li><span class="math inline">\(\mathrm{Var}\left(c | a\right)\)</span></li>
 <li><span class="math inline">\(\mathrm{Var}\left(c | a,b\right)\)</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions (b)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions (b)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><span class="math inline">\(\mathbb{E}\left[a | b\right] = \mathbb{E}\left[a\right] = 1\)</span> (by independence)</li>
+<li><span class="math inline">\(\mathbb{E}\left[a b | b\right] = b\mathbb{E}\left[a | b\right] = b\mathbb{E}\left[a\right]  = b \cdot 1 = b\)</span> (random variable)</li>
+<li><span class="math inline">\(\mathbb{E}\left[5 b | a\right] = \mathbb{E}\left[5 b\right] = 5 \cdot 2 = 10\)</span> (since <span class="math inline">\(b\)</span> is independent of <span class="math inline">\(a\)</span>)</li>
+<li><span class="math inline">\(\mathbb{E}\left[c | a\right] = \mathbb{E}\left[2a + b | a\right] = 2a + \mathbb{E}\left[b|a\right] = 2a + 2\)</span> (random variable)</li>
+<li><span class="math inline">\(\mathbb{E}\left[c | a, b\right] = 2a + b\)</span> (random variable)</li>
+<li><span class="math inline">\(\mathrm{Var}\left(c | a\right) = \mathrm{Var}\left(2a + b | a\right) = \mathrm{Var}\left(b | a\right) = \mathrm{Var}\left(b\right) = 25\)</span> (constant, and <span class="math inline">\(\mathrm{Var}\left(a | a\right) = 0\)</span>)</li>
+<li><span class="math inline">\(\mathrm{Var}\left(c | a, b\right) = 0\)</span> (constant, since <span class="math inline">\(c\)</span> is deterministic given <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>)</li>
+</ol>
+</div>
+</div>
 <!---------------------------------------------->
 <!---------------------------------------------->
 <!---------------------------------------------->
@@ -518,6 +972,28 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <li><p>Show that <span class="math inline">\(\sum_{n=1}^N(x_n - c)^2\)</span>, as a function of <span class="math inline">\(c\)</span>, has a unique minimum at <span class="math inline">\(c = \bar{x}\)</span>.</p></li>
 <li><p>Show that <span class="math inline">\(\sum_{n=1}^Nx_n^2 = \sum_{n=1}^N(x_n - \bar{x})^2 + n \bar{x}^2\)</span>.</p></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> <span class="math inline">\(\sum_{n=1}^N(x_n - \bar{x}) = \sum_{n=1}^Nx_n - N\bar{x}= N\bar{x}- N\bar{x}= 0\)</span></p>
+<p><strong>(b)</strong> Using the hint, <span class="math inline">\(x_n - c = (x_n - \bar{x}) + (\bar{x}- c)\)</span>, so <span class="math display">\[
+\begin{aligned}
+\sum_{n=1}^N(x_n - c)^2 &amp;= \sum_{n=1}^N[(x_n - \bar{x}) + (\bar{x}- c)]^2 \\
+&amp;= \sum_{n=1}^N(x_n - \bar{x})^2 + 2(\bar{x}- c)\sum_{n=1}^N(x_n - \bar{x}) + N(\bar{x}- c)^2 \\
+&amp;= \sum_{n=1}^N(x_n - \bar{x})^2 + 0 + N(c - \bar{x})^2
+\end{aligned}
+\]</span> where we used part (a) to eliminate the middle term.</p>
+<p><strong>(c)</strong> From (b), <span class="math inline">\(\sum_{n=1}^N(x_n - c)^2 = \sum_{n=1}^N(x_n - \bar{x})^2 + N(c - \bar{x})^2\)</span>. Since <span class="math inline">\((c - \bar{x})^2 \ge 0\)</span> with equality iff <span class="math inline">\(c = \bar{x}\)</span>, the expression is uniquely minimized at <span class="math inline">\(c = \bar{x}\)</span>.</p>
+<p><strong>(d)</strong> Set <span class="math inline">\(c = 0\)</span> in part (b): <span class="math inline">\(\sum_{n=1}^Nx_n^2 = \sum_{n=1}^N(x_n - \bar{x})^2 + N\bar{x}^2\)</span>.</p>
+</div>
+</div>
 </section>
 <section id="freedman2009statistical-chapter-2-set-b-exercise-14" class="level2">
 <h2 class="anchored" data-anchor-id="freedman2009statistical-chapter-2-set-b-exercise-14"><span class="citation" data-cites="freedman:2009:statistical">Freedman (<a href="#ref-freedman:2009:statistical" role="doc-biblioref">2009</a>)</span> Chapter 2 set B exercise 14</h2>
@@ -530,6 +1006,36 @@ u_1 &amp; v_1 \\ u_2 &amp; v_2\end{pmatrix}\)</span> denote the <span class="mat
 <p><strong>(c)</strong> <span class="math inline">\(\widehat{\mathrm{Var}}\left(x\right) = \widehat{\mathrm{Cov}}\left(x,x\right)\)</span>.</p>
 <p><strong>(d)</strong> <span class="math inline">\(\widehat{\mathrm{Cov}}\left(x, y\right) = \overline{xy}  - \bar{x}\,\bar{y}\)</span></p>
 <p><strong>(e)</strong> <span class="math inline">\(\widehat{\mathrm{Var}}\left(x\right) = \overline{x^2} - \bar{x}\,\bar{x}\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> By definition, the sample correlation is <span class="math inline">\(r = \frac{\widehat{\mathrm{Cov}}\left(x,y\right)}{s_x s_y}\)</span>. Rearranging gives <span class="math inline">\(\widehat{\mathrm{Cov}}\left(x, y\right) = r s_x s_y\)</span>.</p>
+<p><strong>(b)</strong> Recall that the slope of the regression line is given by <span class="math display">\[
+\hat{\beta}= \frac{\frac{1}{N} \sum_{n=1}^N(y_n - \bar{y}) (x_n - \bar{x})}{\frac{1}{N} \sum_{n=1}^N(x_n - \bar{x})^2}.
+\]</span> The answer follows by recognizing the form of the numerator and demoninator.</p>
+<p><strong>(c)</strong> By definition, <span class="math display">\[
+\widehat{\mathrm{Cov}}\left(x,x\right) = \frac{1}{N} \sum_{n=1}^N(x_n - \bar{x})(x_n - \bar{x}) = \frac{1}{N} \sum_{n=1}^N(x_n - \bar{x})^2 = \widehat{\mathrm{Var}}\left(x\right).
+\]</span></p>
+<p><strong>(d)</strong> Expanding the covariance: <span class="math display">\[
+\begin{aligned}
+\widehat{\mathrm{Cov}}\left(x,y\right) &amp;= \frac{1}{N} \sum_{n=1}^N(x_n - \bar{x})(y_n - \bar{y}) \\
+&amp;= \frac{1}{N} \sum_{n=1}^Nx_n y_n - \bar{x}\frac{1}{N} \sum_{n=1}^Ny_n - \bar{y}\frac{1}{N} \sum_{n=1}^Nx_n + \bar{x}\bar{y}\\
+&amp;= \overline{xy} - \bar{x}\bar{y}- \bar{y}\bar{x}+ \bar{x}\bar{y}\\
+&amp;= \overline{xy} - \bar{x}\bar{y}.
+\end{aligned}
+\]</span></p>
+<p><strong>(e)</strong> This is a special case of (d) with <span class="math inline">\(y= x\)</span>: <span class="math display">\[
+\widehat{\mathrm{Var}}\left(x\right) = \widehat{\mathrm{Cov}}\left(x,x\right) = \overline{x^2} - \bar{x}\,\bar{x}.
+\]</span></p>
+</div>
+</div>
 
 
 
