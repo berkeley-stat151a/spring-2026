@@ -1,0 +1,162 @@
+---
+title: "Lab 1"
+author: 'Your name here'
+format:
+  html:
+    code-download: true
+    code-tools: true
+---
+
+<!--
+editor_options:
+  chunk_output_type: console
+format:
+  html:
+    code-download: true
+-->
+
+```{r setup, include = FALSE}
+
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+This is an R markdown script.  You can use it to execute code as well
+as produce a pdf output.  
+
+This is your first lab exercise.  Please turn in a rendered
+pdf at the end of the lab period to receive credit for lab attendance.
+
+Recall that you can execute R code as follows:
+
+```{r}
+1 + 1
+```
+
+
+# Load the data
+
+Go to the course website 
+[data page](https://stat151a.berkeley.edu/spring-2026/datasets/data.html)
+and download a copy of the grades dataset.  (It's towards the bottom.)
+Load the dataset into a dataframe called `grades_df`.
+
+Each row of the dataset is a student.  What are the columns in this dataset?
+Which classes and semesters does this dataframe cover?  Restrict
+the dataset to contain only data for 151A in the fall 2024 semester.
+
+
+```{r}
+```
+
+
+
+# Plot the data
+
+The course grade is in the `grade` column.  Plot a histogram of the
+course grades with `ggplot`.  Plot a vertical red line at the passing point,
+which is 60%.  What do you notice?
+
+
+```{r}
+```
+
+The grade on the final
+exam is in the `final` column.  Make a plot with the final
+on the x-axis and the course grade on the y-axis with `ggplot`.  What do you notice?
+
+```{r}
+```
+
+
+# Compute a regression line
+
+Compute an ordinary least squares (OLS) regression line to pass through the points between
+the final exam and course grade.  Recall from earlier classes that
+the OLS regression line is given by $y = a + b x$ where
+
+$$
+\begin{aligned}
+a ={}& \bar{Y} - b \bar{X}\\
+b ={}& \frac{n \sum X_i Y_i - \sum X_i \sum Y_i}{n \sum X_i^2 - (\sum X_i)^2} = \frac{\sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sum (X_i - \bar{X})^2} \end{aligned}
+$$
+Write code to compute and plot the line in these steps:
+
+1. Define variables for $n$, $X$, and $Y$
+1. Compute $\bar{Y}$ and $\bar{X}$
+1. Compute `b`
+1. Compute `a`
+1. Plot the line on your above graph (hint: in `ggplot` use `geom_abline`)
+
+Does the line look correct?
+
+
+```{r}
+```
+
+
+```{r}
+```
+
+
+
+
+# Make a regression function
+
+Now, define a function that takes in an $X$ and $Y$ and returns a
+list with the intercept and slope of a regression line.  The name
+of your function should be a verb. Check that it gives the
+same answer as above.  
+
+
+
+```{r}
+```
+
+
+# Plot with and without outliers
+
+Using your regression function, plot the regression lines
+with and without the observations that failed the class.  Plot the
+two lines in different colors with a plot legend.  How does the
+line change?
+
+```{r}
+```
+
+
+
+# Compare with `lm`
+
+
+Now, compare the results of your regression function with the output of
+`lm` to make sure you get the same answer.  
+
+```{r}
+```
+
+
+# Compute the residuals
+
+Now, using your regression function, compute the residuals
+$e = y - (a + b x)$, and plot a histogram.  Do they look like they
+are Gaussian?
+
+
+```{r}
+```
+
+
+# Meaning
+
+How (if at all) does the relationship between the final exam score
+and course grade in this previous class inform your decisions about
+the course you are about to take?
+
+
+
+
+
+

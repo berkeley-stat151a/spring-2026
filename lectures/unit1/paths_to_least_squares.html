@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Lectures</title>
+<title>Paths to least squares.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,25 +20,45 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -116,10 +136,10 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../assets/stat_bear.png" alt="" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/stat_bear.png" alt="" class="navbar-logo">
     </a>
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Spring 2026 STAT151A</span>
     </a>
   </div>
@@ -130,31 +150,31 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../schedule.html"> 
+    <a class="nav-link" href="../../schedule.html"> 
 <span class="menu-text">Course schedule</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../lectures/index.html" aria-current="page"> 
+    <a class="nav-link" href="../../lectures/index.html"> 
 <span class="menu-text">Lectures</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../assignments/index.html"> 
+    <a class="nav-link" href="../../assignments/index.html"> 
 <span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../labs/index.html"> 
+    <a class="nav-link" href="../../labs/index.html"> 
 <span class="menu-text">Labs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../datasets/index.html"> 
+    <a class="nav-link" href="../../datasets/index.html"> 
 <span class="menu-text">Datasets</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../course_policies.html"> 
+    <a class="nav-link" href="../../course_policies.html"> 
 <span class="menu-text">Course Policies</span></a>
   </li>  
 </ul>
@@ -173,18 +193,24 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#unit-1-multlinear-regression" id="toc-unit-1-multlinear-regression" class="nav-link" data-scroll-target="#unit-1-multlinear-regression">Unit 1: Multlinear regression</a></li>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#reading" id="toc-reading" class="nav-link" data-scroll-target="#reading">Reading</a></li>
+  <li><a href="#why-least-squares" id="toc-why-least-squares" class="nav-link" data-scroll-target="#why-least-squares">Why least squares?</a>
+  <ul class="collapse">
+  <li><a href="#risk-minimization" id="toc-risk-minimization" class="nav-link" data-scroll-target="#risk-minimization">Risk minimization</a></li>
+  <li><a href="#maximum-likelihood" id="toc-maximum-likelihood" class="nav-link" data-scroll-target="#maximum-likelihood">Maximum likelihood</a></li>
+  <li><a href="#bayesian-estimates" id="toc-bayesian-estimates" class="nav-link" data-scroll-target="#bayesian-estimates">Bayesian estimates</a></li>
+  <li><a href="#method-of-moments-estimation" id="toc-method-of-moments-estimation" class="nav-link" data-scroll-target="#method-of-moments-estimation">Method of moments estimation</a></li>
+  </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="paths_to_least_squares.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lectures</h1>
-<p class="subtitle lead">Stat 151A: Linear Models</p>
+<h1 class="title">Paths to least squares.</h1>
 </div>
 
 
@@ -201,79 +227,139 @@ window.Quarto = {
 </header>
 
 
-<p><strong>Lectures marked with a <span class="math inline">\(*\)</span> are still in progress.</strong></p>
-<p>These lecture notes are meant to supplement the reading indicated in the course schedule.</p>
-<section id="introduction" class="level1">
-<h1>Introduction</h1>
+<section id="goals" class="level1">
+<h1>Goals</h1>
 <ul>
-<li><a href="../lectures/unit0/course_philosophy.html">Course philosophy</a></li>
-<li><a href="../lectures/unit0/sample_means.html">Sample means</a></li>
-<li><a href="../lectures/unit0/linear_algebra_review.html">Linear algebra review</a></li>
-</ul>
-</section>
-<section id="unit-1-multlinear-regression" class="level1">
-<h1>Unit 1: Multlinear regression</h1>
+<li>Describe different motivations for the least squares objective
 <ul>
-<li><a href="../lectures/unit1/simple_linear_regression.html">Simple linear regression</a></li>
-<li><a href="../lectures/unit1/multilinear_regression.html">Multilinear regression</a></li>
-<li><a href="../lectures/unit1/paths_to_least_squares.html">Paths to least squares</a></li>
-<li>Transforming the regressors
-<ul>
-<li><a href="../lectures/unit1/interactions.html">One-hot encodings</a></li>
-<li><a href="../lectures/unit1/interactions_part_two.html">Interacting continuous regressors</a></li>
+<li>Risk minimization</li>
+<li>Normal maximum likelihood</li>
+<li>Bayesian inference</li>
+<li>Method-of-moment estimators</li>
 </ul></li>
-<li><a href="../lectures/unit1/transforming_response.html">Transforming the response variable</a></li>
-<li><a href="../lectures/unit1/linear_transformations.html">Linear transformations (notes only — not for lecture))</a></li>
 </ul>
-<p><!--
-- [$*$ Inference and prediction in the Ames housing data](unit1/2_AmesHousingInference.ipynb)
-- [$*$ Familiar examples in matrix form](unit1/3.5_LSAsLossMinExamples.qmd)
-- [$*$ Multilinear Regression as projection](unit1/4_LSAsProjection.qmd)
+</section>
+<section id="reading" class="level1">
+<h1>Reading</h1>
+<p>These notes are a supplement for the following readings:</p>
+<ul>
+<li><span class="citation" data-cites="hastie:2009:isl">Hastie, Tibshirani, and Friedman (<a href="#ref-hastie:2009:isl" role="doc-biblioref">2009</a>)</span> Section 2.1 (risk minimization)</li>
+<li><span class="citation" data-cites="gelman:2021:regression">Gelman, Hill, and Vehtari (<a href="#ref-gelman:2021:regression" role="doc-biblioref">2021</a>)</span> Section 8.1 (maximum likelihood and Bayesian methods)</li>
+<li><span class="citation" data-cites="davidson2004econometric">Davidson, MacKinnon, et al. (<a href="#ref-davidson2004econometric" role="doc-biblioref">2004</a>)</span> Section 1.5 (method of moments)</li>
+</ul>
+</section>
+<section id="why-least-squares" class="level1">
+<h1>Why least squares?</h1>
+<p>We have motivated the ordinary least squares (OLS) estimator</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}}:= \underset{\boldsymbol{\beta}}{\mathrm{argmin}}\, \frac{1}{N} \sum_{n=1}^N\sum_{n=1}^N(y_n - \boldsymbol{\beta}^\intercal\boldsymbol{x}_n)^2
+\]</span></p>
+<p>by arguing that the squared error is a reasonable measure of “misfit.” In this view, the objective is simply to draw a line through the data that is somehow “close” to the datapoints. We discussed how choices other than the vertical squared distance to <span class="math inline">\(y_n\)</span> might give different fits. For example, minimizing absolute distance, or horizontal distance along some <span class="math inline">\(\boldsymbol{x}_n\)</span> direction, will give different lines through the data.</p>
+<p>In this story, there is no probabilistic model. The regression line is simply a summary of a complex dataset. We can also motivate the same objective function by a variety of different probabilistic assumptions, which I’ll briefly (and incompletely) survey here.</p>
+<section id="risk-minimization" class="level2">
+<h2 class="anchored" data-anchor-id="risk-minimization">Risk minimization</h2>
+<!-- \newcommand{\new}{\mathrm{new}}
+\newcommand{\loss}{\mathcal{L}}
+ -->
+<p>Let’s assume that the data we observe, <span class="math inline">\((\boldsymbol{x}_n, y_n)\)</span> are drawn IID (as pairs) from some distribution. Suppose our goal is to predict a new datapoint, <span class="math inline">\(y_\mathrm{new}\)</span>, using only a new regressor, <span class="math inline">\(\boldsymbol{x}_\mathrm{new}\)</span>, drawn from the same distribution. Our guess can depend on <span class="math inline">\(\boldsymbol{x}_\mathrm{new}\)</span>, so let’s write <span class="math inline">\(f(\boldsymbol{x}_\mathrm{new})\)</span> for the guess. We want to pick an <span class="math inline">\(f\)</span> that is as “good as possible.” This is an instance of the machine learning subfield known as “supervised learning.”</p>
+<p>What does “good as possible” mean? Well, we want <span class="math inline">\(f(\boldsymbol{x}_\mathrm{new})\)</span> to be “close” to <span class="math inline">\(y_\mathrm{new}\)</span>, and one (but not the only) reasonable definition of closeness is the squared distance. Define the “loss function”</p>
+<p><span class="math display">\[
+\mathscr{L}(f(\boldsymbol{x}), y) = (y- f(\boldsymbol{x}))^2.
+\]</span></p>
+<p>For any particular <span class="math inline">\(f\)</span>, the loss will be different for different <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(y\)</span>. Furthermore, the distribution of <span class="math inline">\(y_\mathrm{new}\)</span> is random given <span class="math inline">\(\boldsymbol{x}_\mathrm{new}\)</span>. We want an <span class="math inline">\(f\)</span> that does well over all possible <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(y\)</span> in some sense. A reasonable way to express this is that we want to find <span class="math inline">\(f\)</span> to minimize the <em>expected loss</em>, or <em>risk</em>:</p>
+<p><span class="math display">\[
+\mathcal{R}(f) = \mathbb{E}\left[\mathscr{L}(f(\boldsymbol{x}), y)\right] = \mathbb{E}\left[(y- f(\boldsymbol{x}))^2\right].
+\]</span></p>
+<p>Now, we cannot actually calculate <span class="math inline">\(\mathcal{R}(f)\)</span>, because we don’t know the actual distribution of a future datapoint. But since we are assuming that the distribution is the same as the data we have, we can tentatively invoke the law of large numbers to define the <em>empirical risk</em>:</p>
+<p><span class="math display">\[
+\hat{\mathcal{R}}(f) := \frac{1}{N} \sum_{n=1}^N(y_n - f(\boldsymbol{x}_n))^2.
+\]</span></p>
+<p>This is now an objective that we can actually compute. However, it doesn’t make sense to minimize this over all possible <span class="math inline">\(f\)</span>. For example, the function <span class="math display">\[
+f_{\mathrm{bad}}(\boldsymbol{x}) =
+\begin{cases}
+    y_n \textrm{ if }\boldsymbol{x}= \boldsymbol{x}_n\textrm{ for some }n \\
+    0 \textrm{ otherwise }
+\end{cases}
+\]</span> fits the data perfectly (so <span class="math inline">\(\hat{\mathcal{R}}(f_{\mathrm{bad}}) = 0\)</span>), but we expect it to provide a poor prediction if we get an <span class="math inline">\(\boldsymbol{x}_\mathrm{new}\)</span> that we haven’t seen before. So we might restrict the form of <span class="math inline">\(f\)</span> to be something that’s not too expressive — for example, we might only accept functions of the form <span class="math inline">\(f(\boldsymbol{x}; \boldsymbol{\beta}) = \boldsymbol{\beta}^\intercal\boldsymbol{x}\)</span>. Plugging in this restriction, we can see that empirical risk minimization is the same as the OLS estimator.</p>
+</section>
+<section id="maximum-likelihood" class="level2">
+<h2 class="anchored" data-anchor-id="maximum-likelihood">Maximum likelihood</h2>
+<p>In the risk minimization version of OLS, we only assumed that <span class="math inline">\((\boldsymbol{x}, y)\)</span> were IID (and, implicitly, had certain finite moments). We did not assume any functional form of the distribution. And we didn’t assume that the optimal prediction function was linear — the linearity assumption was introduced only in an ad-hoc way to avoid overfitting.</p>
+<p>A very different motivation for OLS proceeds by making much stronger statistical assumptions and writing out a maximum likelihood estimator (MLE). In this view, OLS is performing <em>inference</em>: that is, identifying the unknown parameters of a probability distribution from which we have samples.</p>
+<p>Specifically, let us assume that <span class="math inline">\(\boldsymbol{x}_n\)</span> have some distribution <span class="math inline">\(p(\boldsymbol{x})\)</span> that we don’t care about, and that the <span class="math inline">\(y_n\)</span> are distributed independently as <span class="math display">\[
+p(y_n \vert \boldsymbol{x}, {\boldsymbol{\beta}^{*}}, \sigma) \mathcal{N}\left(\boldsymbol{x}_n^\intercal{\boldsymbol{\beta}^{*}}, \sigma^2\right)
+\textrm{ for some }{\boldsymbol{\beta}^{*}}\textrm{ and }\sigma.
+\]</span> There are a few key conceptual differences with risk minimization:</p>
+<ul>
+<li>If we knew <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> and <span class="math inline">\(\sigma\)</span>, we would know the distribution of <span class="math inline">\(y| \boldsymbol{x}\)</span> completely.</li>
+<li>We’re not imagining getting new data, nor defining any kind of prediction error.</li>
+<li>We want to know the parameters, not just make good predictions.</li>
+</ul>
+<p>How should we estimate <span class="math inline">\(\sigma\)</span> and <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span>? A commonly used tool is <em>maximum likelihood estimation</em>, which finds the values of these parameters that maximize the likelihood of the observed data. Note that by the standard univariate normal distribution formula, up to constants not depending on <span class="math inline">\(\boldsymbol{\beta}\)</span> and <span class="math inline">\(\sigma\)</span>,</p>
+<p><span class="math display">\[
+\log p(y\vert \boldsymbol{\beta}, \boldsymbol{x}, \sigma) = -\frac{1}{2 \sigma^2} (y- \boldsymbol{x}^\intercal\boldsymbol{\beta})^2 - \frac{1}{2} \log \sigma^2.
+\]</span></p>
+<p>Note that <span class="math inline">\(p(y, \boldsymbol{x}\vert \boldsymbol{\beta}, \sigma) = p(y\vert \boldsymbol{\beta}, \boldsymbol{x}, \sigma) p(\boldsymbol{x})\)</span>. So for any value of <span class="math inline">\(\sigma\)</span>, the MLE for <span class="math inline">\(\boldsymbol{\beta}\)</span> is given by</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{\beta}}:={}&amp; \underset{\boldsymbol{\beta}}{\mathrm{argmax}}\, \prod{n=1}^N p(y_n, \boldsymbol{x}_n \vert \boldsymbol{\beta}, \sigma)
+\\={}&amp;
+\underset{\boldsymbol{\beta}}{\mathrm{argmax}}\, \sum_{n=1}^N\log p(y_n \vert \boldsymbol{\beta}, \boldsymbol{x}_n, \sigma)
+\\={}&amp;
+\underset{\boldsymbol{\beta}}{\mathrm{argmax}}\, -\frac{1}{2 \sigma^2} \sum_{n=1}^N(y- \boldsymbol{x}^\intercal\boldsymbol{\beta})^2 - \frac{N}{2} \log \sigma^2 + \sum_{n=1}^Np(\boldsymbol{x}_n)
+\\={}&amp;
+\underset{\boldsymbol{\beta}}{\mathrm{argmax}}\, -\frac{1}{2 \sigma^2} \sum_{n=1}^N(y- \boldsymbol{x}^\intercal\boldsymbol{\beta})^2
+\\={}&amp;
+\underset{\boldsymbol{\beta}}{\mathrm{argmin}}\, \frac{1}{2 \sigma^2} \sum_{n=1}^N(y- \boldsymbol{x}^\intercal\boldsymbol{\beta})^2
+\\={}&amp;
+\underset{\boldsymbol{\beta}}{\mathrm{argmin}}\, \frac{1}{N} \sum_{n=1}^N(y- \boldsymbol{x}^\intercal\boldsymbol{\beta})^2.
+\end{aligned}
+\]</span> It follows that, no matter what <span class="math inline">\(\sigma\)</span> is, the MLE for <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> is the OLS estimator.</p>
+</section>
+<section id="bayesian-estimates" class="level2">
+<h2 class="anchored" data-anchor-id="bayesian-estimates">Bayesian estimates</h2>
+<p>The maximum likelihood estimator is usually justified in asymptotic terms. That is, as <span class="math inline">\(N \rightarrow \infty\)</span>, it is consistent and efficient when the model is correctly specified, i.e., when the data actually comes from the specified model for some <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> and <span class="math inline">\(\sigma\)</span>. Usually that additionally assumes that the dimension of the parameter to be estimated — <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> in this case — is small relative to <span class="math inline">\(N\)</span>.</p>
+<p>For inference problems in finite samples, or where <span class="math inline">\(P\)</span> is of the same order as <span class="math inline">\(N\)</span>, then Bayesian statistics provides a way forward, again under correct model specification. We assume everything we assumed for the MLE, but additionally assume</p>
+<ul>
+<li>That <span class="math inline">\(\sigma\)</span> is known</li>
+<li>In order to generate our data, the universe drew the components of <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> IID from normal distributions with very high variance: <span class="math inline">\({\boldsymbol{\beta}^{*}}_p \overset{\mathrm{IID}}{\sim}\mathcal{N}\left(\boldsymbol{0}, \sigma_\beta^2\right)\)</span>. For short, we can write <span class="math inline">\({\boldsymbol{\beta}^{*}}\sim p({\boldsymbol{\beta}^{*}})\)</span> to represent this distribution.</li>
+</ul>
+<p>(These assumptions can be relaxed and we can still do Bayesian inference, but the math is more complicated, and the relationship to OLS may be less clear.)</p>
+<p>The whole process of choosing a <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> and dataset <span class="math inline">\(\boldsymbol{Y}\)</span> is now random, and there is a joint distribution (keeping <span class="math inline">\(\boldsymbol{X}\)</span> fixed), <span class="math inline">\(p(\boldsymbol{Y}, {\boldsymbol{\beta}^{*}}| \boldsymbol{X}) = p(\boldsymbol{Y}\vert {\boldsymbol{\beta}^{*}}, \boldsymbol{X}) p({\boldsymbol{\beta}^{*}})\)</span>. Each new dataset can be imagined as a draw from this joint distribution. On the dataset we have, there was some dependence between what <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> is and what <span class="math inline">\(\boldsymbol{Y}\)</span> is. So knowing what <span class="math inline">\(\boldsymbol{Y}\)</span> is should allow us to guess what <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> was in our case, even though we don’t observe it. This guess takes the form of a <em>posterior distribution</em> given by Bayes’ rule: <span class="math display">\[
+p({\boldsymbol{\beta}^{*}}\vert \boldsymbol{Y}, \boldsymbol{X}) = \frac{p({\boldsymbol{\beta}^{*}}) p(\boldsymbol{Y}\vert {\boldsymbol{\beta}^{*}}, \boldsymbol{X})}{p(\boldsymbol{Y}\vert \boldsymbol{X})}.
+\]</span> It turns out that, since both <span class="math inline">\(p(\boldsymbol{Y}\vert \boldsymbol{X})\)</span> and <span class="math inline">\(p({\boldsymbol{\beta}^{*}})\)</span> are normal, this distribution has a closed form with expected value given by <span class="math display">\[
+\mathbb{E}_{p({\boldsymbol{\beta}^{*}}\vert \boldsymbol{Y}, \boldsymbol{X})}\left[{\boldsymbol{\beta}^{*}}\right] = (\boldsymbol{X}^\intercal\boldsymbol{X}+ \sigma_\beta^{-2} \boldsymbol{I}_P)^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y},
+\]</span> and for very large <span class="math inline">\(\sigma_\beta\)</span>, we have <span class="math display">\[
+\mathbb{E}_{p({\boldsymbol{\beta}^{*}}\vert \boldsymbol{Y}, \boldsymbol{X})}\left[{\boldsymbol{\beta}^{*}}\right] \approx \hat{\boldsymbol{\beta}}.
+\]</span></p>
+</section>
+<section id="method-of-moments-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="method-of-moments-estimation">Method of moments estimation</h2>
+<p>Finally, we describe a way to do inference that allows for only partial specification of the probability model. Note that our MLE assumptions are equivalent to <span class="math display">\[
+y_n = {\boldsymbol{\beta}^{*}}^\intercal\boldsymbol{x}_n + \varepsilon_n,
+\]</span> where <span class="math inline">\(\varepsilon_n \overset{\mathrm{IID}}{\sim}\mathcal{N}\left(0, \sigma^2\right)\)</span> and independent of <span class="math inline">\(\boldsymbol{x}_n\)</span>. From this it follows that <span class="math display">\[
+\mathbb{E}\left[\boldsymbol{x}\varepsilon\right] = \mathbb{E}\left[\boldsymbol{x}(y- \boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}})\right] = 0.
+\]</span> That is, we assume that the residuals are uncorrelated with the regressors.</p>
+<p>Suppose now we drop the normal assumption, and simply assume that <span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}\varepsilon\right] = \boldsymbol{0}\)</span>. We can define our estimator <span class="math inline">\(\hat{\beta}\)</span> to be the value of <span class="math inline">\(\boldsymbol{\beta}\)</span> that makes the population version of this expectation to hold: <span class="math display">\[
+\hat{\boldsymbol{\beta}}:= \boldsymbol{\beta}\textrm{ such that } \frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n (y_n - \boldsymbol{x}_n^\intercal\boldsymbol{\beta}) = \boldsymbol{0}.
+\]</span> Rearranging this expression gives that <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is indeed the OLS estimator.</p>
 
- <!--
-# Weeks 3--4
-
-- [Multilinear Regression as loss minimization](3_LSAsLossMin.qmd)
-- [Familiar examples in matrix form](3.5_LSAsLossMinExamples.qmd)
-- [Multilinear Regression as projection](4_LSAsProjection.qmd)
-
-# Weeks 5--6
-
-- [Data transformations of the regressors](5_Transformations_X.qmd)
-- [Data transformations of the response](5.5_Transformations_Y.qmd)
-- [Influence and outliers](7_InfluenceAndOutliers.qmd)
-
-# Weeks 7--8
-
-- [The FWL theorem](6_FWLTheorem.qmd)
-- [Multivariate random variables](7_5_MultivariateNormal.qmd)
-- [Stochastic modeling of the residual](8_StochasticModelingOfOLS.qmd)
-- [Consistency and bias of OLS](8_5_ConsistencyAndBiasOfOLS.qmd)
-- [Regression to the mean](9_RegressionToTheMean.qmd)
-
-# Weeks 9--10
-
-- [Confidence intervals and hypothesis testing](10_ConfidenceIntervals.qmd)
-- [Test statistics under the assumption of normality](11_TestStatisticsNormal.qmd)
-- [Test statistics under homoskedastic and heteroskedastic assumptions](12_TestStatisticsNonNormal.qmd)
-- [Test statistics under machine learning assumptions](13_TestStatisticsML.qmd)
-
-
-# Weeks 10--12
-
-- [Variable selection with the F--statistic](14_Ftest.qmd)
-- [Bias--variance tradeoff in prediction](15_BiasVariance.qmd)
-  - [Bias--variance example notebook](15_5_bias_variance_example.ipynb)
-  - [Using `glmnet` example notebook](15_6_glmnet.ipynb)
-- [Ridge for variable selection](16_L2.qmd)
-- [Lasso for variable selection](17_L1.qmd)
-
---></p>
 
 
 </section>
+</section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-davidson2004econometric" class="csl-entry" role="listitem">
+Davidson, Russell, James G MacKinnon, et al. 2004. <em>Econometric Theory and Methods</em>. Vol. 5. Oxford University Press New York.
+</div>
+<div id="ref-gelman:2021:regression" class="csl-entry" role="listitem">
+Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2021. <em>Regression and Other Stories</em>. Cambridge University Press.
+</div>
+<div id="ref-hastie:2009:isl" class="csl-entry" role="listitem">
+Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2009. <span>“An Introduction to Statistical Learning.”</span>
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
