@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Confidence Intervals and Hypothesis Testing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-MMK2VCM6EW"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
+</script>
+<script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/stat_bear.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Spring 2026 STAT151A</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../lectures/index.html"> 
+<span class="menu-text">Lectures</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../assignments/index.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../labs/index.html"> 
+<span class="menu-text">Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../datasets/index.html"> 
+<span class="menu-text">Datasets</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../course_policies.html"> 
+<span class="menu-text">Course Policies</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#confidence-intervals-and-hypothesis-tests-for-sample-means" id="toc-confidence-intervals-and-hypothesis-tests-for-sample-means" class="nav-link" data-scroll-target="#confidence-intervals-and-hypothesis-tests-for-sample-means">Confidence intervals and hypothesis tests for sample means</a></li>
+  <li><a href="#deriving-a-sampling-distribution." id="toc-deriving-a-sampling-distribution." class="nav-link" data-scroll-target="#deriving-a-sampling-distribution.">Deriving a sampling distribution.</a>
+  <ul class="collapse">
+  <li><a href="#rejection-regions" id="toc-rejection-regions" class="nav-link" data-scroll-target="#rejection-regions">Rejection regions</a></li>
+  <li><a href="#other-rejection-regions-and-type-i-and-type-ii-error" id="toc-other-rejection-regions-and-type-i-and-type-ii-error" class="nav-link" data-scroll-target="#other-rejection-regions-and-type-i-and-type-ii-error">Other rejection regions, and type I and type II error</a></li>
+  <li><a href="#the-null-and-alternative" id="toc-the-null-and-alternative" class="nav-link" data-scroll-target="#the-null-and-alternative">The null and alternative</a></li>
+  </ul></li>
+  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals">Confidence intervals</a></li>
+  <li><a href="#stepping-back" id="toc-stepping-back" class="nav-link" data-scroll-target="#stepping-back">Stepping back</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Confidence Intervals and Hypothesis Testing</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goals" class="level1">
+<h1>Goals</h1>
+<ul>
+<li>Understand the relationship between confidence intervals and hypothesis tests for the sample mean
+<ul>
+<li>Deriving hypothesis tests using a pivot</li>
+<li>Deriving confidence intervals from a family of hypothesis tests</li>
+<li>Be able to think critically about the meaning and limitations of strict hypothesis tests</li>
+</ul></li>
+</ul>
+</section>
+<section id="confidence-intervals-and-hypothesis-tests-for-sample-means" class="level1">
+<h1>Confidence intervals and hypothesis tests for sample means</h1>
+<p>Let us return again to our sample means problem from the very beginning of class and derive hypothesis tests and confidence intervals. Since sample means are a special case of linear regression, the intuition and techniques will extend readily to the more general case.</p>
+<p>Here is a histogram of the final exam scores from last year’s 151A class. There were 70 students, and the maximum score was 40.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>scores), <span class="at">bins=</span><span class="dv">40</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="mean_cis_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Recall that we discussed separating the “innate difficulty of the class” from the “particularities of that particular class” by modeling <span class="math inline">\(y_n\)</span> as IID from some population with <span class="math inline">\(\mathbb{E}\left[y_n\right] =: \mu\)</span>, which we approximate with <span class="math inline">\(\bar{y}= \frac{1}{N} \sum_{n=1}^Ny_n = 0.8942795\)</span>.</p>
+<p>We will ask questions like:</p>
+<ul>
+<li>Is it plausible that <span class="math inline">\(\mu\)</span> was as high as <span class="math inline">\(35\)</span>?</li>
+<li>What range of values might <span class="math inline">\(\mu\)</span> plausibly take?</li>
+</ul>
+<p>The first is like a “hypothesis test” and the second is a “confidence interval.” We will see that a confidence interval is precisely the set of values that a hypothesis test does not reject, and that a confidence interval leads precisely to a set of hypothesis tests that check whether the hypothesis is in the interval.</p>
+</section>
+<section id="deriving-a-sampling-distribution." class="level1">
+<h1>Deriving a sampling distribution.</h1>
+<p>By the CLT, we know that, whatever <span class="math inline">\(\mu\)</span> is, for large <span class="math inline">\(N\)</span>, we have approximately <span class="math display">\[
+\sqrt{N} (\bar{y}- \mu) = \frac{1}{\sqrt{N}} \sum_{n=1}^N(y_n - \mu) \sim \mathcal{N}\left(0, \sigma^2\right),
+\]</span> where <span class="math inline">\(\sigma^2 = \mathrm{Var}\left(y_n\right)\)</span>. In our example, we measured <span class="math inline">\(\sigma \approx 0.12\)</span> using the sample standard deviation. Today, for simplicity, we will simply assume that this is the true value of <span class="math inline">\(\sigma\)</span> — i.e., that we know <span class="math inline">\(\sigma\)</span> and can just use it in our calculations. Later we will deal with the more complicated question of accounting for the uncertainty in <span class="math inline">\(\sigma\)</span>. Similarly, for simplicity, we will uncritically assume that the CLT holds exactly.</p>
+<p>Using <span class="math inline">\(\sigma\)</span> and properties of the normal distribution, we can define the random variable <span class="math display">\[
+z:= \frac{\bar{y}- \mu}{\sigma / \sqrt{N}}
+=
+\frac{0.8942795 - \mu}{0.12 / \sqrt{70} }
+=
+\frac{0.8942795 - \mu}{0.01}
+\sim \mathcal{N}\left(0 ,1\right).
+\]</span> This is called a “z-statistic,” which is a general and not very meaningful name for statistics computed by subtracting a true mean and dividing by a true standard deviation from a random observation.</p>
+<p>Since <span class="math inline">\(z\)</span> is a standard normal distribution, it seems to characterize the variability of <span class="math inline">\(\mu\)</span>. However, there’s something funny about <span class="math inline">\(z\)</span> — as written, you cannot compute it, because you don’t know <span class="math inline">\(\mu\)</span>. In fact, finding what values <span class="math inline">\(\mu\)</span> might plausibly take is the whole point of statistical inference.</p>
+<p>So what good is a z–statistic? Informally, one way to reason about it is as follows. Let’s take some concrete values for an example. Suppose guess that <span class="math inline">\(\mu^0 = 35\)</span> is the value, and compute</p>
+<p><span class="math display">\[
+z=
+\frac{\bar{y}- \mu^0}{\sigma / \sqrt{N} }
+=
+\frac{0.8942795 - 35}{0.01}
+=
+-3410.57
+\]</span></p>
+<p>We use the superscript <span class="math inline">\(0\)</span> to indicate that <span class="math inline">\(\mu^0\)</span> is our guess, not necessarily the true value.</p>
+<p>A value as large as -3410.57 is quite unusual under the standard normal distribution. Therefore,</p>
+<ul>
+<li>We got a very unusual draw of our standard normal or</li>
+<li>We guessed wrong, i.e.&nbsp;<span class="math inline">\(\mu \ne \mu^0 = 35\)</span>.</li>
+</ul>
+<p>In this way, we might consider it plausible to “reject” the hypothesis that <span class="math inline">\(\mu = 35\)</span>, since otherwise we must accept that we got a very unusual standard normal draw.</p>
+<p>There’s a subtle problem with the preceding reasoning, however. Suppose we do the same calculation with <span class="math inline">\(\mu^0 = 30\)</span>. Then <span class="math display">\[
+z=
+\frac{0.8942795 - 30}{0.01}
+=
+-2910.57.
+\]</span> This is a much more typical value for a standard normal distribution. However, the probability of getting exactly -2910.57 — or, indeed, <em>any</em> particular value — is zero, since the normal distribution is continuous valued. (This problem is easiest to see with continuous random variables, but the same basic problem will occur when the distribution is discrete but spread over a large number of possible values.)</p>
+<section id="rejection-regions" class="level2">
+<h2 class="anchored" data-anchor-id="rejection-regions">Rejection regions</h2>
+<p>To resolve this problem, we can specify <em>regions</em> that we consider implausible. That is, suppose we take a region <span class="math inline">\(R\)</span> such that, if <span class="math inline">\(z\)</span> is standard normal, then</p>
+<p><span class="math display">\[
+\mathbb{P}\left(z\in R\right) \le \alpha \quad\textrm{form some small }\alpha.
+\]</span></p>
+<p>For example, we might take <span class="math inline">\(\Phi^{-1}(\cdot)\)</span> to be the inverse CDF of the standard normal. Then we can take</p>
+<p><span class="math display">\[
+R_{ts} = \{z: \left|z\right| \ge q \} \quad\textrm{where } q = \Phi^{-1}(1 - \alpha / 2).
+\]</span> Here, the “ts” stands for “two–sided.” If <span class="math inline">\(z\sim \mathcal{N}\left(0,1\right)\)</span>, then</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{P}\left(R_{ts}\right) ={}&amp; \mathbb{P}\left(\left|z\right| \ge q\right)
+\\={}&amp; \mathbb{P}\left(z\ge q \textrm{ or } z\le -q\right)
+\\={}&amp; \mathbb{P}\left(z\ge q\right) + \mathbb{P}\left(z\le -q\right)
+&amp; \textrm{(the regions are disjoint)}
+\\={}&amp; 2 \mathbb{P}\left(z\ge q\right)
+&amp; \textrm{(the standard normal is symmetric)}
+\\={}&amp; 2 ( 1- \mathbb{P}\left(z&lt; q\right))
+\\={}&amp; 2 ( 1- \Phi(q))
+&amp; \textrm{(definition of $\Phi$)}
+\\={}&amp; 2 ( 1- \Phi(\Phi^{-1}(1 - \alpha / 2)))
+&amp; \textrm{(definition of $q$)}
+\\={}&amp; 2 ( 1- (1 - \alpha / 2))
+\\={}&amp; \alpha.
+\end{aligned}
+\]</span></p>
+<p>Putting our reasoning together, we migth argue that</p>
+<ul>
+<li>If <span class="math inline">\(\mu^0 = \mu\)</span> (that is, if our hypothesis is correct), then <span class="math inline">\(z\sim \mathcal{N}\left(0,1\right)\)</span>.</li>
+<li>If <span class="math inline">\(z\sim \mathcal{N}\left(0,1\right)\)</span>, then <span class="math inline">\(\mathbb{P}\left(z\in R_{ts}\right) \le \alpha\)</span>.</li>
+<li>Therefore, fi <span class="math inline">\(z\in R_{ts}\)</span>, we either got an unusual draw of a standard normal or <span class="math inline">\(\mu^0 \ne \mu\)</span>.</li>
+</ul>
+<p>Although superficially compelling, this reasoning is not watertight, since — as we will now see – there are many regions <span class="math inline">\(R\)</span> such that <span class="math inline">\(\mathbb{P}\left(z\in R\right) = \alpha\)</span> when <span class="math inline">\(\mu^0 = \mu\)</span>, some of which obviously tell us nothing about the true value of <span class="math inline">\(\mu\)</span>.</p>
+</section>
+<section id="other-rejection-regions-and-type-i-and-type-ii-error" class="level2">
+<h2 class="anchored" data-anchor-id="other-rejection-regions-and-type-i-and-type-ii-error">Other rejection regions, and type I and type II error</h2>
+<p>We can choose other rejection regions. You might be familiar with <span class="math display">\[
+\begin{aligned}
+R_{u} ={}&amp; \{t: t\ge q \} \quad\textrm{where } q = \Phi^{-1}(1 - \alpha) \\
+R_{l} ={}&amp; \{t: t\le q \} \quad\textrm{where } q = \Phi^{-1}(\alpha).
+\end{aligned}
+\]</span></p>
+<p>The “u” stands for “upper” and the “l” for lower.</p>
+<p>Furthermore, there are silly options, such as</p>
+<p><span class="math display">\[
+\begin{aligned}
+R_{m} ={}&amp; \{t: \left|t\right| \le q \} \quad\textrm{where } q = \Phi^{-1}(0.5 + \alpha / 2) \quad\textrm{(!!!)}\\
+R_{\infty} ={}&amp; \begin{cases}
+\emptyset &amp; \textrm{ with independent probability } \alpha  \\
+(-\infty,\infty) &amp; \textrm{ with independent probability } 1 - \alpha  \\
+\end{cases} \quad\textrm{(!!!)}
+\end{aligned}
+\]</span></p>
+<p>The last two may seem absurd, but they are still rejection regions into which <span class="math inline">\(z\)</span> is unlikely to fall if it has a standard normal distribution.</p>
+<p>Given this, how can we think about <span class="math inline">\(\alpha\)</span>, and about the choice of the region? Recall that</p>
+<ul>
+<li>If <span class="math inline">\(z\in R\)</span>, we “reject” the proposed value of <span class="math inline">\(\mu^0\)</span></li>
+<li>If <span class="math inline">\(z\notin R\)</span>, we “fail to reject” the given value of <span class="math inline">\(\mu^0\)</span>.</li>
+</ul>
+<p>Of course, we don’t “accept” the value of <span class="math inline">\(\mu^0\)</span> in the sense of believing that <span class="math inline">\(\mu^0 = \mu\)</span> — if nothing else, there will always be multiple values of <span class="math inline">\(\mu^0\)</span> that we do not reject, and <span class="math inline">\(\mu\)</span> cannot be equal to all of them.</p>
+<p>So there are two ways to make an error:</p>
+<ul>
+<li>Type I error: We are correct and <span class="math inline">\(\mu = \mu^0\)</span>, but <span class="math inline">\(t\in R\)</span> and we reject</li>
+<li>Type II error: We are incorrect and <span class="math inline">\(\mu \ne \mu^0\)</span>, but <span class="math inline">\(z\notin R\)</span> and we fail to reject</li>
+</ul>
+<p>By definition of the region <span class="math inline">\(R\)</span>, we have that</p>
+<p><span class="math display">\[
+\mathbb{P}\left(\textrm{Type I error}\right) \le \alpha.
+\]</span></p>
+<p>This is true for all the regions above, including the silly ones!</p>
+<p>What about the Type II error? It must depend on the “true” value of <span class="math inline">\(\mu\)</span>, and on the shape of the rejection region we choose. Note that</p>
+<p><span class="math display">\[
+z= \frac{\bar{y}- \mu^0}{\sigma / \sqrt{N}} =
+\frac{\bar{y}- \mu}{\sigma / \sqrt{N}} + \frac{\mu - \mu^0}{\sigma / \sqrt{N}}
+\sim
+\mathcal{N}\left(0, 1\right) + \frac{\mu - \mu^0}{\sigma / \sqrt{N}}.
+\]</span></p>
+<p>So if the true value <span class="math inline">\(\mu \gg \mu^0\)</span>, then our <span class="math inline">\(z\)</span> statistic is too large, and so on.</p>
+<p>For example:</p>
+<ul>
+<li>Suppose <span class="math inline">\(\mu \gg \mu^0\)</span>.
+<ul>
+<li>Then <span class="math inline">\(z\)</span> is too large and positive.<br>
+</li>
+<li><span class="math inline">\(R_u\)</span> and <span class="math inline">\(R_{ts}\)</span> will reject, but <span class="math inline">\(R_l\)</span> will not.</li>
+<li>The Type II error of <span class="math inline">\(R_u\)</span> will be lowest, then <span class="math inline">\(R_{ts}\)</span>, then <span class="math inline">\(R_l\)</span>.</li>
+<li><span class="math inline">\(R_l\)</span> actually has greater Type II error than the silly regions, <span class="math inline">\(R_\infty\)</span> and <span class="math inline">\(R_m\)</span>.</li>
+</ul></li>
+<li>Suppose <span class="math inline">\(\mu \ll \mu^0\)</span>.
+<ul>
+<li>Then <span class="math inline">\(z\)</span> is too large and negative.<br>
+</li>
+<li><span class="math inline">\(R_l\)</span> and <span class="math inline">\(R_{ts}\)</span> will reject, but <span class="math inline">\(R_u\)</span> will not.</li>
+<li>The Type II error of <span class="math inline">\(R_l\)</span> will be lowest, then <span class="math inline">\(R_{ts}\)</span>, then <span class="math inline">\(R_u\)</span>.</li>
+<li><span class="math inline">\(R_u\)</span> actually has greater Type II error than the silly regions, <span class="math inline">\(R_\infty\)</span> and <span class="math inline">\(R_m\)</span>.</li>
+</ul></li>
+<li>Suppose <span class="math inline">\(\mu = \mu^0 + \delta\)</span> for some very small <span class="math inline">\(\delta\)</span>.
+<ul>
+<li>Then <span class="math inline">\(z\)</span> has about the same distribution as when <span class="math inline">\(\mu^0 = \mu\)</span>.</li>
+<li>All the regions reject just about as often as we commit a Type I error, that is, a proportion <span class="math inline">\(\alpha\)</span> of the time.</li>
+</ul></li>
+</ul>
+<p>Thus the shape of the region determines which alternatives you are able to reject. The probability of “rejecting” under a particular alternative is called the “power” of a test; the power is one minus the Type II error rate.</p>
+</section>
+<section id="the-null-and-alternative" class="level2">
+<h2 class="anchored" data-anchor-id="the-null-and-alternative">The null and alternative</h2>
+<p>Statistics has some formal language to distinguish between the “guess” <span class="math inline">\(\mu^0\)</span> and other values.</p>
+<ul>
+<li>The guess <span class="math inline">\(\mu^0\)</span> is called the “null hypothesis”
+<ul>
+<li>Falsely rejecting the null hypothesis is called a Type I error</li>
+<li>By construction, Type I errors occurs with probability at most <span class="math inline">\(\alpha\)</span></li>
+</ul></li>
+<li>The class of potential other values of <span class="math inline">\(\mu\)</span> is called the “alternative hypothesis.”
+<ul>
+<li>Falsely failling to reject the null hypothesis is called a Type II error</li>
+<li>Type II errors’ probability depends on the alternative(s) and the rejection region shape.</li>
+</ul></li>
+</ul>
+<p>The choice of a test statistic (here, <span class="math inline">\(z\)</span>), together with a rejection region (here, <span class="math inline">\(R\)</span>) constitute a “test” of the null hypothesis. In general, one can imagine constructing many different tests, with different theoretical guarantees and power.</p>
+</section>
+</section>
+<section id="confidence-intervals" class="level1">
+<h1>Confidence intervals</h1>
+<p>Often in applied statistics, a big deal is made about a single hypothesis test, particularly the null that <span class="math inline">\(\mu^0 = 0\)</span>. Often this is not a good idea. For example, in our testing case, we can very easily reject <span class="math inline">\(\mu^0 = 0\)</span>, since</p>
+<p><span class="math display">\[
+z=
+\frac{0.8942795 - 0}{0.01}
+=
+89.43
+\]</span></p>
+<p>is <strong>very very very very</strong> unlikely under a standard normal. However, this only means that the tests were not mean zero. We in fact know this with certainty — the test scores must be non–negative, so the only way they could be mean zero if they were <em>all</em> identically zero, which we know to be false, since we observed at least one non–zero test score. So we can reject <span class="math inline">\(\mu^0 = 0\)</span> with absolute certainty. (Note that the CLT assumption breaks down if <span class="math inline">\(\mu\)</span> is actually close to zero.)</p>
+<p>In fact, in many cases, we do not care whether <span class="math inline">\(\mu\)</span> is precisely zero; rather, we care about the set of plausible values <span class="math inline">\(\mu\)</span> might take. The distinction can be expressed as the difference between statistical and practical significance:</p>
+<ul>
+<li><em>Statistical significance</em> is the size of an effect relative to sampling variability and some reference value of interest (or some mindless default, like <span class="math inline">\(0\)</span>)</li>
+<li><em>Practical significance</em> is the size of the effect in terms of its effect on reality.</li>
+</ul>
+<p>For example, suppose that <span class="math inline">\(\mu\)</span> is nonzero but very small, but <span class="math inline">\(\sqrt{\hat v/ N}\)</span> is very small, too. We might reject the null hypothesis <span class="math inline">\(\mu^0 = 0\)</span> with a high degree of certainty, and call our result <em>statistically significant</em>. However, a small value of <span class="math inline">\(\mu\)</span> may still not be a meaningful effect size for the problem at hand, i.e., it may not be <em>practically significant</em>.</p>
+<p>A remendy is confidence intervals, which are actually closely related to our hypothesis tests. Let <span class="math inline">\(R^c\)</span> denote the complement of <span class="math inline">\(R\)</span>, that is, all values <em>not</em> in <span class="math inline">\(R\)</span>.</p>
+<p>Assuming that <span class="math inline">\(z\sim \mathcal{N}\left(0,1\right)\)</span>, recall that we have been constructing regions <span class="math inline">\(R\)</span> of the form</p>
+<p><span class="math display">\[
+\begin{aligned}
+1 - \alpha \le{}&amp;  1 - \mathbb{P}\left(z\in R\right) \\
+={}&amp; \mathbb{P}\left(z\in R^c\right) \\
+={}&amp;  \mathbb{P}\left(\frac{\bar{y}- \mu}{\sigma / \sqrt{N}} \in R^c\right).
+\end{aligned}
+\]</span></p>
+<p>We can solve this expression to get a region that <span class="math inline">\(\mu\)</span> lies in with high probability. For example, with <span class="math inline">\(\boldsymbol{R}_{ts}\)</span>,</p>
+<p><span class="math display">\[
+\begin{aligned}
+1 - \alpha \le{}&amp;
+\mathbb{P}\left(-q \le \frac{\bar{y}- \mu}{\sigma / \sqrt{N}} \le q\right)
+\\={}&amp;
+\mathbb{P}\left(\frac{- q \sigma}{\sqrt{N}} \le \bar{y}- \mu \le \frac{q \sigma}{\sqrt{N}}\right)
+\\={}&amp;
+\mathbb{P}\left(\bar{y}- \frac{q \sigma}{\sqrt{N}} \le  \mu \le \bar{y}+ \frac{q \sigma}{\sqrt{N}}\right).
+\end{aligned}
+\]</span></p>
+<p>Taking the region <span class="math inline">\(I = \bar{y}\pm \frac{q \sigma}{\sqrt{N}}\)</span>, it follows that <span class="math inline">\(\mathbb{P}\left(\mu \in I\right) \ge 1 - \alpha\)</span>. Here, <span class="math inline">\(I\)</span> is precisely the set of values that we would <em>not</em> reject with region <span class="math inline">\(R_{ts}\)</span>. Note that the interval <span class="math inline">\(I\)</span> is random (it depends on <span class="math inline">\(\bar{y}\)</span>), so from one realization to the next, we expect <span class="math inline">\(I\)</span> to change. However, the true <span class="math inline">\(\mu\)</span> will lie in it at least <span class="math inline">\(1- \alpha\)</span> of the time.</p>
+<p>This duality is entirely general:</p>
+<ul>
+<li>The set of values that a valid test does not reject is a valid confidence interval</li>
+<li>Checking whether a value falls in a valid confidence interval is a valid test</li>
+</ul>
+</section>
+<section id="stepping-back" class="level1">
+<h1>Stepping back</h1>
+<p>What have we done?</p>
+<ol type="1">
+<li>Starting from our measurement <span class="math inline">\(\bar{y}\)</span>, we constructed a statistic, <span class="math inline">\(z\)</span>, which required <span class="math inline">\(\mu\)</span> to compute, but whose distribution didn’t depend on <span class="math inline">\(\mu\)</span> (and which also happened to be easy to compute). Such a statistic is called a “pivot.”</li>
+<li>We then took a rejection region of low probability under the pivot’s distribution. If the statistic falls into this unlikely region for some candidate value of <span class="math inline">\(\mu^0\)</span>, we “reject” the hypothesis that <span class="math inline">\(\mu = \mu^0\)</span>.</li>
+<li>The set of all values that we wouldn’t reject is a “confidence interval,” a random inverval that contains <span class="math inline">\(\mu\)</span> with high probability.</li>
+</ol>
+<p>Over and over for the next few weeks, we’re going to follow these steps, but with linear regressions rather than simple sample means. We will get more complicated statistics, and distributions other than the normal. But all of the reasoning — and in particular the concern about the power of the test — will apply equally.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Confidence Intervals and Hypothesis Testing"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Understand the relationship between confidence intervals and hypothesis tests for the sample mean</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Deriving hypothesis tests using a pivot</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Deriving confidence intervals from a family of hypothesis tests</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Be able to think critically about the meaning and limitations of strict hypothesis tests</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu"># Confidence intervals and hypothesis tests for sample means</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>Let us return again to our sample means problem from the very beginning of class and </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>derive hypothesis tests and confidence intervals.  Since sample means are a special</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>case of linear regression, the intuition and techniques will extend readily to</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>the more general case.</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quarto)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>root_dir <span class="ot">&lt;-</span> quarto<span class="sc">::</span><span class="fu">find_project_root</span>()</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>grades_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(root_dir, <span class="st">"datasets/grades/grades.csv"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(class <span class="sc">==</span> <span class="st">"151A"</span>)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>scores <span class="ot">&lt;-</span> grades_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(semester <span class="sc">==</span> <span class="st">"Fall 2024"</span>) <span class="sc">%&gt;%</span> <span class="fu">pull</span>(grade)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>n_obs <span class="ot">&lt;-</span> <span class="fu">length</span>(scores)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>ybar <span class="ot">&lt;-</span> <span class="fu">mean</span>(scores)</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>sigmahat <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">sqrt</span>(<span class="fu">mean</span>((scores <span class="sc">-</span> ybar)<span class="sc">^</span><span class="dv">2</span>)), <span class="dv">2</span>)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>zalpha <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.05</span> <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>ci_width <span class="ot">&lt;-</span> <span class="fu">round</span>(sigmahat <span class="sc">/</span> <span class="fu">sqrt</span>(n_obs), <span class="dv">2</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>Here is a histogram of the final exam scores from last year's 151A class.  There</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>were <span class="in">`r n_obs`</span> students, and the maximum score was 40.</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>scores), <span class="at">bins=</span><span class="dv">40</span>)</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>Recall that we discussed</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>separating the "innate difficulty of the class" from the "particularities of</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>that particular class" by modeling $\y_n$ as IID from some population with</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>$\expect{\y_n} =: \mu$, which we approximate with $\ybar = \meann \y_n = <span class="in">`r ybar`</span>$.</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>We will ask questions like:</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Is it plausible that $\mu$ was as high as $35$?</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>What range of values might $\mu$ plausibly take?</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>The first is like a "hypothesis test" and the second is a "confidence interval."  We</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>will see that a confidence interval is precisely the set of values that a hypothesis</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>test does not reject, and that a confidence interval leads precisely to a set</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>of hypothesis tests that check whether the hypothesis is in the interval.</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="fu"># Deriving a sampling distribution.</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>By the CLT, we know that, whatever $\mu$ is,  for large $N$, we have approximately</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>\sqrt{N} (\ybar - \mu) = \frac{1}{\sqrt{N}} \sumn (\y_n - \mu) \sim \gauss{0, \sigma^2},</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>where $\sigma^2 = \var{\y_n}$. In our example, we measured </span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>$\sigma \approx <span class="in">`r sigmahat`</span>$ using the sample standard deviation.  Today, for </span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>simplicity, we will simply assume that this is the true value of $\sigma$ --- </span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>i.e., that we know $\sigma$ and can just use it in our calculations.  Later</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>we will deal with the more complicated question of accounting for the uncertainty</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>in $\sigma$.  Similarly, for simplicity, we will uncritically assume that the CLT </span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>holds exactly.</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>Using $\sigma$ and properties of the normal distribution, we can define the</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>random variable</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>\z := \frac{\ybar - \mu}{\sigma / \sqrt{N}} </span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>= </span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>\frac{<span class="in">`r ybar`</span> - \mu}{<span class="in">`r sigmahat`</span> / \sqrt{<span class="in">`r n_obs`</span>} } </span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>= </span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>\frac{<span class="in">`r ybar`</span> - \mu}{<span class="in">`r ci_width`</span>} </span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>\sim \gauss{0 ,1}.</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>This is called a "z-statistic," which is a general and not very meaningful name for statistics</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>computed by subtracting a true mean and dividing by a true standard deviation</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>from a random observation.</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>Since $\z$ is a standard normal distribution, it seems to characterize the</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>variability of $\mu$.  However, there's something funny about $\z$ --- as written, you cannot</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>compute it, because you don't know $\mu$.  In fact, finding what values</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>$\mu$ might plausibly take is the whole point of statistical inference.</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>So what good is a z--statistic?  Informally, one way to reason about it is as follows.</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>Let's take some concrete values for an example.  Suppose guess that</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>$\mu^0 = 35$ is the value, and compute </span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>\z = </span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>\frac{\ybar - \mu^0}{\sigma / \sqrt{N} } </span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>\frac{<span class="in">`r ybar`</span> - 35}{<span class="in">`r ci_width`</span>} </span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a><span class="in">`r round((ybar - 35) / ci_width, 2)`</span></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>We use the superscript $0$ to indicate that $\mu^0$ is our guess,</span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>not necessarily the true value.</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>A value as large as <span class="in">`r round((ybar - 35) / ci_width, 2)`</span> is quite unusual</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>under the standard normal distribution.  Therefore,</span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We got a very unusual draw of our standard normal or</span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We guessed wrong, i.e. $\mu \ne \mu^0 = 35$.</span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>In this way, we might consider it plausible to "reject" the hypothesis</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>that $\mu = 35$, since otherwise we must accept that we got a very</span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>unusual standard normal draw.</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a>There's a subtle problem with the preceding reasoning, however.  Suppose we</span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>do the same calculation with $\mu^0 = 30$.  Then </span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>\z = </span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>\frac{<span class="in">`r ybar`</span> - 30}{<span class="in">`r ci_width`</span>} </span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a><span class="in">`r round((ybar - 30) / ci_width, 2)`</span>.</span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>This is a much more typical value for a standard normal distribution.</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a>However, the probability of getting exactly <span class="in">`r round((ybar - 30) / ci_width, 2)`</span> --- </span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a>or, indeed, *any* particular value --- is zero, since the normal distribution is continuous</span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>valued.  (This problem is easiest to see with continuous random variables,</span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a>but the same basic problem will occur when the distribution is discrete</span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>but spread over a large number of possible values.)</span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rejection regions</span></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>To resolve this problem, we can specify *regions* that we consider implausible.</span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>That is, suppose we take a region $R$ such that, if $\z$ is standard normal, then</span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a>\prob{\z \in R} \le \alpha \quad\textrm{form some small }\alpha.</span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a>For example, we might take $\Phi^{-1}(\cdot)$ to be the inverse CDF of</span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a>the standard normal.  Then we can take</span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>R_{ts} = <span class="sc">\{</span>\z: \abs{z} \ge q <span class="sc">\}</span> \quad\textrm{where } q = \Phi^{-1}(1 - \alpha / 2).</span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a>$$ </span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a>Here, the "ts" stands for "two--sided."  If $\z \sim \gauss{0,1}$, then</span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a>\prob{R_{ts}} ={}&amp; \prob{\abs{z} \ge q}</span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \prob{\z \ge q \textrm{ or } \z \le -q} </span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \prob{\z \ge q} + \prob{\z \le -q} </span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a>&amp; \textrm{(the regions are disjoint)}</span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; 2 \prob{\z \ge q} </span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a>&amp; \textrm{(the standard normal is symmetric)}</span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; 2 ( 1- \prob{\z &lt; q})</span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; 2 ( 1- \Phi(q))</span>
+<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a>&amp; \textrm{(definition of $\Phi$)}</span>
+<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; 2 ( 1- \Phi(\Phi^{-1}(1 - \alpha / 2)))</span>
+<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a>&amp; \textrm{(definition of $q$)}</span>
+<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; 2 ( 1- (1 - \alpha / 2))</span>
+<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \alpha.</span>
+<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-186"><a href="#cb2-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-187"><a href="#cb2-187" aria-hidden="true" tabindex="-1"></a>Putting our reasoning together, we migth argue that</span>
+<span id="cb2-188"><a href="#cb2-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $\mu^0 = \mu$ (that is, if our hypothesis is correct), then $\z \sim \gauss{0,1}$.</span>
+<span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $\z \sim \gauss{0,1}$, then $\prob{\z \in R_{ts}} \le \alpha$.</span>
+<span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Therefore, fi $\z \in R_{ts}$, we either got an unusual draw of a standard normal</span>
+<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a>  or $\mu^0 \ne \mu$.</span>
+<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-194"><a href="#cb2-194" aria-hidden="true" tabindex="-1"></a>Although superficially compelling, this reasoning is not watertight, since --- as we will </span>
+<span id="cb2-195"><a href="#cb2-195" aria-hidden="true" tabindex="-1"></a>now see -- there</span>
+<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a>are many regions $R$ such that $\prob{\z \in R} = \alpha$ when $\mu^0 = \mu$, some </span>
+<span id="cb2-197"><a href="#cb2-197" aria-hidden="true" tabindex="-1"></a>of which obviously tell us nothing about the true value of $\mu$.</span>
+<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a><span class="fu">## Other rejection regions, and type I and type II error</span></span>
+<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a>We can choose other rejection regions.  You might be familiar with</span>
+<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a>R_{u} ={}&amp; <span class="sc">\{</span>\t: \t \ge q <span class="sc">\}</span> \quad\textrm{where } q = \Phi^{-1}(1 - \alpha) <span class="sc">\\</span></span>
+<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a>R_{l} ={}&amp; <span class="sc">\{</span>\t: \t \le q <span class="sc">\}</span> \quad\textrm{where } q = \Phi^{-1}(\alpha).</span>
+<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-209"><a href="#cb2-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-210"><a href="#cb2-210" aria-hidden="true" tabindex="-1"></a>The "u" stands for "upper" and the "l" for lower.</span>
+<span id="cb2-211"><a href="#cb2-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-212"><a href="#cb2-212" aria-hidden="true" tabindex="-1"></a>Furthermore, there are silly options, such as</span>
+<span id="cb2-213"><a href="#cb2-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-214"><a href="#cb2-214" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-215"><a href="#cb2-215" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb2-216"><a href="#cb2-216" aria-hidden="true" tabindex="-1"></a>R_{m} ={}&amp; <span class="sc">\{</span>\t: \abs{\t} \le q <span class="sc">\}</span> \quad\textrm{where } q = \Phi^{-1}(0.5 + \alpha / 2) \quad\textrm{(!!!)}<span class="sc">\\</span></span>
+<span id="cb2-217"><a href="#cb2-217" aria-hidden="true" tabindex="-1"></a>R_{\infty} ={}&amp; \begin{cases}</span>
+<span id="cb2-218"><a href="#cb2-218" aria-hidden="true" tabindex="-1"></a>\emptyset &amp; \textrm{ with independent probability } \alpha  <span class="sc">\\</span></span>
+<span id="cb2-219"><a href="#cb2-219" aria-hidden="true" tabindex="-1"></a>(-\infty,\infty) &amp; \textrm{ with independent probability } 1 - \alpha  <span class="sc">\\</span></span>
+<span id="cb2-220"><a href="#cb2-220" aria-hidden="true" tabindex="-1"></a>\end{cases} \quad\textrm{(!!!)}</span>
+<span id="cb2-221"><a href="#cb2-221" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-223"><a href="#cb2-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-224"><a href="#cb2-224" aria-hidden="true" tabindex="-1"></a>The last two may seem absurd, but they are still rejection regions into which</span>
+<span id="cb2-225"><a href="#cb2-225" aria-hidden="true" tabindex="-1"></a>$\z$ is unlikely to fall if it has a standard normal distribution.</span>
+<span id="cb2-226"><a href="#cb2-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-227"><a href="#cb2-227" aria-hidden="true" tabindex="-1"></a>Given this, how can we think about $\alpha$, and about the choice of the region?  Recall that</span>
+<span id="cb2-228"><a href="#cb2-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-229"><a href="#cb2-229" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $\z \in R$, we "reject" the proposed value of $\mu^0$</span>
+<span id="cb2-230"><a href="#cb2-230" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If $\z \notin R$, we "fail to reject" the given value of $\mu^0$.</span>
+<span id="cb2-231"><a href="#cb2-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a>Of course, we don't "accept" the value of $\mu^0$ in the sense of</span>
+<span id="cb2-233"><a href="#cb2-233" aria-hidden="true" tabindex="-1"></a>believing that $\mu^0 = \mu$ --- if nothing else, there will</span>
+<span id="cb2-234"><a href="#cb2-234" aria-hidden="true" tabindex="-1"></a>always be multiple values of $\mu^0$ that we do not reject, and </span>
+<span id="cb2-235"><a href="#cb2-235" aria-hidden="true" tabindex="-1"></a>$\mu$ cannot be equal to all of them.</span>
+<span id="cb2-236"><a href="#cb2-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-237"><a href="#cb2-237" aria-hidden="true" tabindex="-1"></a>So there are two ways to make an error:</span>
+<span id="cb2-238"><a href="#cb2-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-239"><a href="#cb2-239" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Type I error: We are correct and $\mu = \mu^0$, but $\t \in R$ and we reject</span>
+<span id="cb2-240"><a href="#cb2-240" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Type II error: We are incorrect and $\mu \ne \mu^0$, but $\z \notin R$ and we fail to reject</span>
+<span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a>By definition of the region $R$, we have that</span>
+<span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a>\prob{\textrm{Type I error}} \le \alpha.</span>
+<span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-248"><a href="#cb2-248" aria-hidden="true" tabindex="-1"></a>This is true for all the regions above, including the silly ones!</span>
+<span id="cb2-249"><a href="#cb2-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-250"><a href="#cb2-250" aria-hidden="true" tabindex="-1"></a>What about the Type II error?  It must depend on the "true" value</span>
+<span id="cb2-251"><a href="#cb2-251" aria-hidden="true" tabindex="-1"></a>of $\mu$, and on the shape of the rejection region we choose. </span>
+<span id="cb2-252"><a href="#cb2-252" aria-hidden="true" tabindex="-1"></a>Note that</span>
+<span id="cb2-253"><a href="#cb2-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-254"><a href="#cb2-254" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-255"><a href="#cb2-255" aria-hidden="true" tabindex="-1"></a>\z = \frac{\ybar - \mu^0}{\sigma / \sqrt{N}} = </span>
+<span id="cb2-256"><a href="#cb2-256" aria-hidden="true" tabindex="-1"></a>\frac{\ybar - \mu}{\sigma / \sqrt{N}} + \frac{\mu - \mu^0}{\sigma / \sqrt{N}}</span>
+<span id="cb2-257"><a href="#cb2-257" aria-hidden="true" tabindex="-1"></a>\sim</span>
+<span id="cb2-258"><a href="#cb2-258" aria-hidden="true" tabindex="-1"></a>\gauss{0, 1} + \frac{\mu - \mu^0}{\sigma / \sqrt{N}}.</span>
+<span id="cb2-259"><a href="#cb2-259" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-260"><a href="#cb2-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-261"><a href="#cb2-261" aria-hidden="true" tabindex="-1"></a>So if the true value $\mu \gg \mu^0$, then our $\z$ statistic is too large, and so on.</span>
+<span id="cb2-262"><a href="#cb2-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-263"><a href="#cb2-263" aria-hidden="true" tabindex="-1"></a>For example:</span>
+<span id="cb2-264"><a href="#cb2-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-265"><a href="#cb2-265" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose $\mu \gg \mu^0$.</span>
+<span id="cb2-266"><a href="#cb2-266" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Then $\z$ is too large and positive.  </span>
+<span id="cb2-267"><a href="#cb2-267" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$R_u$ and $R_{ts}$ will reject, but $R_l$ will not.</span>
+<span id="cb2-268"><a href="#cb2-268" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The Type II error of $R_u$ will be lowest, then $R_{ts}$, then $R_l$.</span>
+<span id="cb2-269"><a href="#cb2-269" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$R_l$ actually has greater Type II error than the silly regions, $R_\infty$ and $R_m$.</span>
+<span id="cb2-270"><a href="#cb2-270" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose $\mu \ll \mu^0$.</span>
+<span id="cb2-271"><a href="#cb2-271" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Then $\z$ is too large and negative.  </span>
+<span id="cb2-272"><a href="#cb2-272" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$R_l$ and $R_{ts}$ will reject, but $R_u$ will not.</span>
+<span id="cb2-273"><a href="#cb2-273" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>The Type II error of $R_l$ will be lowest, then $R_{ts}$, then $R_u$.</span>
+<span id="cb2-274"><a href="#cb2-274" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>$R_u$ actually has greater Type II error than the silly regions, $R_\infty$ and $R_m$.</span>
+<span id="cb2-275"><a href="#cb2-275" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Suppose $\mu = \mu^0 + \delta$ for some very small $\delta$.</span>
+<span id="cb2-276"><a href="#cb2-276" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Then $\z$ has about the same distribution as when $\mu^0 = \mu$. </span>
+<span id="cb2-277"><a href="#cb2-277" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>All the regions reject just about as often as we commit a Type I error, that is, a</span>
+<span id="cb2-278"><a href="#cb2-278" aria-hidden="true" tabindex="-1"></a>    proportion $\alpha$ of the time.</span>
+<span id="cb2-279"><a href="#cb2-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-280"><a href="#cb2-280" aria-hidden="true" tabindex="-1"></a>Thus the shape of the region determines which alternatives you are able to reject.</span>
+<span id="cb2-281"><a href="#cb2-281" aria-hidden="true" tabindex="-1"></a>The probability of "rejecting" under a particular alternative is called the </span>
+<span id="cb2-282"><a href="#cb2-282" aria-hidden="true" tabindex="-1"></a>"power" of a test; the power is one minus the Type II error rate.</span>
+<span id="cb2-283"><a href="#cb2-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-284"><a href="#cb2-284" aria-hidden="true" tabindex="-1"></a><span class="fu">## The null and alternative</span></span>
+<span id="cb2-285"><a href="#cb2-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-286"><a href="#cb2-286" aria-hidden="true" tabindex="-1"></a>Statistics has some formal language to distinguish between</span>
+<span id="cb2-287"><a href="#cb2-287" aria-hidden="true" tabindex="-1"></a>the "guess" $\mu^0$ and other values. </span>
+<span id="cb2-288"><a href="#cb2-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-289"><a href="#cb2-289" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The guess $\mu^0$ is called the "null hypothesis"</span>
+<span id="cb2-290"><a href="#cb2-290" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Falsely rejecting the null hypothesis is called a Type I error</span>
+<span id="cb2-291"><a href="#cb2-291" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>By construction, Type I errors occurs with probability at most $\alpha$</span>
+<span id="cb2-292"><a href="#cb2-292" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The class of potential other values of $\mu$ is called the "alternative hypothesis."</span>
+<span id="cb2-293"><a href="#cb2-293" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Falsely failling to reject the null hypothesis is called a Type II error</span>
+<span id="cb2-294"><a href="#cb2-294" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Type II errors' probability depends on the alternative(s) and the rejection region shape.</span>
+<span id="cb2-295"><a href="#cb2-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-296"><a href="#cb2-296" aria-hidden="true" tabindex="-1"></a>The choice of a test statistic (here, $\z$), together with a rejection region (here, $R$)</span>
+<span id="cb2-297"><a href="#cb2-297" aria-hidden="true" tabindex="-1"></a>constitute a "test" of the null hypothesis.  In general, one can imagine constructing</span>
+<span id="cb2-298"><a href="#cb2-298" aria-hidden="true" tabindex="-1"></a>many different tests, with different theoretical guarantees and power.</span>
+<span id="cb2-299"><a href="#cb2-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-300"><a href="#cb2-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-301"><a href="#cb2-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-302"><a href="#cb2-302" aria-hidden="true" tabindex="-1"></a><span class="fu"># Confidence intervals</span></span>
+<span id="cb2-303"><a href="#cb2-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-304"><a href="#cb2-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-305"><a href="#cb2-305" aria-hidden="true" tabindex="-1"></a>Often in applied statistics, a big deal is made about a single hypothesis test,</span>
+<span id="cb2-306"><a href="#cb2-306" aria-hidden="true" tabindex="-1"></a>particularly the null that $\mu^0 = 0$.  Often this is not a good idea.  For</span>
+<span id="cb2-307"><a href="#cb2-307" aria-hidden="true" tabindex="-1"></a>example, in our testing case, we can very easily reject $\mu^0 = 0$, since</span>
+<span id="cb2-308"><a href="#cb2-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-309"><a href="#cb2-309" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-310"><a href="#cb2-310" aria-hidden="true" tabindex="-1"></a>\z = </span>
+<span id="cb2-311"><a href="#cb2-311" aria-hidden="true" tabindex="-1"></a>\frac{<span class="in">`r ybar`</span> - 0}{<span class="in">`r ci_width`</span>} </span>
+<span id="cb2-312"><a href="#cb2-312" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb2-313"><a href="#cb2-313" aria-hidden="true" tabindex="-1"></a><span class="in">`r round((ybar - 0) / ci_width, 2)`</span></span>
+<span id="cb2-314"><a href="#cb2-314" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-315"><a href="#cb2-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-316"><a href="#cb2-316" aria-hidden="true" tabindex="-1"></a>is **very very very very** unlikely under a standard normal.  However, this</span>
+<span id="cb2-317"><a href="#cb2-317" aria-hidden="true" tabindex="-1"></a>only means that the tests were not mean zero.  We in fact know this with </span>
+<span id="cb2-318"><a href="#cb2-318" aria-hidden="true" tabindex="-1"></a>certainty --- the test scores must be non--negative, so the only way they</span>
+<span id="cb2-319"><a href="#cb2-319" aria-hidden="true" tabindex="-1"></a>could be mean zero if they were *all* identically zero, which we know to</span>
+<span id="cb2-320"><a href="#cb2-320" aria-hidden="true" tabindex="-1"></a>be false, since we observed at least one non--zero test score.  So we</span>
+<span id="cb2-321"><a href="#cb2-321" aria-hidden="true" tabindex="-1"></a>can reject $\mu^0 = 0$ with absolute certainty.  (Note that the CLT</span>
+<span id="cb2-322"><a href="#cb2-322" aria-hidden="true" tabindex="-1"></a>assumption breaks down if $\mu$ is actually close to zero.)</span>
+<span id="cb2-323"><a href="#cb2-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-324"><a href="#cb2-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-325"><a href="#cb2-325" aria-hidden="true" tabindex="-1"></a>In fact, in many cases, we do not care whether $\mu$ is precisely zero; rather,</span>
+<span id="cb2-326"><a href="#cb2-326" aria-hidden="true" tabindex="-1"></a>we care about the set of plausible values $\mu$ might take.</span>
+<span id="cb2-327"><a href="#cb2-327" aria-hidden="true" tabindex="-1"></a>The distinction can be expressed as the difference between statistical</span>
+<span id="cb2-328"><a href="#cb2-328" aria-hidden="true" tabindex="-1"></a>and practical significance:</span>
+<span id="cb2-329"><a href="#cb2-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-330"><a href="#cb2-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-331"><a href="#cb2-331" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>*Statistical significance* is the size of an effect relative to sampling variability</span>
+<span id="cb2-332"><a href="#cb2-332" aria-hidden="true" tabindex="-1"></a>  and some reference value of interest (or some mindless default, like $0$)</span>
+<span id="cb2-333"><a href="#cb2-333" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>*Practical significance* is the size of the effect in terms of its effect</span>
+<span id="cb2-334"><a href="#cb2-334" aria-hidden="true" tabindex="-1"></a>  on reality.</span>
+<span id="cb2-335"><a href="#cb2-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-336"><a href="#cb2-336" aria-hidden="true" tabindex="-1"></a>For example, suppose that $\mu$ is nonzero but very small, but </span>
+<span id="cb2-337"><a href="#cb2-337" aria-hidden="true" tabindex="-1"></a>$\sqrt{\hat\v / N}$ is very small, too. We might reject the null hypothesis</span>
+<span id="cb2-338"><a href="#cb2-338" aria-hidden="true" tabindex="-1"></a>$\mu^0 = 0$ with a high degree of certainty, and call our result</span>
+<span id="cb2-339"><a href="#cb2-339" aria-hidden="true" tabindex="-1"></a>*statistically significant*.  However, a small value of $\mu$ may</span>
+<span id="cb2-340"><a href="#cb2-340" aria-hidden="true" tabindex="-1"></a>still not be a meaningful effect size for the problem at hand, i.e.,</span>
+<span id="cb2-341"><a href="#cb2-341" aria-hidden="true" tabindex="-1"></a>it may not be *practically significant*.</span>
+<span id="cb2-342"><a href="#cb2-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-343"><a href="#cb2-343" aria-hidden="true" tabindex="-1"></a>A remendy is confidence intervals, which are actually closely</span>
+<span id="cb2-344"><a href="#cb2-344" aria-hidden="true" tabindex="-1"></a>related to our hypothesis tests.  Let $R^c$ denote the complement</span>
+<span id="cb2-345"><a href="#cb2-345" aria-hidden="true" tabindex="-1"></a>of $R$, that is, all values *not* in $R$.  </span>
+<span id="cb2-346"><a href="#cb2-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-347"><a href="#cb2-347" aria-hidden="true" tabindex="-1"></a>Assuming that $\z \sim \gauss{0,1}$, recall that we have been</span>
+<span id="cb2-348"><a href="#cb2-348" aria-hidden="true" tabindex="-1"></a>constructing regions $R$ of the form</span>
+<span id="cb2-349"><a href="#cb2-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-350"><a href="#cb2-350" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-351"><a href="#cb2-351" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb2-352"><a href="#cb2-352" aria-hidden="true" tabindex="-1"></a>1 - \alpha \le{}&amp;  1 - \prob{\z \in R} <span class="sc">\\</span></span>
+<span id="cb2-353"><a href="#cb2-353" aria-hidden="true" tabindex="-1"></a>={}&amp; \prob{\z \in R^c} <span class="sc">\\</span></span>
+<span id="cb2-354"><a href="#cb2-354" aria-hidden="true" tabindex="-1"></a>={}&amp;  \prob{\frac{\ybar - \mu}{\sigma / \sqrt{N}} \in R^c}.</span>
+<span id="cb2-355"><a href="#cb2-355" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb2-356"><a href="#cb2-356" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-357"><a href="#cb2-357" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-358"><a href="#cb2-358" aria-hidden="true" tabindex="-1"></a>We can solve this expression to get a region that $\mu$ lies in</span>
+<span id="cb2-359"><a href="#cb2-359" aria-hidden="true" tabindex="-1"></a>with high probability.  For example, with $\R_{ts}$,</span>
+<span id="cb2-360"><a href="#cb2-360" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-361"><a href="#cb2-361" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-362"><a href="#cb2-362" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb2-363"><a href="#cb2-363" aria-hidden="true" tabindex="-1"></a>1 - \alpha \le{}&amp;</span>
+<span id="cb2-364"><a href="#cb2-364" aria-hidden="true" tabindex="-1"></a>\prob{-q \le \frac{\ybar - \mu}{\sigma / \sqrt{N}} \le q}</span>
+<span id="cb2-365"><a href="#cb2-365" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb2-366"><a href="#cb2-366" aria-hidden="true" tabindex="-1"></a>\prob{\frac{- q \sigma}{\sqrt{N}} \le \ybar - \mu \le \frac{q \sigma}{\sqrt{N}}}</span>
+<span id="cb2-367"><a href="#cb2-367" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb2-368"><a href="#cb2-368" aria-hidden="true" tabindex="-1"></a>\prob{\ybar - \frac{q \sigma}{\sqrt{N}} \le  \mu \le \ybar + \frac{q \sigma}{\sqrt{N}}}.</span>
+<span id="cb2-369"><a href="#cb2-369" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb2-370"><a href="#cb2-370" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb2-371"><a href="#cb2-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-372"><a href="#cb2-372" aria-hidden="true" tabindex="-1"></a>Taking the region $I = \ybar \pm \frac{q \sigma}{\sqrt{N}}$, it follows that</span>
+<span id="cb2-373"><a href="#cb2-373" aria-hidden="true" tabindex="-1"></a>$\prob{\mu \in I} \ge 1 - \alpha$.  Here, $I$ is precisely the set of values that </span>
+<span id="cb2-374"><a href="#cb2-374" aria-hidden="true" tabindex="-1"></a>we would *not* reject with region $R_{ts}$.  Note</span>
+<span id="cb2-375"><a href="#cb2-375" aria-hidden="true" tabindex="-1"></a>that the interval $I$ is random (it depends on $\ybar$), so from one realization to the</span>
+<span id="cb2-376"><a href="#cb2-376" aria-hidden="true" tabindex="-1"></a>next, we expect $I$ to change.  However, the true $\mu$ will lie in it at least $1- \alpha$</span>
+<span id="cb2-377"><a href="#cb2-377" aria-hidden="true" tabindex="-1"></a>of the time.</span>
+<span id="cb2-378"><a href="#cb2-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-379"><a href="#cb2-379" aria-hidden="true" tabindex="-1"></a>This duality is entirely general:</span>
+<span id="cb2-380"><a href="#cb2-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-381"><a href="#cb2-381" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The set of values that a valid test does not reject is a valid confidence interval</span>
+<span id="cb2-382"><a href="#cb2-382" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Checking whether a value falls in a valid confidence interval is a valid test</span>
+<span id="cb2-383"><a href="#cb2-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-384"><a href="#cb2-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-385"><a href="#cb2-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-386"><a href="#cb2-386" aria-hidden="true" tabindex="-1"></a><span class="fu"># Stepping back</span></span>
+<span id="cb2-387"><a href="#cb2-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-388"><a href="#cb2-388" aria-hidden="true" tabindex="-1"></a>What have we done?  </span>
+<span id="cb2-389"><a href="#cb2-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-390"><a href="#cb2-390" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Starting from our measurement $\ybar$, we constructed a statistic, $\z$, which</span>
+<span id="cb2-391"><a href="#cb2-391" aria-hidden="true" tabindex="-1"></a>   required $\mu$ to compute, but whose distribution didn't depend on $\mu$ (and</span>
+<span id="cb2-392"><a href="#cb2-392" aria-hidden="true" tabindex="-1"></a>   which also happened to be easy to compute).  Such a statistic is called a "pivot."</span>
+<span id="cb2-393"><a href="#cb2-393" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>We then took a rejection region of low probability under the pivot's distribution.</span>
+<span id="cb2-394"><a href="#cb2-394" aria-hidden="true" tabindex="-1"></a>   If the statistic falls into this unlikely region for some candidate value</span>
+<span id="cb2-395"><a href="#cb2-395" aria-hidden="true" tabindex="-1"></a>   of $\mu^0$, we "reject" the hypothesis that $\mu = \mu^0$.</span>
+<span id="cb2-396"><a href="#cb2-396" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The set of all values that we wouldn't reject is a "confidence interval,"</span>
+<span id="cb2-397"><a href="#cb2-397" aria-hidden="true" tabindex="-1"></a>   a random inverval that contains $\mu$ with high probability.</span>
+<span id="cb2-398"><a href="#cb2-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-399"><a href="#cb2-399" aria-hidden="true" tabindex="-1"></a>Over and over for the next few weeks, we're going to follow these steps,</span>
+<span id="cb2-400"><a href="#cb2-400" aria-hidden="true" tabindex="-1"></a>but with linear regressions rather than simple sample means.  We will get</span>
+<span id="cb2-401"><a href="#cb2-401" aria-hidden="true" tabindex="-1"></a>more complicated statistics, and distributions other than the normal.  But all of the</span>
+<span id="cb2-402"><a href="#cb2-402" aria-hidden="true" tabindex="-1"></a>reasoning --- and in particular the concern about the power of the test ---</span>
+<span id="cb2-403"><a href="#cb2-403" aria-hidden="true" tabindex="-1"></a>will apply equally.</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
