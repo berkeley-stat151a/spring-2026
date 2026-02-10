@@ -1,0 +1,114 @@
+---
+title: "STAT151A Lab Assignment 2 (multilinear regression)"
+author: Your name here
+number-sections: true
+output: pdf_document
+geometry: margin=1in
+---
+
+
+# Question 1: Bad coding
+
+Suppose you work at Spotify, and a colleague told you that high energy songs are the most popular.
+You asked for their code, and this is what they sent you.
+The dataset they load refers to [the Spotify dataset found here](https://stat151a.berkeley.edu/spring-2026/datasets/#spotify-dataset).
+
+```{r bad_code, eval=FALSE}
+data_location <- "datasets"
+df <- read.csv(file.path(data_location, "spotify_songs.csv"))
+# run analysis
+xx <- df[,c(4,12,13,14,15,16,17,18,19,20,21,22,23)]; xxx =df[,4]
+z=sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,2]-sum(xx[,2])/nrow(xx)))/
+  t(xx[,2]-sum(xx[,2])/nrow(xx))%*%(xx[,2] - sum(xx[,2])/nrow(xx))
+z2=sum((xx[,1]-sum(xx[,1])/nrow(xx))* (xx[,3]-sum(xx[,3])/nrow(xx)))/
+  t(xx[,3]-sum(xx[,3])/nrow(xx))%*%(xx[,3] - sum(xx[,3])/nrow(xx))
+z3=sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,4]-sum(xx[,4])/nrow(xx)))/
+  t(xx[,4]-sum(xx[,4])/nrow(xx))%*%(xx[,4]-sum(xx[,4])/nrow(xx))
+z4<-sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,5]-sum(xx[,5])/nrow(xx)))/
+  t(xx[,5]-sum(xx[,5])/nrow(xx))%*%(xx[,5]-sum(xx[,5])/nrow(xx))
+z5<-sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,6]-sum(xx[,5])/nrow(xx)))/
+  t(xx[,6]-sum(xx[,6])/nrow(xx))%*%(xx[,6]-sum(xx[,6])/nrow(xx))
+z6<-sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,7]-sum(xx[,7])/nrow(xx)))/
+  t(xx[,7]-sum(xx[,2])/nrow(xx))%*%(xx[,7]- sum(xx[,7])/nrow(xx))
+z7<-sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,8]-sum(xx[,8])/nrow(xx)))/
+  t(xx[,8]-sum(xx[,8])/nrow(xx))%*%(xx[,8]- sum(xx[,8])/nrow(xx))
+z8<-sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,9]-sum(xx[,9])/nrow(xx)))/
+  t(xx[,9]-sum(xx[,9])/nrow(xxx))%*%(xx[,9]- sum(xx[,9])/nrow(xx))
+z9<-sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,10]-sum(xx[,10])/nrow(xx)))/
+  t(xx[,10]-sum(xx[,10])/nrow(xxx))%*%(xx[,10] -sum(xx[,10])/nrow(xx))
+z10 <- sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,11]-sum(xx[,11])/nrow(xx)))/
+  t(xx[,11]-sum(xx[,11])/nrow(xxx))%*%(xx[,11] -sum(xx[,11])/nrow(xx))
+z11 <- sum((xx[,1]-sum(xx[,1])/nrow(xx))*(xx[,12]-sum(xx[,12])/nrow(xx)))/
+  t(xx[,12]-sum(xx[,12])/nrow(xx))%*%(xx[,12] -sum(xx[,12])/nrow(xx))
+yy=(names(df)[c(12,13,14,15,16,17,17,19,20,21,22,23)]
+    [order(c(z, z2,z3,z4, z5, z6, z7, z8, z9, z10,z11))][1])
+print(sprintf("The best is %s",yy))
+```
+
+-   What statistical technique did they use to attempt to answer this question?
+-   Did they make any mistakes?
+-   Is it easy to read and think critically about their analysis?
+-   Would it be easy to re-run their analysis with a slightly different method or dataset?
+-   Write, in `R`, a better version of the same analysis that is error-free, more readable, and more reusable.
+
+\newpage 
+
+# Question 2: Simulations
+
+For this problem, we will simulate data from a linear regression and confirm some of our mathematical results.
+
+Define the following quantities and their corresponding `R` variables:
+
+- $N$: The number of observations
+- $\sigma$: The residual standard deviation
+- $\boldsymbol{\beta}$: A $3$--dimensional regression coefficient
+- $\rho$: Correlation, a real number between $-1$ and $1$
+
+We will assume that:
+
+- $x_{n1}$ is normal with mean $0$ and variance $1$,
+- $x_{n2}$ is normal with mean $0$ and variance $1$,
+- $z_{n1} = \rho x_{n1} + \sqrt{1 - \rho^2} x_{n2}$
+- $z_{n2} = x_{n1}$
+- The regressor rows are independent of one another ($x_{n1}$ and $x_{n2}$ are independent of $x_{m1}$ and $x_{m2}$ for $m \ne n$),
+- The residuals $\varepsilon_n$ are IID normal with mean $0$ and variance $\sigma^2$, indepenent of all regressors, and
+- For each $n$, $y_n = \boldsymbol{x}_n^\intercal \boldsymbol{\beta} + \varepsilon_n$.
+
+**(a)** Write a function to generate regressors $\boldsymbol{x}_{n1}$, $\boldsymbol{x}_{n2}$ given $N$.  
+Then, write a function that generates and returns $y_n$ and $\varepsilon_n$ given the regressors, $\sigma$, $\boldsymbol{\beta}$. 
+
+You may use the function `rnorm`, which generates standard normal random variables.
+
+**(b)** For the regression $y \sim 1 + x_1 + x_2$, construct the $\boldsymbol{X}$ matrix and $\boldsymbol{Y}$ matrix.  
+Write a function that takes in $\boldsymbol{X}$ and $\boldsymbol{Y}$ and computes the OLS estimator $\hat{\boldsymbol{\beta}}$.
+
+Do not use the `lm` function---use only matrix operations `solve()`, `t()`, and `%*%`.  
+Your function may assume that $\boldsymbol{X}$ is full column rank.
+
+**(c)** Run the regression from (b) using `lm` and confirm that you get the
+same estimate for $\hat{\boldsymbol{\beta}}$.
+
+**(d)** Write a function that takes in the $\boldsymbol{X}$ matrix and $\rho$ and returns a
+$\boldsymbol{Z}$ matrix for the regression $y \sim 1 + z_1 + z_2$.
+
+**(e)** Analytically derive expressions for $\mathrm{Var}\left(z_{n1}\right)$, $\mathrm{Var}\left(z_{n2}\right)$,
+and $\mathrm{Cov}\left(z_{n1}, z_{n2}\right)$.  
+Using a simulation in `R`, check that your calculations are correct for a range of different $\rho$.
+
+**(f)** Using the above code you have written, simulate data of
+the form $y_n = \boldsymbol{\beta}^\intercal \boldsymbol{x}_n + \varepsilon_n$ where
+
+- $N = 5000$,
+- $\sigma = 3$,
+- $\boldsymbol{\beta} = (1, 2, 3)^\intercal$.
+
+For each of 300 simulations, estimate $\hat{\boldsymbol{\beta}}_3$.  
+Plot the histogram of $\hat{\boldsymbol{\beta}}_3$ across simulations.  
+Is it centered at the true value?  How variable is it?
+
+**(g)** Now repeat (f), but simulate data of the form
+$y_n = \boldsymbol{\beta}^\intercal \boldsymbol{z}_n + \varepsilon_n$, where $\rho = 0.99$, and all
+other variables are the same.  
+Again, plot the histogram of $\hat{\boldsymbol{\beta}}_3$
+across simulations.  
+How is it similar to the result from (f)?  How is it different?

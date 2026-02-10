@@ -188,10 +188,9 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
   <li><a href="#regress-on-the-higher-order-polynomials" id="toc-regress-on-the-higher-order-polynomials" class="nav-link" data-scroll-target="#regress-on-the-higher-order-polynomials">Regress on the higher-order polynomials</a></li>
   <li><a href="#regress-on-the-higher-order-polynomials-1" id="toc-regress-on-the-higher-order-polynomials-1" class="nav-link" data-scroll-target="#regress-on-the-higher-order-polynomials-1">Regress on the higher-order polynomials</a></li>
   <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions">Interactions</a></li>
-  <li><a href="#interactions-1" id="toc-interactions-1" class="nav-link" data-scroll-target="#interactions-1">Interactions</a></li>
   <li><a href="#xtx-plot" id="toc-xtx-plot" class="nav-link" data-scroll-target="#xtx-plot">XTX plot</a></li>
   <li><a href="#level-dropping" id="toc-level-dropping" class="nav-link" data-scroll-target="#level-dropping">Level dropping</a></li>
-  <li><a href="#interactions-2" id="toc-interactions-2" class="nav-link" data-scroll-target="#interactions-2">Interactions</a></li>
+  <li><a href="#interactions-1" id="toc-interactions-1" class="nav-link" data-scroll-target="#interactions-1">Interactions</a></li>
   <li><a href="#interaction-xtx-matrix" id="toc-interaction-xtx-matrix" class="nav-link" data-scroll-target="#interaction-xtx-matrix">Interaction XTX matrix</a></li>
   <li><a href="#interaction-plot" id="toc-interaction-plot" class="nav-link" data-scroll-target="#interaction-plot">Interaction plot</a></li>
   <li><a href="#both-slopes-and-offsets" id="toc-both-slopes-and-offsets" class="nav-link" data-scroll-target="#both-slopes-and-offsets">Both slopes and offsets</a></li>
@@ -390,9 +389,7 @@ text was too small, and LaTeX math didn't render at all.
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>reg_additive <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> Kitchen.Qual, ames_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="interactions-1" class="level1">
-<h1>Interactions</h1>
+<p>Now each level of <code>Kitchen.Qual</code> has its own intercept.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -439,7 +436,7 @@ text was too small, and LaTeX math didn't render at all.
 </div>
 </div>
 </section>
-<section id="interactions-2" class="level1">
+<section id="interactions-1" class="level1">
 <h1>Interactions</h1>
 <p>How would you fit a different slope for each kitchen quality? Use an interaction term. You can use the <code>R</code> notation <code>:</code> and it will construct the interaction automatically for you.</p>
 <div class="cell">
@@ -571,7 +568,7 @@ Gr.Liv.Area:Kitchen.QualTA "1656"</code></pre>
 </section>
 <section id="higherorder-interaction-plot" class="level1">
 <h1>Higher–order Interaction Plot</h1>
-<p><strong>Why do the higher–order interactions look like step functions?</strong></p>
+<p><strong>Question:</strong> Why do the higher–order interactions look like step functions?</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1330,176 +1327,175 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb30-304"><a href="#cb30-304" aria-hidden="true" tabindex="-1"></a>reg_additive <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> Kitchen.Qual, ames_df)</span>
 <span id="cb30-305"><a href="#cb30-305" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb30-306"><a href="#cb30-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-307"><a href="#cb30-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-308"><a href="#cb30-308" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
-<span id="cb30-309"><a href="#cb30-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-312"><a href="#cb30-312" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-313"><a href="#cb30-313" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-314"><a href="#cb30-314" aria-hidden="true" tabindex="-1"></a>additive_plot <span class="ot">&lt;-</span></span>
-<span id="cb30-315"><a href="#cb30-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-316"><a href="#cb30-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-317"><a href="#cb30-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Original fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-318"><a href="#cb30-318" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_additive, ames_df), </span>
-<span id="cb30-319"><a href="#cb30-319" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb30-320"><a href="#cb30-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-321"><a href="#cb30-321" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(additive_plot)</span>
-<span id="cb30-322"><a href="#cb30-322" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-323"><a href="#cb30-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-324"><a href="#cb30-324" aria-hidden="true" tabindex="-1"></a>The fit is now different for each kitchen quality, and the </span>
-<span id="cb30-325"><a href="#cb30-325" aria-hidden="true" tabindex="-1"></a>overall slope changed too!</span>
-<span id="cb30-326"><a href="#cb30-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-327"><a href="#cb30-327" aria-hidden="true" tabindex="-1"></a>However, the slope is still the same within each kitchen</span>
-<span id="cb30-328"><a href="#cb30-328" aria-hidden="true" tabindex="-1"></a>quality group.  **Why?**</span>
+<span id="cb30-307"><a href="#cb30-307" aria-hidden="true" tabindex="-1"></a>Now each level of <span class="in">`Kitchen.Qual`</span> has its own intercept.</span>
+<span id="cb30-308"><a href="#cb30-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-311"><a href="#cb30-311" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-312"><a href="#cb30-312" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-313"><a href="#cb30-313" aria-hidden="true" tabindex="-1"></a>additive_plot <span class="ot">&lt;-</span></span>
+<span id="cb30-314"><a href="#cb30-314" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-315"><a href="#cb30-315" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-316"><a href="#cb30-316" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Original fit"</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb30-317"><a href="#cb30-317" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_additive, ames_df), </span>
+<span id="cb30-318"><a href="#cb30-318" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb30-319"><a href="#cb30-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-320"><a href="#cb30-320" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(additive_plot)</span>
+<span id="cb30-321"><a href="#cb30-321" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-322"><a href="#cb30-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-323"><a href="#cb30-323" aria-hidden="true" tabindex="-1"></a>The fit is now different for each kitchen quality, and the </span>
+<span id="cb30-324"><a href="#cb30-324" aria-hidden="true" tabindex="-1"></a>overall slope changed too!</span>
+<span id="cb30-325"><a href="#cb30-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-326"><a href="#cb30-326" aria-hidden="true" tabindex="-1"></a>However, the slope is still the same within each kitchen</span>
+<span id="cb30-327"><a href="#cb30-327" aria-hidden="true" tabindex="-1"></a>quality group.  **Why?**</span>
+<span id="cb30-328"><a href="#cb30-328" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-329"><a href="#cb30-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-330"><a href="#cb30-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-331"><a href="#cb30-331" aria-hidden="true" tabindex="-1"></a><span class="fu"># XTX plot</span></span>
-<span id="cb30-332"><a href="#cb30-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-333"><a href="#cb30-333" aria-hidden="true" tabindex="-1"></a>We can see in the XTX matrix that there is some association</span>
-<span id="cb30-334"><a href="#cb30-334" aria-hidden="true" tabindex="-1"></a>between living area and kitchen quality.</span>
-<span id="cb30-335"><a href="#cb30-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-336"><a href="#cb30-336" aria-hidden="true" tabindex="-1"></a>**How would we expect the slope to have changed if this matrix were diagonal?**</span>
-<span id="cb30-337"><a href="#cb30-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-340"><a href="#cb30-340" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-341"><a href="#cb30-341" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(reg_additive) <span class="sc">%&gt;%</span> <span class="fu">scale</span>(<span class="at">center=</span><span class="cn">FALSE</span>)</span>
-<span id="cb30-342"><a href="#cb30-342" aria-hidden="true" tabindex="-1"></a>xtx <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> x <span class="sc">/</span> <span class="fu">nrow</span>(ames_df)</span>
-<span id="cb30-343"><a href="#cb30-343" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMatrix</span>(xtx)</span>
-<span id="cb30-344"><a href="#cb30-344" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-330"><a href="#cb30-330" aria-hidden="true" tabindex="-1"></a><span class="fu"># XTX plot</span></span>
+<span id="cb30-331"><a href="#cb30-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-332"><a href="#cb30-332" aria-hidden="true" tabindex="-1"></a>We can see in the XTX matrix that there is some association</span>
+<span id="cb30-333"><a href="#cb30-333" aria-hidden="true" tabindex="-1"></a>between living area and kitchen quality.</span>
+<span id="cb30-334"><a href="#cb30-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-335"><a href="#cb30-335" aria-hidden="true" tabindex="-1"></a>**How would we expect the slope to have changed if this matrix were diagonal?**</span>
+<span id="cb30-336"><a href="#cb30-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-339"><a href="#cb30-339" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-340"><a href="#cb30-340" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(reg_additive) <span class="sc">%&gt;%</span> <span class="fu">scale</span>(<span class="at">center=</span><span class="cn">FALSE</span>)</span>
+<span id="cb30-341"><a href="#cb30-341" aria-hidden="true" tabindex="-1"></a>xtx <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> x <span class="sc">/</span> <span class="fu">nrow</span>(ames_df)</span>
+<span id="cb30-342"><a href="#cb30-342" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMatrix</span>(xtx)</span>
+<span id="cb30-343"><a href="#cb30-343" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-344"><a href="#cb30-344" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-345"><a href="#cb30-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-346"><a href="#cb30-346" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-347"><a href="#cb30-347" aria-hidden="true" tabindex="-1"></a><span class="fu"># Level dropping</span></span>
-<span id="cb30-348"><a href="#cb30-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-349"><a href="#cb30-349" aria-hidden="true" tabindex="-1"></a>Note that one of the levels is automatically dropped?  **Why?**</span>
-<span id="cb30-350"><a href="#cb30-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-353"><a href="#cb30-353" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-354"><a href="#cb30-354" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Kitchen.Qual)</span>
-<span id="cb30-355"><a href="#cb30-355" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">coefficients</span>(reg_additive))</span>
-<span id="cb30-356"><a href="#cb30-356" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-346"><a href="#cb30-346" aria-hidden="true" tabindex="-1"></a><span class="fu"># Level dropping</span></span>
+<span id="cb30-347"><a href="#cb30-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-348"><a href="#cb30-348" aria-hidden="true" tabindex="-1"></a>Note that one of the levels is automatically dropped?  **Why?**</span>
+<span id="cb30-349"><a href="#cb30-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-352"><a href="#cb30-352" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-353"><a href="#cb30-353" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Kitchen.Qual)</span>
+<span id="cb30-354"><a href="#cb30-354" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">coefficients</span>(reg_additive))</span>
+<span id="cb30-355"><a href="#cb30-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-356"><a href="#cb30-356" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-357"><a href="#cb30-357" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-358"><a href="#cb30-358" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-359"><a href="#cb30-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-360"><a href="#cb30-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-361"><a href="#cb30-361" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
+<span id="cb30-360"><a href="#cb30-360" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interactions</span></span>
+<span id="cb30-361"><a href="#cb30-361" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-362"><a href="#cb30-362" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-363"><a href="#cb30-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-364"><a href="#cb30-364" aria-hidden="true" tabindex="-1"></a>How would you fit a different slope for each kitchen quality?</span>
-<span id="cb30-365"><a href="#cb30-365" aria-hidden="true" tabindex="-1"></a>Use an interaction term.  You can use the <span class="in">`R`</span> notation <span class="in">`:`</span></span>
-<span id="cb30-366"><a href="#cb30-366" aria-hidden="true" tabindex="-1"></a>and it will construct the interaction automatically for you.</span>
-<span id="cb30-367"><a href="#cb30-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-370"><a href="#cb30-370" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-371"><a href="#cb30-371" aria-hidden="true" tabindex="-1"></a>reg_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area<span class="sc">:</span>Kitchen.Qual, ames_df)</span>
-<span id="cb30-372"><a href="#cb30-372" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(<span class="fu">select</span>(ames_df, Gr.Liv.Area, Kitchen.Qual), </span>
-<span id="cb30-373"><a href="#cb30-373" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.data.frame</span>(<span class="fu">model.matrix</span>(reg_inter)))[<span class="dv">1</span>,] <span class="sc">%&gt;%</span></span>
-<span id="cb30-374"><a href="#cb30-374" aria-hidden="true" tabindex="-1"></a>          <span class="fu">t</span>()</span>
-<span id="cb30-375"><a href="#cb30-375" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-376"><a href="#cb30-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-377"><a href="#cb30-377" aria-hidden="true" tabindex="-1"></a>Here's a good cheat sheet for <span class="in">`R`</span> formulas:</span>
-<span id="cb30-378"><a href="#cb30-378" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-379"><a href="#cb30-379" aria-hidden="true" tabindex="-1"></a><span class="in">`https://www.econometrics.blog/post/the-r-formula-cheatsheet/`</span></span>
+<span id="cb30-363"><a href="#cb30-363" aria-hidden="true" tabindex="-1"></a>How would you fit a different slope for each kitchen quality?</span>
+<span id="cb30-364"><a href="#cb30-364" aria-hidden="true" tabindex="-1"></a>Use an interaction term.  You can use the <span class="in">`R`</span> notation <span class="in">`:`</span></span>
+<span id="cb30-365"><a href="#cb30-365" aria-hidden="true" tabindex="-1"></a>and it will construct the interaction automatically for you.</span>
+<span id="cb30-366"><a href="#cb30-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-369"><a href="#cb30-369" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-370"><a href="#cb30-370" aria-hidden="true" tabindex="-1"></a>reg_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area<span class="sc">:</span>Kitchen.Qual, ames_df)</span>
+<span id="cb30-371"><a href="#cb30-371" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_cols</span>(<span class="fu">select</span>(ames_df, Gr.Liv.Area, Kitchen.Qual), </span>
+<span id="cb30-372"><a href="#cb30-372" aria-hidden="true" tabindex="-1"></a>          <span class="fu">as.data.frame</span>(<span class="fu">model.matrix</span>(reg_inter)))[<span class="dv">1</span>,] <span class="sc">%&gt;%</span></span>
+<span id="cb30-373"><a href="#cb30-373" aria-hidden="true" tabindex="-1"></a>          <span class="fu">t</span>()</span>
+<span id="cb30-374"><a href="#cb30-374" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-375"><a href="#cb30-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-376"><a href="#cb30-376" aria-hidden="true" tabindex="-1"></a>Here's a good cheat sheet for <span class="in">`R`</span> formulas:</span>
+<span id="cb30-377"><a href="#cb30-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-378"><a href="#cb30-378" aria-hidden="true" tabindex="-1"></a><span class="in">`https://www.econometrics.blog/post/the-r-formula-cheatsheet/`</span></span>
+<span id="cb30-379"><a href="#cb30-379" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-380"><a href="#cb30-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-381"><a href="#cb30-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-382"><a href="#cb30-382" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interaction XTX matrix</span></span>
-<span id="cb30-383"><a href="#cb30-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-386"><a href="#cb30-386" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-387"><a href="#cb30-387" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(reg_inter) <span class="sc">%&gt;%</span> <span class="fu">scale</span>(<span class="at">center=</span><span class="cn">FALSE</span>)</span>
-<span id="cb30-388"><a href="#cb30-388" aria-hidden="true" tabindex="-1"></a>xtx <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> x <span class="sc">/</span> <span class="fu">nrow</span>(ames_df)</span>
-<span id="cb30-389"><a href="#cb30-389" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMatrix</span>(xtx)</span>
-<span id="cb30-390"><a href="#cb30-390" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-381"><a href="#cb30-381" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interaction XTX matrix</span></span>
+<span id="cb30-382"><a href="#cb30-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-385"><a href="#cb30-385" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-386"><a href="#cb30-386" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(reg_inter) <span class="sc">%&gt;%</span> <span class="fu">scale</span>(<span class="at">center=</span><span class="cn">FALSE</span>)</span>
+<span id="cb30-387"><a href="#cb30-387" aria-hidden="true" tabindex="-1"></a>xtx <span class="ot">&lt;-</span> <span class="fu">t</span>(x) <span class="sc">%*%</span> x <span class="sc">/</span> <span class="fu">nrow</span>(ames_df)</span>
+<span id="cb30-388"><a href="#cb30-388" aria-hidden="true" tabindex="-1"></a><span class="fu">PlotMatrix</span>(xtx)</span>
+<span id="cb30-389"><a href="#cb30-389" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-390"><a href="#cb30-390" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-391"><a href="#cb30-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-392"><a href="#cb30-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-393"><a href="#cb30-393" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interaction plot</span></span>
-<span id="cb30-394"><a href="#cb30-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-397"><a href="#cb30-397" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-398"><a href="#cb30-398" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-399"><a href="#cb30-399" aria-hidden="true" tabindex="-1"></a>interaction_plot <span class="ot">&lt;-</span></span>
-<span id="cb30-400"><a href="#cb30-400" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-401"><a href="#cb30-401" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-402"><a href="#cb30-402" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Overall fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-403"><a href="#cb30-403" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_inter, ames_df), </span>
-<span id="cb30-404"><a href="#cb30-404" aria-hidden="true" tabindex="-1"></a>                  <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb30-405"><a href="#cb30-405" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(interaction_plot <span class="sc">+</span> </span>
-<span id="cb30-406"><a href="#cb30-406" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes"</span>) <span class="sc">+</span> </span>
-<span id="cb30-407"><a href="#cb30-407" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
-<span id="cb30-408"><a href="#cb30-408" aria-hidden="true" tabindex="-1"></a>             additive_plot <span class="sc">+</span> </span>
-<span id="cb30-409"><a href="#cb30-409" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="st">"Interaction offsets"</span>) <span class="sc">+</span> </span>
-<span id="cb30-410"><a href="#cb30-410" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
-<span id="cb30-411"><a href="#cb30-411" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">2</span>)</span>
-<span id="cb30-412"><a href="#cb30-412" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-413"><a href="#cb30-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-414"><a href="#cb30-414" aria-hidden="true" tabindex="-1"></a>**Is there a point where all the slope interaction lines cross?**</span>
+<span id="cb30-392"><a href="#cb30-392" aria-hidden="true" tabindex="-1"></a><span class="fu"># Interaction plot</span></span>
+<span id="cb30-393"><a href="#cb30-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-396"><a href="#cb30-396" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-397"><a href="#cb30-397" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-398"><a href="#cb30-398" aria-hidden="true" tabindex="-1"></a>interaction_plot <span class="ot">&lt;-</span></span>
+<span id="cb30-399"><a href="#cb30-399" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-400"><a href="#cb30-400" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-401"><a href="#cb30-401" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Overall fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">linetype=</span><span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb30-402"><a href="#cb30-402" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_inter, ames_df), </span>
+<span id="cb30-403"><a href="#cb30-403" aria-hidden="true" tabindex="-1"></a>                  <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb30-404"><a href="#cb30-404" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(interaction_plot <span class="sc">+</span> </span>
+<span id="cb30-405"><a href="#cb30-405" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes"</span>) <span class="sc">+</span> </span>
+<span id="cb30-406"><a href="#cb30-406" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
+<span id="cb30-407"><a href="#cb30-407" aria-hidden="true" tabindex="-1"></a>             additive_plot <span class="sc">+</span> </span>
+<span id="cb30-408"><a href="#cb30-408" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ggtitle</span>(<span class="st">"Interaction offsets"</span>) <span class="sc">+</span> </span>
+<span id="cb30-409"><a href="#cb30-409" aria-hidden="true" tabindex="-1"></a>              <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
+<span id="cb30-410"><a href="#cb30-410" aria-hidden="true" tabindex="-1"></a>             <span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb30-411"><a href="#cb30-411" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-412"><a href="#cb30-412" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-413"><a href="#cb30-413" aria-hidden="true" tabindex="-1"></a>**Is there a point where all the slope interaction lines cross?**</span>
+<span id="cb30-414"><a href="#cb30-414" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-415"><a href="#cb30-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-416"><a href="#cb30-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-417"><a href="#cb30-417" aria-hidden="true" tabindex="-1"></a><span class="fu"># Both slopes and offsets</span></span>
-<span id="cb30-418"><a href="#cb30-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-419"><a href="#cb30-419" aria-hidden="true" tabindex="-1"></a>Using the <span class="in">`R`</span> notation <span class="in">`*`</span>, we can add both constant interactions</span>
-<span id="cb30-420"><a href="#cb30-420" aria-hidden="true" tabindex="-1"></a>and slope interactions:</span>
-<span id="cb30-421"><a href="#cb30-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-424"><a href="#cb30-424" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-425"><a href="#cb30-425" aria-hidden="true" tabindex="-1"></a>reg_add_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area<span class="sc">*</span>Kitchen.Qual, ames_df)</span>
-<span id="cb30-426"><a href="#cb30-426" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">model.matrix</span>(reg_add_inter))</span>
-<span id="cb30-427"><a href="#cb30-427" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-428"><a href="#cb30-428" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-431"><a href="#cb30-431" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-432"><a href="#cb30-432" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-433"><a href="#cb30-433" aria-hidden="true" tabindex="-1"></a>additive_and_interaction_plot <span class="ot">&lt;-</span></span>
-<span id="cb30-434"><a href="#cb30-434" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-435"><a href="#cb30-435" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-436"><a href="#cb30-436" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Overall fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb30-437"><a href="#cb30-437" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_add_inter, ames_df), </span>
-<span id="cb30-438"><a href="#cb30-438" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb30-439"><a href="#cb30-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-440"><a href="#cb30-440" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(interaction_plot <span class="sc">+</span> </span>
-<span id="cb30-441"><a href="#cb30-441" aria-hidden="true" tabindex="-1"></a>             <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes"</span>) <span class="sc">+</span></span>
-<span id="cb30-442"><a href="#cb30-442" aria-hidden="true" tabindex="-1"></a>             <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
-<span id="cb30-443"><a href="#cb30-443" aria-hidden="true" tabindex="-1"></a>             additive_and_interaction_plot <span class="sc">+</span> </span>
-<span id="cb30-444"><a href="#cb30-444" aria-hidden="true" tabindex="-1"></a>               <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes and offsets"</span>) <span class="sc">+</span></span>
-<span id="cb30-445"><a href="#cb30-445" aria-hidden="true" tabindex="-1"></a>               <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
-<span id="cb30-446"><a href="#cb30-446" aria-hidden="true" tabindex="-1"></a>               <span class="at">ncol=</span><span class="dv">2</span>)</span>
-<span id="cb30-447"><a href="#cb30-447" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-416"><a href="#cb30-416" aria-hidden="true" tabindex="-1"></a><span class="fu"># Both slopes and offsets</span></span>
+<span id="cb30-417"><a href="#cb30-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-418"><a href="#cb30-418" aria-hidden="true" tabindex="-1"></a>Using the <span class="in">`R`</span> notation <span class="in">`*`</span>, we can add both constant interactions</span>
+<span id="cb30-419"><a href="#cb30-419" aria-hidden="true" tabindex="-1"></a>and slope interactions:</span>
+<span id="cb30-420"><a href="#cb30-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-423"><a href="#cb30-423" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-424"><a href="#cb30-424" aria-hidden="true" tabindex="-1"></a>reg_add_inter <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area<span class="sc">*</span>Kitchen.Qual, ames_df)</span>
+<span id="cb30-425"><a href="#cb30-425" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(<span class="fu">model.matrix</span>(reg_add_inter))</span>
+<span id="cb30-426"><a href="#cb30-426" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-427"><a href="#cb30-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-430"><a href="#cb30-430" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-431"><a href="#cb30-431" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-432"><a href="#cb30-432" aria-hidden="true" tabindex="-1"></a>additive_and_interaction_plot <span class="ot">&lt;-</span></span>
+<span id="cb30-433"><a href="#cb30-433" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-434"><a href="#cb30-434" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-435"><a href="#cb30-435" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Overall fit"</span>), <span class="at">lwd=</span><span class="dv">3</span>, <span class="at">linetype=</span><span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb30-436"><a href="#cb30-436" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_add_inter, ames_df), </span>
+<span id="cb30-437"><a href="#cb30-437" aria-hidden="true" tabindex="-1"></a>                <span class="at">group=</span>Kitchen.Qual, <span class="at">color=</span>Kitchen.Qual), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb30-438"><a href="#cb30-438" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-439"><a href="#cb30-439" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(interaction_plot <span class="sc">+</span> </span>
+<span id="cb30-440"><a href="#cb30-440" aria-hidden="true" tabindex="-1"></a>             <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes"</span>) <span class="sc">+</span></span>
+<span id="cb30-441"><a href="#cb30-441" aria-hidden="true" tabindex="-1"></a>             <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
+<span id="cb30-442"><a href="#cb30-442" aria-hidden="true" tabindex="-1"></a>             additive_and_interaction_plot <span class="sc">+</span> </span>
+<span id="cb30-443"><a href="#cb30-443" aria-hidden="true" tabindex="-1"></a>               <span class="fu">ggtitle</span>(<span class="st">"Interaction slopes and offsets"</span>) <span class="sc">+</span></span>
+<span id="cb30-444"><a href="#cb30-444" aria-hidden="true" tabindex="-1"></a>               <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">"none"</span>), </span>
+<span id="cb30-445"><a href="#cb30-445" aria-hidden="true" tabindex="-1"></a>               <span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb30-446"><a href="#cb30-446" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-447"><a href="#cb30-447" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-448"><a href="#cb30-448" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-449"><a href="#cb30-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-450"><a href="#cb30-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-451"><a href="#cb30-451" aria-hidden="true" tabindex="-1"></a><span class="fu"># Higher--order interactions</span></span>
-<span id="cb30-452"><a href="#cb30-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-453"><a href="#cb30-453" aria-hidden="true" tabindex="-1"></a>We can create still higher--order interactions with the</span>
-<span id="cb30-454"><a href="#cb30-454" aria-hidden="true" tabindex="-1"></a>symbol <span class="in">`^`</span>:</span>
-<span id="cb30-455"><a href="#cb30-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-458"><a href="#cb30-458" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-459"><a href="#cb30-459" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Garage.Qual)</span>
-<span id="cb30-460"><a href="#cb30-460" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Exter.Qual)</span>
-<span id="cb30-461"><a href="#cb30-461" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Kitchen.Qual)</span>
-<span id="cb30-462"><a href="#cb30-462" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-463"><a href="#cb30-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-466"><a href="#cb30-466" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-467"><a href="#cb30-467" aria-hidden="true" tabindex="-1"></a>reg_higher <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb30-468"><a href="#cb30-468" aria-hidden="true" tabindex="-1"></a>  SalePrice <span class="sc">~</span> (Exter.Qual <span class="sc">+</span> Kitchen.Qual <span class="sc">+</span> Garage.Qual)<span class="sc">^</span><span class="dv">3</span>,</span>
-<span id="cb30-469"><a href="#cb30-469" aria-hidden="true" tabindex="-1"></a>  ames_df)</span>
-<span id="cb30-470"><a href="#cb30-470" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-471"><a href="#cb30-471" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-472"><a href="#cb30-472" aria-hidden="true" tabindex="-1"></a><span class="fu"># Three--way interactions have a lot of NA estimates.</span></span>
-<span id="cb30-473"><a href="#cb30-473" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-476"><a href="#cb30-476" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-477"><a href="#cb30-477" aria-hidden="true" tabindex="-1"></a>coeff_names <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">coefficients</span>(reg_higher))</span>
-<span id="cb30-478"><a href="#cb30-478" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(coeff_names[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], coeff_names[<span class="dv">21</span><span class="sc">:</span><span class="dv">25</span>], coeff_names[<span class="dv">71</span><span class="sc">:</span><span class="dv">75</span>])</span>
-<span id="cb30-479"><a href="#cb30-479" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-482"><a href="#cb30-482" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-483"><a href="#cb30-483" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sum</span>(<span class="fu">is.na</span>(<span class="fu">coefficients</span>(reg_higher))))</span>
-<span id="cb30-484"><a href="#cb30-484" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb30-485"><a href="#cb30-485" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-486"><a href="#cb30-486" aria-hidden="true" tabindex="-1"></a>**Why are there so many NA coefficients?**</span>
+<span id="cb30-450"><a href="#cb30-450" aria-hidden="true" tabindex="-1"></a><span class="fu"># Higher--order interactions</span></span>
+<span id="cb30-451"><a href="#cb30-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-452"><a href="#cb30-452" aria-hidden="true" tabindex="-1"></a>We can create still higher--order interactions with the</span>
+<span id="cb30-453"><a href="#cb30-453" aria-hidden="true" tabindex="-1"></a>symbol <span class="in">`^`</span>:</span>
+<span id="cb30-454"><a href="#cb30-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-457"><a href="#cb30-457" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-458"><a href="#cb30-458" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Garage.Qual)</span>
+<span id="cb30-459"><a href="#cb30-459" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Exter.Qual)</span>
+<span id="cb30-460"><a href="#cb30-460" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames_df<span class="sc">$</span>Kitchen.Qual)</span>
+<span id="cb30-461"><a href="#cb30-461" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-462"><a href="#cb30-462" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-465"><a href="#cb30-465" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-466"><a href="#cb30-466" aria-hidden="true" tabindex="-1"></a>reg_higher <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb30-467"><a href="#cb30-467" aria-hidden="true" tabindex="-1"></a>  SalePrice <span class="sc">~</span> (Exter.Qual <span class="sc">+</span> Kitchen.Qual <span class="sc">+</span> Garage.Qual)<span class="sc">^</span><span class="dv">3</span>,</span>
+<span id="cb30-468"><a href="#cb30-468" aria-hidden="true" tabindex="-1"></a>  ames_df)</span>
+<span id="cb30-469"><a href="#cb30-469" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-470"><a href="#cb30-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-471"><a href="#cb30-471" aria-hidden="true" tabindex="-1"></a><span class="fu"># Three--way interactions have a lot of NA estimates.</span></span>
+<span id="cb30-472"><a href="#cb30-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-475"><a href="#cb30-475" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-476"><a href="#cb30-476" aria-hidden="true" tabindex="-1"></a>coeff_names <span class="ot">&lt;-</span> <span class="fu">names</span>(<span class="fu">coefficients</span>(reg_higher))</span>
+<span id="cb30-477"><a href="#cb30-477" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(coeff_names[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>], coeff_names[<span class="dv">21</span><span class="sc">:</span><span class="dv">25</span>], coeff_names[<span class="dv">71</span><span class="sc">:</span><span class="dv">75</span>])</span>
+<span id="cb30-478"><a href="#cb30-478" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-481"><a href="#cb30-481" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-482"><a href="#cb30-482" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sum</span>(<span class="fu">is.na</span>(<span class="fu">coefficients</span>(reg_higher))))</span>
+<span id="cb30-483"><a href="#cb30-483" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-484"><a href="#cb30-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-485"><a href="#cb30-485" aria-hidden="true" tabindex="-1"></a>**Why are there so many NA coefficients?**</span>
+<span id="cb30-486"><a href="#cb30-486" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-487"><a href="#cb30-487" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb30-488"><a href="#cb30-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-489"><a href="#cb30-489" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-490"><a href="#cb30-490" aria-hidden="true" tabindex="-1"></a><span class="fu"># Higher--order Interaction Plot</span></span>
-<span id="cb30-491"><a href="#cb30-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-492"><a href="#cb30-492" aria-hidden="true" tabindex="-1"></a>**Why do the higher--order interactions look like step functions?**</span>
-<span id="cb30-495"><a href="#cb30-495" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb30-496"><a href="#cb30-496" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb30-497"><a href="#cb30-497" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
-<span id="cb30-498"><a href="#cb30-498" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb30-499"><a href="#cb30-499" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Linear fit"</span>), <span class="at">lwd=</span><span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb30-500"><a href="#cb30-500" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_higher, ames_df), </span>
-<span id="cb30-501"><a href="#cb30-501" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">"Higher order indicator interactions"</span>))</span>
-<span id="cb30-502"><a href="#cb30-502" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb30-489"><a href="#cb30-489" aria-hidden="true" tabindex="-1"></a><span class="fu"># Higher--order Interaction Plot</span></span>
+<span id="cb30-490"><a href="#cb30-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-491"><a href="#cb30-491" aria-hidden="true" tabindex="-1"></a>**Question:** Why do the higher--order interactions look like step functions?</span>
+<span id="cb30-494"><a href="#cb30-494" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb30-495"><a href="#cb30-495" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb30-496"><a href="#cb30-496" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_df, <span class="fu">aes</span>(<span class="at">y=</span>SalePrice, <span class="at">x=</span>Gr.Liv.Area)) <span class="sc">+</span></span>
+<span id="cb30-497"><a href="#cb30-497" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb30-498"><a href="#cb30-498" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg, ames_df), <span class="at">color=</span><span class="st">"Original fit"</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">linetype=</span><span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb30-499"><a href="#cb30-499" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y=</span><span class="fu">predict</span>(reg_higher, ames_df), </span>
+<span id="cb30-500"><a href="#cb30-500" aria-hidden="true" tabindex="-1"></a>    <span class="at">color=</span><span class="st">"Higher order indicator interactions"</span>))</span>
+<span id="cb30-501"><a href="#cb30-501" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
