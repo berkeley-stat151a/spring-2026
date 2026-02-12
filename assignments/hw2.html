@@ -8,7 +8,7 @@
 
 <meta name="author" content="Your name here">
 
-<title>STAT151A Homework 2 (multilinear regression and coding).</title>
+<title>STAT151A Homework 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -73,7 +39,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fbfc5e4df9448d80c0adf4375239e1f6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -208,8 +174,13 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#bad-coding" id="toc-bad-coding" class="nav-link active" data-scroll-target="#bad-coding"><span class="header-section-number">1</span> Bad coding</a></li>
-  <li><a href="#question-2-simulations" id="toc-question-2-simulations" class="nav-link" data-scroll-target="#question-2-simulations"><span class="header-section-number">2</span> Question 2: Simulations</a></li>
+  <li><a href="#multivariate-normal-exercises" id="toc-multivariate-normal-exercises" class="nav-link active" data-scroll-target="#multivariate-normal-exercises"><span class="header-section-number">1</span> Multivariate normal exercises</a></li>
+  <li><a href="#chi-squared-random-variables-and-allies" id="toc-chi-squared-random-variables-and-allies" class="nav-link" data-scroll-target="#chi-squared-random-variables-and-allies"><span class="header-section-number">2</span> Chi squared random variables and allies</a></li>
+  <li><a href="#fit-and-regressors" id="toc-fit-and-regressors" class="nav-link" data-scroll-target="#fit-and-regressors"><span class="header-section-number">3</span> Fit and regressors</a></li>
+  <li><a href="#analysis-of-variance-anova" id="toc-analysis-of-variance-anova" class="nav-link" data-scroll-target="#analysis-of-variance-anova"><span class="header-section-number">4</span> Analysis of variance (ANOVA)</a></li>
+  <li><a href="#when-f-tests-and-t-tests-disgree" id="toc-when-f-tests-and-t-tests-disgree" class="nav-link" data-scroll-target="#when-f-tests-and-t-tests-disgree"><span class="header-section-number">5</span> When F-tests and t-tests disgree</a></li>
+  <li><a href="#eigendecomposition-and-covariances" id="toc-eigendecomposition-and-covariances" class="nav-link" data-scroll-target="#eigendecomposition-and-covariances"><span class="header-section-number">6</span> Eigendecomposition and covariances</a></li>
+  <li><a href="#interpreting-tests-and-confidence-intervals" id="toc-interpreting-tests-and-confidence-intervals" class="nav-link" data-scroll-target="#interpreting-tests-and-confidence-intervals"><span class="header-section-number">7</span> Interpreting tests and confidence intervals</a></li>
   </ul>
 </nav>
     </div>
@@ -218,7 +189,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">STAT151A Homework 2 (multilinear regression and coding).</h1>
+<h1 class="title">STAT151A Homework 2</h1>
 </div>
 
 
@@ -241,76 +212,156 @@ window.Quarto = {
 </header>
 
 
-<section id="bad-coding" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Bad coding</h1>
-<p>Suppose you work at Spotify, and a colleague told you that high energy songs are the most popular. You asked for their code, and this is what they sent you. The dataset they load refers to <a href="../datasets/index.html">the Spotify dataset found here</a>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>data_location <span class="ot">&lt;-</span> <span class="st">"datasets"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(data_location, <span class="st">"spotify_songs.csv"</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run analysis</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>xx <span class="ot">&lt;-</span> df[,<span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">18</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>)]; xxx <span class="ot">=</span>df[,<span class="dv">4</span>]</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>z<span class="ot">=</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">2</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">2</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">2</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">2</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">%*%</span>(xx[,<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">sum</span>(xx[,<span class="dv">2</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>z2<span class="ot">=</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span> (xx[,<span class="dv">3</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">3</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">3</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">3</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">%*%</span>(xx[,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">sum</span>(xx[,<span class="dv">3</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>z3<span class="ot">=</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">4</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">4</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">4</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">4</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">%*%</span>(xx[,<span class="dv">4</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">4</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>z4<span class="ot">&lt;-</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">5</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">5</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">5</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">5</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">%*%</span>(xx[,<span class="dv">5</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">5</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>z5<span class="ot">&lt;-</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">6</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">5</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">6</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">6</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">%*%</span>(xx[,<span class="dv">6</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">6</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>z6<span class="ot">&lt;-</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">7</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">7</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">7</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">2</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">%*%</span>(xx[,<span class="dv">7</span>]<span class="sc">-</span> <span class="fu">sum</span>(xx[,<span class="dv">7</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>z7<span class="ot">&lt;-</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">8</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">8</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">8</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">8</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">%*%</span>(xx[,<span class="dv">8</span>]<span class="sc">-</span> <span class="fu">sum</span>(xx[,<span class="dv">8</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>z8<span class="ot">&lt;-</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">9</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">9</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">9</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">9</span>])<span class="sc">/</span><span class="fu">nrow</span>(xxx))<span class="sc">%*%</span>(xx[,<span class="dv">9</span>]<span class="sc">-</span> <span class="fu">sum</span>(xx[,<span class="dv">9</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>z9<span class="ot">&lt;-</span><span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">10</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">10</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">10</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">10</span>])<span class="sc">/</span><span class="fu">nrow</span>(xxx))<span class="sc">%*%</span>(xx[,<span class="dv">10</span>] <span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">10</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>z10 <span class="ot">&lt;-</span> <span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">11</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">11</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">11</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">11</span>])<span class="sc">/</span><span class="fu">nrow</span>(xxx))<span class="sc">%*%</span>(xx[,<span class="dv">11</span>] <span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">11</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>z11 <span class="ot">&lt;-</span> <span class="fu">sum</span>((xx[,<span class="dv">1</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">1</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">*</span>(xx[,<span class="dv">12</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">12</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx)))<span class="sc">/</span><span class="fu">t</span>(xx[,<span class="dv">12</span>]<span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">12</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))<span class="sc">%*%</span>(xx[,<span class="dv">12</span>] <span class="sc">-</span><span class="fu">sum</span>(xx[,<span class="dv">12</span>])<span class="sc">/</span><span class="fu">nrow</span>(xx))</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>yy<span class="ot">=</span>(<span class="fu">names</span>(df)[<span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">16</span>,<span class="dv">17</span>,<span class="dv">17</span>,<span class="dv">19</span>,<span class="dv">20</span>,<span class="dv">21</span>,<span class="dv">22</span>,<span class="dv">23</span>)][<span class="fu">order</span>(<span class="fu">c</span>(z, z2,z3,z4, z5, z6, z7, z8, z9, z10,z11))][<span class="dv">1</span>])</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">sprintf</span>(<span class="st">"The best is %s"</span>,yy))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>What statistical technique did they use to attempt to answer this question?</li>
-<li>Did they make any mistakes?</li>
-<li>Is it easy to read and think critically about their analysis?</li>
-<li>Would it be easy to re-run their analysis with a slightly different method or dataset?</li>
-<li>Write, in R, a better version of the same analysis that is error-free, more readable, and more reusable.</li>
-</ul>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<section id="multivariate-normal-exercises" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Multivariate normal exercises</h1>
+<p>Let <span class="math inline">\(\boldsymbol{x}\sim \mathcal{N}\left(\boldsymbol{\mu}, \boldsymbol{\Sigma}\right)\)</span> where</p>
+<p><span class="math display">\[
+\boldsymbol{\mu}=
+\begin{pmatrix}
+1 \\ 2 \\ 3
+\end{pmatrix}
+\quad\textrm{and}\quad
+\boldsymbol{\Sigma}=
+\begin{pmatrix}
+1 &amp;   0.5 &amp; 0 \\
+0.5 &amp; 2   &amp; 0.1 \\
+0   &amp; 0.1   &amp; 4 \\
+\end{pmatrix}.
+\]</span></p>
+<p>Let</p>
+<p><span class="math display">\[
+\boldsymbol{v}=
+\begin{pmatrix}
+0 \\ 1 \\ 0
+\end{pmatrix}
+\quad
+\boldsymbol{a}=
+\begin{pmatrix}
+2 \\ 1 \\ 1
+\end{pmatrix}
+\quad
+\boldsymbol{A}=
+\begin{pmatrix}
+1 &amp; 1 &amp; 0 \\
+2 &amp; 0 &amp; 1 \\
+\end{pmatrix}
+\]</span></p>
+<p>Evaluate the following expressions.</p>
+<ol type="1">
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{v}^\intercal\boldsymbol{x}\right]\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{v}^\intercal\boldsymbol{x}\right)\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{a}^\intercal\boldsymbol{x}\right]\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{a}^\intercal\boldsymbol{x}\right)\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{v}\boldsymbol{x}^\intercal\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}\boldsymbol{x}^\intercal\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}^\intercal\boldsymbol{x}\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\mathrm{trace}\left(\boldsymbol{x}\boldsymbol{x}^\intercal\right)\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{A}\boldsymbol{x}\right]\)</span></li>
+<li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{A}\boldsymbol{x}\right)\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[(\boldsymbol{A}\boldsymbol{x}) (\boldsymbol{A}\boldsymbol{x})^\intercal\right]\)</span></li>
+</ol>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
 </section>
-<section id="question-2-simulations" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Question 2: Simulations</h1>
-<p>For this problem, we will simulate data from a linear regression and confirm some of our mathematical results.</p>
-<p>Define the following quantities and their corresponding R variables:</p>
+<section id="chi-squared-random-variables-and-allies" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Chi squared random variables and allies</h1>
+<p>Let <span class="math inline">\(s\sim \mathcal{\chi}^2_{K}\)</span>. Prove that</p>
 <ul>
-<li><span class="math inline">\(N\)</span>: The number of observations</li>
-<li><span class="math inline">\(\sigma\)</span>: The residual standard deviation</li>
-<li><span class="math inline">\(\boldsymbol{\beta}\)</span>: A <span class="math inline">\(3\)</span>–dimensional regression coefficient</li>
-<li><span class="math inline">\(\rho\)</span>: A correlation between <span class="math inline">\(-1\)</span> and <span class="math inline">\(1\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[s\right] = K\)</span></li>
+<li><span class="math inline">\(\mathrm{Var}\left(s\right) = 2 K\)</span> (hint: if <span class="math inline">\(z\sim \mathcal{N}\left(0,\sigma^2\right)\)</span>, then <span class="math inline">\(\mathbb{E}\left[z^4\right] = 3\sigma^4\)</span>)</li>
+<li>If <span class="math inline">\(a_n \sim \mathcal{N}\left(0,\sigma^2\right)\)</span> IID for <span class="math inline">\(1,\ldots,N\)</span>, then <span class="math inline">\(\frac{1}{\sigma^2} \sum_{n=1}^Na_n^2 \sim \mathcal{\chi}^2_{N}\)</span></li>
+<li><span class="math inline">\(\frac{1}{K} s\rightarrow 1\)</span> as <span class="math inline">\(K \rightarrow \infty\)</span></li>
+<li><span class="math inline">\(\frac{1}{\sqrt{K}} (s- K) \rightarrow \mathcal{N}\left(0, 2\right)\)</span> as <span class="math inline">\(K \rightarrow \infty\)</span></li>
+<li>Let <span class="math inline">\(\boldsymbol{a}\sim \mathcal{N}\left(\boldsymbol{0}, \boldsymbol{I}\right)\)</span> where <span class="math inline">\(a\in \mathbb{R}^{K}\)</span>. Then <span class="math inline">\(\left\Vert\boldsymbol{a}\right\Vert_2^2 \sim \mathcal{\chi}^2_{K}\)</span></li>
+<li>Let <span class="math inline">\(\boldsymbol{a}\sim \mathcal{N}\left(\boldsymbol{0}, \boldsymbol{\Sigma}\right)\)</span> where <span class="math inline">\(a\in \mathbb{R}^{K}\)</span>. Then <span class="math inline">\(\boldsymbol{a}^\intercal\boldsymbol{\Sigma}^{-1} \boldsymbol{a}\sim \mathcal{\chi}^2_{K}\)</span></li>
 </ul>
-<p>We will assume that:</p>
+<p>Now, let <span class="math inline">\(t\sim \mathrm{StudentT}_{K}\)</span> with <span class="math inline">\(K &gt; 2\)</span>.</p>
 <ul>
-<li><span class="math inline">\(x_{n1}\)</span> is normal with mean <span class="math inline">\(0\)</span> and variance <span class="math inline">\(1\)</span>,</li>
-<li><span class="math inline">\(x_{n2}\)</span> is normal with mean <span class="math inline">\(0\)</span> and variance <span class="math inline">\(1\)</span>,</li>
-<li><span class="math inline">\(z_{n1} = \rho x_{n1} + \sqrt{1 - \rho^2} x_{n2}\)</span></li>
-<li><span class="math inline">\(z_{n2} = x_{n1}\)</span></li>
-<li>The regressor rows are independent of one another (<span class="math inline">\(x_{n1}\)</span> and <span class="math inline">\(x_{n2}\)</span> are independent of <span class="math inline">\(x_{m1}\)</span> and <span class="math inline">\(x_{m2}\)</span> for <span class="math inline">\(m \ne n\)</span>),</li>
-<li>The residuals <span class="math inline">\(\varepsilon_n\)</span> are IID normal with mean <span class="math inline">\(0\)</span> and variance <span class="math inline">\(\sigma^2\)</span>, indepenent of all regressors, and</li>
-<li>For each <span class="math inline">\(n\)</span>, <span class="math inline">\(y_n = \boldsymbol{x}_n^\intercal\boldsymbol{\beta}+ \varepsilon_n\)</span>.</li>
+<li>Prove that <span class="math inline">\(\mathbb{E}\left[t\right] = 0\)</span>.</li>
+<li>Prove that <span class="math inline">\(\mathrm{Var}\left(t\right) &gt; 1\)</span>. (You may use the explicit formula or Jensen’s inequality.)</li>
+<li>Argue that a standard confidence interval based on a Student T distribution will always be wider than a confidence interval for the same data based on a normal assumption that ignores the variability of <span class="math inline">\(\hat{\sigma}^2\)</span>.</li>
+<li>For a generic vector <span class="math inline">\(\boldsymbol{a}\)</span>, derive a student-t confidence interval for <span class="math inline">\(\boldsymbol{a}^\intercal{\boldsymbol{\beta}^{*}}\)</span>,</li>
 </ul>
-<p><strong>(a)</strong></p>
-<p>Write a function to generate regressors <span class="math inline">\(\boldsymbol{x}_{n1}\)</span>, <span class="math inline">\(\boldsymbol{x}_{n2}\)</span> give <span class="math inline">\(N\)</span>. Then, write a function that generates and returns <span class="math inline">\(y_n\)</span> and <span class="math inline">\(\varepsilon_n\)</span> given the regressors, <span class="math inline">\(\sigma\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span>. You may use the functions <code>rnorm</code> which generates standard normal random variables.</p>
-<p><strong>(b)</strong></p>
-<p>For the regression <span class="math inline">\(y\sim 1 + x_1 + x_2\)</span>, construct the <span class="math inline">\(\boldsymbol{X}\)</span> matrix and <span class="math inline">\(\boldsymbol{Y}\)</span> matrix. Write a function that takes in <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{Y}\)</span> and computes the OLS estimator <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
-<p>Do not use the <code>lm</code> function — use only matrix operations <code>solve()</code>, <code>t()</code>, and <code>%*%</code>. Your function may assume that <span class="math inline">\(\boldsymbol{X}\)</span> is full column rank.</p>
-<p><strong>(c)</strong></p>
-<p>Run the regression from (b) using <code>lm</code> and confirm that you get the same estimate for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
-<p><strong>(d)</strong></p>
-<p>Write a function that takes in the <span class="math inline">\(\boldsymbol{X}\)</span> matrix and <span class="math inline">\(\rho\)</span> and returns a <span class="math inline">\(\boldsymbol{Z}\)</span> matrix for the regression <span class="math inline">\(y\sim 1 + z_1 + z_2\)</span>.</p>
-<p><strong>(e)</strong></p>
-<p>Analytically derive expressions for <span class="math inline">\(\mathrm{Var}\left(z_{n1}\right)\)</span>, <span class="math inline">\(\mathrm{Var}\left(z_{n2}\right)\)</span>, and <span class="math inline">\(\mathrm{Cov}\left(z_{n1}, z_{n2}\right)\)</span>. Using a simulation in <code>R</code>, check that your calculations are correct for a range of different <span class="math inline">\(\rho\)</span>.</p>
-<p><strong>(f)</strong></p>
-<p>Using the above code you have written, please simulate data of the form <span class="math inline">\(y_n = \boldsymbol{\beta}^\intercal\boldsymbol{x}_n + \varepsilon_n\)</span> where</p>
+<p>Now, let <span class="math inline">\(\phi \sim \mathrm{FDist}_{K_1,K_2}\)</span>.</p>
 <ul>
-<li><span class="math inline">\(N = 5000\)</span></li>
-<li><span class="math inline">\(\sigma = 3\)</span></li>
-<li><span class="math inline">\(\boldsymbol{\beta}= (1, 2, 3)^\intercal\)</span>.</li>
+<li>For large <span class="math inline">\(K_2\)</span>, show that the mean of the F distribution is approximately <span class="math inline">\(1\)</span>.</li>
+<li>For large <span class="math inline">\(K_2\)</span>, show that the variance of the F distribution is approximately <span class="math inline">\(2 / K_1\)</span>. (Hint: use the definition of a <span class="math inline">\(\mathcal{\chi}^2_{K_1}\)</span> as the sum of squares of independent standard normals.)</li>
+<li>If we are testing the null that a set of coefficients are zero, argue why it only makes sense to reject for large values of our F-statistic.</li>
 </ul>
-<p>For each of 300 simulations, estimate <span class="math inline">\(\hat{\boldsymbol{\beta}}_3\)</span>. Plot the histogram of <span class="math inline">\(\hat{\boldsymbol{\beta}}_3\)</span> across simulations. Is it centered at the true value? How variable is it?</p>
-<p><strong>(g)</strong></p>
-<p>Now repeat (f), but simulate data of the form <span class="math inline">\(y_n = \boldsymbol{\beta}^\intercal\boldsymbol{z}_n + \varepsilon_n\)</span>, where <span class="math inline">\(\rho = 0.99\)</span>, and all other variables are the same. Again plot the histogram of <span class="math inline">\(\hat{\boldsymbol{\beta}}_3\)</span> across simulations. How is it similar to the result from (f)? How is it different?</p>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="fit-and-regressors" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Fit and regressors</h1>
+<p>Given a regression on <span class="math inline">\(\boldsymbol{X}\)</span> with <span class="math inline">\(P\)</span> regressors and <span class="math inline">\(N\)</span> data points, and the corresponding <span class="math inline">\(\boldsymbol{Y}\)</span>, <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span>, and <span class="math inline">\(\hat{\varepsilon}\)</span>, define the following quantities: <span class="math display">\[
+\begin{aligned}
+RSS :={}&amp; \hat{\varepsilon}^\intercal\hat{\varepsilon}&amp; \textrm{(Residual sum of squares)}\\
+TSS :={}&amp; \boldsymbol{Y}^\intercal\boldsymbol{Y}&amp; \textrm{(Total sum of squares)}\\
+ESS :={}&amp; \hat{\boldsymbol{Y}}^\intercal\hat{\boldsymbol{Y}}&amp; \textrm{(Explained sum of squares)}\\
+R^2 :={}&amp; \frac{ESS}{TSS}.
+\end{aligned}
+\]</span></p>
+<ol type="a">
+<li>Prove that <span class="math inline">\(RSS + ESS = TSS\)</span>.</li>
+<li>Express <span class="math inline">\(R^2\)</span> in terms of <span class="math inline">\(TSS\)</span> and <span class="math inline">\(RSS\)</span>.</li>
+<li>What is <span class="math inline">\(R^2\)</span> when we include no regressors? (<span class="math inline">\(P = 0\)</span>)</li>
+<li>What is <span class="math inline">\(R^2\)</span> when we include <span class="math inline">\(N\)</span> linearly independent regressors? (<span class="math inline">\(P=N\)</span>)</li>
+<li>Can <span class="math inline">\(R^2\)</span> ever decrease when we add a regressor? If so, how?</li>
+<li>Can <span class="math inline">\(R^2\)</span> ever stay the same when we add a regressor? If so, how?</li>
+<li>Can <span class="math inline">\(R^2\)</span> ever increase when we add a regressor? If so, how?</li>
+<li>Does a high <span class="math inline">\(R^2\)</span> mean the regression is useful? (You may argue by example.)</li>
+<li>Does a low <span class="math inline">\(R^2\)</span> mean the regression is not useful? (You may argue by example.)</li>
+</ol>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="analysis-of-variance-anova" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Analysis of variance (ANOVA)</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="when-f-tests-and-t-tests-disgree" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> When F-tests and t-tests disgree</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="eigendecomposition-and-covariances" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Eigendecomposition and covariances</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="interpreting-tests-and-confidence-intervals" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Interpreting tests and confidence intervals</h1>
+<p>Consider a regression <span class="math inline">\(y_n \sim \boldsymbol{x}_n^\intercal\boldsymbol{\beta}\)</span>, with the given confidence intervals for <span class="math inline">\(\beta_1\)</span>. In each problem, let <span class="math inline">\(\hat{v}= \left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \hat{\sigma}^2\right)_{11}\)</span> denote the standard error for <span class="math inline">\(\hat{\boldsymbol{\beta}}_1\)</span>. Assume that we have a reasonably large number of observations.</p>
+<p>Assume that the response is patient well-being, and <span class="math inline">\(x_{n1}\)</span> is a treatment indicator for a medical procedure, so that <span class="math inline">\(\beta_1\)</span> is the modeled effect of the procedure on the patient’s health. Here, <span class="math inline">\(\beta_1 &gt; 0\)</span> means the treatment has a positive (good) health benefit. The other regressors are explanatory covariates. The treatment is randomly assigned, so that it is independent of the other covariates.</p>
+<p>For each problem, discuss briefly whether the inferential statement is reasonable or unreasonable and why.</p>
+<!--
+- One--sided test that doesn't have power in the right direction
+
+- CLT mis--applied due to not enough data
+
+- An okay example
+
+- Heteroskedastic errors, but using homoskedastic variances
+
+- Predictive variability versus inferential variability
+-->
+<p><strong>(a)</strong> Consider the one-sided interval <span class="math inline">\(I = (\hat{\beta}_1 - 1.64 \sqrt{\hat{v}}, \infty)\)</span>, and assume that <span class="math inline">\(\hat{\beta}_1 - 1.64 \sqrt{\hat{v}} = - 3.4\)</span>. Since this interval contains <span class="math inline">\(\beta = 10\)</span>, we conclude that the treatment might have a very positive effect.</p>
+<p><strong>(b)</strong> Consider the two-sided interval <span class="math inline">\(I = \hat{\beta}_1 \pm 1.96 \sqrt{\hat{v}}\)</span>. We find that the interval contains <span class="math inline">\(0\)</span>, therefore we know that the treatment has no effect.</p>
+<p><strong>(c)</strong> Consider the two-sided interval <span class="math inline">\(I = \hat{\beta}_1 \pm 1.96 \sqrt{\hat{v}}\)</span>. We find that the interval does not contain <span class="math inline">\(\hat{\beta}_1 - 1.96 \sqrt{\hat{v}} &gt; 0\)</span>, which is tentative evidence that the treatment has some non–zero, positive effect.</p>
+<p><strong>(d)</strong> Consider (c), except that when we plot the residuals <span class="math inline">\(\hat{\varepsilon}_n\)</span> versus <span class="math inline">\(x_{n2}\)</span> and find that the distribution of <span class="math inline">\(\hat{\varepsilon}_n\)</span> has greater spread when <span class="math inline">\(\left|x_{n2}\right|\)</span> is larger.</p>
+<p><strong>(e)</strong> We observe a new patient with regressors <span class="math inline">\(x_{*}\)</span>, and construct a confidence interval <span class="math inline">\(I\)</span> such that for <span class="math inline">\(\mathbb{P}\left(x_{*}^\intercal\boldsymbol{\beta}\in I_{*}\right) \ge 0.95\)</span>. We expect that their unobserved well-being, <span class="math inline">\(y_*\)</span>, is probably in <span class="math inline">\(I_{*}\)</span>.</p>
+
+
 </section>
 
 </main> <!-- /main -->
