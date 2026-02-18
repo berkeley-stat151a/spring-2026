@@ -9,7 +9,7 @@ output:
 geometry: margin=1in
 ---
 
-```{r setup, include=FALSE, eval=FALSE}
+```{r setup, include=FALSE, eval=TRUE}
 library(tidyverse)
 library(broom)
 ```
@@ -27,7 +27,7 @@ You can find detailed information about the dataset [here](https://github.com/Yu
 First, clean the dataset.
 We will focus on "normal" sales of residential units.
 
-```{r preprocessing, eval=FALSE}
+```{r preprocessing, eval=TRUE}
 ames <- read.csv("ames.csv") |>
   dplyr::filter(
     !(MS.Zoning %in% c("C (all)", "A (agr)", "I (all)")),
