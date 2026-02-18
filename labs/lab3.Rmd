@@ -1,0 +1,167 @@
+---
+title: "STAT151A Lab 3: Designing and interpreting regressors"
+author: your name
+number-sections: true
+output: 
+  pdf_document:
+    keep_tex: false
+    pandoc_args: ["--variable", "urlcolor=blue"]
+geometry: margin=1in
+---
+
+```{r setup, include=FALSE, eval=FALSE}
+library(tidyverse)
+library(broom)
+```
+
+
+Suppose you run a real estate listings website.  
+You want to launch a new service that automatically estimates (and suggests) a sale price for newly listed houses.
+This could serve several business purposes (e.g., projecting revenue or attracting new customers).
+Naturally, for any given house, there is only so much data you can use to predict its final price, so a linear model is a reasonable choice.
+What model should you use?
+
+We will use the Ames Housing dataset, which you can download from the [course website](https://stat151a.berkeley.edu/spring-2026/datasets/), to answer this question.
+You can find detailed information about the dataset [here](https://github.com/Yu-Group/vds-book-supplementary/blob/main/R/ames_houses/data/data_documentation/DataDocumentation.txt).
+
+First, clean the dataset.
+We will focus on "normal" sales of residential units.
+
+```{r preprocessing, eval=FALSE}
+ames <- read.csv("ames.csv") |>
+  dplyr::filter(
+    !(MS.Zoning %in% c("C (all)", "A (agr)", "I (all)")),
+    Sale.Condition == "Normal"
+  ) |>
+  mutate(
+    TotalSF = Gr.Liv.Area + Total.Bsmt.SF # create total sq.ft.
+  ) |>
+  tidyr::drop_na(
+    TotalSF, SalePrice, Overall.Qual
+  )
+```
+
+## Question 1: One-hot encoding
+
+**(a)** Regress `SalePrice` on `TotalSF` with an intercept using `lm`.
+
+```{r}
+#
+# Your code here
+#
+```
+
+**(b)** Now, let's add the `Overall.Qual` regressor. 
+It's a variable that ranks the quality of finishes of a house from 1 to 10. 
+
+Fit a linear model `SalePrice` ~ `TotalSF` + `Overall.Qual`.
+
+```{r}
+#
+# Your code here
+#
+```
+
+What does this model implicitly assume about the effect of `Overall.Qual` on `SalePrice`? 
+
+Create a boxplot of `SalePrice` by `Overall.Qual`. 
+Does the plot support the assumption above? 
+
+**(c)** We can instead treat `Overall.Qual` as categorical. 
+Create a design matrix $X$ with `TotalSF` and one-hot encoding of `Overall.Qual` (you can use `model.matrix`), and fit a linear model without intercept on these 11 variables. 
+
+```{r}
+#
+# Your code here
+#
+```
+
+Can you interpret the 10 coefficients for `Overall.Qual`? (Hint: think about two houses with the same `TotalSF` but different quality.)
+
+**(d)** Now, instead of manually creating the $X$ matrix, pass `Overall.Qual` as a factor in `lm`, in addition to `TotalSF`, and fit a model with an intercept.
+
+```{r}
+#
+# Your code here
+#
+```
+
+Look at the resulting coefficients --- what do you observe, and why?
+
+Do you get different fitted values (compared to (c))? If not, why not?
+
+How can you interpret the `Overall.Qual` coefficients in this case? 
+
+\pagebreak
+
+
+## Question 2: Interactions and transformations of regressors
+
+**(a)** We may think that not only the intercept, but also the slope of `TotalSF` depends on `Overall.Qual` --- after all, more footage of better quality *should* cost more.
+
+Explain in words how you would construct a design matrix $X$ to model this linearly.
+
+Fit this model using `lm` (you might want to look up R formulae, specifically the `*` operator).
+
+```{r}
+#
+# Your code here
+#
+```
+
+**(b)** We can go even further and assume that the slope of `TotalSF` and the intercept depend not only on `Overall.Qual`, but on both `Overall.Qual` and `Kitchen.Qual`.
+
+In words, how would you build a design matrix $X$ for this linear model, and how many regressors (counting the intercept, if you include it) would it have? 
+
+Would you trust the results of this model? 
+How many houses in the dataset have "Very Excellent" (10) quality?
+
+```{r}
+#
+# Your code here
+#
+```
+
+**(c)** Let us forget about kitchen quality --- it will not be available to us for most new listings on our website.
+
+Motivated by part (b), we may think that differences between "Very Excellent" (10), "Excellent" (9), and "Very Good" (8) houses are rather symbolic.
+
+Instead of treating them as separate categories, merge these three together.
+Similarly, merge 1--5 into one category and 6--7 into a second category, for a total of 3 (instead of 10) `Overall.Qual` levels.
+
+Fit a model similar to (a) with the updated `Overall.Qual` regressor. 
+
+Do you think this model is "better" for our prediction purposes --- in what sense, and why?
+
+```{r}
+#
+# Your code here
+#
+```
+
+**(d)** Suppose we have two houses, $A$ and $B$, of the same `Overall.Qual` with total square footage $x$ and $x + 100$, respectively.
+
+What difference in sale price does your model predict for these houses?
+Does this difference depend on $x$? 
+
+```{r}
+#
+# Your code here
+#
+```
+
+**(e)** Motivated by this, we may wish to add `sqrt(TotalSF)` as a regressor.
+
+Why would we expect this to help (hint: what is the marginal effect of increasing `TotalSF` on sale price in this linear model)?
+
+Make two scatter plots: one of `SalePrice` against `TotalSF` and one of `SalePrice` against `sqrt(TotalSF)`.  
+
+<!-- Optional: Fit your model from (c) with this transformation. -->
+
+Explain how you could further transform `TotalSF` if you believed that above a certain threshold (say $5000\text{ft}^2$), additional footage had no effect on sale price?
+
+```{r}
+#
+# Your code here
+#
+```
