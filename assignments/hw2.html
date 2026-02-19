@@ -39,7 +39,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fbfc5e4df9448d80c0adf4375239e1f6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -329,6 +329,19 @@ R^2 :={}&amp; \frac{ESS}{TSS}.
 </section>
 <section id="when-f-tests-and-t-tests-disgree" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> When F-tests and t-tests disgree</h1>
+<p>In this problem we show how t-tests, which perform inference on <em>individual coefficients</em>, and F-tests, which perform inference on <em>groups of coefficients</em>, can appear to disagree with one another.</p>
+<p>For simplicity, consider a setting where the regressor matrix <span class="math inline">\(\boldsymbol{X}\)</span> is orthogonal and normalized so that <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= N \boldsymbol{I}_P\)</span>. We will also assume that for some <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span>, <span class="math inline">\(\boldsymbol{Y}= {\boldsymbol{\beta}^{*}}\boldsymbol{X}+ \boldsymbol{\varepsilon}\)</span> where <span class="math inline">\(\varepsilon_n \sim \mathcal{N}\left(0, 1\right)\)</span> independently of each other and of <span class="math inline">\(\boldsymbol{X}\)</span>. You may also assume that <span class="math inline">\(N\)</span> is large enough so that <span class="math inline">\(\hat{\sigma}\approx \sigma = 1\)</span>.</p>
+<p>Throughout, take</p>
+<ul>
+<li><span class="math inline">\(\phi := \frac{\hat{\boldsymbol{\beta}}^\intercal\hat{\boldsymbol{\beta}}}{N \hat{\sigma}^2}\)</span> to be the t-statistic for the test of the null <span class="math inline">\(F_0: {\boldsymbol{\beta}^{*}}_1 = \boldsymbol{0}\)</span>.</li>
+</ul>
+<p><strong>(a)</strong> Under our assumptions show that the z-test statistic for the null <span class="math inline">\(H_0: {\boldsymbol{\beta}^{*}}_1 = 0\)</span> is given by</p>
+<p><span class="math display">\[
+t_1 := \frac{\hat{\boldsymbol{\beta}}_1}{\hat{\sigma}/ \sqrt{N - P}}.
+\]</span></p>
+<p><strong>(b)</strong></p>
+<p><strong>(a)</strong> First, suppose that <span class="math inline">\({\boldsymbol{\beta}^{*}}_1 = 1\)</span>, and that $_p = $ for <span class="math inline">\(p=2,\ldots,P\)</span>. Show that <span class="math inline">\(t_1\)</span> rejects with high probability as <span class="math inline">\(N \rightarrow \infty\)</span>.</p>
+<p><strong>(b)</strong> Now, show that the F-test for the null hypothesis <span class="math inline">\(H_0: {\boldsymbol{\beta}^{*}}= \boldsymbol{0}\)</span> rejects only with probability approximately equal to the level <span class="math inline">\(\alpha\)</span> of the test.</p>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>

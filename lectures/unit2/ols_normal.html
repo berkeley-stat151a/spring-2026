@@ -72,7 +72,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-fbfc5e4df9448d80c0adf4375239e1f6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -345,7 +345,13 @@ Multivariate normal random variables
 </div>
 </div>
 <p>One can define the MVN distribtuion in many ways, but the above will do the trick most easily for this class.</p>
-<p>Note that, for a given covariance <span class="math inline">\(\Sigma\)</span>, there will be many different <span class="math inline">\(\boldsymbol{S}\)</span> that give the same distribution. In particular, <span class="math inline">\(\boldsymbol{S}\boldsymbol{U}\)</span> gives the same <span class="math inline">\(\Sigma\)</span> for any orthogonal matrix <span class="math inline">\(\boldsymbol{U}\)</span>, which is the same as to note that <span class="math inline">\(\boldsymbol{U}\boldsymbol{Z}\)</span> is also an IID standard normal vector when <span class="math inline">\(\boldsymbol{U}\)</span> is orthogonal.</p>
+<p>Note that, for a given covariance <span class="math inline">\(\Sigma\)</span>, there will always be many different <span class="math inline">\(\boldsymbol{S}\)</span> that give the same distribution. In particular, <span class="math inline">\(\boldsymbol{S}\boldsymbol{U}\)</span> gives the same <span class="math inline">\(\Sigma\)</span> for any orthogonal matrix <span class="math inline">\(\boldsymbol{U}\)</span>, which is the same as to note that <span class="math inline">\(\boldsymbol{U}\boldsymbol{Z}\)</span> is also an IID standard normal vector when <span class="math inline">\(\boldsymbol{U}\)</span> is orthogonal. To see that any symmetric matrix <span class="math inline">\(\Sigma\)</span> has a square root, write the eigenvalue decomposition <span class="math display">\[
+\Sigma = \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal,
+\]</span> where <span class="math inline">\(\boldsymbol{U}\)</span> has orthonormal columns and <span class="math inline">\(\Lambda\)</span> is diagonal with entries <span class="math inline">\(\lambda_{p}\)</span>. If we take <span class="math inline">\(\Lambda^{1/2}\)</span> to be diagonal with entries <span class="math inline">\(\lambda_{p}^{1/2}\)</span>, then the matrix <span class="math inline">\(\Sigma^{1/2} := \boldsymbol{U}\Lambda^{1/2} \boldsymbol{U}^\intercal\)</span> is a square root of <span class="math inline">\(\Sigma\)</span>:</p>
+<p><span class="math display">\[
+\Sigma^{1/2} (\Sigma^{1/2})^\intercal= \boldsymbol{U}\Lambda^{1/2} \boldsymbol{U}^\intercal\boldsymbol{U}\Lambda^{1/2} \boldsymbol{U}^\intercal=
+\boldsymbol{U}\Lambda^{1/2} \Lambda^{1/2} \boldsymbol{U}^\intercal= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal= \Sigma.
+\]</span></p>
 <p>Since we have that <span class="math inline">\(\boldsymbol{\varepsilon}= \sigma \boldsymbol{Z}\)</span> for IID standard normal <span class="math inline">\(\boldsymbol{Z}\)</span>, it follows from the above that <span class="math display">\[
 p(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}) = \mathcal{N}\left({\boldsymbol{\beta}^{*}}, \sigma^2 (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\right).
 \]</span></p>
@@ -366,26 +372,48 @@ p(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}) = \mathcal{N}\left({\boldsymbol{
 </section>
 <section id="pivots-for-fixed-variance" class="level1">
 <h1>Pivots for fixed variance</h1>
-<p>Suppose we want to form a confidence interval for coefficient <span class="math inline">\(p\)</span> of <span class="math inline">\(\boldsymbol{\beta}\)</span>, i.e., for <span class="math inline">\(\beta_p\)</span>. How can we use the distribution of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> to get a pivot depending on <span class="math inline">\(\beta_p\)</span>?</p>
-<p>First, take <span class="math inline">\(\boldsymbol{e}_p\)</span> to be the vector with <span class="math inline">\(1\)</span> in the <span class="math inline">\(p\)</span> location and <span class="math inline">\(0\)</span> elsewhere, and note that <span class="math inline">\(\beta_p = \boldsymbol{e}_p^\intercal\boldsymbol{\beta}\)</span>. Then, by normality,</p>
+<p>Using the above, we see that for any <span class="math inline">\(\boldsymbol{v}\)</span>, <span class="math display">\[
+p(\boldsymbol{v}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}) = \mathcal{N}\left(\boldsymbol{v}^\intercal{\boldsymbol{\beta}^{*}}, \sigma^2 \boldsymbol{v}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{v}\right).
+\]</span> This means we can form a pivotal quantity for testing the hypothesis <span class="math inline">\(\boldsymbol{v}^\intercal{\boldsymbol{\beta}^{*}}= b\)</span> *assuming we know <span class="math inline">\(\sigma\)</span>. This is sometimes called a “z-test.”</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The “z-test statistic” for the null <span class="math inline">\(H_0: \boldsymbol{v}^\intercal{\boldsymbol{\beta}^{*}}= b\)</span> is given by <span class="math display">\[
+z:= \frac{\boldsymbol{v}^\intercal\hat{\boldsymbol{\beta}}- b}{\sigma \sqrt{\boldsymbol{v}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{v}}}.
+\]</span> Here, <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(\boldsymbol{v}\)</span> are taken as known.</p>
+</div>
+</div>
+<p>Under normality, you can show that <span class="math inline">\(z\sim \mathcal{N}\left(0,1\right)\)</span>. This can be used form two–sided confidence interval for the quantity <span class="math inline">\(b\)</span>:</p>
+<p><span class="math display">\[
+C = \boldsymbol{v}^\intercal\hat{\boldsymbol{\beta}}\pm q_{\alpha/2} \sigma \sqrt{\boldsymbol{v}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{v}},
+\]</span> where <span class="math inline">\(-q_{\alpha/2}\)</span> is the <span class="math inline">\(\alpha / 2\)</span> quantile of the standard normal distribution.</p>
+<p>Let’s write <span class="math inline">\(s_p^2 := \boldsymbol{v}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{v}\)</span>, which is the contribution of the regressors to the variance. It’s worth noting that <span class="math inline">\(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\rightarrow \boldsymbol{M}_{\boldsymbol{X}}\)</span> by the LLN, so by the continuous mapping theorem we expect that <span class="math display">\[
+N s_p^2 = \boldsymbol{v}^\intercal\left(\boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \boldsymbol{v}=
+\boldsymbol{v}^\intercal\left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \boldsymbol{v}\rightarrow
+\boldsymbol{v}^\intercal\boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsymbol{v}.
+\]</span> From this it follows that <span class="math inline">\(s_p \approx \boldsymbol{v}^\intercal\boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsymbol{v}/ \sqrt{N}\)</span> for large <span class="math inline">\(N\)</span> — that is, <span class="math inline">\(s_p\)</span> gets smaller as <span class="math inline">\(N\)</span> grows, and the test statistic gets larger for any fixed value of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>.</p>
+<p>How can we use the above trick to get a confidence interval for hypothesis tests involving just one component, <span class="math inline">\(\beta_p\)</span>? We can take <span class="math inline">\(\boldsymbol{e}_p\)</span> to be the vector with <span class="math inline">\(1\)</span> in the <span class="math inline">\(p\)</span> location and <span class="math inline">\(0\)</span> elsewhere, and note that <span class="math inline">\(\beta_p = \boldsymbol{e}_p^\intercal\boldsymbol{\beta}\)</span>. Then, by normality,</p>
 <p><span class="math display">\[
 \begin{aligned}
 \hat{\beta}_p = \boldsymbol{e}_p^\intercal\hat{\boldsymbol{\beta}}\sim&amp;
 \mathcal{N}\left(\boldsymbol{e}_p^\intercal\boldsymbol{\beta}, \sigma^2 \boldsymbol{e}_p^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{e}_p \right)
 =
 \mathcal{N}\left(\beta_p, \sigma^2 v_p \right), \textrm{ where }\\
-v_p =&amp; \left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \right)_{pp}
+s_p^2 =&amp; \left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \right)_{pp}
 \textrm{, the p-th diagonal of }(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1},
 \end{aligned}
 \]</span></p>
 <p>Note that <span class="math inline">\(\left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \right)_{pp} \ne \left( (\boldsymbol{X}^\intercal\boldsymbol{X})_{pp} \right)^{-1}\)</span>! You must invert first, then take the <span class="math inline">\(p\)</span>–th diagonal.</p>
-<p>If we knew <span class="math inline">\(\sigma^2\)</span> then we could form the pivot</p>
+<p>This gives the corresponding two–sided confidence interval for <span class="math inline">\(\beta_p\)</span>,</p>
 <p><span class="math display">\[
-\frac{\hat{\beta}_p - \beta_p}{\sigma \sqrt{v_p}} \sim \mathcal{N}\left(0, 1\right),
-\]</span></p>
-<p>giving the corresponding two–sided confidence interval for <span class="math inline">\(\beta_p\)</span>,</p>
-<p><span class="math display">\[
-\hat{\beta}_p \pm q_\alpha \sigma \sqrt{v_p},
+\hat{\beta}_p \pm q_\alpha \sigma s_p,
 \]</span></p>
 <p>where <span class="math inline">\(-q_\alpha\)</span> is the <span class="math inline">\(\alpha / 2\)</span> quantile of the standard normal distribution. The problem is we typically don’t actually know <span class="math inline">\(\sigma^2\)</span>, and so have to estimate it. And that estimate will have some sampling variability which we must account for.</p>
 </section>
@@ -499,6 +527,21 @@ t:= \frac{z}{\sqrt{s/ (N-P)}}
 </div>
 </div>
 <p>You can find quantiles of the student-t distributions using the R function <code>qt()</code>, just as you would use <code>rnorm()</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The “t-test statistic” for the null <span class="math inline">\(H_0: \boldsymbol{v}^\intercal{\boldsymbol{\beta}^{*}}= b\)</span> is given by <span class="math display">\[
+t:= \frac{\boldsymbol{v}^\intercal\hat{\boldsymbol{\beta}}- b}{\hat{\sigma}\sqrt{\boldsymbol{v}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{v}}}.
+\]</span> Here is <span class="math inline">\(\boldsymbol{v}\)</span> taken as known. A t-test of <span class="math inline">\(H_0\)</span> compares the above statistic to the quantiles of the Student T distribution with <span class="math inline">\(N-P\)</span> degrees of freedom.</p>
+</div>
+</div>
 <p>Given all this, we have shown that</p>
 <p><span class="math display">\[
 \mathbb{P}\left(\frac{\hat{\beta}_p - \beta_p}{v_p \hat{\sigma}} \le z_\alpha\right)  = \mathbb{P}\left(t\le z_\alpha\right)
@@ -510,19 +553,6 @@ t\sim \mathrm{StudentT}_{N - P}.
 \hat{\beta}_p \pm v_p \hat{\sigma}z_\alpha
 \]</span></p>
 <p>is a valid two–sided confidence interval for <span class="math inline">\(\beta_p\)</span>, despite the fact that we used <span class="math inline">\(\hat{\sigma}\)</span> instead of the true <span class="math inline">\(\sigma\)</span>. The only difference is that we replaced the normal quanitle, <span class="math inline">\(q_\alpha\)</span>, with the (slightly larger) student-T quantile, <span class="math inline">\(z_\alpha\)</span>.</p>
-<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Exercise
-</div>
-</div>
-<div class="callout-body-container callout-body">
-
-</div>
-</div>
 
 
 <!-- -->
@@ -1131,269 +1161,317 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>One can define the MVN distribtuion in many ways, but the above will</span>
 <span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>do the trick most easily for this class.</span>
 <span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>Note that, for a given covariance $\Sigma$, there will be many different</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>Note that, for a given covariance $\Sigma$, there will always be many different</span>
 <span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>$\S$ that give the same distribution.  In particular, $\S \U$ gives the</span>
 <span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>same $\Sigma$ for any orthogonal matrix $\U$, which is the same as to</span>
 <span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>note that $\U \Z$ is also an IID standard normal vector when $\U$</span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>is orthogonal.</span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>Since we have that $\resv = \sigma \Z$ for IID standard normal $\Z$,</span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>it follows from the above that</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>is orthogonal.  To see that any symmetric matrix $\Sigma$ has a square</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>root, write the eigenvalue decomposition</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>\Sigma = \U \Lambda \U^\trans,</span>
 <span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>\p(\betavhat \vert \X) = \gauss{\betavstar, \sigma^2 (\X^\trans \X)^{-1}}.</span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties</span></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>where $\U$ has orthonormal columns and $\Lambda$ is diagonal with entries</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>$\lambda_{p}$. If we take $\Lambda^{1/2}$ to be diagonal with entries</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>$\lambda_{p}^{1/2}$, then the matrix $\Sigma^{1/2} := \U \Lambda^{1/2} \U^\trans$</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>is a square root of $\Sigma$:</span>
 <span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>We can see from the above that $\betavhat$ is unbiased, even</span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>unconditionally, since</span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>\Sigma^{1/2} (\Sigma^{1/2})^\trans = \U \Lambda^{1/2} \U^\trans \U \Lambda^{1/2} \U^\trans =</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>\U \Lambda^{1/2} \Lambda^{1/2} \U^\trans = \U \Lambda \U^\trans = \Sigma.</span>
 <span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>\expect{\betavhat} = \expect{\expect{\betavhat | \X}} = \betavstar.</span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>If we additionally have that $\meann \xv_n \xv_n^\trans \rightarrow \Xcov$</span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>for some invertible $\Xcov$ (either deterministically or stochastically), then</span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>\sigma^2 (\X^\trans \X)^{-1} =</span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>  \frac{1}{N} \sigma^2 \left(\frac{1}{N}\X^\trans \X \right)^{-1}</span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>\approx \frac{1}{N} \sigma^2 \Xcov^{-1} \rightarrow 0.</span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>This means that $\betavhat \rightarrow \betavstar$ --- it is not</span>
-<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>only unbiased, but consistent.</span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>Since we have that $\resv = \sigma \Z$ for IID standard normal $\Z$,</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>it follows from the above that</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>\p(\betavhat \vert \X) = \gauss{\betavstar, \sigma^2 (\X^\trans \X)^{-1}}.</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties</span></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>We can see from the above that $\betavhat$ is unbiased, even</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>unconditionally, since</span>
 <span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-----------------------------------&gt;</span></span>
-<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-----------------------------------&gt;</span></span>
-<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-----------------------------------&gt;</span></span>
-<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="fu"># Pivots for fixed variance</span></span>
-<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>Suppose we want to form a confidence interval for coefficient $p$ of</span>
-<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>$\betav$, i.e., for $\beta_p$.  How can we use the distribution of</span>
-<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>$\betavhat$ to get a pivot depending on $\beta_p$?  </span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>\expect{\betavhat} = \expect{\expect{\betavhat | \X}} = \betavstar.</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>If we additionally have that $\meann \xv_n \xv_n^\trans \rightarrow \Xcov$</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>for some invertible $\Xcov$ (either deterministically or stochastically), then</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>\sigma^2 (\X^\trans \X)^{-1} =</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>  \frac{1}{N} \sigma^2 \left(\frac{1}{N}\X^\trans \X \right)^{-1}</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>\approx \frac{1}{N} \sigma^2 \Xcov^{-1} \rightarrow 0.</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>This means that $\betavhat \rightarrow \betavstar$ --- it is not</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>only unbiased, but consistent.</span>
 <span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a>First, take $\ev_p$ to be the vector with $1$ in the $p$ location</span>
-<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>and $0$ elsewhere, and note that $\beta_p = \ev_p^\trans \betav$. Then,</span>
-<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>by normality,</span>
-<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>\betahat_p = \ev_p^\trans \betavhat \sim&amp;</span>
-<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>\gauss{\ev_p^\trans \betav, \sigma^2 \ev_p^\trans (\X^\trans \X)^{-1} \ev_p }</span>
-<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>=</span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>\gauss{\beta_p, \sigma^2 \v_p }, \textrm{ where }<span class="sc">\\</span></span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>\v_p =&amp; \left( (\X^\trans \X)^{-1} \right)_{pp}</span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>\textrm{, the p-th diagonal of }(\X^\trans\X)^{-1},</span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>Note that</span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>$\left( (\X^\trans \X)^{-1} \right)_{pp} \ne \left( (\X^\trans \X)_{pp} \right)^{-1}$!</span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>You must invert first, then take the $p$--th diagonal.  </span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>If we knew $\sigma^2$ then we could form the pivot</span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-----------------------------------&gt;</span></span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-----------------------------------&gt;</span></span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-----------------------------------&gt;</span></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="fu"># Pivots for fixed variance</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>Using the above, we see that for any $\vv$,</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>\p(\vv^\trans \betavhat \vert \X) = \gauss{\vv^\trans \betavstar, \sigma^2 \vv^\trans (\X^\trans \X)^{-1} \vv}.</span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>This means we can form a pivotal quantity for testing the hypothesis</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>$\vv^\trans \betavstar = b$ *assuming we know $\sigma$.  This is sometimes called a "z-test."</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title='Definition'}</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>The "z-test statistic" for the null $H_0: \vv^\trans \betavstar = b$ is given by</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>\z := \frac{\vv^\trans \betavhat - b}{\sigma \sqrt{\vv^\trans (\X^\trans \X)^{-1} \vv}}.</span>
 <span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>\frac{\betahat_p - \beta_p}{\sigma \sqrt{\v_p}} \sim \gauss{0, 1},</span>
-<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>Here, $\sigma$ and $\vv$ are taken as known.</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>giving the corresponding two--sided confidence interval for $\beta_p$,</span>
-<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>\betahat_p \pm q_\alpha \sigma \sqrt{\v_p},</span>
-<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>where $-q_\alpha$ is the $\alpha / 2$ quantile of the standard normal distribution.  The</span>
-<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>problem is we typically don't actually know $\sigma^2$, and so have to estimate it.  And</span>
-<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>that estimate will have some sampling variability which we must account for.</span>
-<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a><span class="fu"># Estimating the residual variance</span></span>
-<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>How can we estimate $\sigma^2$?  If we actually observed the residuals, by the LLN we</span>
-<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>could use</span>
-<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>\frac{1}{N} \sumn \res_n^2 \rightarrow \sigma^2.</span>
-<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>Under normality, you can show that $\z \sim \gauss{0,1}$.  This can be</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>used form two--sided confidence interval for the quantity $b$:</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>C = \vv^\trans \betavhat \pm q_{\alpha/2} \sigma \sqrt{\vv^\trans (\X^\trans \X)^{-1} \vv},</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>where $-q_{\alpha/2}$ is the $\alpha / 2$ quantile of the standard normal distribution.</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>Let's write $s_p^2 := \vv^\trans (\X^\trans \X)^{-1} \vv$, which is the contribution</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>of the regressors to the variance.</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>It's worth noting that $\frac{1}{N} \X^\trans \X \rightarrow \Xcov$ by the LLN,</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>so by the continuous mapping theorem we expect that</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>N s_p^2 = \vv^\trans \left(\X^\trans \X \right)^{-1} \vv  =</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>\vv^\trans \left(\frac{1}{N} \X^\trans \X \right)^{-1} \vv \rightarrow</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>\vv^\trans \Xcov^{-1} \vv.</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>From this it follows that $s_p \approx \vv^\trans \Xcov^{-1} \vv / \sqrt{N}$</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>for large $N$ --- that is, $s_p$ gets smaller as $N$ grows, and the</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>test statistic gets larger for any fixed value of $\betavhat$.</span>
 <span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>But $\res_n = \y_n - \xv_n^\trans \betav$, and we don't know $\betav$.  A</span>
-<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>reasonable substitute is sample residuals $\reshat_n = \y_n - \xv_n^\trans \betavhat$,</span>
-<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>since</span>
-<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>\reshat_n^2 =&amp; </span>
-<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>\left(\y_n - \betavhat^\trans \xv_n \right)^2 </span>
-<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>=&amp;</span>
-<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>\left(\y_n - \betavhat^\trans \xv_n  - \betav^\trans \xv_n + \betav^\trans \xv_n \right)^2</span>
-<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>=&amp;</span>
-<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>\left(\res_n + (\betav - \betavhat)^\trans \xv_n \right)^2,</span>
-<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>and we know that $\betavhat - \betav \rightarrow 0$ as $N \rightarrow \infty$.  It turns</span>
-<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>out we can be even more precise than this under the normal assumption, using some</span>
-<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>insights from linear algebra, and defining a new distribution.</span>
-<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>It turns out that, under normality, we can show that the residual</span>
-<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>estimator has a special distribution known as the "chi squared"</span>
-<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>distribution (I will write $\chisq{K}$).  One way to define it is as follows.</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>How can we use the above trick to get a confidence interval for</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>hypothesis tests involving just one component, $\beta_p$?</span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>We can take $\ev_p$ to be the vector with $1$ in the $p$ location</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>and $0$ elsewhere, and note that $\beta_p = \ev_p^\trans \betav$. Then,</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>by normality,</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>\betahat_p = \ev_p^\trans \betavhat \sim&amp;</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>\gauss{\ev_p^\trans \betav, \sigma^2 \ev_p^\trans (\X^\trans \X)^{-1} \ev_p }</span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>\gauss{\beta_p, \sigma^2 \v_p }, \textrm{ where }<span class="sc">\\</span></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>\s_p^2 =&amp; \left( (\X^\trans \X)^{-1} \right)_{pp}</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>\textrm{, the p-th diagonal of }(\X^\trans\X)^{-1},</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a>Note that</span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>$\left( (\X^\trans \X)^{-1} \right)_{pp} \ne \left( (\X^\trans \X)_{pp} \right)^{-1}$!</span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>You must invert first, then take the $p$--th diagonal.  </span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>This gives the corresponding two--sided confidence interval for $\beta_p$,</span>
 <span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title='Notation'}</span>
-<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>Let $\z_k \sim \gauss{0, 1}$ denote $k=1,\ldots,K$ IID standard</span>
-<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>normal random variables.  The random variable</span>
-<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>\s := \sum_{k=1}^K \z_k^2</span>
-<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>is called a **chi-squared random variable with $K$ degrees of freedom**,</span>
-<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>writing $\s \sim \chisq{K}$.</span>
-<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>Thus, just like the multivariate normal random variable, chi squared random variables</span>
-<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>are defined as transformations of standard normal random variables.</span>
-<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>We show below (but won't prove in class) that, when $\X$ is full rank, then</span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>\betahat_p \pm q_\alpha \sigma \s_p,</span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a>where $-q_\alpha$ is the $\alpha / 2$ quantile of the standard normal distribution.  The</span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>problem is we typically don't actually know $\sigma^2$, and so have to estimate it.  And</span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a>that estimate will have some sampling variability which we must account for.</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a><span class="fu"># Estimating the residual variance</span></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>How can we estimate $\sigma^2$?  If we actually observed the residuals, by the LLN we</span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>could use</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sigma^2} \p(\resvhat^\trans \resvhat \vert \X) = \chisq{N - P}.</span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a>\frac{1}{N} \sumn \res_n^2 \rightarrow \sigma^2.</span>
 <span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>As you will show in your homework, if $\s \sim \chisq{N - P}$, then</span>
-<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>$\expect{\s} = N - P$.  It follows that we can define</span>
-<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>\sigmahat^2 := \frac{1}{N-P} \sumn \reshat_n^2</span>
-<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow\quad</span>
-<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>\expect{\sigmahat^2 \vert \X} = \sigma^2.</span>
-<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>We get an unbiased estimate by normalizing by $N - P$ instead of $N$.</span>
-<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>Furthermore, we can show that $\resvhat$ --- and so $\sigmahat^2$ ---</span>
-<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>is *independent* of $\betavhat$.  Note that</span>
-<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>But $\res_n = \y_n - \xv_n^\trans \betav$, and we don't know $\betav$.  A</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>reasonable substitute is sample residuals $\reshat_n = \y_n - \xv_n^\trans \betavhat$,</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>since</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>\reshat_n^2 =&amp; </span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>\left(\y_n - \betavhat^\trans \xv_n \right)^2 </span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>=&amp;</span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>\left(\y_n - \betavhat^\trans \xv_n  - \betav^\trans \xv_n + \betav^\trans \xv_n \right)^2</span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>=&amp;</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>\left(\res_n + (\betav - \betavhat)^\trans \xv_n \right)^2,</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
 <span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>\resvhat = \Y - \X \betavhat =</span>
-<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>  \X \betavstar + \resv - \X \left(</span>
-<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>      \betavstar + \left(\X^\trans \X \right)^{-1} \X^\trans \resv \right)</span>
-<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>  = \left(\id_N - \X (\X^\trans \X)^{-1} \X^\trans\right) \resv.</span>
-<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>It follows that $\resvhat$ is MVN and mean zero.  Furthermore,</span>
-<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>\cov{\betavhat, \resvhat \vert \X}</span>
-<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>  ={}&amp; \cov{(\X^\trans \X)^{-1} \X^\trans \resv,</span>
-<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>         \left(\id_N - \X (\X^\trans \X)^{-1} \X^\trans\right) \resv}</span>
-<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>  <span class="sc">\\</span>={}&amp;</span>
-<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>    (\X^\trans \X)^{-1} \X^\trans</span>
-<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>    \expect{\resv \resv^\trans}</span>
-<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>    \left(\id_N - \X (\X^\trans \X)^{-1} \X^\trans\right)</span>
-<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>  <span class="sc">\\</span>={}&amp; \sigma^2</span>
-<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>    (\X^\trans \X)^{-1} \X^\trans \left(\id_N - \X (\X^\trans \X)^{-1} \X^\trans\right)</span>
-<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a>  <span class="sc">\\</span>={}&amp;</span>
-<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>  \sigma^2 \left((\X^\trans \X)^{-1} \X^\trans - (\X^\trans \X)^{-1} \X^\trans \right)</span>
-<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>  <span class="sc">\\</span>={}&amp; \zerov.</span>
-<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>So it follows that not only are $\betavhat$</span>
-<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>and $\resvhat$ normal, they are **independent**, since for</span>
-<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>normal random variables, uncorrelatedness implies independence.</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>and we know that $\betavhat - \betav \rightarrow 0$ as $N \rightarrow \infty$.  It turns</span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>out we can be even more precise than this under the normal assumption, using some</span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>insights from linear algebra, and defining a new distribution.</span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>It turns out that, under normality, we can show that the residual</span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>estimator has a special distribution known as the "chi squared"</span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>distribution (I will write $\chisq{K}$).  One way to define it is as follows.</span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title='Notation'}</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>Let $\z_k \sim \gauss{0, 1}$ denote $k=1,\ldots,K$ IID standard</span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>normal random variables.  The random variable</span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>\s := \sum_{k=1}^K \z_k^2</span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>is called a **chi-squared random variable with $K$ degrees of freedom**,</span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a>writing $\s \sim \chisq{K}$.</span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>Thus, just like the multivariate normal random variable, chi squared random variables</span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a>are defined as transformations of standard normal random variables.</span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a>We show below (but won't prove in class) that, when $\X$ is full rank, then</span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sigma^2} \p(\resvhat^\trans \resvhat \vert \X) = \chisq{N - P}.</span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>Further, since $\sigmahat^2$ is simply a deterministic function</span>
-<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>of $\resvhat$, it follows that $\betavhat$ and $\sigmahat^2$</span>
-<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>are independent!</span>
-<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a><span class="fu">## T-tests (accounting for variance variance)</span></span>
-<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>Recall that we have shown that</span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>As you will show in your homework, if $\s \sim \chisq{N - P}$, then</span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>$\expect{\s} = N - P$.  It follows that we can define</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>\sigmahat^2 := \frac{1}{N-P} \sumn \reshat_n^2</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow\quad</span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>\expect{\sigmahat^2 \vert \X} = \sigma^2.</span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>We get an unbiased estimate by normalizing by $N - P$ instead of $N$.</span>
 <span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>\sigmahat^2 := \frac{1}{N - P} \sumn \reshat_n^2</span>
-<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>= \frac{\sigma^2}{N-P} \s</span>
-<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>\quad\textrm{where}\quad</span>
-<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>\s \sim \chisq{N-P},</span>
-<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>and that, furthermore, $\sigmahat$ and $\betahat$ are independent of one another.</span>
-<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>Let's try to use this fact to get a probability distribution for</span>
-<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>$\betahat_p$ that takes the variability of $\sigmahat$ into account,</span>
-<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a>where we substitute $\sigmahat$ in for $\sigma$ in the pivot</span>
-<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>\frac{\betahat_p - \beta_p}{\v_p \sigma}.</span>
-<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>Write</span>
-<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>\frac{\betahat_p - \beta_p}{\v_p \sigmahat} ={}&amp;</span>
-<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>\frac{\betahat_p - \beta_p}{\v_p \sqrt{\frac{\sigma^2}{N-P} \s}}</span>
-<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
-<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>\left(\frac{\betahat_p - \beta_k}{\v_p \sigma}\right)</span>
-<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>   \Big/   \sqrt{\frac{\s}{N-P} }.</span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>Furthermore, we can show that $\resvhat$ --- and so $\sigmahat^2$ ---</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>is *independent* of $\betavhat$.  Note that</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>\resvhat = \Y - \X \betavhat =</span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>  \X \betavstar + \resv - \X \left(</span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>      \betavstar + \left(\X^\trans \X \right)^{-1} \X^\trans \resv \right)</span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a>  = \left(\id_N - \X (\X^\trans \X)^{-1} \X^\trans\right) \resv.</span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>It follows that $\resvhat$ is MVN and mean zero.  Furthermore,</span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>\cov{\betavhat, \resvhat \vert \X}</span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>  ={}&amp; \cov{(\X^\trans \X)^{-1} \X^\trans \resv,</span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>         \left(\id_N - \X (\X^\trans \X)^{-1} \X^\trans\right) \resv}</span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>  <span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>    (\X^\trans \X)^{-1} \X^\trans</span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>    \expect{\resv \resv^\trans}</span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>    \left(\id_N - \X (\X^\trans \X)^{-1} \X^\trans\right)</span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>  <span class="sc">\\</span>={}&amp; \sigma^2</span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>    (\X^\trans \X)^{-1} \X^\trans \left(\id_N - \X (\X^\trans \X)^{-1} \X^\trans\right)</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>  <span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>  \sigma^2 \left((\X^\trans \X)^{-1} \X^\trans - (\X^\trans \X)^{-1} \X^\trans \right)</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>  <span class="sc">\\</span>={}&amp; \zerov.</span>
 <span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
 <span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>As we showed before, $\frac{\betahat_k - \beta_k}{\v \sigma} \sim \gauss{0,1}$.</span>
-<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>Furthermore, it is independent of $\s$.  The denominator is approximately</span>
-<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>$1$ for large $N - P$, but has some sampling variability.  Now,</span>
-<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>all we have to do is give the ratio of</span>
-<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>a normal to an independent chi squared happens a name: we call</span>
-<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>it a "student t-distribution."</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>So it follows that not only are $\betavhat$</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>and $\resvhat$ normal, they are **independent**, since for</span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>normal random variables, uncorrelatedness implies independence.</span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>Further, since $\sigmahat^2$ is simply a deterministic function</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>of $\resvhat$, it follows that $\betavhat$ and $\sigmahat^2$</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>are independent!</span>
 <span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title='Definition'}</span>
-<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>Let $\z \sim \gauss{0,1}$, and $\s \sim \chisq{N-P}$, independently</span>
-<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>of one another.  Then the distribution of</span>
-<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>\t := \frac{\z}{\sqrt{\s / (N-P)}}</span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a><span class="fu">## T-tests (accounting for variance variance)</span></span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>Recall that we have shown that</span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>is called a "student-t distribution with $N-P$ degrees of freedom."</span>
-<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>We write $\t \sim \studentt{N - P}$.  As long as $N - P &gt; 2$,</span>
-<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>$\expect{\t} = 0$ and $\var{\t} = (N - P) / (N - P - 2)$.</span>
-<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>\sigmahat^2 := \frac{1}{N - P} \sumn \reshat_n^2</span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>= \frac{\sigma^2}{N-P} \s</span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>\quad\textrm{where}\quad</span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>\s \sim \chisq{N-P},</span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>You can find quantiles of the student-t distributions using</span>
-<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>the R function <span class="in">`qt()`</span>, just as you would use <span class="in">`rnorm()`</span>.</span>
-<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a>Given all this, we have shown that</span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a>and that, furthermore, $\sigmahat$ and $\betahat$ are independent of one another.</span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>Let's try to use this fact to get a probability distribution for</span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>$\betahat_p$ that takes the variability of $\sigmahat$ into account,</span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a>where we substitute $\sigmahat$ in for $\sigma$ in the pivot</span>
 <span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>\prob{\frac{\betahat_p - \beta_p}{\v_p \sigmahat} \le \z_\alpha}  = \prob{\t \le \z_\alpha}</span>
-<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>\quad\textrm{where}\quad</span>
-<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a>\t \sim \studentt{N - P}.</span>
-<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>\frac{\betahat_p - \beta_p}{\v_p \sigma}.</span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>Write</span>
 <span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a>Using this formula, we can find *exact intervals* for our marginal prediction error under</span>
-<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>normality.  Specifically, if we choose $\z_\alpha$ so that $\prob{\t \le -\z_\alpha} = \alpha / 2$</span>
-<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a>for the student-T distribution rather than the normal distribution, then the confidence</span>
-<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a>interval</span>
-<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a>\betahat_p \pm \v_p \sigmahat \z_\alpha</span>
-<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a>is a valid two--sided confidence interval for $\beta_p$, despite the fact that we used</span>
-<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a>$\sigmahat$ instead of the true $\sigma$.  The only difference is that we replaced</span>
-<span id="cb1-388"><a href="#cb1-388" aria-hidden="true" tabindex="-1"></a>the normal quanitle, $q_\alpha$, with the (slightly larger) student-T quantile,</span>
-<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a>$\z_\alpha$.</span>
-<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'}</span>
-<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a>\frac{\betahat_p - \beta_p}{\v_p \sigmahat} ={}&amp;</span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a>\frac{\betahat_p - \beta_p}{\v_p \sqrt{\frac{\sigma^2}{N-P} \s}}</span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a>\left(\frac{\betahat_p - \beta_k}{\v_p \sigma}\right)</span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a>   \Big/   \sqrt{\frac{\s}{N-P} }.</span>
+<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a>As we showed before, $\frac{\betahat_k - \beta_k}{\v \sigma} \sim \gauss{0,1}$.</span>
+<span id="cb1-388"><a href="#cb1-388" aria-hidden="true" tabindex="-1"></a>Furthermore, it is independent of $\s$.  The denominator is approximately</span>
+<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a>$1$ for large $N - P$, but has some sampling variability.  Now,</span>
+<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a>all we have to do is give the ratio of</span>
+<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a>a normal to an independent chi squared happens a name: we call</span>
+<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a>it a "student t-distribution."</span>
+<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title='Definition'}</span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>Let $\z \sim \gauss{0,1}$, and $\s \sim \chisq{N-P}$, independently</span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a>of one another.  Then the distribution of</span>
+<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a>\t := \frac{\z}{\sqrt{\s / (N-P)}}</span>
+<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a>is called a "student-t distribution with $N-P$ degrees of freedom."</span>
+<span id="cb1-403"><a href="#cb1-403" aria-hidden="true" tabindex="-1"></a>We write $\t \sim \studentt{N - P}$.  As long as $N - P &gt; 2$,</span>
+<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a>$\expect{\t} = 0$ and $\var{\t} = (N - P) / (N - P - 2)$.</span>
+<span id="cb1-405"><a href="#cb1-405" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-407"><a href="#cb1-407" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-408"><a href="#cb1-408" aria-hidden="true" tabindex="-1"></a>You can find quantiles of the student-t distributions using</span>
+<span id="cb1-409"><a href="#cb1-409" aria-hidden="true" tabindex="-1"></a>the R function <span class="in">`qt()`</span>, just as you would use <span class="in">`rnorm()`</span>.</span>
+<span id="cb1-410"><a href="#cb1-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-411"><a href="#cb1-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-412"><a href="#cb1-412" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title='Definition'}</span>
+<span id="cb1-413"><a href="#cb1-413" aria-hidden="true" tabindex="-1"></a>The "t-test statistic" for the null $H_0: \vv^\trans \betavstar = b$ is given by</span>
+<span id="cb1-414"><a href="#cb1-414" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-415"><a href="#cb1-415" aria-hidden="true" tabindex="-1"></a>\t := \frac{\vv^\trans \betavhat - b}{\sigmahat \sqrt{\vv^\trans (\X^\trans \X)^{-1} \vv}}.</span>
+<span id="cb1-416"><a href="#cb1-416" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-417"><a href="#cb1-417" aria-hidden="true" tabindex="-1"></a>Here is $\vv$ taken as known.  A t-test of $H_0$ compares the above</span>
+<span id="cb1-418"><a href="#cb1-418" aria-hidden="true" tabindex="-1"></a>statistic to the quantiles of the Student T distribution with $N-P$ degrees</span>
+<span id="cb1-419"><a href="#cb1-419" aria-hidden="true" tabindex="-1"></a>of freedom.</span>
+<span id="cb1-420"><a href="#cb1-420" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-421"><a href="#cb1-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-422"><a href="#cb1-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a>Given all this, we have shown that</span>
+<span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a>\prob{\frac{\betahat_p - \beta_p}{\v_p \sigmahat} \le \z_\alpha}  = \prob{\t \le \z_\alpha}</span>
+<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a>\quad\textrm{where}\quad</span>
+<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a>\t \sim \studentt{N - P}.</span>
+<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a>Using this formula, we can find *exact intervals* for our marginal prediction error under</span>
+<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a>normality.  Specifically, if we choose $\z_\alpha$ so that $\prob{\t \le -\z_\alpha} = \alpha / 2$</span>
+<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a>for the student-T distribution rather than the normal distribution, then the confidence</span>
+<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a>interval</span>
+<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a>\betahat_p \pm \v_p \sigmahat \z_\alpha</span>
+<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a>is a valid two--sided confidence interval for $\beta_p$, despite the fact that we used</span>
+<span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a>$\sigmahat$ instead of the true $\sigma$.  The only difference is that we replaced</span>
+<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a>the normal quanitle, $q_\alpha$, with the (slightly larger) student-T quantile,</span>
+<span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a>$\z_\alpha$.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
