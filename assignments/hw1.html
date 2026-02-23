@@ -263,6 +263,148 @@ window.Quarto = {
 <p><strong>(c)</strong> When is <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> invertible? Write a formal expression in terms of the barred quantities. Interpret this condition intuitively in terms of the distribution of the regressors <span class="math inline">\(x_n\)</span>.</p>
 <p><strong>(d)</strong> Using the formula for the inverse of a <span class="math inline">\(2\times 2\)</span> matrix, find an expression for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, and confirm that we get the same answer that we got by solving directly.</p>
 <p><strong>(e)</strong> In the case where <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is <em>not</em> invertible, find three distinct values of <span class="math inline">\(\boldsymbol{\beta}\)</span> that all achieve the same sum of squared residuals <span class="math inline">\(\boldsymbol{\varepsilon}^\intercal\boldsymbol{\varepsilon}\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="a" class="level4">
+<h4 class="anchored" data-anchor-id="a">(a)</h4>
+<p><span class="math display">\[
+\boldsymbol{X}= \begin{pmatrix}
+1 &amp; x_1 \\
+1 &amp; x_2 \\
+\vdots &amp; \vdots \\
+1 &amp; x_N
+\end{pmatrix}
+\quad\quad
+\boldsymbol{Y}= \begin{pmatrix}
+y_1 \\
+\vdots \\
+y_N
+\end{pmatrix}
+\quad\quad
+\boldsymbol{\varepsilon}= \begin{pmatrix}
+\varepsilon_1 \\
+\vdots \\
+\varepsilon_N
+\end{pmatrix}
+\quad\quad
+\boldsymbol{\beta}= \begin{pmatrix}
+\beta_1 \\
+\beta_2
+\end{pmatrix}
+\]</span></p>
+<p>These are <span class="math inline">\(N \times 2\)</span>, <span class="math inline">\(N \times 1\)</span>, <span class="math inline">\(N \times 1\)</span>, and <span class="math inline">\(2 \times 1\)</span> respectively.</p>
+</section>
+<section id="b" class="level4">
+<h4 class="anchored" data-anchor-id="b">(b)</h4>
+<p><span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{X}=
+N
+\begin{pmatrix}
+1 &amp; \bar{x}\\
+\bar{x}&amp; \overline{xx}
+\end{pmatrix}
+\quad\quad
+\boldsymbol{X}^\intercal\boldsymbol{Y}=
+N
+\begin{pmatrix}
+\bar{y}\\
+\overline{xy}
+\end{pmatrix}
+\]</span></p>
+</section>
+<section id="c" class="level4">
+<h4 class="anchored" data-anchor-id="c">(c)</h4>
+<p><span class="math inline">\(\boldsymbol{X}\intercal\boldsymbol{X}\)</span> is invertible if the determinant, <span class="math inline">\(N (\overline{xx} - \bar{x}\, \bar{x}) \ne 0\)</span>. This occurs when the sample variance of <span class="math inline">\(x_n\)</span> is greater than zero.</p>
+</section>
+<section id="d" class="level4">
+<h4 class="anchored" data-anchor-id="d">(d)</h4>
+<p><span class="math display">\[
+\begin{aligned}
+(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}={}&amp;
+\frac{1}{N (\overline{xx} - \bar{x}\, \bar{x})}
+\begin{pmatrix}
+  \overline{xx} &amp; -\bar{x}\\
+  -\bar{x}&amp; 1
+\end{pmatrix}
+N
+\begin{pmatrix}
+  \bar{y}\\
+  \overline{xy}
+\end{pmatrix}
+\\={}&amp;
+\frac{1}{\overline{xx} - \bar{x}\, \bar{x}}
+\begin{pmatrix}
+  \bar{y}\, \overline{xx} - \bar{x}\, \overline{xy} \\
+  -\bar{y}\, \bar{x}+ \overline{xy}
+\end{pmatrix}
+\end{aligned}.
+\]</span></p>
+<p>We already have <span class="math inline">\(\hat{\beta}_2 = (\overline{xy} - \bar{y}\, \bar{x}) / (\overline{xx} - \bar{x}\, \bar{x})\)</span> as expected. To see that <span class="math inline">\(\hat{\beta}_1\)</span> is correct, write</p>
+<p><span class="math display">\[
+\begin{aligned}
+\bar{y}\, \overline{xx} - \bar{x}\, \overline{xy} ={}&amp;
+\bar{y}\, \overline{xx} -  \bar{y}\, \bar{x}\, \bar{x}+  \bar{y}\, \bar{x}\, \bar{x}- \bar{x}\, \overline{xy}
+\\={}&amp;
+\bar{y}(\overline{xx} - \bar{x}\, \bar{x}) - \bar{x}(\overline{xy} - \bar{y}\, \bar{x}).
+\end{aligned}
+\]</span></p>
+<p>Plugging this in gives</p>
+<p><span class="math display">\[
+\begin{aligned}
+\frac{\bar{y}\, \overline{xx} - \bar{x}\, \overline{xy}}{\overline{xx} - \bar{x}\, \bar{x}}
+={}&amp;
+\frac{\bar{y}(\overline{xx} - \bar{x}\, \bar{x}) - \bar{x}(\overline{xy} - \bar{y}\, \bar{x})}
+     {\overline{xx} - \bar{x}\, \bar{x}}
+\\={}&amp;
+\bar{y}- \bar{x}\hat{\beta}_2,
+\end{aligned}
+\]</span></p>
+<p>as expected.</p>
+</section>
+<section id="e" class="level4">
+<h4 class="anchored" data-anchor-id="e">(e)</h4>
+<p>When <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible, the sample variance of <span class="math inline">\(x_n\)</span> is zero, meaning all <span class="math inline">\(x_n\)</span> are equal to some constant <span class="math inline">\(c = \bar{x}\)</span>. In this case, the fit is <span class="math inline">\(\hat{y}_n = \beta_1 + \beta_2 \bar{x}\)</span>, which depends only on the sum <span class="math inline">\(\beta_1 + \beta_2 \bar{x}\)</span>. Any <span class="math inline">\(\boldsymbol{\beta}\)</span> with the same value of <span class="math inline">\(\beta_1 + \beta_2 \bar{x}\)</span> gives the same residuals. Three such values that set <span class="math inline">\(\beta_1 + \beta_2 \bar{x}= \bar{y}\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{\beta}&amp;= (\bar{y}, 0)^\intercal\\
+\boldsymbol{\beta}&amp;= (\bar{y}- \bar{x}, 1)^\intercal\\
+\boldsymbol{\beta}&amp;= (\bar{y}- 2\bar{x}, 2)^\intercal
+\end{aligned}
+\]</span> All three give <span class="math inline">\(\hat{y}_n = \bar{y}\)</span> for all <span class="math inline">\(n\)</span>, and thus the same sum of squared residuals <span class="math inline">\(\sum_n (y_n - \bar{y})^2\)</span>.</p>
+<p>Since <span class="math inline">\(\hat{y}_n = \bar{y}\)</span>, all these values happen to also minimize the sum of squared residuals. However, a perfectly good answer to the question as asked could also set <span class="math inline">\(\beta_1 + \beta_2 \bar{x}= d\)</span> for any value <span class="math inline">\(d\)</span>. Any such solution gives the same residuals, but non-optimal ones if <span class="math inline">\(d \ne \bar{y}\)</span>.</p>
+<p>Finally, note that if <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible, then the vector <span class="math inline">\((\bar{x}, -1)\)</span> is zero eigenvector of <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span>: <span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{X}=
+N
+\begin{pmatrix}
+1 &amp; \bar{x}\\
+\bar{x}&amp; \bar{x}^2
+\end{pmatrix}
+\begin{pmatrix}
+\bar{x}\\ -1
+\end{pmatrix}
+=
+\begin{pmatrix}
+\bar{x}- \bar{x}\\
+\bar{x}^2 - \bar{x}
+\end{pmatrix}
+=  \boldsymbol{0}.
+\]</span></p>
+<p>This means that any coefficient vector of the form <span class="math display">\[
+\boldsymbol{\beta}= \boldsymbol{\beta}_0 + c \begin{pmatrix}
+\bar{x}\\ -1
+\end{pmatrix},
+\]</span> for any <span class="math inline">\(\boldsymbol{\beta}_0\)</span> and <span class="math inline">\(c\)</span>, gives the same <span class="math inline">\(\hat{y}_n\)</span>. For example, the above solutions can be generated by taking <span class="math inline">\(\boldsymbol{\beta}_0 = (\bar{y}, 0)^\intercal\)</span>, and the values <span class="math inline">\(c = 0\)</span>, <span class="math inline">\(-1\)</span>, and <span class="math inline">\(-2\)</span>. Since any such <span class="math inline">\(c\)</span> gives an equivalent linear fit, there is an infinite, one-dimensional set of equivalent regression lines, corresponding to the zero eigenvector of <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span>.</p>
+</section>
+</div>
+</div>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -307,6 +449,92 @@ y_n = \alpha + \boldsymbol{\beta}^\intercal\boldsymbol{x}_n + \varepsilon_n,
 <section id="e-1" class="level4">
 <h4 class="anchored" data-anchor-id="e-1">(e)</h4>
 <p>Find three distinct values of <span class="math inline">\((\alpha, \boldsymbol{\beta}^\intercal)\)</span> that all give the exact same fit <span class="math inline">\(\alpha + \boldsymbol{\beta}^\intercal\boldsymbol{x}_n\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="a-2" class="level4">
+<h4 class="anchored" data-anchor-id="a-2">(a)</h4>
+<p><span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{X}=
+\begin{pmatrix}
+N_a &amp; 0 &amp; 0 \\
+0 &amp; N_b &amp; 0 \\
+0 &amp; 0 &amp; N_c \\
+\end{pmatrix}
+\quad\quad
+\boldsymbol{X}^\intercal\boldsymbol{Y}=
+\begin{pmatrix}
+\sum_{n:z_n = a} y_n \\
+\sum_{n:z_n = b} y_n \\
+\sum_{n:z_n = c} y_n \\
+\end{pmatrix}.
+\]</span></p>
+</section>
+<section id="b-2" class="level4">
+<h4 class="anchored" data-anchor-id="b-2">(b)</h4>
+<p>It is invertbile as long as each of <span class="math inline">\(N_a\)</span>, <span class="math inline">\(N_b\)</span>, and <span class="math inline">\(N_c\)</span> are nonzero. If there are no observations for a particular level, you of course cannot estimate its relationship with <span class="math inline">\(y_n\)</span>. When <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible, then</p>
+<p><span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{X}^{-1} =
+\begin{pmatrix}
+1/N_a &amp; 0 &amp; 0 \\
+0 &amp; 1/N_b &amp; 0 \\
+0 &amp; 0 &amp; 1/N_c \\
+\end{pmatrix}
+\]</span></p>
+</section>
+<section id="c-2" class="level4">
+<h4 class="anchored" data-anchor-id="c-2">(c)</h4>
+<p>By direct multiplication,</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}}=
+\boldsymbol{X}^\intercal\boldsymbol{X}^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}=
+\begin{pmatrix}
+\frac{1}{N_a} \sum_{n:z_n = a} y_n \\
+\frac{1}{N_b} \sum_{n:z_n = b} y_n \\
+\frac{1}{N_c} \sum_{n:z_n = c} y_n \\
+\end{pmatrix}.
+\]</span></p>
+</section>
+<section id="d-2" class="level4">
+<h4 class="anchored" data-anchor-id="d-2">(d)</h4>
+<p><span class="math display">\[
+(\boldsymbol{X}')^\intercal\boldsymbol{X}' =
+\begin{pmatrix}
+N &amp; N_a &amp; N_b &amp; N_c \\
+N_a &amp; N_a &amp; 0 &amp; 0 \\
+N_b &amp; 0 &amp; N_b &amp; 0 \\
+N_c &amp; 0 &amp; 0 &amp; N_c \\
+\end{pmatrix}.
+\]</span></p>
+<p>This is not invertible because the first column is the sum of the other three. Equivalently, <span class="math inline">\((\boldsymbol{X}')^\intercal\boldsymbol{X}' \boldsymbol{v}= \boldsymbol{0}\)</span> where <span class="math inline">\(\boldsymbol{v}= (1, -1, -1, -1)^\intercal\)</span>.</p>
+</section>
+<section id="e-2" class="level4">
+<h4 class="anchored" data-anchor-id="e-2">(e)</h4>
+<p>Any line of the form</p>
+<p><span class="math display">\[
+(\alpha + \beta_1) z_{na} +
+(\alpha + \beta_2) z_{nb} +
+(\alpha + \beta_3) z_{nc}
+\]</span></p>
+<p>will give the same fit. Three equivalent sets that also happen to solve the least squares problem are</p>
+<p><span class="math display">\[
+\begin{aligned}
+(\alpha, \beta_1, \beta_2, \beta_3) ={} \hat{\boldsymbol{\beta}}+ (0, 0, 0, 0) \\
+(\alpha, \beta_1, \beta_2, \beta_3) ={} \hat{\boldsymbol{\beta}}+ (1, -1, -1, -1) \\
+(\alpha, \beta_1, \beta_2, \beta_3) ={} \hat{\boldsymbol{\beta}}+ (2, -2, -2, -2).
+\end{aligned}
+\]</span></p>
+<p>These are all of the form <span class="math inline">\(\hat{\boldsymbol{\beta}}+ C \boldsymbol{v}\)</span> for <span class="math inline">\(C = 0\)</span>, <span class="math inline">\(C = 1\)</span>, and <span class="math inline">\(C = 2\)</span>, as they must be, where <span class="math inline">\(\boldsymbol{v}\)</span> is the null vector from <strong>(d)</strong>.</p>
+</section>
+</div>
+</div>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -432,6 +660,78 @@ $$
 <p><strong>(h)</strong> Let <span class="math inline">\(\boldsymbol{\gamma}\)</span> denote a <span class="math inline">\(P \times 1\)</span> vector. Using (b), show directly that <span class="math inline">\(\left\Vert\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\gamma}\right\Vert_2^2\)</span> is smallest when <span class="math inline">\(\boldsymbol{\gamma}= \hat{\boldsymbol{\beta}}\)</span>. <strong>Hint:</strong> Plug in <span class="math inline">\(\boldsymbol{Y}= \hat{\varepsilon}+ \boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>, use <span class="math inline">\(\boldsymbol{X}\hat{\boldsymbol{\beta}}- \boldsymbol{X}\boldsymbol{\gamma}= \boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma})\)</span>, and expand the square.</p>
 <p><strong>(i)</strong> Suppose that <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{a}\)</span> for some <span class="math inline">\(\boldsymbol{a}\)</span>. Show that in this case <span class="math inline">\(\hat{\boldsymbol{Y}}= \boldsymbol{Y}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}= \boldsymbol{0}\)</span>.</p>
 <p><strong>(j)</strong> As a special case of (a), show that <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N\hat{\varepsilon}_n = 0\)</span> when the regression includes an intercept term. <strong>Hint:</strong> When the regression includes an intercept, then <span class="math inline">\(\boldsymbol{1}\)</span> is a column of <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="a-3" class="level4">
+<h4 class="anchored" data-anchor-id="a-3">(a)</h4>
+<p>By definition, <span class="math inline">\(\boldsymbol{v}= \sum_{p=1}^P a_p \boldsymbol{X}_p\)</span>. Let <span class="math inline">\(\boldsymbol{a}= (a_1, \ldots, a_P)^\intercal\)</span>. Then <span class="math inline">\(\boldsymbol{X}\boldsymbol{a}= \sum_{p=1}^P a_p \boldsymbol{X}_p = \boldsymbol{v}\)</span>.</p>
+</section>
+<section id="b-3" class="level4">
+<h4 class="anchored" data-anchor-id="b-3">(b)</h4>
+<p>If <span class="math inline">\(\boldsymbol{v}= \boldsymbol{X}\boldsymbol{a}\)</span> for some <span class="math inline">\(\boldsymbol{a}\)</span>, then <span class="math display">\[
+\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{v}= \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}\boldsymbol{a}= \boldsymbol{X}\boldsymbol{a}= \boldsymbol{v}.
+\]</span></p>
+</section>
+<section id="c-3" class="level4">
+<h4 class="anchored" data-anchor-id="c-3">(c)</h4>
+<p>If <span class="math inline">\(\boldsymbol{q}\)</span> is orthogonal to each column of <span class="math inline">\(\boldsymbol{X}\)</span>, then <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{q}= \boldsymbol{0}\)</span>. Therefore, <span class="math display">\[
+\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{q}= \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{q}= \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{0}= \boldsymbol{0}.
+\]</span></p>
+</section>
+<section id="d-3" class="level4">
+<h4 class="anchored" data-anchor-id="d-3">(d)</h4>
+<p>Since <span class="math inline">\(\boldsymbol{v}= \boldsymbol{X}\boldsymbol{a}\)</span> for some <span class="math inline">\(\boldsymbol{a}\)</span>, and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{q}= \boldsymbol{0}\)</span>, <span class="math display">\[
+\boldsymbol{v}^\intercal\boldsymbol{q}= (\boldsymbol{X}\boldsymbol{a})^\intercal\boldsymbol{q}= \boldsymbol{a}^\intercal\boldsymbol{X}^\intercal\boldsymbol{q}= \boldsymbol{a}^\intercal\boldsymbol{0}= 0.
+\]</span></p>
+</section>
+<section id="e-3" class="level4">
+<h4 class="anchored" data-anchor-id="e-3">(e)</h4>
+<p>From the definitions, <span class="math inline">\(\hat{\boldsymbol{Y}}= \boldsymbol{X}\hat{\boldsymbol{\beta}}=  \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}= \underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}= \boldsymbol{Y}_{\parallel}\)</span>.</p>
+<p>Note that <span class="math inline">\(\boldsymbol{Y}_{\perp} = \boldsymbol{Y}- \boldsymbol{Y}_{\parallel} = \boldsymbol{Y}- \hat{\boldsymbol{Y}}= \hat{\varepsilon}\)</span> by definition of <span class="math inline">\(\hat{\varepsilon}\)</span>.</p>
+</section>
+<section id="f" class="level4">
+<h4 class="anchored" data-anchor-id="f">(f)</h4>
+<p>From part (e), <span class="math inline">\(\hat{\varepsilon}= \boldsymbol{Y}_{\perp}\)</span> is orthogonal to each column of <span class="math inline">\(\boldsymbol{X}\)</span>, so <span class="math inline">\(\boldsymbol{X}^\intercal\hat{\varepsilon}= \boldsymbol{X}^\intercal\boldsymbol{Y}_{\perp} = \boldsymbol{0}\)</span>.</p>
+</section>
+<section id="g" class="level4">
+<h4 class="anchored" data-anchor-id="g">(g)</h4>
+<p>Since <span class="math inline">\(\boldsymbol{Y}= \hat{\boldsymbol{Y}}+ \hat{\varepsilon}\)</span> and <span class="math inline">\(\hat{\boldsymbol{Y}}^\intercal\hat{\varepsilon}= 0\)</span> (from parts (d) and (f)), <span class="math display">\[
+\left\Vert\boldsymbol{Y}\right\Vert_2^2 = \boldsymbol{Y}^\intercal\boldsymbol{Y}= (\hat{\boldsymbol{Y}}+ \hat{\varepsilon})^\intercal(\hat{\boldsymbol{Y}}+ \hat{\varepsilon}) =
+  \hat{\boldsymbol{Y}}^\intercal\hat{\boldsymbol{Y}}+ 2 \hat{\boldsymbol{Y}}^\intercal\hat{\varepsilon}+ \hat{\varepsilon}^\intercal\hat{\varepsilon}=
+\hat{\boldsymbol{Y}}^\intercal\hat{\boldsymbol{Y}}+  \hat{\varepsilon}^\intercal\hat{\varepsilon}=
+  \left\Vert\hat{\boldsymbol{Y}}\right\Vert_2^2 + \left\Vert\hat{\varepsilon}\right\Vert_2^2.
+\]</span></p>
+</section>
+<section id="h" class="level4">
+<h4 class="anchored" data-anchor-id="h">(h)</h4>
+<p>Using <span class="math inline">\(\boldsymbol{Y}= \hat{\varepsilon}+ \boldsymbol{X}\hat{\boldsymbol{\beta}}\)</span>, <span class="math display">\[
+\begin{aligned}
+\left\Vert\boldsymbol{Y}- \boldsymbol{X}\boldsymbol{\gamma}\right\Vert_2^2 &amp;= \left\Vert\hat{\varepsilon}+ \boldsymbol{X}\hat{\boldsymbol{\beta}}- \boldsymbol{X}\boldsymbol{\gamma}\right\Vert_2^2 \\
+&amp;= \left\Vert\hat{\varepsilon}+ \boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma})\right\Vert_2^2 \\
+&amp;= \left\Vert\hat{\varepsilon}\right\Vert_2^2 + 2 \hat{\varepsilon}^\intercal\boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma}) + \left\Vert\boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma})\right\Vert_2^2 \\
+&amp;= \left\Vert\hat{\varepsilon}\right\Vert_2^2 + 0 + \left\Vert\boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma})\right\Vert_2^2 \\
+&amp;\ge \left\Vert\hat{\varepsilon}\right\Vert_2^2,
+\end{aligned}
+\]</span> with equality when <span class="math inline">\(\boldsymbol{X}(\hat{\boldsymbol{\beta}}- \boldsymbol{\gamma}) = \boldsymbol{0}\)</span>. Since <span class="math inline">\(\boldsymbol{X}\)</span> is full rank, this occurs only when <span class="math inline">\(\boldsymbol{\gamma}= \hat{\boldsymbol{\beta}}\)</span>.</p>
+</section>
+<section id="i" class="level4">
+<h4 class="anchored" data-anchor-id="i">(i)</h4>
+<p>If <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{a}\)</span>, then <span class="math inline">\(\boldsymbol{Y}\)</span> is already in the span of the columns of <span class="math inline">\(\boldsymbol{X}\)</span>. By part (b), <span class="math inline">\(\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}= \boldsymbol{Y}\)</span>, so <span class="math inline">\(\hat{\boldsymbol{Y}}= \boldsymbol{Y}\)</span>. Then <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}= \boldsymbol{Y}- \hat{\boldsymbol{Y}}= \boldsymbol{0}\)</span>.</p>
+</section>
+<section id="j" class="level4">
+<h4 class="anchored" data-anchor-id="j">(j)</h4>
+<p>When the regression includes an intercept, <span class="math inline">\(\boldsymbol{1}\)</span> is a column of <span class="math inline">\(\boldsymbol{X}\)</span>. By part (g), <span class="math inline">\(\hat{\varepsilon}^\intercal\boldsymbol{X}= \boldsymbol{0}\)</span>, which means <span class="math inline">\(\hat{\varepsilon}^\intercal\boldsymbol{1}= 0\)</span>. But <span class="math inline">\(\hat{\varepsilon}^\intercal\boldsymbol{1}= \sum_n \hat{\varepsilon}_n = N \frac{1}{N} \sum_{n=1}^N\hat{\varepsilon}_n\)</span>. Therefore <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N\hat{\varepsilon}_n = 0\)</span>.</p>
+</section>
+</div>
+</div>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -445,6 +745,42 @@ $$
 <p><strong>(a)</strong> Find an explicit expression for <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span> in terms of <span class="math inline">\(\boldsymbol{A}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>. <strong>Hint:</strong> Plug in <span class="math inline">\(\boldsymbol{Z}= \boldsymbol{X}\boldsymbol{A}\)</span> and simplify using the linear algebra fact that <span class="math inline">\((\boldsymbol{A}\boldsymbol{B}\boldsymbol{Q})^{-1} = \boldsymbol{Q}^{-1} \boldsymbol{B}^{-1} \boldsymbol{A}^{-1}\)</span> when all inverses exist.</p>
 <p><strong>(b)</strong> Using your result from (a), show that <span class="math inline">\(\boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}= \boldsymbol{z}_n^\intercal\hat{\boldsymbol{\gamma}}\)</span>. In other words, show that <span class="math inline">\(\hat{y}_n\)</span> is the same whether you regress on <span class="math inline">\(\boldsymbol{X}\)</span> or on <span class="math inline">\(\boldsymbol{Z}\)</span>.</p>
 <p><strong>(c)</strong> Let <span class="math inline">\(R^2_x\)</span> and <span class="math inline">\(R^2_z\)</span> denote the <span class="math inline">\(R^2\)</span> fits from the regression on <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{Z}\)</span> respectively. Show that <span class="math inline">\(R^2_x= R^2_z\)</span>. <strong>Hint:</strong> Using (b), what do you know about the residuals for the two regressions?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="a-4" class="level4">
+<h4 class="anchored" data-anchor-id="a-4">(a)</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{\gamma}}&amp;= (\boldsymbol{Z}^\intercal\boldsymbol{Z})^{-1} \boldsymbol{Z}^\intercal\boldsymbol{Y}\\
+&amp;= ((\boldsymbol{X}\boldsymbol{A})^\intercal(\boldsymbol{X}\boldsymbol{A}))^{-1} (\boldsymbol{X}\boldsymbol{A})^\intercal\boldsymbol{Y}\\
+&amp;= (\boldsymbol{A}^\intercal\boldsymbol{X}^\intercal\boldsymbol{X}\boldsymbol{A})^{-1} \boldsymbol{A}^\intercal\boldsymbol{X}^\intercal\boldsymbol{Y}\\
+&amp;= \boldsymbol{A}^{-1} (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} (\boldsymbol{A}^\intercal)^{-1} \boldsymbol{A}^\intercal\boldsymbol{X}^\intercal\boldsymbol{Y}\\
+&amp;= \boldsymbol{A}^{-1} (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}\\
+&amp;= \boldsymbol{A}^{-1} \hat{\boldsymbol{\beta}}.
+\end{aligned}
+\]</span></p>
+</section>
+<section id="b-4" class="level4">
+<h4 class="anchored" data-anchor-id="b-4">(b)</h4>
+<p><span class="math display">\[
+\boldsymbol{z}_n^\intercal\hat{\boldsymbol{\gamma}}= (\boldsymbol{A}^\intercal\boldsymbol{x}_n)^\intercal\boldsymbol{A}^{-1} \hat{\boldsymbol{\beta}}= \boldsymbol{x}_n^\intercal\boldsymbol{A}\boldsymbol{A}^{-1} \hat{\boldsymbol{\beta}}= \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}.
+\]</span></p>
+<p>Thus <span class="math inline">\(\hat{y}_n\)</span> is the same for both regressions.</p>
+</section>
+<section id="c-4" class="level4">
+<h4 class="anchored" data-anchor-id="c-4">(c)</h4>
+<p>From part (b), the fitted values <span class="math inline">\(\hat{y}_n\)</span> are identical for both regressions. Therefore, the residuals <span class="math inline">\(\hat{\varepsilon}_n = y_n - \hat{y}_n\)</span> are also identical. Since <span class="math inline">\(R^2 = 1 - \frac{\sum_n \hat{\varepsilon}_n^2}{\sum_n y_n^2}\)</span> and both the numerator and denominator are the same for both regressions, we have <span class="math inline">\(R^2_x= R^2_z\)</span>.</p>
+</section>
+</div>
+</div>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -460,6 +796,76 @@ $$
 <p><strong>(b)</strong> Write an expression for <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span> in terms of <span class="math inline">\(\bar{y}_A\)</span> and <span class="math inline">\(\bar{y}_B\)</span>, which are respectively the average responses when <span class="math inline">\(a_n = A\)</span> and <span class="math inline">\(a_n = B\)</span>.</p>
 <p><strong>(c)</strong> Write an expression for <span class="math inline">\(\hat{\beta}_2\)</span> in terms of <span class="math inline">\(\bar{y}_A\)</span> and <span class="math inline">\(\bar{y}_B\)</span> using the fact that <span class="math inline">\(\hat{y}_n\)</span> must be the same for the two regressions.</p>
 <p><strong>(d)</strong> In ordinary language, what is the difference in the interpretation of the coefficient <span class="math inline">\(\hat{\beta}_2\)</span> and <span class="math inline">\(\hat{\gamma}_2\)</span>?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="a-5" class="level4">
+<h4 class="anchored" data-anchor-id="a-5">(a)</h4>
+<p>We need <span class="math inline">\(\boldsymbol{z}_n = \boldsymbol{A}^\intercal\boldsymbol{x}_n\)</span> where <span class="math inline">\(\boldsymbol{x}_n = (1, \mathbb{I}\left(a_n = B\right))^\intercal\)</span>.</p>
+<p>When <span class="math inline">\(a_n = A\)</span>: <span class="math inline">\(\boldsymbol{x}_n = (1, 0)^\intercal\)</span> and <span class="math inline">\(\boldsymbol{z}_n = (1, 0)^\intercal\)</span>. When <span class="math inline">\(a_n = B\)</span>: <span class="math inline">\(\boldsymbol{x}_n = (1, 1)^\intercal\)</span> and <span class="math inline">\(\boldsymbol{z}_n = (0, 1)^\intercal\)</span>.</p>
+<p>So we need: <span class="math display">\[
+\boldsymbol{A}^\intercal\begin{pmatrix} 1 \\ 0 \end{pmatrix} = \begin{pmatrix} 1 \\ 0 \end{pmatrix}
+\quad\textrm{and}\quad
+\boldsymbol{A}^\intercal\begin{pmatrix} 1 \\ 1 \end{pmatrix} = \begin{pmatrix} 0 \\ 1 \end{pmatrix}.
+\]</span></p>
+<p>This gives <span class="math inline">\(\boldsymbol{A}^\intercal= \begin{pmatrix} 1 &amp; -1 \\ 0 &amp; 1 \end{pmatrix}\)</span>, so <span class="math inline">\(\boldsymbol{A}= \begin{pmatrix} 1 &amp; 0 \\ -1 &amp; 1 \end{pmatrix}\)</span>.</p>
+<p>The determinant is <span class="math inline">\(\det(\boldsymbol{A}) = 1 \ne 0\)</span>, so <span class="math inline">\(\boldsymbol{A}\)</span> is invertible.</p>
+</section>
+<section id="b-5" class="level4">
+<h4 class="anchored" data-anchor-id="b-5">(b)</h4>
+<p>From the one-hot encoding problem (Problem 2), when regressing <span class="math inline">\(\boldsymbol{Y}\)</span> on <span class="math inline">\(\boldsymbol{Z}\)</span> (the one-hot encoding without intercept), the OLS estimate is simply the group means: <span class="math display">\[
+\hat{\boldsymbol{\gamma}}= \begin{pmatrix} \bar{y}_A \\ \bar{y}_B \end{pmatrix}.
+\]</span></p>
+</section>
+<section id="c-5" class="level4">
+<h4 class="anchored" data-anchor-id="c-5">(c)</h4>
+<p>From the change of basis result, the fitted values must be identical. For an observation with <span class="math inline">\(a_n = A\)</span>: <span class="math display">\[
+\hat{y}_n = \boldsymbol{z}_n^\intercal\hat{\boldsymbol{\gamma}}= (1, 0) \begin{pmatrix} \bar{y}_A \\ \bar{y}_B \end{pmatrix} = \bar{y}_A.
+\]</span></p>
+<p>For the regression on <span class="math inline">\(\boldsymbol{x}_n = (1, 0)^\intercal\)</span>: <span class="math display">\[
+\hat{y}_n = \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 + 0 \cdot \hat{\beta}_2 = \hat{\beta}_1.
+\]</span></p>
+<p>So <span class="math inline">\(\hat{\beta}_1 = \bar{y}_A\)</span>.</p>
+<p>For an observation with <span class="math inline">\(a_n = B\)</span>: <span class="math display">\[
+\hat{y}_n = \boldsymbol{z}_n^\intercal\hat{\boldsymbol{\gamma}}= (0, 1) \begin{pmatrix} \bar{y}_A \\ \bar{y}_B \end{pmatrix} = \bar{y}_B.
+\]</span></p>
+<p>For the regression on <span class="math inline">\(\boldsymbol{x}_n = (1, 1)^\intercal\)</span>: <span class="math display">\[
+\hat{y}_n = \hat{\beta}_1 + \hat{\beta}_2 = \bar{y}_B.
+\]</span></p>
+<p>Therefore <span class="math inline">\(\hat{\beta}_2 = \bar{y}_B - \hat{\beta}_1 = \bar{y}_B - \bar{y}_A\)</span>.</p>
+<p>Note that an equivalent way to solve this would be to use the formula <span class="math inline">\(\hat{\boldsymbol{\gamma}}= \boldsymbol{A}^{-1} \hat{\boldsymbol{\beta}}\)</span>, which gives <span class="math inline">\(\hat{\boldsymbol{\beta}}= \boldsymbol{A}\hat{\boldsymbol{\gamma}}\)</span>, so</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}}
+=
+\begin{pmatrix}
+1 &amp; 0 \\
+-1 &amp; 1
+\end{pmatrix}
+\begin{pmatrix}
+\bar{y}_A \\
+\bar{y}_B
+\end{pmatrix}
+=
+\begin{pmatrix}
+\bar{y}_A \\
+\bar{y}_B - \bar{y}_A
+\end{pmatrix}.
+\]</span></p>
+</section>
+<section id="d-4" class="level4">
+<h4 class="anchored" data-anchor-id="d-4">(d)</h4>
+<p><span class="math inline">\(\hat{\gamma}_2 = \bar{y}_B\)</span> is the <strong>average response</strong> for observations in group <span class="math inline">\(B\)</span>.</p>
+<p><span class="math inline">\(\hat{\beta}_2 = \bar{y}_B - \bar{y}_A\)</span> is the <strong>difference in average response</strong> between group <span class="math inline">\(B\)</span> and group <span class="math inline">\(A\)</span>. It represents the effect of being in group <span class="math inline">\(B\)</span> relative to the baseline group <span class="math inline">\(A\)</span>.</p>
+</section>
+</div>
+</div>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -476,6 +882,79 @@ _freedman/08.0_pp_41_60_Multiple_Regression.pdf
 <p><strong>(e)</strong> Find a <span class="math inline">\(\boldsymbol{a}\)</span> such that <span class="math inline">\(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 - \hat{\beta}_2\)</span>.</p>
 <p><strong>(f)</strong> For a given <span class="math inline">\(\boldsymbol{a}\)</span>, find an expression for <span class="math inline">\(\mathbb{E}\left[\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right]\)</span></p>
 <p><strong>(g)</strong> For a given <span class="math inline">\(\boldsymbol{a}\)</span>, find an expression for <span class="math inline">\(\mathrm{Var}\left(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right)\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="a-6" class="level4">
+<h4 class="anchored" data-anchor-id="a-6">(a)</h4>
+<p><span class="math display">\[
+\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}
+\]</span></p>
+<p>where <span class="math inline">\(\boldsymbol{\varepsilon}= (\varepsilon_1, \ldots, \varepsilon_N)^\intercal\)</span>.</p>
+</section>
+<section id="b-6" class="level4">
+<h4 class="anchored" data-anchor-id="b-6">(b)</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{\beta}}&amp;= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}\\
+&amp;= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal(\boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}) \\
+&amp;= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}\boldsymbol{\beta}+ (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}\\
+&amp;= \boldsymbol{\beta}+ (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}.
+\end{aligned}
+\]</span></p>
+</section>
+<section id="c-6" class="level4">
+<h4 class="anchored" data-anchor-id="c-6">(c)</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right] &amp;= \mathbb{E}\left[\boldsymbol{\beta}+ (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}\vert \boldsymbol{X}\right] \\
+&amp;= \boldsymbol{\beta}+ (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\mathbb{E}\left[\boldsymbol{\varepsilon}\vert \boldsymbol{X}\right] \\
+&amp;= \boldsymbol{\beta}+ (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{0}\\
+&amp;= \boldsymbol{\beta}.
+\end{aligned}
+\]</span></p>
+<p>So <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is an unbiased estimator of <span class="math inline">\(\boldsymbol{\beta}\)</span>.</p>
+</section>
+<section id="d-5" class="level4">
+<h4 class="anchored" data-anchor-id="d-5">(d)</h4>
+<p><span class="math display">\[
+\begin{aligned}
+\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) &amp;= \mathrm{Cov}\left((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{\varepsilon}\vert \boldsymbol{X}\right) \\
+&amp;= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\mathrm{Cov}\left(\boldsymbol{\varepsilon}\vert \boldsymbol{X}\right) \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \\
+&amp;= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal(\sigma^2 \boldsymbol{I}) \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \\
+&amp;= \sigma^2 (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \\
+&amp;= \sigma^2 (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}.
+\end{aligned}
+\]</span></p>
+</section>
+<section id="e-4" class="level4">
+<h4 class="anchored" data-anchor-id="e-4">(e)</h4>
+<p><span class="math display">\[
+\boldsymbol{a}= (1, -1, 0, \ldots, 0)^\intercal
+\]</span></p>
+<p>Then <span class="math inline">\(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 - \hat{\beta}_2\)</span>.</p>
+</section>
+<section id="f-1" class="level4">
+<h4 class="anchored" data-anchor-id="f-1">(f)</h4>
+<p><span class="math display">\[
+\mathbb{E}\left[\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right] = \boldsymbol{a}^\intercal\mathbb{E}\left[\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right] = \boldsymbol{a}^\intercal\boldsymbol{\beta}= \beta_1 - \beta_2.
+\]</span></p>
+</section>
+<section id="g-1" class="level4">
+<h4 class="anchored" data-anchor-id="g-1">(g)</h4>
+<p><span class="math display">\[
+\mathrm{Var}\left(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) = \boldsymbol{a}^\intercal\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) \boldsymbol{a}= \sigma^2 \boldsymbol{a}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{a}.
+\]</span></p>
+</section>
+</div>
+</div>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -498,6 +977,79 @@ _freedman/08.0_pp_41_60_Multiple_Regression.pdf
 <p>The remaining questions use results from the previous homework question.</p>
 <p><strong>(e)</strong> Find a <span class="math inline">\(\boldsymbol{a}\)</span> such that <span class="math inline">\(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 - \hat{\beta}_2\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> such that <span class="math inline">\(\boldsymbol{b}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 + \hat{\beta}_2\)</span>.</p>
 <p><strong>(f)</strong> For fixed large <span class="math inline">\(N\)</span>, so that <span class="math inline">\(\left( \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)\approx \mathbb{E}\left[\boldsymbol{x}\boldsymbol{x}^\intercal\right]^{-1}\)</span>, what happens to <span class="math inline">\(N \mathrm{Var}\left(\hat{\beta}_1 - \hat{\beta}_2 \vert \boldsymbol{X}\right)\)</span> and <span class="math inline">\(N \mathrm{Var}\left(\hat{\beta}_1 + \hat{\beta}_2 \vert \boldsymbol{X}\right)\)</span> as <span class="math inline">\(\rho\)</span> varies from zero to one?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<section id="a-7" class="level4">
+<h4 class="anchored" data-anchor-id="a-7">(a)</h4>
+<p>It may be that <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is non–invertible by chance, depending on the distribution of <span class="math inline">\(\boldsymbol{x}_n\)</span>. There are distributions for which <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is invertible with probability one, such as independent normals. But without extra information like this then the right answer is “sometimes.”</p>
+</section>
+<section id="b-7" class="level4">
+<h4 class="anchored" data-anchor-id="b-7">(b)</h4>
+<p>If <span class="math inline">\(\rho = 1\)</span>, then <span class="math inline">\(\boldsymbol{x}_{n1} = \boldsymbol{x}_{n2}\)</span> almost surely because they are perfectly correlated. (The difference between them has zero variance.) In this case, <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is never invertible (non–invertible with probability one).</p>
+</section>
+<section id="c-7" class="level4">
+<h4 class="anchored" data-anchor-id="c-7">(c)</h4>
+<p>By the LLN,</p>
+<p><span class="math display">\[
+\lim_{N \rightarrow \infty} \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}=
+\begin{pmatrix}
+1 &amp; \rho \\
+\rho &amp; 1
+\end{pmatrix}.
+\]</span></p>
+<p>The limit is invertible if and only if <span class="math inline">\(\left|\rho\right| &lt; 1\)</span>.</p>
+</section>
+<section id="d-6" class="level4">
+<h4 class="anchored" data-anchor-id="d-6">(d)</h4>
+<p>If <span class="math inline">\(\rho = 1\)</span>, then <span class="math inline">\(\boldsymbol{x}_{n1} = \boldsymbol{x}_{n2}\)</span> with probability one, and we can write <span class="math inline">\(\boldsymbol{\beta}^\intercal\boldsymbol{x}_n = (\beta_1 + \beta_2) \boldsymbol{x}_{n1}\)</span>. Intuitively, we cannot distinguish a relationship between <span class="math inline">\(y_n\)</span> and the two components of <span class="math inline">\(\boldsymbol{x}_n\)</span> because the two components are numerically the same. Three values that give the same fit are <span class="math inline">\(\boldsymbol{\beta}= (0, 0)^\intercal\)</span>, <span class="math inline">\(\boldsymbol{\beta}= (1, -1)^\intercal\)</span>, and <span class="math inline">\(\boldsymbol{\beta}= (-1, 1)^\intercal\)</span>.</p>
+</section>
+<section id="e-5" class="level4">
+<h4 class="anchored" data-anchor-id="e-5">(e)</h4>
+<p><span class="math inline">\(\boldsymbol{a}= (1, -1)^\intercal\)</span> gives <span class="math inline">\(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 - \hat{\beta}_2\)</span>.</p>
+<p><span class="math inline">\(\boldsymbol{b}= (1, 1)^\intercal\)</span> gives <span class="math inline">\(\boldsymbol{b}^\intercal\hat{\boldsymbol{\beta}}= \hat{\beta}_1 + \hat{\beta}_2\)</span>.</p>
+</section>
+<section id="f-2" class="level4">
+<h4 class="anchored" data-anchor-id="f-2">(f)</h4>
+<p>From the previous problem, <span class="math inline">\(N \mathrm{Var}\left(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) = \sigma^2 \boldsymbol{a}^\intercal\left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \boldsymbol{a}\)</span>.</p>
+<p>For large <span class="math inline">\(N\)</span>, <span class="math inline">\(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\approx \begin{pmatrix} 1 &amp; \rho \\ \rho &amp; 1 \end{pmatrix}\)</span>, so <span class="math display">\[
+\left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \approx \frac{1}{1 - \rho^2} \begin{pmatrix} 1 &amp; -\rho \\ -\rho &amp; 1 \end{pmatrix}.
+\]</span></p>
+<p>For <span class="math inline">\(\boldsymbol{a}= (1, -1)^\intercal\)</span>: <span class="math display">\[
+\begin{pmatrix} 1 &amp; -\rho \\ -\rho &amp; 1 \end{pmatrix} \begin{pmatrix} 1 \\ -1 \end{pmatrix} = \begin{pmatrix} 1 + \rho \\ -\rho - 1 \end{pmatrix},
+\]</span> so <span class="math inline">\(\boldsymbol{a}^\intercal\begin{pmatrix} 1 &amp; -\rho \\ -\rho &amp; 1 \end{pmatrix} \boldsymbol{a}= (1)(1+\rho) + (-1)(-\rho-1) = 2(1+\rho)\)</span>.</p>
+<p>Therefore, <span class="math display">\[
+\begin{aligned}
+N \mathrm{Var}\left(\hat{\beta}_1 - \hat{\beta}_2 \vert \boldsymbol{X}\right) ={}&amp;
+  \sigma^2 \frac{2(1+\rho)}{1-\rho^2}
+\\={}&amp;
+  \sigma^2 \frac{2(1+\rho)}{1-\rho^2}
+\\={}&amp;
+  \sigma^2 \frac{2(1+\rho)}{(1-\rho)(1 + \rho)}
+\\={}&amp;
+  \frac{2\sigma^2}{1-\rho}.
+\end{aligned}
+\]</span></p>
+<p>For <span class="math inline">\(\boldsymbol{b}= (1, 1)^\intercal\)</span>: <span class="math display">\[
+\begin{pmatrix} 1 &amp; -\rho \\ -\rho &amp; 1 \end{pmatrix} \begin{pmatrix} 1 \\ 1 \end{pmatrix} = \begin{pmatrix} 1 - \rho \\ 1-\rho \end{pmatrix},
+\]</span> so <span class="math inline">\(\boldsymbol{b}^\intercal\begin{pmatrix} 1 &amp; -\rho \\ -\rho &amp; 1 \end{pmatrix} \boldsymbol{b}= 2(1-\rho)\)</span>.</p>
+<p>Therefore, <span class="math inline">\(N \mathrm{Var}\left(\hat{\beta}_1 + \hat{\beta}_2 \vert \boldsymbol{X}\right) = \sigma^2 \frac{2(1-\rho)}{1-\rho^2} = \frac{2\sigma^2}{1+\rho}\)</span>.</p>
+<p>As <span class="math inline">\(\rho\)</span> varies from <span class="math inline">\(0\)</span> to <span class="math inline">\(1\)</span>:</p>
+<ul>
+<li><span class="math inline">\(N \mathrm{Var}\left(\hat{\beta}_1 - \hat{\beta}_2 \vert \boldsymbol{X}\right) = \frac{2\sigma^2}{1-\rho}\)</span> <strong>increases</strong> from <span class="math inline">\(2\sigma^2\)</span> to <span class="math inline">\(\infty\)</span>.</li>
+<li><span class="math inline">\(N \mathrm{Var}\left(\hat{\beta}_1 + \hat{\beta}_2 \vert \boldsymbol{X}\right) = \frac{2\sigma^2}{1+\rho}\)</span> <strong>decreases</strong> from <span class="math inline">\(2\sigma^2\)</span> to <span class="math inline">\(\sigma^2\)</span>.</li>
+</ul>
+<p>Intuitively: when regressors are highly correlated, we cannot distinguish their individual effects (the difference <span class="math inline">\(\hat{\beta}_1 - \hat{\beta}_2\)</span> is highly uncertain), but we can still estimate their combined effect (the sum <span class="math inline">\(\hat{\beta}_1 + \hat{\beta}_2\)</span> remains well-determined).</p>
+</section>
+</div>
+</div>
 
 
 

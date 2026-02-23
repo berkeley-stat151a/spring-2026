@@ -8,7 +8,7 @@
 
 <meta name="author" content="Your name here">
 
-<title>STAT151A Homework 2</title>
+<title>STAT151A Homework 5.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -174,12 +208,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#multivariate-normal-exercises" id="toc-multivariate-normal-exercises" class="nav-link active" data-scroll-target="#multivariate-normal-exercises"><span class="header-section-number">1</span> Multivariate normal exercises</a></li>
-  <li><a href="#chi-squared-random-variables-and-allies" id="toc-chi-squared-random-variables-and-allies" class="nav-link" data-scroll-target="#chi-squared-random-variables-and-allies"><span class="header-section-number">2</span> Chi squared random variables and allies</a></li>
-  <li><a href="#fit-and-regressors" id="toc-fit-and-regressors" class="nav-link" data-scroll-target="#fit-and-regressors"><span class="header-section-number">3</span> Fit and regressors</a></li>
-  <li><a href="#power" id="toc-power" class="nav-link" data-scroll-target="#power"><span class="header-section-number">4</span> Power</a></li>
-  <li><a href="#interpreting-tests-and-confidence-intervals" id="toc-interpreting-tests-and-confidence-intervals" class="nav-link" data-scroll-target="#interpreting-tests-and-confidence-intervals"><span class="header-section-number">5</span> Interpreting tests and confidence intervals</a></li>
-  <li><a href="#when-f-tests-and-t-tests-disgree" id="toc-when-f-tests-and-t-tests-disgree" class="nav-link" data-scroll-target="#when-f-tests-and-t-tests-disgree"><span class="header-section-number">6</span> When F-tests and t-tests disgree</a></li>
+  <li><a href="#the-output-of-lm" id="toc-the-output-of-lm" class="nav-link active" data-scroll-target="#the-output-of-lm"><span class="header-section-number">1</span> The output of <code>lm</code></a></li>
+  <li><a href="#simulating-coverage" id="toc-simulating-coverage" class="nav-link" data-scroll-target="#simulating-coverage"><span class="header-section-number">2</span> Simulating coverage</a></li>
   </ul>
 </nav>
     </div>
@@ -188,7 +218,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">STAT151A Homework 2</h1>
+<h1 class="title">STAT151A Homework 5.</h1>
 </div>
 
 
@@ -214,185 +244,110 @@ window.Quarto = {
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
-<section id="multivariate-normal-exercises" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Multivariate normal exercises</h1>
-<p>Let <span class="math inline">\(\boldsymbol{x}\sim \mathcal{N}\left(\boldsymbol{\mu}, \boldsymbol{\Sigma}\right)\)</span> where</p>
-<p><span class="math display">\[
-\boldsymbol{\mu}=
-\begin{pmatrix}
-1 \\ 2 \\ 3
-\end{pmatrix}
-\quad\textrm{and}\quad
-\boldsymbol{\Sigma}=
-\begin{pmatrix}
-1 &amp;   0.5 &amp; 0 \\
-0.5 &amp; 2   &amp; 0.1 \\
-0   &amp; 0.1   &amp; 4 \\
-\end{pmatrix}.
-\]</span></p>
-<p>Let</p>
-<p><span class="math display">\[
-\boldsymbol{v}=
-\begin{pmatrix}
-0 \\ 1 \\ 0
-\end{pmatrix}
-\quad
-\boldsymbol{a}=
-\begin{pmatrix}
-2 \\ 1 \\ 1
-\end{pmatrix}
-\quad
-\boldsymbol{A}=
-\begin{pmatrix}
-1 &amp; 1 &amp; 0 \\
-2 &amp; 0 &amp; 1 \\
-\end{pmatrix}
-\]</span></p>
-<p>Evaluate the following expressions.</p>
-<ol type="1">
-<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{v}^\intercal\boldsymbol{x}\right]\)</span></li>
-<li><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{v}^\intercal\boldsymbol{x}\right)\)</span></li>
-<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{a}^\intercal\boldsymbol{x}\right]\)</span></li>
-<li><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{a}^\intercal\boldsymbol{x}\right)\)</span></li>
-<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{v}\boldsymbol{x}^\intercal\right]\)</span></li>
-<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}\boldsymbol{x}^\intercal\right]\)</span></li>
-<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}^\intercal\boldsymbol{x}\right]\)</span></li>
-<li><span class="math inline">\(\mathbb{E}\left[\mathrm{trace}\left(\boldsymbol{x}\boldsymbol{x}^\intercal\right)\right]\)</span></li>
-<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{A}\boldsymbol{x}\right]\)</span></li>
-<li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{A}\boldsymbol{x}\right)\)</span></li>
-<li><span class="math inline">\(\mathbb{E}\left[(\boldsymbol{A}\boldsymbol{x}) (\boldsymbol{A}\boldsymbol{x})^\intercal\right]\)</span></li>
-</ol>
+<section id="the-output-of-lm" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> The output of <code>lm</code></h1>
+<p>For this problem, download the <a href="../datasets/births/births14.csv">births.csv dataset</a>. We will manually reproduce most of the quantities computed by the <code>lm</code> function in <code>R</code> for the following regression:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quarto)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>root_dir <span class="ot">&lt;-</span> quarto<span class="sc">::</span><span class="fu">find_project_root</span>()</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>births_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(root_dir, <span class="st">"datasets/births/births14.csv"</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ols_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> mage <span class="sc">+</span> habit, births_df, <span class="at">x=</span><span class="cn">TRUE</span>, <span class="at">y=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(ols_fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = weight ~ 1 + mage + habit, data = births_df, x = TRUE, 
+    y = TRUE)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.0065 -0.6763  0.1039  0.8237  3.1172 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  6.890764   0.207443  33.218  &lt; 2e-16 ***
+mage         0.013291   0.007112   1.869   0.0619 .  
+habitsmoker -0.580241   0.127545  -4.549 6.06e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.278 on 978 degrees of freedom
+  (19 observations deleted due to missingness)
+Multiple R-squared:  0.02507,   Adjusted R-squared:  0.02307 
+F-statistic: 12.57 on 2 and 978 DF,  p-value: 4.063e-06</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ols_coeffs <span class="ot">&lt;-</span> <span class="fu">summary</span>(ols_fit)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note that, since I called <code>lm</code> with the arguments <code>x=TRUE</code> and <code>y=TRUE</code>, the <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{Y}\)</span> matrices are available as <code>ols_fit$x</code> and <code>ols_fit$y</code> respectively.</p>
+<p>For the following questions, use only core <code>R</code> functions (matrix multiplication and inversion and basic linear algebra) on <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{Y}\)</span>.</p>
+<p><strong>(a)</strong> Compute <span class="math inline">\(\hat{\beta}\)</span> and show that it matches <code>coefficients(ols_fit)</code>.</p>
+<p><strong>(b)</strong> Compute <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> and show that it matches <code>ols_fit$residuals</code>.</p>
+<p><strong>(c)</strong> Compute <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span> and show that it matches <code>ols_fit$fitted.values</code>.</p>
+<p><strong>(d)</strong> Estimate the residual standard deviation, <span class="math inline">\(\hat{\sigma}\)</span>, and show that it matches <code>sigma(ols_fit)</code>.</p>
+<p><strong>(e)</strong> Estimate the homoskedastic sampling covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that it matches <code>vcov(ols_fit)</code>.</p>
+<p><strong>(f)</strong> Estimate the heteroskedastic (sandwich) sampling covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that it matches <code>sandwich::vcovCL(ols_fit, type="HC0", cadjust=FALSE)</code>.</p>
+<p><strong>(g)</strong> Estimate the standard errors of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that they match <code>ols_coeffs[, "Std. Error"]</code>.</p>
+<p><strong>(h)</strong> Esimate the t–statistics for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that they match <code>ols_coeffs[, "t value"]</code>.</p>
+<p><strong>(i)</strong> Esimate the p–values for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that they match <code>ols_coeffs[, "Pr(&gt;|t|)"]</code>.</p>
+<p><strong>(j)</strong> Estimate a <span class="math inline">\(\alpha = 0.05\)</span> two–sided confidence interval for the coefficient of <code>mage</code>, and show that it matches <code>confint(ols_fit, "mage", level=1 - alpha)</code>.</p>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 </section>
-<section id="chi-squared-random-variables-and-allies" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Chi squared random variables and allies</h1>
-<p>Let <span class="math inline">\(s\sim \mathcal{\chi}^2_{K}\)</span>. Prove that</p>
-<ul>
-<li><span class="math inline">\(\mathbb{E}\left[s\right] = K\)</span></li>
-<li><span class="math inline">\(\mathrm{Var}\left(s\right) = 2 K\)</span> (hint: if <span class="math inline">\(z\sim \mathcal{N}\left(0,\sigma^2\right)\)</span>, then <span class="math inline">\(\mathbb{E}\left[z^4\right] = 3\sigma^4\)</span>)</li>
-<li>If <span class="math inline">\(a_n \sim \mathcal{N}\left(0,\sigma^2\right)\)</span> IID for <span class="math inline">\(1,\ldots,N\)</span>, then <span class="math inline">\(\frac{1}{\sigma^2} \sum_{n=1}^Na_n^2 \sim \mathcal{\chi}^2_{N}\)</span></li>
-<li><span class="math inline">\(\frac{1}{K} s\rightarrow 1\)</span> as <span class="math inline">\(K \rightarrow \infty\)</span></li>
-<li><span class="math inline">\(\frac{1}{\sqrt{K}} (s- K) \rightarrow \mathcal{N}\left(0, 2\right)\)</span> as <span class="math inline">\(K \rightarrow \infty\)</span></li>
-<li>Let <span class="math inline">\(\boldsymbol{a}\sim \mathcal{N}\left(\boldsymbol{0}, \boldsymbol{I}\right)\)</span> where <span class="math inline">\(a\in \mathbb{R}^{K}\)</span>. Then <span class="math inline">\(\left\Vert\boldsymbol{a}\right\Vert_2^2 \sim \mathcal{\chi}^2_{K}\)</span></li>
-<li>Let <span class="math inline">\(\boldsymbol{a}\sim \mathcal{N}\left(\boldsymbol{0}, \boldsymbol{\Sigma}\right)\)</span> where <span class="math inline">\(a\in \mathbb{R}^{K}\)</span>. Then <span class="math inline">\(\boldsymbol{a}^\intercal\boldsymbol{\Sigma}^{-1} \boldsymbol{a}\sim \mathcal{\chi}^2_{K}\)</span></li>
-</ul>
-<p>Now, let <span class="math inline">\(t\sim \mathrm{StudentT}_{K}\)</span> with <span class="math inline">\(K &gt; 2\)</span>.</p>
-<ul>
-<li>Prove that <span class="math inline">\(\mathbb{E}\left[t\right] = 0\)</span>.</li>
-<li>Prove that <span class="math inline">\(\mathrm{Var}\left(t\right) &gt; 1\)</span>. (You may use the explicit formula or Jensen’s inequality.)</li>
-<li>Argue that a standard confidence interval based on a Student T distribution will always be wider than a confidence interval for the same data based on a normal assumption that ignores the variability of <span class="math inline">\(\hat{\sigma}^2\)</span>.</li>
-<li>For a generic vector <span class="math inline">\(\boldsymbol{a}\)</span>, derive a student-t confidence interval for <span class="math inline">\(\boldsymbol{a}^\intercal{\boldsymbol{\beta}^{*}}\)</span>,</li>
-</ul>
-<p>Now, let <span class="math inline">\(\phi \sim \mathrm{FDist}_{K_1,K_2}\)</span>.</p>
-<ul>
-<li>For large <span class="math inline">\(K_2\)</span>, show that the mean of the F distribution is approximately <span class="math inline">\(1\)</span>.</li>
-<li>For large <span class="math inline">\(K_2\)</span>, show that the variance of the F distribution is approximately <span class="math inline">\(2 / K_1\)</span>. (Hint: use the definition of a <span class="math inline">\(\mathcal{\chi}^2_{K_1}\)</span> as the sum of squares of independent standard normals.)</li>
-<li>If we are testing the null that a set of coefficients are zero, argue why it only makes sense to reject for large values of our F-statistic.</li>
-</ul>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="fit-and-regressors" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Fit and regressors</h1>
-<p>Given a regression on <span class="math inline">\(\boldsymbol{X}\)</span> with <span class="math inline">\(P\)</span> regressors and <span class="math inline">\(N\)</span> data points, and the corresponding <span class="math inline">\(\boldsymbol{Y}\)</span>, <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span>, and <span class="math inline">\(\hat{\varepsilon}\)</span>, define the following quantities: <span class="math display">\[
-\begin{aligned}
-RSS :={}&amp; \hat{\varepsilon}^\intercal\hat{\varepsilon}&amp; \textrm{(Residual sum of squares)}\\
-TSS :={}&amp; \boldsymbol{Y}^\intercal\boldsymbol{Y}&amp; \textrm{(Total sum of squares)}\\
-ESS :={}&amp; \hat{\boldsymbol{Y}}^\intercal\hat{\boldsymbol{Y}}&amp; \textrm{(Explained sum of squares)}\\
-R^2 :={}&amp; \frac{ESS}{TSS}.
-\end{aligned}
-\]</span></p>
-<ol type="a">
-<li>Prove that <span class="math inline">\(RSS + ESS = TSS\)</span>.</li>
-<li>Express <span class="math inline">\(R^2\)</span> in terms of <span class="math inline">\(TSS\)</span> and <span class="math inline">\(RSS\)</span>.</li>
-<li>What is <span class="math inline">\(R^2\)</span> when we include no regressors? (<span class="math inline">\(P = 0\)</span>)</li>
-<li>What is <span class="math inline">\(R^2\)</span> when we include <span class="math inline">\(N\)</span> linearly independent regressors? (<span class="math inline">\(P=N\)</span>)</li>
-<li>Can <span class="math inline">\(R^2\)</span> ever decrease when we add a regressor? If so, how?</li>
-<li>Can <span class="math inline">\(R^2\)</span> ever stay the same when we add a regressor? If so, how?</li>
-<li>Can <span class="math inline">\(R^2\)</span> ever increase when we add a regressor? If so, how?</li>
-<li>Does a high <span class="math inline">\(R^2\)</span> mean the regression is useful? (You may argue by example.)</li>
-<li>Does a low <span class="math inline">\(R^2\)</span> mean the regression is not useful? (You may argue by example.)</li>
-</ol>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="power" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Power</h1>
-<p>For this problem, consider for simplicity regressing on a scalar <span class="math inline">\(y_n \sim \beta x_n\)</span> <em>without a constant</em>. Suppose that <span class="math inline">\(y_n = {\beta^{*}}x_n + \varepsilon_n\)</span> where <span class="math inline">\(\varepsilon_n\)</span> are IID <span class="math inline">\(\mathcal{N}\left(0, \sigma^2\right)\)</span>, and <span class="math inline">\(x_n\)</span> are deterministic and satisfy <span class="math inline">\(\frac{1}{N} \sum_{n=1}^Nx_n^2 \rightarrow v&gt; 0\)</span>. Take <span class="math inline">\(\sigma^2\)</span> as known, and set <span class="math inline">\(s^2 = \frac{1}{N} \sum_{n=1}^Nx_n^2\)</span>.</p>
-<p>For the usual OLS estimator <span class="math inline">\(\hat{\beta}\)</span> and null hypothesis <span class="math inline">\(H_0: {\beta^{*}}= \beta_0\)</span>, define the test statistic <span class="math display">\[
-t = \frac{\hat{\beta}- \beta_0}{\sqrt{N} \sigma / s}.
-\]</span></p>
-<p>Let <span class="math inline">\(q_\alpha\)</span> denote the <span class="math inline">\(1 - \alpha\)</span>–th quantile of the standard normal, i.e.&nbsp;<span class="math inline">\(\Phi(q_\alpha) = 1 - \alpha\)</span>. Define the following rejection regions:</p>
-<ul>
-<li><span class="math inline">\(R_u = (q_\alpha, \infty)\)</span></li>
-<li><span class="math inline">\(R_l = (-\infty, -q_\alpha)\)</span></li>
-<li><span class="math inline">\(R_{ul} = (-\infty, -q_{\alpha/2}) \bigcup (q_{\alpha/2}, \infty)\)</span></li>
-<li><span class="math inline">\(R_{crazy} = (0, q_{1/2 + \alpha})\)</span></li>
-</ul>
-<p><strong>(a)</strong> Show that, if <span class="math inline">\(z\sim \mathcal{N}\left(0,1\right)\)</span>, then <span class="math inline">\(p(z\in \boldsymbol{R}) = \alpha\)</span> for each rejection region <span class="math inline">\(R\)</span>.</p>
-<p><strong>(b)</strong> Show that the test “reject if <span class="math inline">\(t \in R\)</span>” is a valid level-<span class="math inline">\(\alpha\)</span> test for <span class="math inline">\(H_0\)</span>, for each <span class="math inline">\(R\)</span>.</p>
-<p><strong>(c)</strong> Now, suppose that <span class="math inline">\(\beta_0 = 0\)</span> but <span class="math inline">\({\beta^{*}}\)</span> is very large and positive (e.g.&nbsp;<span class="math inline">\(1000\)</span>). Which regions reject <span class="math inline">\(H_0\)</span>? Which regions do not?</p>
-<p><strong>(d)</strong> Now, suppose that <span class="math inline">\(\beta_0 = 0\)</span> but <span class="math inline">\({\beta^{*}}\)</span> is very large and negative (e.g.&nbsp;<span class="math inline">\(-1000\)</span>). Which regions reject <span class="math inline">\(H_0\)</span>? Which regions do not?</p>
-<p><strong>(e)</strong> Now, suppose that <span class="math inline">\(\beta_0 = 0\)</span> and <span class="math inline">\({\beta^{*}}\)</span> is very small and positive relative to its estimated standard deviation, but not exactly zero (e.g.&nbsp;<span class="math inline">\(1 / 1000\)</span>). What is the probability of each region rejecting <span class="math inline">\(H_0\)</span>?</p>
-<p><strong>(f)</strong> Consider the following confidence intervals:</p>
-<ul>
-<li><span class="math inline">\(C_{u} = (-\infty, \hat{\beta}+ \frac{1}{\sqrt{N}} q_\alpha \sigma / s)\)</span></li>
-<li><span class="math inline">\(C_{l} = (\hat{\beta}- \frac{1}{\sqrt{N}} q_\alpha \sigma / s, \infty)\)</span></li>
-<li><span class="math inline">\(C_{lu} = (\hat{\beta}- \frac{1}{\sqrt{N}} q_{\alpha / 2} \sigma / s, \hat{\beta}+ \frac{1}{\sqrt{N}} q_{\alpha / 2} \sigma / s)\)</span></li>
-<li><span class="math inline">\(C_{crazy} = (-\infty, \hat{\beta}) \bigcup \, (\hat{\beta}+ \frac{1}{\sqrt{N}} q_{1/2 + \alpha} \sigma / s)\)</span></li>
-</ul>
-<p>Show that each confidence interval is precisely the set of null hypothesis <span class="math inline">\(\beta_0\)</span> that you <em>would not reject</em> according to the corresponding rejection region.</p>
-<p><strong>(g)</strong> Show that <span class="math inline">\(p({\beta^{*}}\in C) = 1 - \alpha\)</span> for each confidence interval.</p>
-<p><strong>(h)</strong> In ordinary language, describe reasons for and against using each confidence interval in terms of what kinds of alternatives you are interested in having power against.</p>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="interpreting-tests-and-confidence-intervals" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Interpreting tests and confidence intervals</h1>
-<p>Consider a regression <span class="math inline">\(y_n \sim \boldsymbol{x}_n^\intercal\boldsymbol{\beta}\)</span>, with the given confidence intervals for <span class="math inline">\(\beta_1\)</span>. In each problem, let <span class="math inline">\(\hat{v}= \left( (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \hat{\sigma}^2\right)_{11}\)</span> denote the standard error for <span class="math inline">\(\hat{\boldsymbol{\beta}}_1\)</span>. Assume that we have a reasonably large number of observations.</p>
-<p>Assume that the response is patient well-being, and <span class="math inline">\(x_{n1}\)</span> is a treatment indicator for a medical procedure, so that <span class="math inline">\(\beta_1\)</span> is the modeled effect of the procedure on the patient’s health. Here, <span class="math inline">\(\beta_1 &gt; 0\)</span> means the treatment has a positive (good) health benefit. The other regressors are explanatory covariates. The treatment is randomly assigned, so that it is independent of the other covariates.</p>
-<p>For each problem, discuss briefly whether the inferential statement is reasonable or unreasonable and why.</p>
+<section id="simulating-coverage" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Simulating coverage</h1>
 <!--
-- One--sided test that doesn't have power in the right direction
-
-- CLT mis--applied due to not enough data
-
-- An okay example
-
-- Heteroskedastic errors, but using homoskedastic variances
-
-- Predictive variability versus inferential variability
+A random variable $\z_n$ is "log-normally distributed",
+written $\textrm{LN}(\mu, \sigma^2)$, if $\z_n = \exp(\z_n')$ where
+$\z_n' \sim \gauss{\mu, \sigma^2}$.  Note that
+$\expect{\z_n} = \exp(\mu + \sigma^2 / 2)$.
 -->
-<p><strong>(a)</strong> Consider the one-sided interval <span class="math inline">\(I = (\hat{\beta}_1 - 1.64 \sqrt{\hat{v}}, \infty)\)</span>, and assume that <span class="math inline">\(\hat{\beta}_1 - 1.64 \sqrt{\hat{v}} = - 3.4\)</span>. Since this interval contains <span class="math inline">\(\beta = 10\)</span>, we conclude that the treatment might have a very positive effect.</p>
-<p><strong>(b)</strong> Consider the two-sided interval <span class="math inline">\(I = \hat{\beta}_1 \pm 1.96 \sqrt{\hat{v}}\)</span>. We find that the interval contains <span class="math inline">\(0\)</span>, therefore we know that the treatment has no effect.</p>
-<p><strong>(c)</strong> Consider the two-sided interval <span class="math inline">\(I = \hat{\beta}_1 \pm 1.96 \sqrt{\hat{v}}\)</span>. We find that the interval does not contain <span class="math inline">\(\hat{\beta}_1 - 1.96 \sqrt{\hat{v}} &gt; 0\)</span>, which is tentative evidence that the treatment has some non–zero, positive effect.</p>
-<p><strong>(d)</strong> Consider (c), except that when we plot the residuals <span class="math inline">\(\hat{\varepsilon}_n\)</span> versus <span class="math inline">\(x_{n2}\)</span> and find that the distribution of <span class="math inline">\(\hat{\varepsilon}_n\)</span> has greater spread when <span class="math inline">\(\left|x_{n2}\right|\)</span> is larger.</p>
-<p><strong>(e)</strong> We observe a new patient with regressors <span class="math inline">\(x_{*}\)</span>, and construct a confidence interval <span class="math inline">\(I\)</span> such that for <span class="math inline">\(\mathbb{P}\left(x_{*}^\intercal\boldsymbol{\beta}\in I_{*}\right) \ge 0.95\)</span>. We expect that their unobserved well-being, <span class="math inline">\(y_*\)</span>, is probably in <span class="math inline">\(I_{*}\)</span>.</p>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="when-f-tests-and-t-tests-disgree" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> When F-tests and t-tests disgree</h1>
-<p>In this problem we show how t-tests, which perform inference on <em>individual coefficients</em>, and F-tests, which perform inference on <em>groups of coefficients</em>, can appear to disagree with one another.</p>
-<p>For simplicity, consider a setting where the regressor matrix <span class="math inline">\(\boldsymbol{X}\)</span> is orthogonal and normalized so that <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= N \boldsymbol{I}_P\)</span>. We will also assume that for some <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span>, <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}{\boldsymbol{\beta}^{*}}+ \boldsymbol{\varepsilon}\)</span> where <span class="math inline">\(\varepsilon_n \sim \mathcal{N}\left(0, 1\right)\)</span> independently of each other and of <span class="math inline">\(\boldsymbol{X}\)</span>. You may also assume that <span class="math inline">\(N\)</span> is large enough so that <span class="math inline">\(\hat{\sigma}\approx \sigma = 1\)</span>.</p>
-<p>Throughout, assume that we are doing two-sided t tests and one-sided F tests with level <span class="math inline">\(\alpha = 0.05\)</span>.</p>
-<p><strong>(a)</strong> Under our assumptions show that the t test statistic for the null <span class="math inline">\(H_0: {\boldsymbol{\beta}^{*}}_1 = 0\)</span> is given by</p>
-<p><span class="math display">\[
-t_1 := \sqrt{N} \frac{\hat{\boldsymbol{\beta}}_1}{\hat{\sigma}} \approx \sqrt{N}\hat{\boldsymbol{\beta}}_1.
-\]</span></p>
-<p><strong>(b)</strong> Under our assumptions show that the F test statistic for the null <span class="math inline">\(F_0: {\boldsymbol{\beta}^{*}}= \boldsymbol{0}\)</span> is given by <span class="math display">\[
-\phi := \frac{N}{P} \frac{\hat{\boldsymbol{\beta}}^\intercal\hat{\boldsymbol{\beta}}}{\hat{\sigma}^2} \approx \frac{N}{P}  \hat{\boldsymbol{\beta}}^\intercal\hat{\boldsymbol{\beta}}.
-\]</span></p>
-<p><strong>(c)</strong> Now, suppose that <span class="math inline">\({\boldsymbol{\beta}^{*}}_1 = \delta / \sqrt{N}\)</span>, and that <span class="math inline">\({\boldsymbol{\beta}^{*}}_p = 0\)</span> for <span class="math inline">\(p=2,\ldots,P\)</span>. Show that the components of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> are independent gaussians, each with variance <span class="math inline">\(1/N\)</span>, and where <span class="math inline">\(\hat{\boldsymbol{\beta}}_1\)</span> has mean <span class="math inline">\(\delta / \sqrt{N}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}_p\)</span> has mean <span class="math inline">\(0\)</span> for <span class="math inline">\(p \ge 2\)</span>.</p>
-<p><strong>(d)</strong> Under (c), show that <span class="math inline">\(t_1\)</span> rejects <span class="math inline">\(H_0\)</span> with high probability as <span class="math inline">\(\delta \rightarrow \infty\)</span>, no matter what <span class="math inline">\(P\)</span> and <span class="math inline">\(N\)</span> is.</p>
-<p><strong>(e)</strong> Under (c), show that for a fixed <span class="math inline">\(\delta\)</span> and <span class="math inline">\(N\)</span>, then the F test fails to reject at non-zero rate as <span class="math inline">\(P \rightarrow N\)</span>. <strong>Hint:</strong> You can use the fact that <span class="math inline">\(\frac{1}{P} \mathcal{\chi}^2_{P} \approx \mathcal{N}\left(1, \frac{2}{P}\right)\)</span> by the CLT.</p>
-<p><strong>(f)</strong> Combining (d) and (e), we have constructed a situation where we reject the null that <span class="math inline">\({\boldsymbol{\beta}^{*}}_1 = 0\)</span> but fail to reject the null that <span class="math inline">\({\boldsymbol{\beta}^{*}}= \boldsymbol{0}\)</span>. But these results appear to contradict one another, since <span class="math inline">\({\boldsymbol{\beta}^{*}}_1 \ne 0\)</span> implies <span class="math inline">\({\boldsymbol{\beta}^{*}}\ne \boldsymbol{0}\)</span>. How is this possible?</p>
+<p>For each of the following model specifications, perform the following steps:</p>
+<ul>
+<li>Fix <span class="math inline">\(\boldsymbol{\beta}\)</span> as described in the model specification</li>
+<li>Draw a single <span class="math inline">\(\boldsymbol{X}\)</span> matrix, with dimensions <span class="math inline">\(N \times 2\)</span> , where the first column is ones, and the second column IID standard normal random variables.</li>
+<li>Repeat for <span class="math inline">\(s=(1, \ldots, N_{sim})\)</span> simulations, with <span class="math inline">\(N_{sim} = 5000\)</span>:
+<ul>
+<li>Draw <span class="math inline">\(\boldsymbol{\varepsilon}\)</span> as described in the model specification</li>
+<li>Set <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\)</span></li>
+<li>Compute an 80% confidence interval for <span class="math inline">\(\boldsymbol{\beta}_1\)</span> using homoskedastic, normal error assumptions</li>
+<li>Record <span class="math inline">\(c_s = 1\)</span> if <span class="math inline">\({\boldsymbol{\beta}_1 \in I_1}\)</span> and <span class="math inline">\(0\)</span> otherwise.</li>
+</ul></li>
+<li>Estimate the coverage probability, <span class="math inline">\(\hat{C} := \frac{1}{N_{sim}} \sum_{s=1}^{N_{sim}} c_s\)</span>.</li>
+</ul>
+<p>Note that if the original confidence interval is correct, then we should have <span class="math inline">\(\hat{C} \approx 0.8\)</span>. For each problem</p>
+<ul>
+<li>Evaluate whether <span class="math inline">\(\hat{C} \approx 0.8\)</span>, and explain whether this is expected.</li>
+<li>Evaluate the average width of the confidence interval</li>
+</ul>
+<p>For each model, set <span class="math inline">\(\boldsymbol{\beta}= (1, 2)^\intercal\)</span>.</p>
+<p><strong>(a)</strong></p>
+<ul>
+<li><span class="math inline">\(N = 500\)</span></li>
+<li><span class="math inline">\(\varepsilon_n \sim \mathcal{N}\left(0, 1\right)\)</span></li>
+</ul>
+<p><strong>(b)</strong></p>
+<ul>
+<li><span class="math inline">\(N = 500\)</span></li>
+<li><span class="math inline">\(\varepsilon_n = z_n \cdot x_1\quad\)</span> where <span class="math inline">\(\quad z_n \sim \mathcal{N}\left(0, 1\right)\)</span></li>
+</ul>
+<p><strong>(c)</strong></p>
+<ul>
+<li><span class="math inline">\(N = 500\)</span></li>
+<li><span class="math inline">\(\varepsilon_n = \exp(z_n) - \exp(1/2)\quad\)</span> where <span class="math inline">\(\quad z_n \sim \mathcal{N}\left(0, 1\right)\)</span> (Note that <span class="math inline">\(\varepsilon_n\)</span> is mean zero by properties of the lognormal distribution.)</li>
+</ul>
+<p><strong>(d)</strong></p>
+<p>Like (a), but <span class="math inline">\(N=10\)</span>.</p>
+<p><strong>(e)</strong></p>
+<p>Like (b), but <span class="math inline">\(N=10\)</span>.</p>
+<p><strong>(f)</strong></p>
+<p>Like (c), but <span class="math inline">\(N=10\)</span>.</p>
+<p><strong>(g)</strong></p>
+<p>Briefly describe the observed effect of non–Gaussian errors, heteroskedasticity, and low sample size on coverage and CI width.</p>
 
 
 </section>

@@ -175,6 +175,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#omitted-variables-in-inference-versus-prediction" id="toc-omitted-variables-in-inference-versus-prediction" class="nav-link active" data-scroll-target="#omitted-variables-in-inference-versus-prediction"><span class="header-section-number">1</span> Omitted variables in inference versus prediction</a></li>
+  <li><a href="#eigendecomposition-and-covariances" id="toc-eigendecomposition-and-covariances" class="nav-link" data-scroll-target="#eigendecomposition-and-covariances"><span class="header-section-number">2</span> Eigendecomposition and covariances</a></li>
   </ul>
 </nav>
     </div>
@@ -206,6 +207,10 @@ window.Quarto = {
 </header>
 
 
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!-- # Analysis of variance (ANOVA) -->
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -258,6 +263,42 @@ window.Quarto = {
 <p>Hint: <span class="math inline">\(\varepsilon_*\)</span>, <span class="math inline">\(x_*\)</span>, and <span class="math inline">\(z_*\)</span> are independent of the training data <span class="math inline">\(\boldsymbol{Y}\)</span>, so the conditioning doesn’t affect their expectations.</p>
 <p><strong>(g)</strong></p>
 <p>Suppose that <span class="math inline">\(\sigma_\varepsilon/ \beta\)</span> is not too large, so the residual standard deviation is not too large relative to the effect of academic ability on GPA. Are we then able to do effective prediction using the regression <span class="math inline">\(y_n \sim \gamma z_n\)</span>, say, to identify which students are likely to have good GPAs using only test scores? Explain why or why not in intuitive terms.</p>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="eigendecomposition-and-covariances" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Eigendecomposition and covariances</h1>
+<p>Consider the regression <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{X}\boldsymbol{\beta}\)</span>, where <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank, and we make the normal assumption <span class="math inline">\(\boldsymbol{Y}\vert \boldsymbol{X}\sim \mathcal{N}\left(\boldsymbol{X}{\boldsymbol{\beta}^{*}}, \sigma^2 \boldsymbol{I}_N\right)\)</span>. In this problem, we relate the variance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> to the eigenvalues of <span class="math inline">\(\hat{\boldsymbol{M}}_{\boldsymbol{X}}:= \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\)</span>.</p>
+<p>Let <span class="math inline">\(\hat{\boldsymbol{M}}_{\boldsymbol{X}}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span> be the eigendecomposition of <span class="math inline">\(\hat{\boldsymbol{M}}_{\boldsymbol{X}}\)</span>. Here, <span class="math inline">\(\Lambda\)</span> is diagonal with entries <span class="math inline">\(\lambda_p\)</span>, and <span class="math inline">\(\boldsymbol{U}\)</span> is orthonormal, meaning <span class="math inline">\(\boldsymbol{U}^\intercal\boldsymbol{U}= \boldsymbol{I}_P\)</span>.</p>
+<!--
+**(a)** If we let $\Lambda^{1/2}$ be the diagonal matrix with
+$\sqrt{\lambda_p}$ on the diagonal, show that
+$\Xcovhat^{1/2} := \U \Lambda^{1/2} \U^\trans$ is a matrix square
+root of $\Xcovhat$.
+
+**(b)** Let $\Xcovhat^{-1/2}$ denote the inverse of $\Xcovhat^{1/2}$.
+Show taht the inverse exists, and that
+$\Xcovhat^{-1/2}$ is a square root of $\Xcovhat^{-1}$. (Hint: $\X$ is full-rank so
+$\lambda_p > 0$.)
+
+**(c)** Define the new regressor $\zv_n = \Xcovhat^{-1/2} \xv_n$, with
+the corresponding regressor matrix $\Z$.  Show that $\Z^\trans \Z = \frac{1}{N} \id_P$.
+
+**(d)** For the regression $\Y \sim \Z \gamma$, show that
+$\gammavhat = \Xcovhat^{1/2}\betavhat$.  (Hint: We have defined an
+invertible linear reparameterization of the regressors, and we proved
+something on a previous homework about this.)
+
+**ALT:**
+
+-->
+<p><strong>(a)</strong> Define the new regressor <span class="math inline">\(\boldsymbol{z}_n = \boldsymbol{U}^\intercal\boldsymbol{x}_n\)</span>, with the corresponding regressor matrix <span class="math inline">\(\boldsymbol{Z}\)</span>. Show that <span class="math inline">\(\boldsymbol{Z}^\intercal\boldsymbol{Z}= N \Lambda\)</span>.</p>
+<p><strong>(b)</strong> For the regression <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{Z}\gamma\)</span>, show that <span class="math inline">\(\boldsymbol{U}\hat{\boldsymbol{\gamma}}= \hat{\boldsymbol{\beta}}\)</span>, and so <span class="math inline">\(\hat{\boldsymbol{\beta}}= \boldsymbol{U}^\intercal\hat{\boldsymbol{\gamma}}\)</span>. (Hint: We have defined an invertible linear reparameterization of the regressors, and we proved something on a previous homework about this.)</p>
+<p><strong>(c)</strong> Show that <span class="math inline">\(\hat{\boldsymbol{\gamma}}\sim \mathcal{N}\left(\boldsymbol{U}^\intercal{\boldsymbol{\beta}^{*}}, \frac{1}{N} \Lambda^{-1}\right)\)</span>, and so the entries <span class="math inline">\(\hat{\boldsymbol{\gamma}}_p\)</span> are independent with variance <span class="math inline">\(\lambda_p^{-1} / N\)</span>.</p>
+<p><strong>(d)</strong> We have shown that each entry of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is a linear combination of independent Gaussians with variance <span class="math inline">\(\lambda_p^{-1} / N\)</span>. What do you expect to happen to the covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> as <span class="math inline">\(\lambda_p\)</span> approaches zero for some <span class="math inline">\(p\)</span>?</p>
+<p><strong>(e)</strong> When <span class="math inline">\(\boldsymbol{X}\)</span> is not full-rank, then at least one <span class="math inline">\(\lambda_p = 0\)</span>, and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible. Interpret this fact in light of the above result.</p>
+<p>&lt;<!-- Maybe something on ridge and the effect on eigenvalues? --></p>
 
 
 </section>
