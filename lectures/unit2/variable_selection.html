@@ -211,9 +211,10 @@ window.Quarto = {
   <li><a href="#testing-multiple-coefficients-at-once" id="toc-testing-multiple-coefficients-at-once" class="nav-link" data-scroll-target="#testing-multiple-coefficients-at-once">Testing multiple coefficients at once</a>
   <ul class="collapse">
   <li><a href="#the-f-test" id="toc-the-f-test" class="nav-link" data-scroll-target="#the-f-test">The F-test</a></li>
-  </ul></li>
   <li><a href="#total-regression-as-a-special-case" id="toc-total-regression-as-a-special-case" class="nav-link" data-scroll-target="#total-regression-as-a-special-case">Total regression as a special case</a></li>
+  <li><a href="#testing-that-some-subset-of-the-coefficients-are-zero" id="toc-testing-that-some-subset-of-the-coefficients-are-zero" class="nav-link" data-scroll-target="#testing-that-some-subset-of-the-coefficients-are-zero">Testing that some subset of the coefficients are zero</a></li>
   <li><a href="#forward-stepwise-regression" id="toc-forward-stepwise-regression" class="nav-link" data-scroll-target="#forward-stepwise-regression">Forward stepwise regression</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -330,9 +331,8 @@ Definition
 </div>
 </div>
 </section>
-</section>
-<section id="total-regression-as-a-special-case" class="level1">
-<h1>Total regression as a special case</h1>
+<section id="total-regression-as-a-special-case" class="level2">
+<h2 class="anchored" data-anchor-id="total-regression-as-a-special-case">Total regression as a special case</h2>
 <p>What do we get when we apply the F-test to <span class="math inline">\({\boldsymbol{\beta}^{*}}= \boldsymbol{0}\)</span>? The F-statistic is</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -368,8 +368,29 @@ R^2 = 1 - \frac{RSS}{TSS} = \frac{ESS}{TSS}.
 </ul>
 <p>But they may do so at different rates! Adding a regressor increases <span class="math inline">\(P/N\)</span> by <span class="math inline">\(1/N\)</span>, but it may increase <span class="math inline">\(R^2\)</span> by more than that (if it is a very highly explanatory regressor) or less than that (if it is not very good at explaining the residuals from the previous fit). In other words, adding a “good” regressor will <em>increase</em> the F-test statistic and adding a “bad” regressor will <em>decrease</em> the F-test statistic.</p>
 </section>
-<section id="forward-stepwise-regression" class="level1">
-<h1>Forward stepwise regression</h1>
+<section id="testing-that-some-subset-of-the-coefficients-are-zero" class="level2">
+<h2 class="anchored" data-anchor-id="testing-that-some-subset-of-the-coefficients-are-zero">Testing that some subset of the coefficients are zero</h2>
+<p>Another common use of the F test is to check whether some subset of the coefficients are zero. That is, suppose that we are regressing <span class="math inline">\(y_n \sim \boldsymbol{x}_n^\intercal\boldsymbol{\theta}+ \boldsymbol{z}_n^\intercal\boldsymbol{\gamma}\)</span>, for <span class="math inline">\(\boldsymbol{\theta}\in \mathbb{R}^{P_1}\)</span> and <span class="math inline">\(\boldsymbol{\gamma}\in \mathbb{R}^{P_2}\)</span>, and we want to test the hypothesis <span class="math inline">\(H_0: \boldsymbol{\gamma}= \boldsymbol{0}\)</span>. We can express this in our framework by defining <span class="math display">\[
+\boldsymbol{\beta}=
+\begin{pmatrix}
+\boldsymbol{\theta}\\
+\boldsymbol{\gamma}
+\end{pmatrix}
+\quad
+\boldsymbol{A}=
+\begin{pmatrix}
+\boldsymbol{0}_{P_2 \times P_1} &amp; \boldsymbol{I}_{P_2}
+\end{pmatrix}
+\quad
+H_0: \boldsymbol{A}\boldsymbol{\beta}= \boldsymbol{\gamma}= \boldsymbol{0}_{P_2}.
+\]</span> We can then form the test as given above using the OLS estimator from the full regression including both <span class="math inline">\(\boldsymbol{x}_n\)</span> and <span class="math inline">\(\boldsymbol{z}_n\)</span> as regressors.</p>
+<p>It happens that this test statistic can be re-arranged into a nice, simple form. If we denote <span class="math inline">\(\mathrm{RSS}_{x}\)</span> to denote the residual sum of squares from regressing on <span class="math inline">\(x\)</span>, and <span class="math inline">\(\mathrm{RSS}_{xz}\)</span> the residual sum of squares from regression on both <span class="math inline">\(\boldsymbol{x}_n\)</span> and <span class="math inline">\(\boldsymbol{z}_n\)</span>, then the F test statistic is equal to <span class="math display">\[
+\phi = \frac{N - P_1 - P_2}{P_2} \frac{\mathrm{RSS}_{x} - \mathrm{RSS}_{xz}}{\mathrm{RSS}_{xz}},
+\]</span> which is distributed under the null as an <span class="math inline">\(\mathrm{FDist}_{P_2,N - P_1 - P_2}\)</span> variable, as expected. Necessarily <span class="math inline">\(\mathrm{RSS}_{x} \ge \mathrm{RSS}_{xz}\)</span>, and so we reject <span class="math inline">\(H_0\)</span> precisely when the RSS becomes a lot smaller when including <span class="math inline">\(\boldsymbol{z}_n\)</span> as a regressor.</p>
+<p>The easiest way to prove this equivalence is via the FWL theorem, which we will learn in unit four.</p>
+</section>
+<section id="forward-stepwise-regression" class="level2">
+<h2 class="anchored" data-anchor-id="forward-stepwise-regression">Forward stepwise regression</h2>
 <p>One might be tempted to perform the following procedure:</p>
 <ul>
 <li>Start with no regressors</li>
@@ -381,6 +402,7 @@ R^2 = 1 - \frac{RSS}{TSS} = \frac{ESS}{TSS}.
 
 <!-- -->
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -973,7 +995,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>F distribution with $Q$ and $N-P$ degrees of freedom.</span>
 <span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="fu"># Total regression as a special case</span></span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## Total regression as a special case</span></span>
 <span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>What do we get when we apply the F-test to $\betavstar = \zerov$?  The F-statistic is</span>
 <span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
@@ -1036,18 +1058,65 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>fit).  In other words, adding a "good" regressor will *increase* the F-test statistic</span>
 <span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>and adding a "bad" regressor will *decrease* the F-test statistic.</span>
 <span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a><span class="fu"># Forward stepwise regression</span></span>
-<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a>One might be tempted to perform the following procedure:</span>
-<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Start with no regressors</span>
-<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One at a time, add the regressor that increases the F-statistic the most</span>
-<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Stop when the F-test does not increase with the next regressor</span>
-<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>Although sensible, this no longer has any coverage guarantees, since the</span>
-<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>set of variables is not independent of the actual F-statistics themselves.  So</span>
-<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>in order to choose where to stop, we need a different criterion: an estimate</span>
-<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>of the predictive error, which we will talk about in our machine learning unit.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing that some subset of the coefficients are zero</span></span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>\newcommand\thetav{\mybold{\theta}}</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>Another common use of the F test is to check whether some subset of</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>the coefficients are zero.  That is, suppose that we are regressing</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>$\y_n \sim \xv_n^\trans \thetav + \zv_n^\trans \gammav$,</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>for $\thetav \in \rdom{P_1}$ and $\gammav \in \rdom{P_2}$, and we</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a>want to test the hypothesis $H_0: \gammav = \zerov$.  We can express</span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>this in our framework by defining</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>\betav =</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>\thetav <span class="sc">\\</span></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>\gammav</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>\quad</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>\A =</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a>\zerov_{P_2 \times P_1} &amp; \id_{P_2}</span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>\quad</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>H_0: \A \betav = \gammav = \zerov_{P_2}.</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>We can then form the test as given above using the OLS</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>estimator from the full regression including both $\xv_n$ and</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>$\zv_n$ as regressors.</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>It happens that this test statistic can be re-arranged into a</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>nice, simple form.  If we denote $\mathrm{RSS}_{x}$ to denote</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>the residual sum of squares from regressing on $x$, and</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>$\mathrm{RSS}_{xz}$ the residual sum of squares from regression</span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>on both $\xv_n$ and $\zv_n$, then the F test statistic is equal to</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>\phi = \frac{N - P_1 - P_2}{P_2} \frac{\mathrm{RSS}_{x} - \mathrm{RSS}_{xz}}{\mathrm{RSS}_{xz}},</span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>which is distributed under the null as an $\fdist{P_2}{N - P_1 - P_2}$ variable,</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>as expected.  Necessarily $\mathrm{RSS}_{x} \ge \mathrm{RSS}_{xz}$, and so</span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>we reject $H_0$ precisely when the RSS becomes a lot smaller when including</span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>$\zv_n$ as a regressor.</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>The easiest way to prove this equivalence is via the FWL theorem, which</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>we will learn in unit four.</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a><span class="fu">## Forward stepwise regression</span></span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>One might be tempted to perform the following procedure:</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Start with no regressors</span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>One at a time, add the regressor that increases the F-statistic the most</span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Stop when the F-test does not increase with the next regressor</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>Although sensible, this no longer has any coverage guarantees, since the</span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a>set of variables is not independent of the actual F-statistics themselves.  So</span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>in order to choose where to stop, we need a different criterion: an estimate</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>of the predictive error, which we will talk about in our machine learning unit.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
