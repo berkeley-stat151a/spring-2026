@@ -93,7 +93,7 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fbfc5e4df9448d80c0adf4375239e1f6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -234,7 +234,6 @@ window.Quarto = {
   <li><a href="#regression-to-the-mean-with-noisy-test-set-data" id="toc-regression-to-the-mean-with-noisy-test-set-data" class="nav-link" data-scroll-target="#regression-to-the-mean-with-noisy-test-set-data"><span class="header-section-number">4</span> Regression to the mean with noisy test set data</a></li>
   <li><a href="#leaving-a-single-datapoint-out-of-regression" id="toc-leaving-a-single-datapoint-out-of-regression" class="nav-link" data-scroll-target="#leaving-a-single-datapoint-out-of-regression"><span class="header-section-number">5</span> Leaving a single datapoint out of regression</a></li>
   <li><a href="#prediction-in-the-bodyfat-example" id="toc-prediction-in-the-bodyfat-example" class="nav-link" data-scroll-target="#prediction-in-the-bodyfat-example"><span class="header-section-number">6</span> Prediction in the bodyfat example</a></li>
-  <li><a href="#interpretation-of-transforms-of-the-response" id="toc-interpretation-of-transforms-of-the-response" class="nav-link" data-scroll-target="#interpretation-of-transforms-of-the-response"><span class="header-section-number">7</span> Interpretation of transforms of the response</a></li>
   </ul>
 </nav>
     </div>
@@ -272,6 +271,20 @@ window.Quarto = {
 <section id="fwl-and-f-tests-for-subsets-of-regressors" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> FWL and F-tests for subsets of regressors</h1>
 <p>See <span class="citation" data-cites="davidson2004econometric">Davidson, MacKinnon, et al. (<a href="#ref-davidson2004econometric" role="doc-biblioref">2004</a>)</span> 4.4 “Tests of several restrictions”</p>
+<p>Begin with the fact that if you define <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}_A\)</span> to be the residuals from the first regression, then</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\varepsilon}}_A^\intercal\hat{\boldsymbol{\varepsilon}}_A = \hat{\boldsymbol{Y}}_{AB}^\intercal\hat{\boldsymbol{Y}}_{AB} + \hat{\boldsymbol{\varepsilon}}_{AB}^trans \hat{\boldsymbol{\varepsilon}}_{AB}.
+\]</span></p>
+<p>Then show that</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{Y}}_{AB}^\intercal\hat{\boldsymbol{Y}}_{AB} = \sigma^{-2} \hat{\boldsymbol{\beta}}_B^\intercal(\M_A \boldsymbol{X})^\intercal(\M_A \boldsymbol{X}) \hat{\boldsymbol{\beta}}_B
+= \hat{\boldsymbol{\beta}}_B (\Sigmahat)^{-1}_{BB} \hat{\boldsymbol{\beta}}_B,
+\]</span></p>
+<p>giving that the numerator of the F-test is</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}}_B (\Sigmahat)^{-1}_{BB} \hat{\boldsymbol{\beta}}_B = \hat{\boldsymbol{Y}}_{AB}^\intercal\hat{\boldsymbol{Y}}_{AB} = \hat{\boldsymbol{\varepsilon}}_A^\intercal\hat{\boldsymbol{\varepsilon}}_A  - \hat{\boldsymbol{\varepsilon}}_{AB}^trans \hat{\boldsymbol{\varepsilon}}_{AB}.
+\]</span></p>
+<p>Finally, connect with defining <span class="math inline">\(R^2\)</span> by first centering everything.</p>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -279,9 +292,6 @@ window.Quarto = {
 <section id="omitted-variable-bias" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Omitted variable bias</h1>
 <p>Cinelli and Hazlett 2019 Making Sense of Sensitivity</p>
-<!-------------------------------------->
-<!-------------------------------------->
-<!-------------------------------------->
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -463,21 +473,6 @@ A^{-1} - \frac{A^{-1} \boldsymbol{u}\boldsymbol{v}^\intercal A^{-1}}{1 + \boldsy
 <li>Will this result produce a better fit to the data than simply regressing <span class="math inline">\(y_n \sim \boldsymbol{x}_n\)</span>? Why or why not?</li>
 <li>Do you think this result produce a useful prediction for new data? Why or why not?</li>
 </ul>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="interpretation-of-transforms-of-the-response" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Interpretation of transforms of the response</h1>
-<p>Suppose I have data of the where <span class="math inline">\(n = 1, \ldots N\)</span> indexes households, <span class="math inline">\(y_n\)</span> is the expenditure on food in a time period (so that <span class="math inline">\(y_n &gt; 0\)</span> for all <span class="math inline">\(n\)</span>). Suppose that households are randomly selected to either receive food stamps (for which <span class="math inline">\(x_n = 1\)</span>) or to not receive food stamps (for which <span class="math inline">\(x_n = 0\)</span>). Also, suppose we measure household income <span class="math inline">\(z_n\)</span>.</p>
-<p><strong>(a)</strong></p>
-<p>Suppose we regress <span class="math inline">\(y_n \sim \beta_0 + \beta_1 x_n + \beta_2 z_n\)</span>. Let <span class="math inline">\(\hat{f}(x_, z) = \hat{\beta}_0 + \hat{\beta}_1 x+ \hat{\beta}_2 z\)</span> denote the fit.</p>
-<p>Using this regression, we might estimate the effect of food stamps on food expenditure by <span class="math inline">\(\hat{f}(1, z) - \hat{f}(0, z)\)</span>. How does this estimate depend on <span class="math inline">\(z\)</span>?</p>
-<p><strong>(b)</strong></p>
-<p>Suppose we regress <span class="math inline">\(\log y_n \sim \gamma_0 + \gamma_1 x_n + \gamma_2 z_n\)</span>. Let <span class="math inline">\(\hat{g}(x_, z) = \hat{\gamma}_0 + \hat{\gamma}_1 x+ \hat{\gamma}_2 z\)</span>.</p>
-<p>Using this regression, we might estimate the effect of food stamps on food expenditure by <span class="math inline">\(\exp(\hat{g}(1, z)) - \exp(\hat{g}(0, z))\)</span>. How does this estimate depend on <span class="math inline">\(z\)</span>?</p>
-<p><strong>(c)</strong></p>
-<p>The regressions in (a) and (b) make different implicit assumptions about how food stamps affect consumption for a particular household. State these assumptions in ordinary language.</p>
 
 
 

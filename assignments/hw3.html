@@ -39,7 +39,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-e7912cfafc9ddc4be22c3c8e558f97bf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-fbfc5e4df9448d80c0adf4375239e1f6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -175,7 +175,13 @@ window.Quarto = {
    
   <ul>
   <li><a href="#omitted-variables-in-inference-versus-prediction" id="toc-omitted-variables-in-inference-versus-prediction" class="nav-link active" data-scroll-target="#omitted-variables-in-inference-versus-prediction"><span class="header-section-number">1</span> Omitted variables in inference versus prediction</a></li>
-  <li><a href="#eigendecomposition-and-covariances" id="toc-eigendecomposition-and-covariances" class="nav-link" data-scroll-target="#eigendecomposition-and-covariances"><span class="header-section-number">2</span> Eigendecomposition and covariances</a></li>
+  <li><a href="#eigendecomposition-and-covariances" id="toc-eigendecomposition-and-covariances" class="nav-link" data-scroll-target="#eigendecomposition-and-covariances"><span class="header-section-number">2</span> Eigendecomposition and covariances</a>
+  <ul class="collapse">
+  <li><a href="#the-biasvariance-tradeoff-for-ridge-estimation" id="toc-the-biasvariance-tradeoff-for-ridge-estimation" class="nav-link" data-scroll-target="#the-biasvariance-tradeoff-for-ridge-estimation">The bias–variance tradeoff for ridge estimation</a></li>
+  </ul></li>
+  <li><a href="#fused-lasso" id="toc-fused-lasso" class="nav-link" data-scroll-target="#fused-lasso"><span class="header-section-number">3</span> Fused Lasso</a></li>
+  <li><a href="#b-splines-derivation" id="toc-b-splines-derivation" class="nav-link" data-scroll-target="#b-splines-derivation"><span class="header-section-number">4</span> B-splines derivation</a></li>
+  <li><a href="#bayesian-posterior-and-regularization" id="toc-bayesian-posterior-and-regularization" class="nav-link" data-scroll-target="#bayesian-posterior-and-regularization"><span class="header-section-number">5</span> Bayesian posterior and regularization</a></li>
   </ul>
 </nav>
     </div>
@@ -207,10 +213,6 @@ window.Quarto = {
 </header>
 
 
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!-- # Analysis of variance (ANOVA) -->
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -298,7 +300,30 @@ something on a previous homework about this.)
 <p><strong>(c)</strong> Show that <span class="math inline">\(\hat{\boldsymbol{\gamma}}\sim \mathcal{N}\left(\boldsymbol{U}^\intercal{\boldsymbol{\beta}^{*}}, \frac{1}{N} \Lambda^{-1}\right)\)</span>, and so the entries <span class="math inline">\(\hat{\boldsymbol{\gamma}}_p\)</span> are independent with variance <span class="math inline">\(\lambda_p^{-1} / N\)</span>.</p>
 <p><strong>(d)</strong> We have shown that each entry of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is a linear combination of independent Gaussians with variance <span class="math inline">\(\lambda_p^{-1} / N\)</span>. What do you expect to happen to the covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> as <span class="math inline">\(\lambda_p\)</span> approaches zero for some <span class="math inline">\(p\)</span>?</p>
 <p><strong>(e)</strong> When <span class="math inline">\(\boldsymbol{X}\)</span> is not full-rank, then at least one <span class="math inline">\(\lambda_p = 0\)</span>, and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible. Interpret this fact in light of the above result.</p>
-<p>&lt;<!-- Maybe something on ridge and the effect on eigenvalues? --></p>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<section id="the-biasvariance-tradeoff-for-ridge-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="the-biasvariance-tradeoff-for-ridge-estimation">The bias–variance tradeoff for ridge estimation</h2>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+</section>
+<section id="fused-lasso" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Fused Lasso</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="b-splines-derivation" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> B-splines derivation</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="bayesian-posterior-and-regularization" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Bayesian posterior and regularization</h1>
 
 
 </section>
