@@ -1,0 +1,99 @@
+---
+title: "STAT151A Lab 4: reproducing `lm` and coverage simulations"
+author: your name
+number-sections: true
+output: 
+  pdf_document:
+    keep_tex: false
+    pandoc_args: ["--variable", "urlcolor=blue"]
+geometry: margin=1in
+header-includes:
+  - \usepackage{dsfont}
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(sandwich)
+```
+
+## Question 1: Understanding the `lm` outputs
+
+For the first question, we will use the births dataset (`births14.csv`), which you can download from [the course website](https://stat151a.berkeley.edu/spring-2026/datasets/#births-dataset). 
+The goal is to **manually reproduce** (using matrix algebra) most of the quantities computed by the `lm` function in `R` for a specific linear regression model. 
+
+We will study the regression 
+\[
+  \text{weight} 
+  = \beta_0 + \beta_1 \cdot \text{mage} + \beta_2 \cdot \mathds{1}\{\text{habit}=\text{'smoker'}\} + \varepsilon.
+\] 
+You can find a description of the variables on the course website. 
+
+Start by loading and inspecting the data, then fitting the model. 
+Note that calling `lm` with `x = TRUE` and `y = TRUE` stores the design matrix $X$ and the response vector $Y$ inside the fitted object.
+
+```{r}
+births <- read.csv("births14.csv") |>
+  tidyr::drop_na(weight, mage, habit)
+
+ols_fit <- lm(weight ~ 1 + mage + habit, data = births, x = TRUE, y = TRUE)
+print(summary(ols_fit))
+```
+
+Throughout, let $X$ denote the design matrix and $Y$ the response vector for the model above.
+
+\pagebreak
+
+**(a)** Compute the OLS estimate $\hat{\beta}$, the fitted values $\hat{Y}$, and the residuals $\hat{\varepsilon}$, and confirm that your results match those (how are they called?) computed by `lm`.  
+
+**(b)** Estimate the homoskedastic residual standard deviation $\hat{\sigma}$ and confirm that it matches `sigma(ols_fit)`. 
+
+**(c)** Compute the usual homoskedastic covariance estimator of $\hat{\beta}$ and verify that it matches `vcov(ols_fit)`.
+
+**(d)** Compute the *Eicker-Huber-White* "sandwich" covariance estimator for $\hat{\beta}$ and the corresponding robust standard errors. 
+Show that your covariance estimator matches `sandwich::vcovHC(ols_fit, type = "HC0")`.
+
+**(e)** Compute the standard errors, $t$-statistics, and $p$-values for each coefficient, and verify that they match `summary(ols_fit)$coefficients`.
+
+**(f)** Construct a two-sided 95% confidence interval for the coefficient of `mage`.
+Verify that it matches `confint(ols_fit, "mage", level = 0.95)`.
+
+## Question 2: Simulating coverage
+
+In this question, we will investigate the coverage of confidence intervals in a simple linear regression by simulation.
+
+For each model specification A0--C1, do the following.
+
+Fix $\beta = (1, 2)^{T}$. 
+Draw a single design matrix $X$ with dimensions $N \times 2$, where the first column is ones (intercept) and the second column has i.i.d.\ standard normal entries.
+
+Then run $N_{\text{sim}} = 5000$ simulations. 
+In simulation $s$:
+
+- Draw $\varepsilon$ as described in the model specification.
+- Set $Y = X\beta + \varepsilon$.
+- Compute an 80% *two-sided* confidence interval for $\beta_1$ using the usual (homoskedastic) standard error and the appropriate $t$-distribution critical value.
+- Record whether the interval contains the true value $\beta_1 = 2$.
+
+Finally, estimate the **coverage probability** $\hat{p}_{\text{covers}}$ and compute the **average CI width**.
+
+```{r}
+#
+# Tip: write a helper function that returns the 80% CI for beta_1
+#
+```
+
+For each part below, report $\hat{p}_{\text{covers}}$ and the average width, and briefly explain whether the result is expected.
+
+**A0.** $N = 500$, $\varepsilon_i \sim \mathcal{N}(0, 1)$.
+
+**A1.** Like A0, but $N = 10$.
+
+**B0.** $N = 500$, $\varepsilon_i = z_i \cdot X_{i2}$ where $z_i \sim \mathcal{N}(0, 1)$.
+
+**B1.** Like B0, but $N = 10$.
+
+**C0.** $N = 500$, $\varepsilon_i = \exp(z_i) - \exp(1/2)$ where $z_i \sim \mathcal{N}(0, 1)$.
+
+**C1.** Like C0, but $N = 10$.
+
+In 2--4 sentences, summarize the effect of non-Gaussian errors, heteroskedasticity, and low sample size on coverage and CI width.

@@ -219,6 +219,8 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#checking-for-heteroskedasticity" id="toc-checking-for-heteroskedasticity" class="nav-link" data-scroll-target="#checking-for-heteroskedasticity">Checking for heteroskedasticity</a></li>
   </ul></li>
+  <li><a href="#the-machine-learning-assumption" id="toc-the-machine-learning-assumption" class="nav-link" data-scroll-target="#the-machine-learning-assumption">The machine learning assumption</a></li>
+  <li><a href="#non-iid-data" id="toc-non-iid-data" class="nav-link" data-scroll-target="#non-iid-data">Non-IID data</a></li>
   </ul>
 </nav>
     </div>
@@ -427,11 +429,46 @@ r_{n} := \boldsymbol{e}_p^\intercal\boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsym
 <p><span class="math display">\[
 \hat{r}_n := \boldsymbol{e}_p^\intercal\left(\frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\right)^{-1} \boldsymbol{x}_n.
 \]</span></p>
+</section>
+</section>
+<section id="the-machine-learning-assumption" class="level1">
+<h1>The machine learning assumption</h1>
+<p>If we only assume that <span class="math inline">\((y_n, \boldsymbol{x}_n)\)</span> are IID, then there is no true <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> in our assumptions. What can we form hypothesis tests about?</p>
+<p>As we have shown above, we can still define <span class="math display">\[
+{\boldsymbol{\beta}^{*}}= \lim_{N\rightarrow \infty} \hat{\boldsymbol{\beta}}= \boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsymbol{M}_{xy}.
+\]</span> If we then define <span class="math inline">\(\varepsilon_n = y_n -  \boldsymbol{x}_n^\intercal{\boldsymbol{\beta}^{*}}\)</span>, note that, marginally, <span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\boldsymbol{x}_n \varepsilon_n\right]
+={}&amp;
+\mathbb{E}\left[\boldsymbol{x}_n \left( y_n -  \boldsymbol{x}_n^\intercal{\boldsymbol{\beta}^{*}}\right)\right]
+\\={}&amp;
+\mathbb{E}\left[y_n \boldsymbol{x}_n -  \boldsymbol{x}_n^\intercal\boldsymbol{x}_n {\boldsymbol{\beta}^{*}}\right]
+\\={}&amp;
+\mathbb{E}\left[y_n \boldsymbol{x}_n\right] - \mathbb{E}\left[\boldsymbol{x}_n^\intercal\boldsymbol{x}_n\right] \boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsymbol{M}_{xy}
+\\={}&amp;
+\boldsymbol{M}_{xy} - \boldsymbol{M}_{xy} = 0.
+\end{aligned}
+\]</span> So even though we haven’t assumed a “true” model, we can still define residuals which are uncorrelated with <span class="math inline">\(\boldsymbol{x}_n\)</span> as the difference between <span class="math inline">\(y_n\)</span> and the limiting fit. Note that these residuals are not independent! In fact,</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\varepsilon_n \vert \boldsymbol{x}_n\right] = \mathbb{E}\left[y_n \vert \boldsymbol{x}_n\right] - \boldsymbol{x}_n^\intercal{\boldsymbol{\beta}^{*}},
+\]</span> Since we have not assumed anything about the relationship between <span class="math inline">\(y_n\)</span> and <span class="math inline">\(\boldsymbol{x}_n\)</span>, there is every reason to think that this difference depends on <span class="math inline">\(\boldsymbol{x}_n\)</span>. In particular, there is no reason to think that it would be zero for all <span class="math inline">\(\boldsymbol{x}_n\)</span>, as we assumed above.</p>
+<p>However, using only uncorrelatedness, we can write <span class="math display">\[
+\begin{aligned}
+\sqrt{N} \left( \hat{\boldsymbol{M}}_{\boldsymbol{X}}^{-1}  \frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n y_n - {\boldsymbol{\beta}^{*}}\right) ={}&amp;
+\hat{\boldsymbol{M}}_{\boldsymbol{X}}^{-1} \sqrt{N} \left(  \frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n y_n - \hat{\boldsymbol{M}}_{\boldsymbol{X}}{\boldsymbol{\beta}^{*}}\right)
+\\={}&amp;
+\hat{\boldsymbol{M}}_{\boldsymbol{X}}^{-1} \sqrt{N} \left(  \frac{1}{N} \sum_{n=1}^N\boldsymbol{x}_n \left( y_n -  \boldsymbol{x}_n^\intercal{\boldsymbol{\beta}^{*}}\right) \right)
+\\={}&amp;
+\hat{\boldsymbol{M}}_{\boldsymbol{X}}^{-1} \frac{1}{\sqrt{N}} \sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n.
+\end{aligned}
+\]</span> It follows that we can apply the rest of the asymptotics for the heteroskedastic assumption, but with the understanding that we are testing not the “true” value of <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> but simply the limiting value of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> if we had an infinite amount of data.</p>
+</section>
+<section id="non-iid-data" class="level1">
+<h1>Non-IID data</h1>
 
 
 <!-- -->
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1245,7 +1282,66 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>\hat{r}_n := \ev_p^\trans \left(\frac{1}{N} \X^\trans \X \right)^{-1} \xv_n.</span>
-<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>$$</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a><span class="fu"># The machine learning assumption</span></span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>If we only assume that $(\y_n, \xv_n)$ are IID, then there is no true $\betavstar$</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>in our assumptions.  What can we form hypothesis tests about?</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>As we have shown above, we can still define</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>\betavstar = \lim_{N\rightarrow \infty} \betavhat = \Xcov^{-1} \M_{xy}.</span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>If we then define $\res_n = \y_n -  \xv_n^\trans \betavstar$,</span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>note that, marginally,</span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>\expect{\xv_n \res_n}</span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>={}&amp;</span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>\expect{\xv_n \left( \y_n -  \xv_n^\trans \betavstar \right)}</span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>\expect{\y_n \xv_n -  \xv_n^\trans \xv_n \betavstar}</span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a>\expect{\y_n \xv_n} - \expect{\xv_n^\trans \xv_n} \Xcov^{-1} \M_{xy}</span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>\M_{xy} - \M_{xy} = 0.</span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a>So even though we haven't assumed a "true" model, we can still</span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a>define residuals which are uncorrelated with $\xv_n$ as the</span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>difference between $\y_n$ and the limiting fit.  Note that</span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>these residuals are not independent!  In fact,</span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a>\expect{\res_n \vert \xv_n} = \expect{\y_n \vert \xv_n} - \xv_n^\trans \betavstar,</span>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>Since we have not assumed anything about the relationship between</span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a>$\y_n$ and $\xv_n$, there is every reason to think that this difference</span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a>depends on $\xv_n$.  In particular, there is no reason to think that it</span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a>would be zero for all $\xv_n$, as we assumed above.</span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a>However, using only uncorrelatedness, we can write</span>
+<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a>\sqrt{N} \left( \Xcovhat^{-1}  \meann \xv_n \y_n - \betavstar \right) ={}&amp;</span>
+<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a>\Xcovhat^{-1} \sqrt{N} \left(  \meann \xv_n \y_n - \Xcovhat \betavstar \right)</span>
+<span id="cb1-388"><a href="#cb1-388" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a>\Xcovhat^{-1} \sqrt{N} \left(  \meann \xv_n \left( \y_n -  \xv_n^\trans \betavstar\right) \right)</span>
+<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a>\Xcovhat^{-1} \frac{1}{\sqrt{N}} \sumn \xv_n \res_n.</span>
+<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a>It follows that we can apply the rest of the asymptotics for the heteroskedastic</span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a>assumption, but with the understanding that we are testing not the "true" value</span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>of $\betavstar$ but simply the limiting value of $\betavhat$ if we had</span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a>an infinite amount of data.</span>
+<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a><span class="fu"># Non-IID data</span></span>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
