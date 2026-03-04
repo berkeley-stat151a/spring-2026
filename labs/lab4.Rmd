@@ -1,5 +1,5 @@
 ---
-title: "STAT151A Lab 4: reproducing `lm` and coverage simulations"
+title: "STAT151A Lab 4: Reproducing `lm` and coverage simulations"
 author: your name
 number-sections: true
 output: 
