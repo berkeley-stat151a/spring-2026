@@ -465,6 +465,33 @@ r_{n} := \boldsymbol{e}_p^\intercal\boldsymbol{M}_{\boldsymbol{X}}^{-1} \boldsym
 </section>
 <section id="non-iid-data" class="level1">
 <h1>Non-IID data</h1>
+<p>Finally, the sandwich covariance has another use, which is for non-IID data. This gives rise to a “grouped” covariance matrix, but the idea is in fact essentially the same as the sandwich covariance.</p>
+<p>Suppose we think that our data are not IID, but in fact correlated within “groups,” though independent across groups. A classic example is the <a href="../../datasets/index.html">microcredit data</a>, where we might imagine that the income residuals of families from the same town may be correlated with one another even after our regression adujustment, but independent of the income residuals in a different town.</p>
+<p>We can represent this formally as follows. Let <span class="math inline">\(g=1,\ldots,G\)</span> denote the groups, and let <span class="math inline">\(g_n\)</span> denote the group membership of observation <span class="math inline">\(n\)</span>. For example, if observation <span class="math inline">\(100\)</span> is from Oaxaca, we might have <span class="math inline">\(g_n = \textrm{Oaxaca}\)</span>. Note that I have assumed that each observation belongs to exactly one group.</p>
+<!-- The key idea is that, instead of IID observations $(\xv_n, \y_n)$, we
+now have IID observations of the form $\{ (\xv_n, \y_n): \g_n = \g \}$,
+the collection all the observations from group $\g$.  By assumption,
+for different groups, these collections are independent. -->
+<p>How can we find the sampling distribution of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> when the data looks like this? If we ignore the fact that observations are correlated within groups, in general we will compute the wrong sampling variance (typically underestimating it). The trick is to re-write our CLT term as <span class="math display">\[
+\sum_{n=1}^N\boldsymbol{x}_n \varepsilon_n =
+  \sum_{g=1}^G \sum_{n: g_n = g} \boldsymbol{x}_n \varepsilon_n =
+  \sum_{g=1}^G s_g,
+  \quad\textrm{where}\quad
+  s_g := \sum_{n: g_n = g} \boldsymbol{x}_n \varepsilon_n.
+\]</span> We have simply re-arranged our sum so that the observations are grouped according to <span class="math inline">\(g\)</span>, and summed within groups before summing across groups. Now the <span class="math inline">\(s_g\)</span> are independent of one another and mean zero, so we can apply a CLT to get <span class="math display">\[
+\frac{1}{\sqrt{G}} \sum_{g=1}^G s_g \rightarrow \mathcal{N}\left(0, \mathrm{Cov}\left(s_g\right)\right).
+\]</span></p>
+<p>Also, note that <span class="math display">\[
+\frac{1}{G} \boldsymbol{X}^\intercal\boldsymbol{X}= \frac{1}{G} \sum_{n=1}^N\sum_{n: g_n = g} \boldsymbol{x}_n \boldsymbol{x}_n^\intercal
+\]</span> converges, but the LLN, to the expected sum of regressors within a group, a matrix which we can call <span class="math inline">\(\boldsymbol{M}_{\boldsymbol{X}}'\)</span>. On average, we expect <span class="math inline">\(\boldsymbol{M}_{\boldsymbol{X}}'\)</span> to be larger than <span class="math inline">\(\boldsymbol{M}_{\boldsymbol{X}}\)</span> by a factor of the limiting value of <span class="math inline">\(N / G\)</span>, the average number of observations per group.</p>
+<p>Putting this together, we get that</p>
+<p><span class="math display">\[
+\sqrt{G} (\hat{\boldsymbol{\beta}}- {\boldsymbol{\beta}^{*}}) =
+\left(\frac{1}{G} \sum_{n=1}^N\sum_{n: g_n = g} \boldsymbol{x}_n \boldsymbol{x}_n^\intercal\right)^{-1} \frac{1}{\sqrt{G}} \sum_{g=1}^G s_g
+\rightarrow
+\mathcal{N}\left(\boldsymbol{0}, \left( \boldsymbol{M}_{\boldsymbol{X}}' \right)^{-1} \mathrm{Cov}\left(s_g\right) \left( \boldsymbol{M}_{\boldsymbol{X}}' \right)^{-1}\right).
+\]</span></p>
+<p>This is precisely the sandwich covariance, except where the group sums are independent rather than the individual observations!</p>
 
 
 <!-- -->
@@ -1341,7 +1368,70 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a><span class="fu"># Non-IID data</span></span>
-<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-403"><a href="#cb1-403" aria-hidden="true" tabindex="-1"></a>\newcommand\g{g}</span>
+<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a>\newcommand\s{s}</span>
+<span id="cb1-405"><a href="#cb1-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a>Finally, the sandwich covariance has another use, which is for non-IID data.  This</span>
+<span id="cb1-407"><a href="#cb1-407" aria-hidden="true" tabindex="-1"></a>gives rise to a "grouped" covariance matrix, but the idea is in fact essentially</span>
+<span id="cb1-408"><a href="#cb1-408" aria-hidden="true" tabindex="-1"></a>the same as the sandwich covariance.</span>
+<span id="cb1-409"><a href="#cb1-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-410"><a href="#cb1-410" aria-hidden="true" tabindex="-1"></a>Suppose we think that our data are not IID, but in fact correlated within</span>
+<span id="cb1-411"><a href="#cb1-411" aria-hidden="true" tabindex="-1"></a>"groups," though independent across groups.   A classic example is</span>
+<span id="cb1-412"><a href="#cb1-412" aria-hidden="true" tabindex="-1"></a>the <span class="co">[</span><span class="ot">microcredit data</span><span class="co">](/datasets/index.html)</span>,</span>
+<span id="cb1-413"><a href="#cb1-413" aria-hidden="true" tabindex="-1"></a>where we might imagine that the income residuals of families from the same town may</span>
+<span id="cb1-414"><a href="#cb1-414" aria-hidden="true" tabindex="-1"></a>be correlated with one another even after our regression adujustment, but</span>
+<span id="cb1-415"><a href="#cb1-415" aria-hidden="true" tabindex="-1"></a>independent of the income residuals in a different town.</span>
+<span id="cb1-416"><a href="#cb1-416" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-417"><a href="#cb1-417" aria-hidden="true" tabindex="-1"></a>We can represent this formally as follows.  Let $\g=1,\ldots,G$ denote the groups,</span>
+<span id="cb1-418"><a href="#cb1-418" aria-hidden="true" tabindex="-1"></a>and let $g_n$ denote the group membership of observation $n$.  For example,</span>
+<span id="cb1-419"><a href="#cb1-419" aria-hidden="true" tabindex="-1"></a>if observation $100$ is from Oaxaca, we might have $g_n = \textrm{Oaxaca}$.  Note</span>
+<span id="cb1-420"><a href="#cb1-420" aria-hidden="true" tabindex="-1"></a>that I have assumed that each observation belongs to exactly one group.</span>
+<span id="cb1-421"><a href="#cb1-421" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-422"><a href="#cb1-422" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- The key idea is that, instead of IID observations $(\xv_n, \y_n)$, we</span></span>
+<span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a><span class="co">now have IID observations of the form $\{ (\xv_n, \y_n): \g_n = \g \}$,</span></span>
+<span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a><span class="co">the collection all the observations from group $\g$.  By assumption,</span></span>
+<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a><span class="co">for different groups, these collections are independent. --&gt;</span></span>
+<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a>How can we find the sampling distribution of $\betavhat$ when the data</span>
+<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a>looks like this?  If we ignore the fact that observations are correlated</span>
+<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a>within groups, in general we will compute the wrong sampling variance</span>
+<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a>(typically underestimating it).  The trick is to re-write our CLT term as</span>
+<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a>\sumn \xv_n \res_n =</span>
+<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a>  \sum_{g=1}^G \sum_{n: \g_n = \g} \xv_n \res_n =</span>
+<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a>  \sum_{g=1}^G s_g,</span>
+<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a>  \quad\textrm{where}\quad</span>
+<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a>  s_g := \sum_{n: \g_n = \g} \xv_n \res_n.</span>
+<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a>We have simply re-arranged our sum so that the observations are</span>
+<span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a>grouped according to $g$, and summed within groups before summing</span>
+<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a>across groups.  Now the $s_g$ are independent of one another</span>
+<span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a>and mean zero, so we can apply a CLT to get</span>
+<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a>\frac{1}{\sqrt{G}} \sum_{g=1}^G \s_g \rightarrow \gauss{0, \cov{s_g}}.</span>
+<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-445"><a href="#cb1-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a>Also, note that</span>
+<span id="cb1-447"><a href="#cb1-447" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a>\frac{1}{G} \X^\trans \X = \frac{1}{G} \sumn \sum_{n: \g_n = \g} \xv_n \xv_n^\trans</span>
+<span id="cb1-449"><a href="#cb1-449" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a>converges, but the LLN, to the expected sum of regressors within a group, a matrix</span>
+<span id="cb1-451"><a href="#cb1-451" aria-hidden="true" tabindex="-1"></a>which we can call $\Xcov'$.  On average, we expect $\Xcov'$ to be larger than</span>
+<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a>$\Xcov$ by a factor of the limiting value of $N / G$, the average number of</span>
+<span id="cb1-453"><a href="#cb1-453" aria-hidden="true" tabindex="-1"></a>observations per group.</span>
+<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-455"><a href="#cb1-455" aria-hidden="true" tabindex="-1"></a>Putting this together, we get that</span>
+<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a>\sqrt{G} (\betavhat - \betavstar) =</span>
+<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a>\left(\frac{1}{G} \sumn \sum_{n: \g_n = \g} \xv_n \xv_n^\trans \right)^{-1} \frac{1}{\sqrt{G}} \sum_{g=1}^G \s_g</span>
+<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a>\rightarrow</span>
+<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a>\gauss{\zerov, \left( \Xcov' \right)^{-1} \cov{s_g} \left( \Xcov' \right)^{-1}}.</span>
+<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a>This is precisely the sandwich covariance, except where the group sums are independent</span>
+<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a>rather than the individual observations!</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
