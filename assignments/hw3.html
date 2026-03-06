@@ -175,13 +175,11 @@ window.Quarto = {
    
   <ul>
   <li><a href="#omitted-variables-in-inference-versus-prediction" id="toc-omitted-variables-in-inference-versus-prediction" class="nav-link active" data-scroll-target="#omitted-variables-in-inference-versus-prediction"><span class="header-section-number">1</span> Omitted variables in inference versus prediction</a></li>
-  <li><a href="#eigendecomposition-and-covariances" id="toc-eigendecomposition-and-covariances" class="nav-link" data-scroll-target="#eigendecomposition-and-covariances"><span class="header-section-number">2</span> Eigendecomposition and covariances</a>
-  <ul class="collapse">
-  <li><a href="#the-biasvariance-tradeoff-for-ridge-estimation" id="toc-the-biasvariance-tradeoff-for-ridge-estimation" class="nav-link" data-scroll-target="#the-biasvariance-tradeoff-for-ridge-estimation">The bias–variance tradeoff for ridge estimation</a></li>
-  </ul></li>
-  <li><a href="#fused-lasso" id="toc-fused-lasso" class="nav-link" data-scroll-target="#fused-lasso"><span class="header-section-number">3</span> Fused Lasso</a></li>
-  <li><a href="#b-splines-derivation" id="toc-b-splines-derivation" class="nav-link" data-scroll-target="#b-splines-derivation"><span class="header-section-number">4</span> B-splines derivation</a></li>
+  <li><a href="#eigendecomposition-and-covariances" id="toc-eigendecomposition-and-covariances" class="nav-link" data-scroll-target="#eigendecomposition-and-covariances"><span class="header-section-number">2</span> Eigendecomposition and covariances</a></li>
+  <li><a href="#the-bias-variance-tradeoff" id="toc-the-bias-variance-tradeoff" class="nav-link" data-scroll-target="#the-bias-variance-tradeoff"><span class="header-section-number">3</span> The bias-variance tradeoff</a></li>
+  <li><a href="#the-biasvariance-tradeoff-for-ridge-estimation" id="toc-the-biasvariance-tradeoff-for-ridge-estimation" class="nav-link" data-scroll-target="#the-biasvariance-tradeoff-for-ridge-estimation"><span class="header-section-number">4</span> The bias–variance tradeoff for ridge estimation</a></li>
   <li><a href="#bayesian-posterior-and-regularization" id="toc-bayesian-posterior-and-regularization" class="nav-link" data-scroll-target="#bayesian-posterior-and-regularization"><span class="header-section-number">5</span> Bayesian posterior and regularization</a></li>
+  <li><a href="#penalization-in-different-bases" id="toc-penalization-in-different-bases" class="nav-link" data-scroll-target="#penalization-in-different-bases"><span class="header-section-number">6</span> Penalization in different bases</a></li>
   </ul>
 </nav>
     </div>
@@ -303,27 +301,75 @@ something on a previous homework about this.)
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
-<section id="the-biasvariance-tradeoff-for-ridge-estimation" class="level2">
-<h2 class="anchored" data-anchor-id="the-biasvariance-tradeoff-for-ridge-estimation">The bias–variance tradeoff for ridge estimation</h2>
+</section>
+<section id="the-bias-variance-tradeoff" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> The bias-variance tradeoff</h1>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 </section>
-</section>
-<section id="fused-lasso" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Fused Lasso</h1>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="b-splines-derivation" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> B-splines derivation</h1>
+<section id="the-biasvariance-tradeoff-for-ridge-estimation" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> The bias–variance tradeoff for ridge estimation</h1>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 </section>
 <section id="bayesian-posterior-and-regularization" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Bayesian posterior and regularization</h1>
+<p>Suppose a partitioned vector has a multivariate normal distribution of the following form:</p>
+<p><span class="math display">\[
+\begin{pmatrix}
+\boldsymbol{a}\\
+\boldsymbol{b}
+\end{pmatrix}
+\sim
+\mathcal{N}\left(
+  \begin{pmatrix}
+  \boldsymbol{\mu}_a \\
+  \boldsymbol{\mu}_b \\
+  \end{pmatrix},
+  \begin{pmatrix}
+  \Sigma_{aa} &amp; \Sigma_{ab} \\
+  \Sigma_{ba} &amp; \Sigma_{bb} \\
+  \end{pmatrix}
+\right)
+\]</span> It happens that the conditional distribution is given by <span class="math display">\[
+p(\boldsymbol{a}\vert \boldsymbol{b}) =
+\mathcal{N}\left(
+  \boldsymbol{\mu}_a + \Sigma_{ab} \Sigma_{bb}^{-1} (\boldsymbol{b}- \boldsymbol{\mu}_b),
+  \Sigma_{aa} - \Sigma_{ab}\Sigma_{bb}^{-1} \Sigma_{ba}
+\right).
+\]</span></p>
+<p><strong>(a)</strong> Show that if <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are uncorrelated, then <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are independent. <strong>Hint:</strong> a sufficient condition for independence is that <span class="math inline">\(p(\boldsymbol{a}\vert \boldsymbol{b}) = p(\boldsymbol{a})\)</span>.</p>
+<p><strong>(b)</strong> Suppose that <span class="math inline">\(\boldsymbol{a}= c \boldsymbol{b}\)</span> for some <span class="math inline">\(c\)</span>, so that <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are perfectly correlated. Show that <span class="math inline">\(\Sigma_{ab} = c \Sigma_{aa}\)</span> and <span class="math inline">\(\Sigma_{bb} = c^2 \Sigma_{aa}\)</span>.</p>
+<p><strong>(c)</strong> Using (b), show that if <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are perfectly correlated, then <span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{a}\vert \boldsymbol{b}\right) = \boldsymbol{0}\)</span>.</p>
+<p>Now, suppose that we have a prior of the form <span class="math inline">\(\boldsymbol{\beta}\sim \mathcal{N}\left(\boldsymbol{0}, s^2 \boldsymbol{I}_P\right)\)</span>, and that <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\)</span>, where <span class="math inline">\(\boldsymbol{\varepsilon}\sim \mathcal{N}\left(\boldsymbol{0}, \sigma^2 \boldsymbol{I}_N\right)\)</span>, for some known <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\(s^2\)</span>. Here, take <span class="math inline">\(\boldsymbol{X}\)</span> as fixed, and <span class="math inline">\(\boldsymbol{\varepsilon}\)</span> and <span class="math inline">\(\boldsymbol{\beta}\)</span> as independent.</p>
+<p><strong>(d)</strong> Compute the following quantities:</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{Y}\right]\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\right]\)</span></li>
+<li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{Y}\right)\)</span></li>
+<li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{\beta}, \boldsymbol{Y}\right)\)</span></li>
+<li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{\beta}\right)\)</span></li>
+</ul>
+<p><strong>(e)</strong> Using (d), write down the joint distribution of the stacked vector <span class="math inline">\((\boldsymbol{\beta}^\intercal, \boldsymbol{Y}^\intercal)^\intercal\)</span>.</p>
+<p><strong>(f)</strong> Using (e) and the formula for the conditional distribution of multivariate normals, find the posterior distribution <span class="math inline">\(p(\boldsymbol{\beta}\vert \boldsymbol{Y})\)</span>.</p>
+<p><strong>(g)</strong> What happens to the posterior mean <span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right]\)</span> as <span class="math inline">\(s\rightarrow \infty\)</span>? What happens as <span class="math inline">\(s\rightarrow 0\)</span>?</p>
+<p><strong>(h)</strong> For what value of <span class="math inline">\(\lambda\)</span> is the posterior mean <span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right]\)</span> the same as the ridge regression estimator?</p>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="penalization-in-different-bases" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Penalization in different bases</h1>
+<p>Suppose we form a degree-zero spline basis for a univariate regressor.</p>
+<p><strong>(a)</strong> What is the OLS estimator in each bin?</p>
+<p><strong>(b)</strong> Suppose we now run L2 regularization. Now, what is the ridge estimator in each bin?</p>
+<p><strong>(c)</strong> Suppose we run L1 regularization so that only three coefficients are nonzero. You don’t need to compute the L1 fit in closed form, but draw plots of all three fits on some made-up data with six bins.</p>
+<p><strong>(d)</strong> Now, consider the step functions. Show that this is an invertible linear transformation.</p>
+<p><strong>(e)</strong> How does OLS estimator change?</p>
+<p><strong>(f)</strong> Rewrite the ridge penalty. Is the ridge estimator the same?</p>
+<p><strong>(e)</strong> Plot all three together, again assuming that three nonzero coefficients are selected by Lasso. Which of the three do you expect to have changed the most under this change of variables?</p>
 
 
 </section>

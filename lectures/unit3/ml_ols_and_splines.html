@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 /* CSS for citations */
 div.csl-bib-body { }
 div.csl-entry {
@@ -202,10 +236,8 @@ window.Quarto = {
   <li><a href="#linear-approximation" id="toc-linear-approximation" class="nav-link" data-scroll-target="#linear-approximation">Linear approximation</a></li>
   </ul></li>
   <li><a href="#regret-minimization-and-basis-expansions" id="toc-regret-minimization-and-basis-expansions" class="nav-link" data-scroll-target="#regret-minimization-and-basis-expansions">Regret minimization and basis expansions</a></li>
-  <li><a href="#new-regressors-from-old" id="toc-new-regressors-from-old" class="nav-link" data-scroll-target="#new-regressors-from-old">New regressors from old</a>
+  <li><a href="#new-regressors-from-old-splines" id="toc-new-regressors-from-old-splines" class="nav-link" data-scroll-target="#new-regressors-from-old-splines">New regressors from old: Splines</a>
   <ul class="collapse">
-  <li><a href="#taylor-series" id="toc-taylor-series" class="nav-link" data-scroll-target="#taylor-series">Taylor series</a></li>
-  <li><a href="#fourier-series" id="toc-fourier-series" class="nav-link" data-scroll-target="#fourier-series">Fourier series</a></li>
   <li><a href="#indicator-functions" id="toc-indicator-functions" class="nav-link" data-scroll-target="#indicator-functions">Indicator functions</a></li>
   </ul></li>
   <li><a href="#splines" id="toc-splines" class="nav-link" data-scroll-target="#splines">Splines</a>
@@ -213,6 +245,7 @@ window.Quarto = {
   <li><a href="#using-splines-for-continuous-functions" id="toc-using-splines-for-continuous-functions" class="nav-link" data-scroll-target="#using-splines-for-continuous-functions">Using splines for continuous functions</a></li>
   <li><a href="#extrapolation" id="toc-extrapolation" class="nav-link" data-scroll-target="#extrapolation">Extrapolation</a></li>
   </ul></li>
+  <li><a href="#bsplines-in-action" id="toc-bsplines-in-action" class="nav-link" data-scroll-target="#bsplines-in-action">BSplines in action</a></li>
   <li><a href="#bibliography" id="toc-bibliography" class="nav-link" data-scroll-target="#bibliography">Bibliography</a></li>
   </ul>
 </nav>
@@ -316,6 +349,20 @@ f^*(\boldsymbol{x}_\mathrm{new})  = \mathbb{E}\left[y_\mathrm{new}| \boldsymbol{
 <h2 class="anchored" data-anchor-id="approximating-the-conditional-expectation">Approximating the conditional expectation</h2>
 <p>We now know that the optimal regression function is given by <span class="math inline">\(f^*(\boldsymbol{x}) = \mathbb{E}\left[y| \boldsymbol{x}\right]\)</span>. The problem is how to estimate it.</p>
 <p>We have been imagining that we know the full joint distribution of <span class="math inline">\(\boldsymbol{x}\)</span> and <span class="math inline">\(y\)</span>. In that case, we can read off the conditional distribution by “slicing” through a particular <span class="math inline">\(\boldsymbol{x}\)</span>:</p>
+<div class="cell" data-display="false">
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
 <div class="cell" data-display="true">
 <div class="cell-output-display">
 <div>
@@ -395,39 +442,23 @@ f_K(x; \boldsymbol{\beta}) ={}&amp; \sum_{k=1}^K \frac{1}{k!} \beta_k x^k.
 <p>Each term is positive because (a) we cannot find the optimal <span class="math inline">\(f^*_K\)</span> and (b) the optimal <span class="math inline">\(f^*_K\)</span> is not, in general, equal to the true <span class="math inline">\(f^*\)</span>.</p>
 <p>This decomposition is useful because you might expect <span class="math inline">\(K\)</span> to act in opposite directions in these two terms — large <span class="math inline">\(K\)</span> makes the first harder, since you have more to estimate, but large <span class="math inline">\(K\)</span> makes the second easier, since you are more likely to be able to express something close to the optimal <span class="math inline">\(f^*\)</span>.</p>
 </section>
-<section id="new-regressors-from-old" class="level1">
-<h1>New regressors from old</h1>
-<p>Recall that we are trying to approximate</p>
-<p><span class="math display">\[
-\mathbb{E}\left[y| \boldsymbol{x}\right] \approx \boldsymbol{\beta}^\intercal\boldsymbol{x}.
+<section id="new-regressors-from-old-splines" class="level1">
+<h1>New regressors from old: Splines</h1>
+<p>We have seen earlier that we can make more expressive functions by considering nonlinear transformations of our regressors. Specifically, suppose we take <span class="math inline">\(K\)</span> functions <span class="math inline">\(f_k(\boldsymbol{x})\)</span>, and stack them up in a vector: <span class="math display">\[
+\boldsymbol{z}=
+\begin{pmatrix}
+f_1(\boldsymbol{x}) \\
+f_2(\boldsymbol{x}) \\
+\vdots \\
+f_K(\boldsymbol{x})
+\end{pmatrix}.
+\]</span> We can then run the <span class="math inline">\(K\)</span>–dimensional regression <span class="math display">\[
+\mathbb{E}\left[y| \boldsymbol{x}\right] \approx \boldsymbol{\beta}^\intercal\boldsymbol{z}.
 \]</span></p>
-<p>In general, the left–hand side <span class="math inline">\(\mathbb{E}\left[y| \boldsymbol{x}\right]\)</span> is <em>not</em> linear in the regressors, so linear regression will not be able to characterize <span class="math inline">\(\mathbb{E}\left[y| \boldsymbol{x}\right]\)</span>. How close can it get? The more regressors you include, the more expressive <span class="math inline">\(\boldsymbol{\beta}^\intercal\boldsymbol{x}\)</span> is. But typically you only have a finite set of regressors. Does this upper bound the complexity of the functions you can fit?</p>
-<p>It turns out that it does not, since we can take non–linear transformations of the regressors to make new regressors.</p>
-<section id="taylor-series" class="level2">
-<h2 class="anchored" data-anchor-id="taylor-series">Taylor series</h2>
-<p>Suppose for simplicity that <span class="math inline">\(x\)</span> is a scalar, and that <span class="math inline">\(\mathbb{E}\left[y| x\right]\)</span> is an analytic function, meaning it admits a Taylor series expansion:</p>
-<p><span class="math display">\[
-\mathbb{E}\left[y| x\right] =
-    {\beta^{*}}_0 + {\beta^{*}}_1 x+ \frac{1}{2} x^2 + \ldots +
-    \frac{1}{k!} {\beta^{*}}_k x^k + \ldots =
-\sum_{k=0}^\infty \frac{1}{k!} {\beta^{*}}_k x^k.
-\]</span></p>
-<p>Effectively, the Taylor series means that the true conditional expectation is in fact a linear function, but of an <em>infinite</em> number of regressors. We can imagine truncating at some <span class="math inline">\(K\)</span> and running the regression using the features <span class="math inline">\(\boldsymbol{z}_n = (1, x, \frac{1}{2} x^2, \ldots, \frac{1}{K!} x^K)\)</span>. The error we commit is <span class="math inline">\(\sum_{k=K+1}^\infty \frac{1}{k!} {\beta^{*}}_k x^k\)</span>, which goes to zero as <span class="math inline">\(K \rightarrow \infty\)</span>.</p>
-<p>The key is that <span class="math inline">\(\boldsymbol{z}_n\)</span> is a <em>non–linear</em> function of <span class="math inline">\(\boldsymbol{x}_n\)</span>. In general, linear regression on non–linear functions of the regressors give more expressive function classes.</p>
-<p>Note that you would have numerical problems if you actually used <span class="math inline">\(\boldsymbol{z}_n\)</span>, since the matrix <span class="math inline">\(\boldsymbol{Z}^\intercal\boldsymbol{Z}\)</span> will typically be nearly numerically singular. Instead, you should use an orthogonal system of polynomials (like Legendre polyonmials). But typically you wouldn’t actually do this, you’d use splines (discussed below).</p>
-</section>
-<section id="fourier-series" class="level2">
-<h2 class="anchored" data-anchor-id="fourier-series">Fourier series</h2>
-<p>Another basis expansion that we will encounter later in the class is the Fourier basis. For simplicity, consider scalar <span class="math inline">\(x\in [0,1]\)</span>, fix <span class="math inline">\(K\)</span>, and define</p>
-<p><span class="math display">\[
-f_K(x; \boldsymbol{\beta}) = \beta_0 + \sum_{k=1}^K \left(
-    \beta_k^s \sin(2 \pi k x) + \beta_k^c \cos(2 \pi k x) \right).
-\]</span></p>
-<p>Note that the <span class="math inline">\(K\)</span>–th order series has <span class="math inline">\(1 + 2 K\)</span> coefficients to estimate. Fourier bases are, of course, good at representing periodic functions, like daily or weekly cycles in the data. It is also perhaps clearer for the Fourier basis how higher <span class="math inline">\(K\)</span> allow you to express more wiggly functions than for the Taylor series basis.</p>
-</section>
+<p>What we need is a flexible family of functions, indexed by <span class="math inline">\(K\)</span>, where we expect that as <span class="math inline">\(K\)</span> grows we can approximate any function for all practical purposes. One very flexible way to do this is splines, and the simplest example of splines is just indicator functions.</p>
 <section id="indicator-functions" class="level2">
 <h2 class="anchored" data-anchor-id="indicator-functions">Indicator functions</h2>
-<p>You have probably seen how to turn categorical variables into regressors using one–hot encodings. A simlar trick can be done with continuous random variables. Again, take the regressor <span class="math inline">\(x\)</span> to be a scalar for simplicity. We can define a categorical variable “Is <span class="math inline">\(x\)</span> is positive?” If we turn this into a one–hot encoding, we get</p>
+<p>We have seen how to turn categorical variables into regressors using one–hot encodings. A simlar trick can be done with continuous random variables. Take the regressor <span class="math inline">\(x\)</span> to be a scalar for simplicity. We can define a categorical variable “Is <span class="math inline">\(x\)</span> is positive?” If we turn this into a one–hot encoding, we get</p>
 <p><span class="math display">\[
 z_n =
 \mathbb{I}\left(x&gt; 0\right) =
@@ -526,6 +557,138 @@ A \begin{pmatrix}
 </ul>
 <p>Usually the latter does better, because usually realistic functions are not in fact unbounded polynomials. However, in a sense, the training data cannot tell you what goes on beyond its own extrema.</p>
 </section>
+</section>
+<section id="bsplines-in-action" class="level1">
+<h1>BSplines in action</h1>
+<p>Let’s look again at the Ames housing data, and imagine trying to predict sales price from square footage. For simplicity, I’ve rescaled living area to be between 0 and 1.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in geom_point(aes(x = Gr.Liv.Area, y = SalePrice), bins = 50): Ignoring
+unknown parameters: `bins`</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_ols_and_splines_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This appears to have a nonlinear shape. Previously we tried to fit it with a Taylor series. Let’s try splines instead. A nice package is <code>splines2</code> (nice basic documentation here)[https://cran.r-project.org/web/packages/splines2/vignettes/splines2-intro.html].</p>
+<p>Here’s a zero-degree set of basis functions with five knots:</p>
+<div class="cell" data-display="true">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(splines2)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>num_knots  <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>quants <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>num_knots <span class="sc">/</span> (num_knots <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>regs <span class="ot">&lt;-</span> <span class="fu">bSpline</span>(x, <span class="at">knots=</span>quants, <span class="at">degree=</span><span class="dv">0</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(regs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_ols_and_splines_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here’s what it looks like if we regress on this basis:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_ols_and_splines_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The boundaries between the indicators are called “knots,” and we don’t have to place them evenly as we have done here. In fact, if you set <code>df</code> to be the number of internal knots, the package will choose good breakpoints for you.</p>
+<div class="cell" data-display="true">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>reg_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bSpline</span>(x, <span class="at">df=</span><span class="dv">4</span>, <span class="at">degree=</span><span class="dv">0</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg_fit, regs)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>yhat), <span class="at">color=</span><span class="st">"red"</span>, <span class="at">lwd=</span><span class="fl">1.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_ols_and_splines_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The <code>degree</code> changes the smoothness of the fit by changing the smoothness of the basis functions.</p>
+<div class="cell" data-display="true">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>num_knots  <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>quants <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span>num_knots <span class="sc">/</span> (num_knots <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>regs1 <span class="ot">&lt;-</span> <span class="fu">bSpline</span>(x, <span class="at">knots=</span>quants, <span class="at">degree=</span><span class="dv">1</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>regs2 <span class="ot">&lt;-</span> <span class="fu">bSpline</span>(x, <span class="at">knots=</span>quants, <span class="at">degree=</span><span class="dv">2</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(regs1)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(regs2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_ols_and_splines_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The fits are correspondingly smoother.</p>
+<div class="cell" data-display="true">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>reg_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bSpline</span>(x, <span class="at">df=</span><span class="dv">4</span>, <span class="at">degree=</span><span class="dv">2</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg_fit, regs)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>yhat), <span class="at">color=</span><span class="st">"red"</span>, <span class="at">lwd=</span><span class="fl">1.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_ols_and_splines_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Too many basis functions lead to implausible fits, like this:</p>
+<div class="cell" data-display="true">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>reg_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bSpline</span>(x, <span class="at">df=</span><span class="dv">100</span>, <span class="at">degree=</span><span class="dv">2</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg_fit, regs)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y), <span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>yhat), <span class="at">color=</span><span class="st">"red"</span>, <span class="at">lwd=</span><span class="fl">1.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_ols_and_splines_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And the problem gets worse as you include multiple variables.</p>
+<div class="cell" data-display="true">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>reg_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  SalePrice <span class="sc">~</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bSpline</span>(Gr.Liv.Area, <span class="at">degree=</span><span class="dv">2</span>, <span class="at">df=</span><span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bSpline</span>(Lot.Area, <span class="at">degree=</span><span class="dv">2</span>, <span class="at">df=</span><span class="dv">6</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bSpline</span>(BsmtFin.SF<span class="fl">.1</span>, <span class="at">degree=</span><span class="dv">2</span>, <span class="at">df=</span><span class="dv">6</span>), ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in rcpp_bSpline(x = xx, df = df, degree = degree, internal_knots =
+knots, : Set equidistant internal knots (found on-boundary knots from
+quantiles)</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="fu">predict</span>(reg_fit, ames)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Gr.Liv.Area, <span class="at">y=</span>SalePrice), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>Gr.Liv.Area, <span class="at">y=</span>yhat), <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">lwd=</span><span class="fl">1.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ml_ols_and_splines_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>How to choose the number of bases to use is a major topic in regression for ML.</p>
 </section>
 <section id="bibliography" class="level1">
 
