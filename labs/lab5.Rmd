@@ -1,0 +1,170 @@
+---
+title: "STAT151A Lab 5: bias-variance tradeoff and cross-validation"
+author: your name
+number-sections: true
+output: 
+  pdf_document:
+    keep_tex: false
+    pandoc_args: ["--variable", "urlcolor=blue"]
+geometry: margin=1in
+header-includes:
+  - \usepackage{dsfont}
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+## Introduction
+
+We consider $n$ observations $(x_i, Y_i)_{i=1}^n$ where $x_i \in [0,1]$ are fixed and
+\[
+  Y_i = f(x_i) + \varepsilon_i, \qquad \varepsilon_i \overset{\text{i.i.d.}}{\sim} \mathcal{N}(0, \sigma^2),
+\]
+for some $f : [0,1] \to \mathbb{R}$, an unknown regression function we wish to estimate.
+
+**Basis expansion.**
+Any suitably nice $f$ on $[0, 1]$ can be approximated "well" by a linear combination of sinusoidal features $\sin(j\pi x)$, $j = 1, 2, \dots$.
+We further approximate $f$ by truncating to the first $p$ features,
+\[
+  f(x) \approx \sum_{j=1}^{p} \beta_j \sin(j\pi x),
+\]
+and estimating $\beta = (\beta_1, \ldots, \beta_p)$ by OLS.
+
+**Bias-variance decomposition.**
+Let $\hat{f}_p$ be the OLS estimator using the first $p$ sine features, trained on $(x_i, Y_i)_{i=1}^n$.
+Since $x_i$ are fixed, the only randomness is in the noise $\varepsilon_i$.
+For each training point $x_i$, define
+\[
+  \text{bias}(x_i) = \mathbb{E}[\hat{f}_p(x_i)] - f(x_i), \qquad
+  \text{var}(x_i)  = \text{Var}(\hat{f}_p(x_i)).
+\]
+One can show that
+\[
+  \mathbb{E}\bigl[(\hat{f}_p(x_i) - f(x_i))^2\bigr] = \text{bias}^2(x_i) + \text{var}(x_i).
+\]
+Averaging over $i = 1, \ldots, n$ gives the overall MSE:
+\[
+  \text{MSE}(\hat{f}_p)
+  = \frac{1}{n}\sum_{i=1}^n \mathbb{E}\bigl[(\hat{f}_p(x_i) - f(x_i))^2\bigr]
+  = \underbrace{\frac{1}{n}\sum_{i=1}^n \text{bias}^2(x_i)}_{\text{avg.\ bias}^2}
+  + \underbrace{\frac{1}{n}\sum_{i=1}^n \text{var}(x_i)}_{\text{avg.\ variance}}.
+\]
+Increasing $p$ reduces bias but increases variance: this is the bias-variance tradeoff.
+
+\newpage
+
+In this lab we will work with the fixed true regression function
+\[
+  f(x) = x^2,
+\]
+and a fixed set of $n = 500$ design points $x_1, \dots, x_n$ drawn uniformly from $[0, 1]$.
+
+We also fix the noise level $\sigma = 1$.
+
+```{r helpers}
+sbasis <- function(x, p) outer(x, seq_len(p), function(xi, j) sin(j * pi * xi))
+
+# define the true function f:
+f <- function(x) x^2
+
+# draw the design points
+n <- 500
+set.seed(67)
+x      <- runif(n)
+y_true <- f(x)
+
+# set the noise level
+sigma <- 1
+```
+The function `sbasis` computes the first $p$ basis sine functions on any input array $x$ --- feel free to use it as needed.
+
+## Question 0: Visualizing approximation quality
+
+**(a)** Draw a sample $(x_i, Y_i)_{i = 1}^n$ (that is, draw $(\varepsilon_i)_{i = 1}^{n}$ and compute $Y_i = f(x_i) + \varepsilon_i$) once.
+
+For each $p \in \{1, 3, 7, 10, 30\}$, fit $\hat{f}_p$ by OLS using `sbasis` and plot it alongside $f$ and the training points.
+
+```{r q0a}
+# 
+# Your code here 
+#
+```
+
+**(b)** What do you observe as $p$ increases? 
+What goes wrong when $p$ is too small? 
+When $p$ is too large?
+
+## Question 1: Bias-variance decomposition
+
+**(a)** Run $N_{\text{sim}} = 200$ simulations; in each simulation only redraw the noise $\varepsilon$.
+For each $p \in \{1, \ldots, p_{\text{max}}\}$ with $p_{\text{max}} = 30$:
+
+- fit $\hat{f}_p$ by OLS;
+- record the predictions $\hat{f}_p$ at $x_1, \ldots, x_n$;
+- record the average squared loss of the fitted function $\hat{f}_p$ at $x_1, \ldots, x_n$. 
+
+Across simulations, compute and plot as functions of $p$:
+
+- the MSE of the estimator $\hat{f}_{p}$ (average squared loss over simulations),
+- average bias$^2$ and average variance (for this, you need to compute the mean prediction at each design point across simulations).
+
+**(b)** Where does the MSE achieve its minimum? Verify visually that $\text{MSE} = (\text{avg.\ bias}^2) + (\text{avg.\ variance})$.
+
+\newpage
+
+## Question 2: Cross-validation
+
+CV divides the data set into $K$ folds, trains on $K-1$ folds, and predicts the held-out fold---repeating for each fold.
+We can then use the average squared losses on the corresponding held-out folds of the CV fitted functions to compute the estimator $\widehat{\text{MSE}}(\hat{f}_{p})$ of the true $\text{MSE}(\hat{f}_{p})$.
+
+In this question, we'll see how well CV estimates the true MSE (which we have computed in Question 1) by simulation. 
+
+Assuming that the CV estimator is accurate enough, we can choose the parameter $\hat{p}_{\text{CV}}$ that minimizes it as an estimate of the MSE-minimizing $p$.
+
+However, $\hat{p}_{\text{CV}}$ tends to overfit slightly, so we may instead pick the most conservative $p$ consistent with the CV estimate being near its minimum.
+Specifically, we choose $\hat{p}_{\text{1SE}}$, the *smallest* $p$ for which
+\[
+  \widehat{\text{MSE}}(\hat{f}_{p}) 
+  \le \widehat{\text{MSE}}(\hat{f}_{\hat{p}_{\text{CV}}}) + \widehat{\text{SE}}_{\hat{p}_{\text{CV}}},
+\]
+where $\widehat{\text{SE}}_{\hat{p}_{\text{CV}}} = \text{sd}(\text{fold errors at } \hat{p}_{\text{CV}}) / \sqrt{K}$ is the standard error of the CV estimate.
+This is the **1-SE rule**.
+
+**(a)**
+Fix $K = 10$ and an assignment of points $x_1, \dots, x_n$ into $K$ equal folds for the rest of the question. 
+Let's denote the indices of elements in folds by $I_1, \dots, I_K$, so $(I_k)_{k = 1}^{K}$ is a partition of $\{ 1, \dots, n \}$ into $K$ sets of equal sizes. 
+
+**(b)** 
+Now, run $N_{\text{sim}} = 20$ simulations. 
+For each simulation:
+
+- draw new noise $(\varepsilon_i)_{i=1}^n$ and set $Y_i = f(x_i) + \varepsilon_i$;
+
+- for each $p \in \{ 1, \dots, p_{\text{max}} \}$: 
+  - fit $K$ estimators $(\hat{f}_{p}^{(-k)})_{k = 1}^{K}$ of $f$, each trained on the full sample minus the $k$-th fold,
+  - estimate $\text{MSE}(\hat{f}_p)$ by 
+    \[
+      \widehat{\text{MSE}}(\hat{f}_p) 
+      = \frac{1}{n} \sum_{k = 1}^{K} \sum_{i \in I_k} (\hat{f}_{p}^{(-k)}(x_i) - Y_i)^2; 
+    \]
+
+- record the estimated MSE curve $(\widehat{\text{MSE}}(\hat{f}_p))_{p = 1}^{p_{\text{max}}}$; 
+
+- record the CV choice $\hat{p}_{\text{CV}}$ and the 1-SE choice $\hat{p}_{\text{1SE}}$.
+ 
+
+**(c)**
+Plot the estimated $\widehat{\text{MSE}}(\hat{f}_p)$ curves across simulations and the curve $\text{MSE}(\hat{f}_p) + \sigma^2$ using the MSE computed in Question 1.
+What do you observe? 
+Why do we need to shift the true MSE by $\sigma^2$?
+Is CV, on average, an optimistic or pessimistic estimate of the true MSE?
+What about the variability of CV as an estimator of MSE?
+
+**(d)**
+Plot the histogram of $\hat{p}_{\text{CV}}$ across simulations.
+What do you observe? 
+
+**(e)** 
+Repeat **(d)** with $\hat{p}_{\text{1SE}}$.
+Does the 1-SE rule select a more conservative $p$ than the CV minimizer?
