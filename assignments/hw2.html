@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -262,6 +296,83 @@ window.Quarto = {
 <li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{A}\boldsymbol{x}\right)\)</span></li>
 <li><span class="math inline">\(\mathbb{E}\left[(\boldsymbol{A}\boldsymbol{x}) (\boldsymbol{A}\boldsymbol{x})^\intercal\right]\)</span></li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Solutions</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>a_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="at">nrow=</span><span class="dv">2</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">1</span>), <span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>), <span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>mu <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="at">nrow=</span><span class="dv">3</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>sigmam <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.5</span>, <span class="dv">0</span>, <span class="fl">0.5</span>, <span class="dv">2</span>, <span class="fl">0.1</span>, <span class="dv">0</span>, <span class="fl">0.1</span>, <span class="dv">4</span>), <span class="at">nrow=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>v <span class="sc">%*%</span> <span class="fu">t</span>(mu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    0    0    0
+[2,]    1    2    3
+[3,]    0    0    0</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\mathbb{E}\left[\boldsymbol{v}^\intercal\boldsymbol{x}\right] = \boldsymbol{v}^\intercal\boldsymbol{\mu}=\)</span> 2</p>
+<p><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{v}^\intercal\boldsymbol{x}\right) = \boldsymbol{v}^\intercal\boldsymbol{\Sigma}\boldsymbol{v}=\)</span> 2</p>
+<p><span class="math inline">\(\mathbb{E}\left[\boldsymbol{a}^\intercal\boldsymbol{x}\right] = \boldsymbol{a}^\intercal\boldsymbol{\mu}=\)</span> 7</p>
+<p><span class="math inline">\(\mathrm{Var}\left(\boldsymbol{a}^\intercal\boldsymbol{x}\right) = \boldsymbol{a}^\intercal\boldsymbol{\Sigma}\boldsymbol{a}=\)</span> 12.2</p>
+<p><span class="math inline">\(\mathbb{E}\left[\boldsymbol{v}\boldsymbol{x}^\intercal\right] = \boldsymbol{v}\boldsymbol{\mu}^\intercal=\)</span></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    0    0    0
+[2,]    1    2    3
+[3,]    0    0    0</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}\boldsymbol{x}^\intercal\right] = \boldsymbol{\Sigma}+ \boldsymbol{\mu}\boldsymbol{\mu}^\intercal=\)</span></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]  2.0  2.5  3.0
+[2,]  2.5  6.0  6.1
+[3,]  3.0  6.1 13.0</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\mathbb{E}\left[\boldsymbol{x}^\intercal\boldsymbol{x}\right] = \boldsymbol{\mu}^\intercal\boldsymbol{\mu}+ \mathrm{trace}\left(\boldsymbol{\Sigma}\right) =\)</span> 21</p>
+<p><span class="math inline">\(\mathbb{E}\left[\mathrm{trace}\left(\boldsymbol{x}\boldsymbol{x}^\intercal\right)\right] = \mathbb{E}\left[\boldsymbol{x}^\intercal\boldsymbol{x}\right] =\)</span> 21</p>
+<p><span class="math inline">\(\mathbb{E}\left[\boldsymbol{A}\boldsymbol{x}\right] = \boldsymbol{A}\boldsymbol{\mu}=\)</span></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1]
+[1,]    3
+[2,]    5</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{A}\boldsymbol{x}\right) = \boldsymbol{A}\boldsymbol{\Sigma}\boldsymbol{A}^\intercal=\)</span></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]  4.0  3.1
+[2,]  3.1  8.0</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\mathbb{E}\left[(\boldsymbol{A}\boldsymbol{x}) (\boldsymbol{A}\boldsymbol{x})^\intercal\right] = \boldsymbol{A}(\boldsymbol{\mu}\boldsymbol{\mu}^\intercal+ \boldsymbol{\Sigma}) \boldsymbol{A}^\intercal=\)</span></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,] 13.0 18.1
+[2,] 18.1 33.0</code></pre>
+</div>
+</div>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -291,6 +402,43 @@ window.Quarto = {
 <li>For large <span class="math inline">\(K_2\)</span>, show that the variance of the F distribution is approximately <span class="math inline">\(2 / K_1\)</span>. (Hint: use the definition of a <span class="math inline">\(\mathcal{\chi}^2_{K_1}\)</span> as the sum of squares of independent standard normals.)</li>
 <li>If we are testing the null that a set of coefficients are zero, argue why it only makes sense to reject for large values of our F-statistic.</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Write <span class="math inline">\(s= \sum_{k=1}^K z_k^2\)</span> for <span class="math inline">\(z_k \sim \mathcal{N}\left(0,1\right)\)</span> IID.</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}\left[\sum_{k=1}^K z_k^2\right] = \sum_{k=1}^K 1 = K\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\left( \sum_{k=1}^K (z_k^2 - 1)\right)^2\right] = K \mathbb{E}\left[(z_k^2 - 1)^2\right] = K(\mathbb{E}\left[z_k^4\right] - 2 \mathbb{E}\left[z_k^2\right]+ 1) = K(3 - 2 + 1) = 2 K\)</span>. (Here we used the independence of <span class="math inline">\(z_k\)</span> to drop cross terms, and identical distribution to factor out <span class="math inline">\(K\)</span>.)</li>
+<li>If <span class="math inline">\(a_n \sim \mathcal{N}\left(0, \sigma^2\right)\)</span>, then <span class="math inline">\(a_n / \sigma \sim \mathcal{N}\left(0, 1\right)\)</span>, so <span class="math inline">\((a_n / \sigma)^2 \sim \mathcal{\chi}^2_{1}\)</span>. Since the <span class="math inline">\(a_n\)</span> are IID, the sum of <span class="math inline">\(N\)</span> independent <span class="math inline">\(\mathcal{\chi}^2_{1}\)</span> random variables is <span class="math inline">\(\mathcal{\chi}^2_{N}\)</span>, giving <span class="math inline">\(\frac{1}{\sigma^2} \sum_{n=1}^Na_n^2 \sim \mathcal{\chi}^2_{N}\)</span>.</li>
+<li>This follows from the LLN applied to <span class="math inline">\(\frac{1}{K}s= \frac{1}{K}\sum_{k=1}^K z_k^2 \rightarrow \mathbb{E}\left[z_k^2\right] = 1\)</span>.</li>
+<li>This follows from the CLT applied to <span class="math inline">\(\frac{1}{\sqrt{K}} \sum_{k=1}^K (z_k^2 - 1) \rightarrow \mathcal{N}\left(0, \mathrm{Var}\left(z_k^2\right)\right) = \mathcal{N}\left(0, 2\right)\)</span>.</li>
+<li>Use the fact that <span class="math inline">\(\left\Vert\boldsymbol{a}\right\Vert_2^2 = \sum a_k^2\)</span> where each <span class="math inline">\(a_k \sim \mathcal{N}\left(0,1\right)\)</span> IID, so <span class="math inline">\(\left\Vert\boldsymbol{a}\right\Vert_2^2\)</span> is the sum of <span class="math inline">\(K\)</span> squared standard normals, which is <span class="math inline">\(\mathcal{\chi}^2_{K}\)</span> by definition.</li>
+<li>Use the fact that <span class="math inline">\(\boldsymbol{\Sigma}^{-1/2} \boldsymbol{a}\sim \mathcal{N}\left(\boldsymbol{0}, \boldsymbol{I}\right)\)</span>, so <span class="math inline">\(\boldsymbol{a}^\intercal\boldsymbol{\Sigma}^{-1} \boldsymbol{a}= (\boldsymbol{\Sigma}^{-1/2} \boldsymbol{a})^\intercal(\boldsymbol{\Sigma}^{-1/2} \boldsymbol{a}) = \left\Vert\boldsymbol{\Sigma}^{-1/2}\boldsymbol{a}\right\Vert_2^2 \sim \mathcal{\chi}^2_{K}\)</span> by the previous result.</li>
+</ul>
+<p><strong>Student T:</strong></p>
+<p>Recall <span class="math inline">\(t= z/ \sqrt{s/ K}\)</span> where <span class="math inline">\(z\sim \mathcal{N}\left(0,1\right)\)</span> and <span class="math inline">\(s\sim \mathcal{\chi}^2_{K}\)</span> independently.</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}\left[t\right] = \mathbb{E}\left[z\right] \cdot \mathbb{E}\left[1/\sqrt{s/K}\right] = 0\)</span> since <span class="math inline">\(z\)</span> and <span class="math inline">\(s\)</span> are independent.</li>
+<li>By independence, <span class="math inline">\(\mathrm{Var}\left(t\right) = \mathbb{E}\left[t^2\right] = \mathbb{E}\left[z^2\right] \mathbb{E}\left[K / s\right] = \mathbb{E}\left[K / s\right]\)</span>. Since <span class="math inline">\(1/x\)</span> is convex, Jensen’s inequality gives <span class="math inline">\(\mathbb{E}\left[1/s\right] &gt; 1/\mathbb{E}\left[s\right] = 1/K\)</span>, so <span class="math inline">\(\mathrm{Var}\left(t\right) = K \mathbb{E}\left[1/s\right] &gt; 1\)</span>. (The explicit formula gives <span class="math inline">\(\mathrm{Var}\left(t\right) = K / (K - 2)\)</span> for <span class="math inline">\(K &gt; 2\)</span>.)</li>
+<li>Since the Student T critical values are larger than the normal critical values (because <span class="math inline">\(\mathrm{Var}\left(t\right) &gt; 1\)</span> implies heavier tails), the Student T confidence interval <span class="math inline">\(\hat{\beta}\pm t_{K, \alpha/2} \cdot \hat{\sigma}/ \sqrt{N}\)</span> is always wider than the normal-based interval <span class="math inline">\(\hat{\beta}\pm z_{\alpha/2} \cdot \hat{\sigma}/ \sqrt{N}\)</span>, since <span class="math inline">\(t_{K, \alpha/2} &gt; z_{\alpha/2}\)</span>.</li>
+<li>For a generic vector <span class="math inline">\(\boldsymbol{a}\)</span>, <span class="math inline">\(\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\sim \mathcal{N}\left(\boldsymbol{a}^\intercal{\boldsymbol{\beta}^{*}}, \sigma^2 \boldsymbol{a}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{a}\right)\)</span>. With <span class="math inline">\(\sigma^2\)</span> estimated by <span class="math inline">\(\hat{\sigma}^2\)</span>, we have <span class="math inline">\(\frac{\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}- \boldsymbol{a}^\intercal{\boldsymbol{\beta}^{*}}}{\hat{\sigma}\sqrt{\boldsymbol{a}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{a}}} \sim \mathrm{StudentT}_{N - P}\)</span>. So a level-<span class="math inline">\(\alpha\)</span> confidence interval for <span class="math inline">\(\boldsymbol{a}^\intercal{\boldsymbol{\beta}^{*}}\)</span> is <span class="math display">\[\boldsymbol{a}^\intercal\hat{\boldsymbol{\beta}}\pm t_{N-P, \alpha/2} \cdot \hat{\sigma}\sqrt{\boldsymbol{a}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{a}}.\]</span></li>
+</ul>
+<p><strong>F distribution:</strong></p>
+<p>Recall <span class="math inline">\(\phi = \frac{s_1 / K_1}{s_2 / K_2}\)</span> where <span class="math inline">\(s_1 \sim \mathcal{\chi}^2_{K_1}\)</span> and <span class="math inline">\(s_2 \sim \mathcal{\chi}^2_{K_2}\)</span> independently.</p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}\left[\phi\right] = \mathbb{E}\left[s_1 / K_1\right] \cdot \mathbb{E}\left[K_2 / s_2\right] = 1 \cdot \frac{K_2}{K_2 - 2}\)</span>. For large <span class="math inline">\(K_2\)</span>, <span class="math inline">\(\frac{K_2}{K_2-2} \approx 1\)</span>.</li>
+<li>For large <span class="math inline">\(K_2\)</span>, <span class="math inline">\(s_2/K_2 \rightarrow 1\)</span> by LLN, so <span class="math inline">\(\phi \approx s_1 / K_1 = \frac{1}{K_1}\sum_{k=1}^{K_1} z_k^2\)</span>. Then <span class="math inline">\(\mathrm{Var}\left(\phi\right) \approx \mathrm{Var}\left(s_1/K_1\right) = \frac{1}{K_1^2} \cdot 2K_1 = 2/K_1\)</span>.</li>
+<li>Under the null <span class="math inline">\({\boldsymbol{\beta}^{*}}= \boldsymbol{0}\)</span>, the coefficients <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> are estimated from pure noise, so <span class="math inline">\(\hat{\boldsymbol{\beta}}^\intercal\hat{\boldsymbol{\beta}}\)</span> is small and <span class="math inline">\(\phi \approx 1\)</span>. Under the alternative <span class="math inline">\({\boldsymbol{\beta}^{*}}\ne \boldsymbol{0}\)</span>, <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> captures the true signal, inflating <span class="math inline">\(\hat{\boldsymbol{\beta}}^\intercal\hat{\boldsymbol{\beta}}\)</span> and making <span class="math inline">\(\phi\)</span> large. So it only makes sense to reject for large <span class="math inline">\(\phi\)</span>.</li>
+</ul>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -316,6 +464,29 @@ R^2 :={}&amp; \frac{ESS}{TSS}.
 <li>Does a high <span class="math inline">\(R^2\)</span> mean the regression is useful? (You may argue by example.)</li>
 <li>Does a low <span class="math inline">\(R^2\)</span> mean the regression is not useful? (You may argue by example.)</li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="a">
+<li>This follows from <span class="math inline">\(\hat{\boldsymbol{Y}}^\intercal\hat{\varepsilon}= \boldsymbol{0}\)</span>.</li>
+<li><span class="math inline">\(R^2 = \frac{TSS - RSS}{TSS} = 1 - \frac{RSS}{TSS}\)</span></li>
+<li><span class="math inline">\(R^2 = 0\)</span> when we include no regressors</li>
+<li><span class="math inline">\(R^2 = 1\)</span> when we include <span class="math inline">\(N\)</span> linearly independent regressors?</li>
+<li>No, it cannot, since you project onto the same or larger subspace.</li>
+<li>Yes, if you add a regressor column that is colinear with the existing columns.</li>
+<li>Yes, if you add a linearly independent regressor column.</li>
+<li>No, you might overfit.</li>
+<li>No, you might have low signal to noise ratio.</li>
+</ol>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -324,7 +495,7 @@ R^2 :={}&amp; \frac{ESS}{TSS}.
 <h1 data-number="4"><span class="header-section-number">4</span> Power</h1>
 <p>For this problem, consider for simplicity regressing on a scalar <span class="math inline">\(y_n \sim \beta x_n\)</span> <em>without a constant</em>. Suppose that <span class="math inline">\(y_n = {\beta^{*}}x_n + \varepsilon_n\)</span> where <span class="math inline">\(\varepsilon_n\)</span> are IID <span class="math inline">\(\mathcal{N}\left(0, \sigma^2\right)\)</span>, and <span class="math inline">\(x_n\)</span> are deterministic and satisfy <span class="math inline">\(\frac{1}{N} \sum_{n=1}^Nx_n^2 \rightarrow v&gt; 0\)</span>. Take <span class="math inline">\(\sigma^2\)</span> as known, and set <span class="math inline">\(s^2 = \frac{1}{N} \sum_{n=1}^Nx_n^2\)</span>.</p>
 <p>For the usual OLS estimator <span class="math inline">\(\hat{\beta}\)</span> and null hypothesis <span class="math inline">\(H_0: {\beta^{*}}= \beta_0\)</span>, define the test statistic <span class="math display">\[
-t = \frac{\hat{\beta}- \beta_0}{\sqrt{N} \sigma / s}.
+t = \sqrt{N} \frac{\hat{\beta}- \beta_0}{\sigma / s}.
 \]</span></p>
 <p>Let <span class="math inline">\(q_\alpha\)</span> denote the <span class="math inline">\(1 - \alpha\)</span>–th quantile of the standard normal, i.e.&nbsp;<span class="math inline">\(\Phi(q_\alpha) = 1 - \alpha\)</span>. Define the following rejection regions:</p>
 <ul>
@@ -348,6 +519,70 @@ t = \frac{\hat{\beta}- \beta_0}{\sqrt{N} \sigma / s}.
 <p>Show that each confidence interval is precisely the set of null hypothesis <span class="math inline">\(\beta_0\)</span> that you <em>would not reject</em> according to the corresponding rejection region.</p>
 <p><strong>(g)</strong> Show that <span class="math inline">\(p({\beta^{*}}\in C) = 1 - \alpha\)</span> for each confidence interval.</p>
 <p><strong>(h)</strong> In ordinary language, describe reasons for and against using each confidence interval in terms of what kinds of alternatives you are interested in having power against.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> With <span class="math inline">\(z\sim \mathcal{N}\left(0,1\right)\)</span>:</p>
+<ul>
+<li><span class="math inline">\(p(z\in R_u) = 1 - \Phi(q_\alpha) = 1 - (1 - \alpha) = \alpha\)</span></li>
+<li><span class="math inline">\(p(z\in R_l) = \Phi(-q_\alpha) = 1 - \Phi(q_\alpha) = \alpha\)</span></li>
+<li><span class="math inline">\(p(z\in R_{ul}) = \Phi(-q_{\alpha/2}) + 1 - \Phi(q_{\alpha/2}) = 2\alpha/2 = \alpha\)</span></li>
+<li><span class="math inline">\(p(z\in R_{crazy}) = \Phi(q_{1/2 - \alpha}) - \Phi(0) = 1 - (1/2 - \alpha) - 1/2 = \alpha\)</span></li>
+</ul>
+<p><strong>(b)</strong> Under <span class="math inline">\(H_0: {\beta^{*}}= \beta_0\)</span>, the test statistic <span class="math inline">\(t= \frac{\hat{\beta}- \beta_0}{\sigma / (s\sqrt{N})}\)</span> is exactly <span class="math inline">\(\mathcal{N}\left(0,1\right)\)</span> since <span class="math inline">\(\hat{\beta}- \beta_0 \sim \mathcal{N}\left(0, \sigma^2/(N s^2)\right)\)</span>. So <span class="math inline">\(p(t\in R \mid H_0) = p(z\in R) = \alpha\)</span> by part (a).</p>
+<p><strong>(c)</strong> We can plug in <span class="math display">\[
+t = \frac{\hat{\beta}- {\beta^{*}}+ {\beta^{*}}- \beta_0}{\sigma / (\sqrt{N} s)} =
+\frac{\hat{\beta}- {\beta^{*}}}{\sigma / (\sqrt{N} s)} +
+\frac{{\beta^{*}}- \beta_0}{\sigma / (\sqrt{N} s)} =
+\mathcal{N}\left(0,1\right) + \sqrt{N} \frac{{\beta^{*}}- \beta_0}{\sigma / s}.
+\]</span></p>
+<p>From, this, it follows that if <span class="math inline">\({\beta^{*}}\gg 0\)</span>, then <span class="math inline">\(t \gg 0\)</span> with high probability. So</p>
+<ul>
+<li><span class="math inline">\(R_u\)</span>: Rejects</li>
+<li><span class="math inline">\(R_l\)</span>: Does not reject</li>
+<li><span class="math inline">\(R_{ul}\)</span>: Rejects</li>
+<li><span class="math inline">\(R_{crazy}\)</span>: Does not reject</li>
+</ul>
+<p><strong>(d)</strong> Reasoning as in (c), <span class="math inline">\(t \ll 0\)</span>, so</p>
+<ul>
+<li><span class="math inline">\(R_u\)</span>: Does not reject</li>
+<li><span class="math inline">\(R_l\)</span>: Rejects</li>
+<li><span class="math inline">\(R_{ul}\)</span>: Rejects</li>
+<li><span class="math inline">\(R_{crazy}\)</span>: Does not reject</li>
+</ul>
+<p><strong>(e)</strong> Reasoning as above, for <span class="math inline">\({\beta^{*}}\approx 0\)</span>, we approximately have <span class="math inline">\(t \sim \mathcal{N}\left(0,1\right)\)</span>. So</p>
+<ul>
+<li><span class="math inline">\(R_u\)</span>: Rejects with probability <span class="math inline">\(\alpha\)</span></li>
+<li><span class="math inline">\(R_l\)</span>: Rejects with probability <span class="math inline">\(\alpha\)</span></li>
+<li><span class="math inline">\(R_{ul}\)</span>: Rejects with probability <span class="math inline">\(\alpha\)</span></li>
+<li><span class="math inline">\(R_{crazy}\)</span>: Rejects with probability only slightly higher than <span class="math inline">\(\alpha\)</span></li>
+</ul>
+<p><strong>(f)</strong> For each <span class="math inline">\(R\)</span>, we find the set of <span class="math inline">\(\beta_0\)</span> such that <span class="math inline">\(t\notin R\)</span>. First, we can solve for <span class="math inline">\(\beta_0\)</span> in the definition of <span class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[
+\beta_0 = \hat{\beta}- \frac{1}{\sqrt{N}} (\sigma / s) t,
+\]</span> so that, for any <span class="math inline">\(t_0\)</span>, <span class="math display">\[
+t &lt; t_0 \quad \Leftrightarrow \quad
+\beta_0 &gt; \frac{1}{\sqrt{N}} (\sigma / s) t_0.
+\]</span></p>
+<p>The results follow from plugging this expression into the definitions of the rejection regions.</p>
+<p>Note that because <span class="math inline">\(t\)</span> was constructed by <em>subtracting</em> <span class="math inline">\(\beta_0\)</span>, the direction of the rejection regions flip signs. We could equally well have defined a statistic which is the negative of <span class="math inline">\(t\)</span>, which would have the statistic rejection regions and <span class="math inline">\(\beta_0\)</span> confidence intervals aligned in their direction.</p>
+<p><strong>(g)</strong> When the null is true, then <span class="math inline">\(p(t\in R) = \alpha\)</span>. And, by (f), <span class="math inline">\(t\in R\)</span> if an only if <span class="math inline">\({\beta^{*}}\notin C\)</span>. So <span class="math display">\[
+\begin{aligned}
+p({\beta^{*}}\in C) ={}&amp; p(t\notin R) &amp; \textrm{(always true)} \\
+={}&amp; 1 - \alpha. &amp; \textrm{(under $H_0$)}
+\end{aligned}
+\]</span></p>
+<p><strong>(h)</strong></p>
+<p>We see that each region has power against different alternatives. Specifically, if <span class="math inline">\({\beta^{*}}\)</span> is larger than <span class="math inline">\(\beta_0\)</span>, then <span class="math inline">\(R_u\)</span> rejects but <span class="math inline">\(R_l\)</span> does not, and <span class="math inline">\(R_u\)</span> rejects more often than <span class="math inline">\(R_{ul}\)</span>. The rejection region <span class="math inline">\(R_{crazy}\)</span> only has extra power against alternatives that are very close to zero — and not much extra power, at that. This is the reason <span class="math inline">\(R_{crazy}\)</span> is not very useful, despite giving rise to a valid hypothesis test.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -373,6 +608,24 @@ t = \frac{\hat{\beta}- \beta_0}{\sqrt{N} \sigma / s}.
 <p><strong>(c)</strong> Consider the two-sided interval <span class="math inline">\(I = \hat{\beta}_1 \pm 1.96 \sqrt{\hat{v}}\)</span>. We find that the interval does not contain <span class="math inline">\(\hat{\beta}_1 - 1.96 \sqrt{\hat{v}} &gt; 0\)</span>, which is tentative evidence that the treatment has some non–zero, positive effect.</p>
 <p><strong>(d)</strong> Consider (c), except that when we plot the residuals <span class="math inline">\(\hat{\varepsilon}_n\)</span> versus <span class="math inline">\(x_{n2}\)</span> and find that the distribution of <span class="math inline">\(\hat{\varepsilon}_n\)</span> has greater spread when <span class="math inline">\(\left|x_{n2}\right|\)</span> is larger.</p>
 <p><strong>(e)</strong> We observe a new patient with regressors <span class="math inline">\(x_{*}\)</span>, and construct a confidence interval <span class="math inline">\(I\)</span> such that for <span class="math inline">\(\mathbb{P}\left(x_{*}^\intercal\boldsymbol{\beta}\in I_{*}\right) \ge 0.95\)</span>. We expect that their unobserved well-being, <span class="math inline">\(y_*\)</span>, is probably in <span class="math inline">\(I_{*}\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Solutions</strong>:</p>
+<p><strong>(a)</strong> This one–sided interval is based on a test with no power against very high effects, and so the conclusion is unreasonable.</p>
+<p><strong>(b)</strong> Failing to reject the null does not mean the null is true. The conclusion is unreasonable.</p>
+<p><strong>(c)</strong> This is reasonable for the population studied, though tentative, since it is only reasonable if the other assumptions of the model are correct, such as homoskedasticity, no outliers or very high leverage points, and so on.</p>
+<p><strong>(d)</strong> Since there is heteroskedasticity, the intervals are likely to be invalid, and the conclusion is unreasonable.</p>
+<p><strong>(e)</strong> The interval <span class="math inline">\(I_{*}\)</span> does not cover <span class="math inline">\(y_*\)</span>; it only covers <span class="math inline">\(\boldsymbol{\beta}^\intercal x_{*}\)</span>. The variability in the residual <span class="math inline">\(\varepsilon_*\)</span> must also be taken into account. The conclusion is unreasonable.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -393,6 +646,51 @@ t_1 := \sqrt{N} \frac{\hat{\boldsymbol{\beta}}_1}{\hat{\sigma}} \approx \sqrt{N}
 <p><strong>(d)</strong> Under (c), show that <span class="math inline">\(t_1\)</span> rejects <span class="math inline">\(H_0\)</span> with high probability as <span class="math inline">\(\delta \rightarrow \infty\)</span>, no matter what <span class="math inline">\(P\)</span> and <span class="math inline">\(N\)</span> is.</p>
 <p><strong>(e)</strong> Under (c), show that for a fixed <span class="math inline">\(\delta\)</span> and <span class="math inline">\(N\)</span>, then the F test fails to reject at non-zero rate as <span class="math inline">\(P \rightarrow N\)</span>. <strong>Hint:</strong> You can use the fact that <span class="math inline">\(\frac{1}{P} \mathcal{\chi}^2_{P} \approx \mathcal{N}\left(1, \frac{2}{P}\right)\)</span> by the CLT.</p>
 <p><strong>(f)</strong> Combining (d) and (e), we have constructed a situation where we reject the null that <span class="math inline">\({\boldsymbol{\beta}^{*}}_1 = 0\)</span> but fail to reject the null that <span class="math inline">\({\boldsymbol{\beta}^{*}}= \boldsymbol{0}\)</span>. But these results appear to contradict one another, since <span class="math inline">\({\boldsymbol{\beta}^{*}}_1 \ne 0\)</span> implies <span class="math inline">\({\boldsymbol{\beta}^{*}}\ne \boldsymbol{0}\)</span>. How is this possible?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note throughout that the distribution of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is given by <span class="math display">\[
+\hat{\boldsymbol{\beta}}\sim \mathcal{N}\left({\boldsymbol{\beta}^{*}}, \sigma^2 (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\right) =
+\mathcal{N}\left({\boldsymbol{\beta}^{*}}, \frac{1}{N} I_P\right).
+\]</span></p>
+<p><strong>(a)</strong> The t-statistic for <span class="math inline">\(H_0: {\boldsymbol{\beta}^{*}}_1 = 0\)</span> is <span class="math display">\[
+t_1 =
+\frac{\hat{\boldsymbol{\beta}}_1 - 0}{\hat{\sigma}\sqrt{((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1})_{11}}} =
+\frac{\hat{\boldsymbol{\beta}}_1}{\hat{\sigma}/ \sqrt{N}} =
+\sqrt{N} \frac{\hat{\boldsymbol{\beta}}_1}{\hat{\sigma}} \approx \sqrt{N} \hat{\boldsymbol{\beta}}_1.
+\]</span></p>
+<p><strong>(b)</strong> The F-statistic for <span class="math inline">\(F_0: {\boldsymbol{\beta}^{*}}= \boldsymbol{0}\)</span> is <span class="math display">\[
+\phi =
+\frac{\hat{\boldsymbol{\beta}}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X}) \hat{\boldsymbol{\beta}}/ P}
+            {\hat{\sigma}^2} =
+\frac{N \hat{\boldsymbol{\beta}}^\intercal I_p \hat{\boldsymbol{\beta}}/ P}
+            {\hat{\sigma}^2} =
+            \frac{N}{P} \frac{\hat{\boldsymbol{\beta}}^\intercal\hat{\boldsymbol{\beta}}}{\hat{\sigma}^2} \approx
+  \frac{N}{P} \hat{\boldsymbol{\beta}}^\intercal\hat{\boldsymbol{\beta}}.
+\]</span></p>
+<p><strong>(c)</strong> This follows by plugging into the above formula.</p>
+<p><strong>(d)</strong> Under (c), we can write <span class="math display">\[
+\hat{\boldsymbol{\beta}}= \frac{\delta}{\sqrt{N}} + \mathcal{N}\left(0, 1/\sqrt{N}\right),
+\]</span> so <span class="math display">\[
+t_1 \approx \delta + \mathcal{N}\left(0,1\right).
+\]</span> By making <span class="math inline">\(\delta\)</span> large, we can increase the probability of rejection This holds regardless of <span class="math inline">\(P\)</span>, for <span class="math inline">\(N\)</span> large enough that we can use the approximation <span class="math inline">\(\hat{\sigma}\approx \sigma\)</span>.</p>
+<p><strong>(e)</strong> Under (c), we can write <span class="math inline">\(\hat{\boldsymbol{\beta}}^\intercal\hat{\boldsymbol{\beta}}= \frac{\delta^2}{N} + \mathcal{\chi}^2_{P} / N\)</span>, so that <span class="math display">\[
+\phi \approx \frac{\delta^2}{P} + \frac{1}{P}\mathcal{\chi}^2_{P} \approx \frac{\delta^2}{P} + \mathcal{N}\left(1, \frac{2}{P}\right).
+\]</span> Since the rejection region will be centered at <span class="math inline">\(1\)</span> and of width <span class="math inline">\(q / \sqrt{P}\)</span> for some <span class="math inline">\(q\)</span>, we will fail to reject when <span class="math display">\[
+\frac{\delta^2}{P} &lt; \frac{q}{\sqrt{P}}
+\quad\Leftrightarrow\quad
+\delta^2 &lt; q \sqrt{P}.
+\]</span> We need to choose <span class="math inline">\(N\)</span> large enough that <span class="math inline">\(P\)</span> can be made large enough, but for any <span class="math inline">\(\delta\)</span> we can eventually find <span class="math inline">\(N\)</span> and <span class="math inline">\(P\)</span> large enough that the F test fails to reject with nonzero probability.</p>
+<p><strong>(f)</strong> The F-test and t-test have power against different kinds of alternatives. Specifically, the t-test has the advantage of looking only at exactly the right coefficient, whereas the F-test is performing a simultaneous test of all the coefficients at once, most of which are zero.</p>
+</div>
+</div>
 
 
 </section>

@@ -179,7 +179,6 @@ window.Quarto = {
   <li><a href="#the-bias-variance-tradeoff" id="toc-the-bias-variance-tradeoff" class="nav-link" data-scroll-target="#the-bias-variance-tradeoff"><span class="header-section-number">3</span> The bias-variance tradeoff</a></li>
   <li><a href="#the-biasvariance-tradeoff-for-ridge-estimation" id="toc-the-biasvariance-tradeoff-for-ridge-estimation" class="nav-link" data-scroll-target="#the-biasvariance-tradeoff-for-ridge-estimation"><span class="header-section-number">4</span> The bias–variance tradeoff for ridge estimation</a></li>
   <li><a href="#bayesian-posterior-and-regularization" id="toc-bayesian-posterior-and-regularization" class="nav-link" data-scroll-target="#bayesian-posterior-and-regularization"><span class="header-section-number">5</span> Bayesian posterior and regularization</a></li>
-  <li><a href="#penalization-in-different-bases" id="toc-penalization-in-different-bases" class="nav-link" data-scroll-target="#penalization-in-different-bases"><span class="header-section-number">6</span> Penalization in different bases</a></li>
   </ul>
 </nav>
     </div>
@@ -271,31 +270,9 @@ window.Quarto = {
 <h1 data-number="2"><span class="header-section-number">2</span> Eigendecomposition and covariances</h1>
 <p>Consider the regression <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{X}\boldsymbol{\beta}\)</span>, where <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank, and we make the normal assumption <span class="math inline">\(\boldsymbol{Y}\vert \boldsymbol{X}\sim \mathcal{N}\left(\boldsymbol{X}{\boldsymbol{\beta}^{*}}, \sigma^2 \boldsymbol{I}_N\right)\)</span>. In this problem, we relate the variance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> to the eigenvalues of <span class="math inline">\(\hat{\boldsymbol{M}}_{\boldsymbol{X}}:= \frac{1}{N} \boldsymbol{X}^\intercal\boldsymbol{X}\)</span>.</p>
 <p>Let <span class="math inline">\(\hat{\boldsymbol{M}}_{\boldsymbol{X}}= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span> be the eigendecomposition of <span class="math inline">\(\hat{\boldsymbol{M}}_{\boldsymbol{X}}\)</span>. Here, <span class="math inline">\(\Lambda\)</span> is diagonal with entries <span class="math inline">\(\lambda_p\)</span>, and <span class="math inline">\(\boldsymbol{U}\)</span> is orthonormal, meaning <span class="math inline">\(\boldsymbol{U}^\intercal\boldsymbol{U}= \boldsymbol{I}_P\)</span>.</p>
-<!--
-**(a)** If we let $\Lambda^{1/2}$ be the diagonal matrix with
-$\sqrt{\lambda_p}$ on the diagonal, show that
-$\Xcovhat^{1/2} := \U \Lambda^{1/2} \U^\trans$ is a matrix square
-root of $\Xcovhat$.
-
-**(b)** Let $\Xcovhat^{-1/2}$ denote the inverse of $\Xcovhat^{1/2}$.
-Show taht the inverse exists, and that
-$\Xcovhat^{-1/2}$ is a square root of $\Xcovhat^{-1}$. (Hint: $\X$ is full-rank so
-$\lambda_p > 0$.)
-
-**(c)** Define the new regressor $\zv_n = \Xcovhat^{-1/2} \xv_n$, with
-the corresponding regressor matrix $\Z$.  Show that $\Z^\trans \Z = \frac{1}{N} \id_P$.
-
-**(d)** For the regression $\Y \sim \Z \gamma$, show that
-$\gammavhat = \Xcovhat^{1/2}\betavhat$.  (Hint: We have defined an
-invertible linear reparameterization of the regressors, and we proved
-something on a previous homework about this.)
-
-**ALT:**
-
--->
 <p><strong>(a)</strong> Define the new regressor <span class="math inline">\(\boldsymbol{z}_n = \boldsymbol{U}^\intercal\boldsymbol{x}_n\)</span>, with the corresponding regressor matrix <span class="math inline">\(\boldsymbol{Z}\)</span>. Show that <span class="math inline">\(\boldsymbol{Z}^\intercal\boldsymbol{Z}= N \Lambda\)</span>.</p>
-<p><strong>(b)</strong> For the regression <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{Z}\gamma\)</span>, show that <span class="math inline">\(\boldsymbol{U}\hat{\boldsymbol{\gamma}}= \hat{\boldsymbol{\beta}}\)</span>, and so <span class="math inline">\(\hat{\boldsymbol{\beta}}= \boldsymbol{U}^\intercal\hat{\boldsymbol{\gamma}}\)</span>. (Hint: We have defined an invertible linear reparameterization of the regressors, and we proved something on a previous homework about this.)</p>
-<p><strong>(c)</strong> Show that <span class="math inline">\(\hat{\boldsymbol{\gamma}}\sim \mathcal{N}\left(\boldsymbol{U}^\intercal{\boldsymbol{\beta}^{*}}, \frac{1}{N} \Lambda^{-1}\right)\)</span>, and so the entries <span class="math inline">\(\hat{\boldsymbol{\gamma}}_p\)</span> are independent with variance <span class="math inline">\(\lambda_p^{-1} / N\)</span>.</p>
+<p><strong>(b)</strong> For the regression <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{Z}\gamma\)</span>, show that <span class="math inline">\(\boldsymbol{U}\hat{\boldsymbol{\gamma}}= \hat{\boldsymbol{\beta}}\)</span>, and so <span class="math inline">\(\hat{\boldsymbol{\gamma}}= \boldsymbol{U}^\intercal\hat{\boldsymbol{\beta}}\)</span>. (Hint: We have defined an invertible linear reparameterization of the regressors, and we proved something on a previous homework about this.)</p>
+<p><strong>(c)</strong> Show that <span class="math inline">\(\hat{\boldsymbol{\gamma}}\sim \mathcal{N}\left(\boldsymbol{U}^\intercal{\boldsymbol{\beta}^{*}}, \frac{\sigma^2}{N} \Lambda^{-1}\right)\)</span>, and so the entries <span class="math inline">\(\hat{\boldsymbol{\gamma}}_p\)</span> are independent with variance <span class="math inline">\(\lambda_p^{-1} / N\)</span>.</p>
 <p><strong>(d)</strong> We have shown that each entry of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is a linear combination of independent Gaussians with variance <span class="math inline">\(\lambda_p^{-1} / N\)</span>. What do you expect to happen to the covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> as <span class="math inline">\(\lambda_p\)</span> approaches zero for some <span class="math inline">\(p\)</span>?</p>
 <p><strong>(e)</strong> When <span class="math inline">\(\boldsymbol{X}\)</span> is not full-rank, then at least one <span class="math inline">\(\lambda_p = 0\)</span>, and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible. Interpret this fact in light of the above result.</p>
 <!------------------------------------------------------------>
@@ -304,12 +281,79 @@ something on a previous homework about this.)
 </section>
 <section id="the-bias-variance-tradeoff" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> The bias-variance tradeoff</h1>
+<p>Suppose we assume that we have training data <span class="math inline">\((\boldsymbol{x}_n, y_n)\)</span> that are IID, and that we want to form a prediction at <span class="math inline">\(\boldsymbol{x}\)</span> for an unobserved <span class="math inline">\(y\)</span>, where <span class="math inline">\((\boldsymbol{x}, y)\)</span> are drawn from the same distribution as the training data. Here, <span class="math inline">\(\boldsymbol{x}\)</span> can be thought of as fixed and known — it’s the point where we want to make a prediction — and <span class="math inline">\(y\)</span> is random and unknown with distribution <span class="math inline">\(p(y\vert \boldsymbol{x})\)</span>.</p>
+<p>Below, all expectations will be take with respect to the randomness in the training responses <span class="math inline">\(\boldsymbol{Y}\)</span> and the new, unobserved response, <span class="math inline">\(y\)</span>, with the training regressors <span class="math inline">\(\boldsymbol{X}\)</span> and prediction regressor <span class="math inline">\(\boldsymbol{x}\)</span> taken as fixed.</p>
+<p>Define <span class="math inline">\(\overline{\boldsymbol{\beta}}= \mathbb{E}\left[\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right]\)</span>, the conditional expectation of the OLS estimator given the training regressors. Let <span class="math inline">\(\mu(\boldsymbol{x}) := \mathbb{E}\left[y\vert \boldsymbol{x}\right]\)</span> denote the true value of the conditional expectation of the predictive response.</p>
+<p><strong>(a)</strong> Show that</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(y- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}, \boldsymbol{x}\right] =
+\mathrm{Var}\left(y\vert \boldsymbol{x}\right) + \mathbb{E}\left[(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}, \boldsymbol{x}\right].
+\]</span></p>
+<p>Hint: Inside the square, add and subtract <span class="math inline">\(\mu(\boldsymbol{x})\)</span>.</p>
+<p><strong>(b)</strong> Show that</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}, \boldsymbol{x}\right] =
+(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}})^2 + \mathbb{E}\left[(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}\right].
+\]</span></p>
+<p>Hint: Inside the square, add and subtract <span class="math inline">\(\overline{\boldsymbol{\beta}}^\intercal\boldsymbol{x}\)</span>.</p>
+<p><strong>(c)</strong> Show that</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}\right] =
+\boldsymbol{x}^\intercal\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) \boldsymbol{x}.
+\]</span></p>
+<p>Hint: Expand the square, and rearrange <span class="math inline">\(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}= \overline{\boldsymbol{\beta}}\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}}= \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}\)</span> in one of the two factors of each term.</p>
+<p><strong>(d)</strong> Combining, write</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(y- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}, \boldsymbol{x}\right] =
+\underbrace{\mathrm{Var}\left(y\vert \boldsymbol{x}\right)}_{\textrm{Irreducible error}} +
+\underbrace{(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}})^2}_{\textrm{Bias term}} +
+\underbrace{\boldsymbol{x}^\intercal\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) \boldsymbol{x}}_{\textrm{Variance term}}.
+\]</span></p>
+<p>This is known as the bias-variance tradeoff.</p>
+<p><strong>(e)</strong> Suppose the model is correctly specified, so there exists some <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> so that <span class="math inline">\(\mu(\boldsymbol{x}) = {\boldsymbol{\beta}^{*}}^\intercal\boldsymbol{x}\)</span>. Show that the “bias term” vanishes, even if <span class="math inline">\(\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right)\)</span> is large.</p>
+<p><strong>(f)</strong> Suppose that <span class="math inline">\(N\)</span> is very large so that <span class="math inline">\(\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) \approx 0\)</span>. Show that the variance term vanishes, even though <span class="math inline">\((\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}})^2\)</span> may be large.</p>
+<p><strong>(g)</strong> Suppose that the model is correctly specified and <span class="math inline">\(N\)</span> is very large. Do you still make any errors in predicting <span class="math inline">\(y\)</span>? What is the source of these errors?</p>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 </section>
 <section id="the-biasvariance-tradeoff-for-ridge-estimation" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> The bias–variance tradeoff for ridge estimation</h1>
+<p>Recall the ridge estimator, <span class="math display">\[
+\hat{\boldsymbol{\beta}}_\lambda := \left(\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P \right)^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}.
+\]</span> For this problem, we will show how the bias–variance tradeoff changes as <span class="math inline">\(\lambda\)</span> varies.</p>
+<p>To make the problem simpler, we will assume that <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{I}_P\)</span>, and that the normal assumption holds, so that <span class="math inline">\(p(\boldsymbol{Y}| \boldsymbol{X}) = \mathcal{N}\left(\boldsymbol{X}{\boldsymbol{\beta}^{*}}, \sigma^2 \boldsymbol{I}_N\right)\)</span>.</p>
+<p><strong>(a)</strong> Under the normal assumption, show that, in general, <span class="math display">\[
+p(\hat{\boldsymbol{\beta}}_\lambda | \boldsymbol{X}) = \mathcal{N}\left(
+  \left(\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P \right)^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}{\boldsymbol{\beta}^{*}},
+  \sigma^2
+  \left(\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P \right)^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}\left(\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P \right)^{-1}\right).
+\]</span></p>
+<p><strong>(b)</strong> Using (a), show that, when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{I}_P\)</span>, then <span class="math display">\[
+\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}_\lambda \vert \boldsymbol{X}\right) = \frac{\sigma^2}{(1 + \lambda)^2} \boldsymbol{I}_P.
+\]</span></p>
+<p><strong>(c)</strong> Using (a), show that, when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{I}_P\)</span>, then <span class="math display">\[
+\overline{\boldsymbol{\beta}}:= \mathbb{E}\left[\hat{\boldsymbol{\beta}}_\lambda \vert \boldsymbol{X}\right] = \frac{1}{1 + \lambda} {\boldsymbol{\beta}^{*}}.
+\]</span> Additionally, show that <span class="math inline">\(\mu(\boldsymbol{x}) := \mathbb{E}\left[y\vert \boldsymbol{x}\right] = \boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}}\)</span>, so that <span class="math display">\[
+\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}=  \frac{\lambda}{1 + \lambda} \boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}}
+\]</span></p>
+<p><strong>(d)</strong> Using (b) and (c), show that, under the normal assumption and when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{I}_P\)</span>, the bias-variance decomposition is given by</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(y- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}, \boldsymbol{x}\right] =
+\underbrace{\sigma^2}_{\textrm{Irreducible error}} +
+\underbrace{\frac{\lambda^2}{(1 + \lambda)^2} (\boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}})^2}_{\textrm{Bias term}} +
+\underbrace{\frac{\sigma^2}{(1 + \lambda)^2} \boldsymbol{x}^\intercal\boldsymbol{x}}_{\textrm{Variance term}}.
+\]</span></p>
+<p><strong>(e)</strong> Assuming <span class="math inline">\(\boldsymbol{x}\ne \boldsymbol{0}\)</span> and <span class="math inline">\({\boldsymbol{\beta}^{*}}^\intercal\boldsymbol{x}\ne 0\)</span>,</p>
+<ul>
+<li>At what value of <span class="math inline">\(\lambda\)</span> does the bias term have a maximum? What is the maximum bias term?</li>
+<li>At what value of <span class="math inline">\(\lambda\)</span> does the bias term have a minimum? What is the minimum bias term?</li>
+<li>At what value of <span class="math inline">\(\lambda\)</span> does the variance term have a minimum? What is the minimum variance term?</li>
+<li>At what value of <span class="math inline">\(\lambda\)</span> does the variance term have a maximum? What is the maximum variance term?</li>
+</ul>
+<p>Explain your answers intuitively in terms of how ridge regression shrinks <span class="math inline">\(\hat{\boldsymbol{\beta}}_\lambda\)</span> towards zero.</p>
+<p><strong>(f)</strong> Show (e.g.&nbsp;by computing derivatives), that the bias term is incresing in <span class="math inline">\(\lambda\)</span>, and the variance term is decreasing in <span class="math inline">\(\lambda\)</span>. From this, argue that the predictive mean squared error for a particular <span class="math inline">\(\boldsymbol{x}\)</span> will be minimized at some non–zero value of <span class="math inline">\(\lambda\)</span>, even though the model is correctly specified and the resulting <span class="math inline">\(\hat{\boldsymbol{\beta}}_\lambda\)</span> is biased.</p>
+<p><strong>(g)</strong> Will the <span class="math inline">\(\lambda\)</span> that minimizes predictive error be the same for different <span class="math inline">\(\boldsymbol{x}\)</span>? Argue why or why not.</p>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -341,7 +385,7 @@ p(\boldsymbol{a}\vert \boldsymbol{b}) =
 \right).
 \]</span></p>
 <p><strong>(a)</strong> Show that if <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are uncorrelated, then <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are independent. <strong>Hint:</strong> a sufficient condition for independence is that <span class="math inline">\(p(\boldsymbol{a}\vert \boldsymbol{b}) = p(\boldsymbol{a})\)</span>.</p>
-<p><strong>(b)</strong> Suppose that <span class="math inline">\(\boldsymbol{a}= c \boldsymbol{b}\)</span> for some <span class="math inline">\(c\)</span>, so that <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are perfectly correlated. Show that <span class="math inline">\(\Sigma_{ab} = c \Sigma_{aa}\)</span> and <span class="math inline">\(\Sigma_{bb} = c^2 \Sigma_{aa}\)</span>.</p>
+<p><strong>(b)</strong> Suppose that <span class="math inline">\(\boldsymbol{b}= c \boldsymbol{a}\)</span> for some <span class="math inline">\(c\)</span>, so that <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are perfectly correlated. Show that <span class="math inline">\(\Sigma_{ab} = c\Sigma_{aa}\)</span> and <span class="math inline">\(\Sigma_{bb} = c^2 \Sigma_{aa}\)</span>.</p>
 <p><strong>(c)</strong> Using (b), show that if <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are perfectly correlated, then <span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{a}\vert \boldsymbol{b}\right) = \boldsymbol{0}\)</span>.</p>
 <p>Now, suppose that we have a prior of the form <span class="math inline">\(\boldsymbol{\beta}\sim \mathcal{N}\left(\boldsymbol{0}, s^2 \boldsymbol{I}_P\right)\)</span>, and that <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\)</span>, where <span class="math inline">\(\boldsymbol{\varepsilon}\sim \mathcal{N}\left(\boldsymbol{0}, \sigma^2 \boldsymbol{I}_N\right)\)</span>, for some known <span class="math inline">\(\sigma^2\)</span> and <span class="math inline">\(s^2\)</span>. Here, take <span class="math inline">\(\boldsymbol{X}\)</span> as fixed, and <span class="math inline">\(\boldsymbol{\varepsilon}\)</span> and <span class="math inline">\(\boldsymbol{\beta}\)</span> as independent.</p>
 <p><strong>(d)</strong> Compute the following quantities:</p>
@@ -355,21 +399,8 @@ p(\boldsymbol{a}\vert \boldsymbol{b}) =
 <p><strong>(e)</strong> Using (d), write down the joint distribution of the stacked vector <span class="math inline">\((\boldsymbol{\beta}^\intercal, \boldsymbol{Y}^\intercal)^\intercal\)</span>.</p>
 <p><strong>(f)</strong> Using (e) and the formula for the conditional distribution of multivariate normals, find the posterior distribution <span class="math inline">\(p(\boldsymbol{\beta}\vert \boldsymbol{Y})\)</span>.</p>
 <p><strong>(g)</strong> What happens to the posterior mean <span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right]\)</span> as <span class="math inline">\(s\rightarrow \infty\)</span>? What happens as <span class="math inline">\(s\rightarrow 0\)</span>?</p>
-<p><strong>(h)</strong> For what value of <span class="math inline">\(\lambda\)</span> is the posterior mean <span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right]\)</span> the same as the ridge regression estimator?</p>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="penalization-in-different-bases" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Penalization in different bases</h1>
-<p>Suppose we form a degree-zero spline basis for a univariate regressor.</p>
-<p><strong>(a)</strong> What is the OLS estimator in each bin?</p>
-<p><strong>(b)</strong> Suppose we now run L2 regularization. Now, what is the ridge estimator in each bin?</p>
-<p><strong>(c)</strong> Suppose we run L1 regularization so that only three coefficients are nonzero. You don’t need to compute the L1 fit in closed form, but draw plots of all three fits on some made-up data with six bins.</p>
-<p><strong>(d)</strong> Now, consider the step functions. Show that this is an invertible linear transformation.</p>
-<p><strong>(e)</strong> How does OLS estimator change?</p>
-<p><strong>(f)</strong> Rewrite the ridge penalty. Is the ridge estimator the same?</p>
-<p><strong>(e)</strong> Plot all three together, again assuming that three nonzero coefficients are selected by Lasso. Which of the three do you expect to have changed the most under this change of variables?</p>
+<p><strong>(h)</strong> What happens to the posterior variance <span class="math inline">\(\mathrm{Cov}\left(\sqrt{N} \boldsymbol{\beta}\vert \boldsymbol{Y}\right)\)</span> as <span class="math inline">\(s\rightarrow \infty\)</span>? (Note the scaling by <span class="math inline">\(\sqrt{N}\)</span>.) How does this relate to the limiting frequentist covariance of <span class="math inline">\(\sqrt{N}(\hat{\boldsymbol{\beta}}- {\boldsymbol{\beta}^{*}})\)</span> given by the CLT?</p>
+<p><strong>(i)</strong> For what value of <span class="math inline">\(\lambda\)</span> is the posterior mean <span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right]\)</span> the same as the ridge regression estimator?</p>
 
 
 </section>
