@@ -38,7 +38,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-fbfc5e4df9448d80c0adf4375239e1f6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-c2ac9874e565db048b32ff2f02f77425.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -177,6 +177,7 @@ window.Quarto = {
   <li><a href="#unit-1-multlinear-regression" id="toc-unit-1-multlinear-regression" class="nav-link" data-scroll-target="#unit-1-multlinear-regression">Unit 1: Multlinear regression</a></li>
   <li><a href="#unit-2-inference-for-linear-regression" id="toc-unit-2-inference-for-linear-regression" class="nav-link" data-scroll-target="#unit-2-inference-for-linear-regression">Unit 2: Inference for linear regression</a></li>
   <li><a href="#unit-3-machine-learning-and-regularization" id="toc-unit-3-machine-learning-and-regularization" class="nav-link" data-scroll-target="#unit-3-machine-learning-and-regularization">Unit 3: Machine learning and regularization</a></li>
+  <li><a href="#unit-4-how-regression-can-go-wrong" id="toc-unit-4-how-regression-can-go-wrong" class="nav-link" data-scroll-target="#unit-4-how-regression-can-go-wrong">Unit 4: How regression can go wrong</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
@@ -250,11 +251,20 @@ window.Quarto = {
 <h1>Unit 3: Machine learning and regularization</h1>
 <ul>
 <li><a href="../lectures/unit3/ml_ols_and_splines.html">OLS for prediction with expressive basis functions</a> <!-- - [$*$ The bias-variance tradeoff](unit3/bias_variance_tradeoff.qmd) --></li>
-<li><a href="../lectures/unit3/bayes_and_L2.html">Bayesian methods and L2 regularization</a></li>
-<li><a href="../lectures/unit3/lasso.html">Sparsity and L1 regularization</a> <!--
-- [$*$ Cross-validation and information criteria]()
---></li>
+<li><a href="../lectures/unit3/bayes_and_L2.html">Bayesian methods and L2 regularization</a> <!-- - [Sparsity and L1 regularization](unit3/lasso.qmd) --></li>
 </ul>
+</section>
+<section id="unit-4-how-regression-can-go-wrong" class="level1">
+<h1>Unit 4: How regression can go wrong</h1>
+<ul>
+<li><a href="../lectures/unit4/regression_to_the_mean.html">Regression to the mean</a></li>
+<li><a href="../lectures/unit4/fwl_theorem.html">The FWL theorem</a></li>
+<li><a href="../lectures/unit4/omitted_variables.html"><span class="math inline">\(*\)</span> Omitted variables</a></li>
+<li><a href="../lectures/unit4/influence_and_outliers.html">Influence and outliers</a></li>
+</ul>
+<!--
+- [$*$ Cross-validation and information criteria]()
+-->
 <p><!--
 # Weeks 3--4
 
@@ -266,15 +276,12 @@ window.Quarto = {
 
 - [Data transformations of the regressors](5_Transformations_X.qmd)
 - [Data transformations of the response](5.5_Transformations_Y.qmd)
-- [Influence and outliers](7_InfluenceAndOutliers.qmd)
 
 # Weeks 7--8
 
-- [The FWL theorem](6_FWLTheorem.qmd)
 - [Multivariate random variables](7_5_MultivariateNormal.qmd)
 - [Stochastic modeling of the residual](8_StochasticModelingOfOLS.qmd)
 - [Consistency and bias of OLS](8_5_ConsistencyAndBiasOfOLS.qmd)
-- [Regression to the mean](9_RegressionToTheMean.qmd)
 
 # Weeks 9--10
 

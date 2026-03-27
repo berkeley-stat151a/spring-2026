@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.40">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Least squares as a projection.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c2ac9874e565db048b32ff2f02f77425.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-MMK2VCM6EW"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
+</script>
+<script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../assets/stat_bear.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Spring 2026 STAT151A</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../schedule.html"> 
+<span class="menu-text">Course schedule</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../lectures/index.html"> 
+<span class="menu-text">Lectures</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../assignments/index.html"> 
+<span class="menu-text">Assignments</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../labs/index.html"> 
+<span class="menu-text">Labs</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../datasets/index.html"> 
+<span class="menu-text">Datasets</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../course_policies.html"> 
+<span class="menu-text">Course Policies</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#goals" id="toc-goals" class="nav-link active" data-scroll-target="#goals">Goals</a></li>
+  <li><a href="#recap" id="toc-recap" class="nav-link" data-scroll-target="#recap">Recap</a></li>
+  <li><a href="#bases-and-spans" id="toc-bases-and-spans" class="nav-link" data-scroll-target="#bases-and-spans">Bases and spans</a></li>
+  <li><a href="#projections" id="toc-projections" class="nav-link" data-scroll-target="#projections">Projections</a>
+  <ul class="collapse">
+  <li><a href="#projection-basis-invariance" id="toc-projection-basis-invariance" class="nav-link" data-scroll-target="#projection-basis-invariance">Projection basis invariance</a></li>
+  <li><a href="#some-properties-of-projection-matrices" id="toc-some-properties-of-projection-matrices" class="nav-link" data-scroll-target="#some-properties-of-projection-matrices">Some properties of projection matrices</a></li>
+  <li><a href="#the-orthogonal-projection-matrix" id="toc-the-orthogonal-projection-matrix" class="nav-link" data-scroll-target="#the-orthogonal-projection-matrix">The orthogonal projection matrix</a></li>
+  <li><a href="#square-roots-and-inverses-via-eigendecomposition" id="toc-square-roots-and-inverses-via-eigendecomposition" class="nav-link" data-scroll-target="#square-roots-and-inverses-via-eigendecomposition">Square roots and inverses via eigendecomposition</a></li>
+  <li><a href="#matrix-square-roots-for-orthonormalization" id="toc-matrix-square-roots-for-orthonormalization" class="nav-link" data-scroll-target="#matrix-square-roots-for-orthonormalization">Matrix square roots for orthonormalization</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Least squares as a projection.</h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="goals" class="level1">
+<h1>Goals</h1>
+<ul>
+<li>Review / introduce some linear algebra
+<ul>
+<li>Orthogonal bases</li>
+<li>Eigendecompositions</li>
+<li>Matrix square roots</li>
+</ul></li>
+<li>Derive the OLS estimator from a geometric perspective
+<ul>
+<li>Derive the form of projection operators without using vector calculus</li>
+<li>Write the OLS estimator as a projection operator</li>
+<li>Briefly discuss some consequences of OLS as a projection</li>
+</ul></li>
+</ul>
+</section>
+<section id="recap" class="level1">
+<h1>Recap</h1>
+<p>Last lecture we derived the formula</p>
+<p><span class="math display">\[
+\boldsymbol{X}^\intercal\boldsymbol{X}\hat{\beta}= \boldsymbol{X}^\intercal\boldsymbol{Y}
+\]</span></p>
+<p>which, if <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is inverible, gives</p>
+<p><span class="math display">\[
+\hat{\beta}= (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}.
+\]</span></p>
+<p>We derived this formula by minimizing the squared error using multivariate calculus. Today we’ll do the same thing using the perspective of orthogonal projection operators without using vector gradients at all.</p>
+<p>Doing so will both shed light on the optimization perspective, as well as review a lot of linear algebra concepts that will be useful in the remainder of the class.</p>
+<p>Our payoff will be best defined in terms of some quantities we’ll be seeing repeatedly, and which we will now give a name:</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Notation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Notation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\hat{\beta}= \boldsymbol{X}^\intercal\boldsymbol{Y}\)</span> — that is, when <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is any value that minimizes the sum of squared residuals in the regression <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\)</span>, we define</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{Y}}:= \boldsymbol{X}\hat{\boldsymbol{\beta}}
+\quad\quad\textrm{and}\quad\quad
+\hat{\boldsymbol{\varepsilon}}:= \boldsymbol{Y}- \hat{\boldsymbol{Y}}= \boldsymbol{Y}- \boldsymbol{X}\hat{\boldsymbol{\beta}}.
+\]</span></p>
+<p>Note that, since <span class="math inline">\(\hat{\boldsymbol{\beta}}\in \underset{\beta}{\mathrm{argmin}}\, \boldsymbol{\varepsilon}^\intercal\boldsymbol{\varepsilon}\)</span>, we have</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\varepsilon}}^\intercal\hat{\boldsymbol{\varepsilon}}= \min_\beta \boldsymbol{\varepsilon}^\intercal\boldsymbol{\varepsilon}.
+\]</span></p>
+<p>Note that <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> are always uniquely defined, even if <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is not uniquely defined, and that</p>
+<p><span class="math display">\[
+\boldsymbol{Y}= \hat{\boldsymbol{Y}}+ \hat{\boldsymbol{\varepsilon}}.
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="bases-and-spans" class="level1">
+<h1>Bases and spans</h1>
+<p>When you first encounter linear algebra, you think of vectors as lists of numbers. A more advanced and useful way to think of vectors as <em>linear combinations of basis functions</em>.</p>
+<p>For example, take a vector <span class="math inline">\(\boldsymbol{v}\in \mathbb{R}^{3}\)</span>, and take the unit vectors <span class="math inline">\(\boldsymbol{e}_p\)</span> containing a <span class="math inline">\(1\)</span> in the <span class="math inline">\(p\)</span>–th location and zeros elsewhere. We can write</p>
+<p><span class="math display">\[
+\boldsymbol{v}=
+\begin{pmatrix}
+v_1 \\
+v_2 \\
+v_3
+\end{pmatrix} =
+v_1
+\begin{pmatrix}
+1 \\
+0 \\
+0
+\end{pmatrix} +
+v_2
+\begin{pmatrix}
+0 \\
+1 \\
+0
+\end{pmatrix} +
+v_3
+\begin{pmatrix}
+0 \\
+0 \\
+1
+\end{pmatrix}
+=
+v_1 \boldsymbol{e}_1 + v_2 \boldsymbol{e}_2 + v_3 \boldsymbol{e}_3
+=
+\begin{pmatrix}
+\boldsymbol{e}_1 &amp; \boldsymbol{e}_2 &amp; \boldsymbol{e}_3
+\end{pmatrix}
+\begin{pmatrix}
+v_1 \\
+v_2 \\
+v_3
+\end{pmatrix},
+\]</span></p>
+<p>where the matrix in the final expression is <span class="math inline">\(3 \times 3\)</span>, and is formed by stacking the basis vectors <span class="math inline">\(\boldsymbol{e}_p\)</span> horizontally. (In fact, this vector is the identity matrix, which accounts for the final expression.)</p>
+<p>In general, if we have <span class="math inline">\(P\)</span> orthonormal basis vectors <span class="math inline">\(u_p \in \mathbb{R}^{P}\)</span>, which are stacked in a matrix</p>
+<p><span class="math display">\[
+\boldsymbol{U}=
+\begin{pmatrix}
+u_1 &amp; \ldots &amp; u_P
+\end{pmatrix},
+\]</span></p>
+<p>then <span class="math inline">\(\boldsymbol{U}^\intercal\boldsymbol{U}= \boldsymbol{I}\)</span>, so <span class="math inline">\(\boldsymbol{U}^\intercal= \boldsymbol{U}^{-1}\)</span>, and we can represent <span class="math inline">\(\boldsymbol{v}\in \mathbb{R}^{P}\)</span> as a linear combination of the <span class="math inline">\(u_p\)</span> by solving</p>
+<p><span class="math display">\[
+%
+\begin{aligned}
+\boldsymbol{v}={}&amp; \boldsymbol{U}\boldsymbol{a}\Leftrightarrow \\
+\boldsymbol{U}^\intercal\boldsymbol{v}={}&amp; \boldsymbol{U}^\intercal\boldsymbol{U}\boldsymbol{a}\Leftrightarrow \\
+\boldsymbol{U}^\intercal\boldsymbol{v}={}&amp; \boldsymbol{a}.
+\end{aligned}
+%
+\]</span></p>
+<p>In other words, the cofficient of <span class="math inline">\(\boldsymbol{v}\)</span> in front of <span class="math inline">\(\boldsymbol{u}_p\)</span> is simply given by <span class="math inline">\(\boldsymbol{v}^\intercal\boldsymbol{u}_p\)</span>.</p>
+<p>The “span” of a set of all linear product of the vectors. A set of <span class="math inline">\(P\)</span> vectors can span a space of dimension at most <span class="math inline">\(P\)</span>. The span of a set of vectors defines a “subspace”. In general, a subspace can have many different sets of vectors that span it, orthonormal, or not.</p>
+<p>Let <span class="math inline">\(\mathcal{S}\)</span> be a subspace spanned by orthonormal vectors <span class="math inline">\(\boldsymbol{u}_1, \ldots, \boldsymbol{u}_Q\)</span>, all in <span class="math inline">\(\mathbb{R}^{P}\)</span>. We cannot have <span class="math inline">\(Q &gt; P\)</span>, since there can be at most <span class="math inline">\(P\)</span> linearly independent vectors in <span class="math inline">\(\mathbb{R}^{P}\)</span>. Correspondingly, when <span class="math inline">\(Q &lt; P\)</span>, there will be some vectors that do not lie in <span class="math inline">\(\mathcal{S}\)</span>, since there do exist <span class="math inline">\(P\)</span> linearly independent vectors in <span class="math inline">\(\mathbb{R}^{P}\)</span>. We can use the existence of such vectors to construct another subspace, <span class="math inline">\(\mathcal{S}^\perp\)</span>, spanned by orthonormal vectors <span class="math inline">\(\boldsymbol{u}^\perp_1, \ldots, \boldsymbol{u}^\perp_{P-Q}\)</span>, such that <span class="math inline">\((\boldsymbol{u}^\perp_i) ^\intercal\boldsymbol{u}_j = 0\)</span> for all <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. We will collect the vectors <span class="math inline">\(\boldsymbol{u}^\perp_p\)</span> as the column vectors of a matrix <span class="math inline">\(\boldsymbol{U}^\perp\)</span>. It follows that we can write any vector <span class="math inline">\(vv \in \mathbb{R}^{P}\)</span> as</p>
+<p><span class="math display">\[
+\boldsymbol{v}= \boldsymbol{U}\boldsymbol{a}+ \boldsymbol{U}^\perp \boldsymbol{a}^\perp
+\]</span></p>
+<p>for some unique <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{a}^\perp\)</span>.</p>
+</section>
+<section id="projections" class="level1">
+<h1>Projections</h1>
+<p>Take a subsapce <span class="math inline">\(\mathcal{S}\)</span> of <span class="math inline">\(\mathbb{R}^{P}\)</span> with dimension <span class="math inline">\(Q &lt; P\)</span>. We can define the projection of <span class="math inline">\(\boldsymbol{v}\in \mathbb{R}^{P}\)</span> into <span class="math inline">\(\mathcal{S}\)</span> as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \underset{\mathcal{S}}{\mathrm{Proj}}\, \boldsymbol{v}= \underset{\boldsymbol{s}\in \mathcal{S}}{\mathrm{argmin}}\, \left\Vert\boldsymbol{v}- \boldsymbol{s}\right\Vert_2^2
+                 = \underset{\boldsymbol{s}\in \mathcal{S}}{\mathrm{argmin}}\, \left(\boldsymbol{v}- \boldsymbol{s}\right)^\intercal\left(\boldsymbol{v}- \boldsymbol{s}\right).
+\end{aligned}
+\]</span></p>
+<p>(This is formally an “orthogonal projection,” but we’ll only be discussing orthogonal projections in this class, so to save space I’ll just be saying “projection.”)</p>
+<p>Since <span class="math inline">\(\boldsymbol{s}\in \mathcal{S}\)</span>, we can write it as a linear combination of the orthonormal vectors <span class="math inline">\(u_p\)</span>:</p>
+<p><span class="math display">\[
+\boldsymbol{s}= \boldsymbol{U}\boldsymbol{a}\quad\textrm{ for some } \boldsymbol{a}
+\]</span></p>
+<p>Similarly, we can write</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{v}=&amp; \boldsymbol{U}\boldsymbol{\alpha}+ \boldsymbol{U}^\perp \boldsymbol{\alpha}^\perp
+\textrm{ where } \alpha_p = u_p^\intercal\boldsymbol{v}
+\textrm{ and } \alpha^\perp_p = (u^\perp_p)^\intercal\boldsymbol{v},\\
+\textrm{i.e. } \boldsymbol{\alpha}=&amp; \boldsymbol{U}^\intercal\boldsymbol{v}
+\textrm{ and } \boldsymbol{\alpha}^\perp = (\boldsymbol{U}^\perp)^\intercal\boldsymbol{v}.
+\end{aligned}
+\]</span></p>
+<p>Putting these into the projection, we see that the quantity to be minimized can be written as a function of <span class="math inline">\(\boldsymbol{a}\)</span>, and that</p>
+<p><span class="math display">\[
+\begin{aligned}
+    \underset{\boldsymbol{a}}{\mathrm{argmin}}\, \left\Vert\boldsymbol{U}\boldsymbol{\alpha}+ \boldsymbol{U}^\perp \boldsymbol{\alpha}^\perp -  \boldsymbol{U}\boldsymbol{a}\right\Vert_2^2
+    ={}&amp;
+    \underset{\boldsymbol{a}}{\mathrm{argmin}}\, \left\Vert\boldsymbol{U}(\boldsymbol{\alpha}- \boldsymbol{a}) + \boldsymbol{U}^\perp \boldsymbol{\alpha}^\perp\right\Vert_2^2
+    \\={}&amp;
+    \underset{\boldsymbol{a}}{\mathrm{argmin}}\, \left(
+      (\boldsymbol{\alpha}- \boldsymbol{a})^\intercal\boldsymbol{U}^\intercal\boldsymbol{U}(\boldsymbol{\alpha}- \boldsymbol{a}) +
+      (\boldsymbol{\alpha}^\perp)^\intercal(\boldsymbol{U}^\perp)^\intercal\boldsymbol{U}^\perp \boldsymbol{\alpha}^\perp +
+      2 (\boldsymbol{\alpha}- \boldsymbol{a})^\intercal\boldsymbol{U}^\intercal\boldsymbol{U}^\perp \boldsymbol{\alpha}^\perp
+    \right)
+    \\={}&amp;
+    \underset{\boldsymbol{a}}{\mathrm{argmin}}\, \left(
+      \left\Vert\boldsymbol{\alpha}- \boldsymbol{a}\right\Vert_2^2 + \left\Vert\boldsymbol{\alpha}^\perp\right\Vert_2^2
+    \right).
+\end{aligned}
+\]</span></p>
+<p>The minimum is achieved at</p>
+<p><span class="math display">\[
+\boldsymbol{a}= \boldsymbol{\alpha}= \boldsymbol{U}^\intercal\boldsymbol{v},
+\]</span> so <span class="math display">\[
+  \underset{\mathcal{S}}{\mathrm{Proj}}\, \boldsymbol{v}= \boldsymbol{U}\boldsymbol{a}= \boldsymbol{U}\boldsymbol{U}^\intercal\boldsymbol{v}=: \underset{\mathcal{S}}{\boldsymbol{P}} \boldsymbol{v},
+\]</span></p>
+<p>where we defined</p>
+<p><span class="math display">\[
+\underset{\mathcal{S}}{\boldsymbol{P}} = \boldsymbol{U}\boldsymbol{U}^\intercal.
+\]</span></p>
+<p>Effectively, we have shown that the solution to a minimization problem (the left hand side of the preceding equation) takes the form of a matrix multiplication (the right hand side of the preceding equation).</p>
+<section id="projection-basis-invariance" class="level2">
+<h2 class="anchored" data-anchor-id="projection-basis-invariance">Projection basis invariance</h2>
+<p>Something suspicious has happened, though — we started with a subspace, and got an answer that depends on the basis we chose. What if we had chosen a different orthonormal basis, <span class="math inline">\(\boldsymbol{V}\)</span>, which spans <span class="math inline">\(\mathcal{S}\)</span>? Would we have gotten a different answer?</p>
+<p>It turns out, no. Note that the fact that <span class="math inline">\(\boldsymbol{V}\)</span> spans <span class="math inline">\(\mathcal{S}\)</span> means that we can write</p>
+<p><span class="math display">\[
+\boldsymbol{V}= \boldsymbol{U}\boldsymbol{U}^\intercal\boldsymbol{V}
+\quad\textrm{and}\quad
+\boldsymbol{U}= \boldsymbol{V}\boldsymbol{V}^\intercal\boldsymbol{U}.
+\]</span></p>
+<p>That is, <span class="math inline">\(\boldsymbol{V}\)</span> is unchanged when projecting into the span of <span class="math inline">\(\boldsymbol{U}\)</span>, and vice-versa. Using this, we can see that</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{U}\boldsymbol{U}^\intercal\boldsymbol{v}={}&amp; \boldsymbol{U}(\boldsymbol{V}\boldsymbol{V}^\intercal\boldsymbol{U})^\intercal\boldsymbol{v}\\
+={}&amp; \boldsymbol{U}\boldsymbol{U}^\intercal\boldsymbol{V}\boldsymbol{V}^\intercal\boldsymbol{v}\\
+={}&amp; (\boldsymbol{U}\boldsymbol{U}^\intercal\boldsymbol{V}) \boldsymbol{V}^\intercal\boldsymbol{v}\\
+={}&amp; \boldsymbol{V}\boldsymbol{V}^\intercal\boldsymbol{v}.
+\end{aligned}
+\]</span></p>
+<p>So the projection operator does not depend on what basis we choose.</p>
+</section>
+<section id="some-properties-of-projection-matrices" class="level2">
+<h2 class="anchored" data-anchor-id="some-properties-of-projection-matrices">Some properties of projection matrices</h2>
+<p>The projection matrix has some special properties that are worth mentioning.</p>
+<ul>
+<li><p>First, if <span class="math inline">\(\boldsymbol{v}\in \mathcal{S}\)</span>, then <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}}\boldsymbol{v}= \boldsymbol{v}\)</span> Similarly, <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}} \boldsymbol{v}= 0\)</span> is <span class="math inline">\(\boldsymbol{v}\in \mathcal{S}^\perp\)</span>.</p></li>
+<li><p>Second, <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}}\)</span> is symmetric, since <span class="math inline">\(\boldsymbol{U}\boldsymbol{U}^\intercal= (\boldsymbol{U}\boldsymbol{U}^\intercal)^\intercal\)</span>.</p></li>
+<li><p>Third, <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}}\)</span> is “idempotent”, meaning <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}} = \underset{\mathcal{S}}{\boldsymbol{P}} \underset{\mathcal{S}}{\boldsymbol{P}}\)</span>.</p></li>
+</ul>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove these results.</p>
+</div>
+</div>
+<p>These properties say that <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}}\)</span> has a special eigenstructure. In particular the fact that <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}} = \underset{\mathcal{S}}{\boldsymbol{P}} \underset{\mathcal{S}}{\boldsymbol{P}}\)</span> means the eigenvalues of <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}}\)</span> must be either zero or one, as we now show. Let <span class="math inline">\(\lambda\)</span> be an eigenvalue of <span class="math inline">\(\underset{\mathcal{S}}{\boldsymbol{P}}\)</span> with eigenvector <span class="math inline">\(\boldsymbol{v}\)</span>. Then <span class="math display">\[
+\lambda \boldsymbol{v}= \underset{\mathcal{S}}{\boldsymbol{P}} \boldsymbol{v}=  \underset{\mathcal{S}}{\boldsymbol{P}} \ldots \underset{\mathcal{S}}{\boldsymbol{P}} \boldsymbol{v}= \lambda^k \boldsymbol{v}.
+\]</span></p>
+<p>Therefore we need <span class="math inline">\(\lambda^k = \lambda\)</span> for any <span class="math inline">\(k\)</span>! Only two values are possible: <span class="math inline">\(\lambda \in \{ 0, 1\}\)</span>. And we know that, for any basis vectors <span class="math inline">\(\boldsymbol{a}\in \mathcal{S}\)</span> and <span class="math inline">\(\boldsymbol{a}^\perp \in \mathcal{S}^\perp\)</span>,</p>
+<p><span class="math display">\[
+\underset{\mathcal{S}}{\boldsymbol{P}} \boldsymbol{a}= \boldsymbol{a}\quad\textrm{and}\quad \underset{\mathcal{S}}{\boldsymbol{P}} \boldsymbol{a}^\perp = 0,
+\]</span></p>
+<p>so the eigenvectors are precisely any vectors lying entirely in either <span class="math inline">\(\mathcal{S}\)</span> or <span class="math inline">\(\mathcal{S}^\perp\)</span>.</p>
+</section>
+<section id="the-orthogonal-projection-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="the-orthogonal-projection-matrix">The orthogonal projection matrix</h2>
+<p>Once we have the projection matrix for <span class="math inline">\(\mathcal{S}\)</span>, we can easily form the projection matrix onto the set’s orthogonal complement, <span class="math inline">\(\mathcal{S}^\perp\)</span>:</p>
+<p><span class="math display">\[
+\underset{\mathcal{S}^\perp}{\boldsymbol{P}} = \boldsymbol{I}- \underset{\mathcal{S}}{\boldsymbol{P}}.
+\]</span></p>
+<p>One way to see this is via the identity between left and right inverses. By orthogonality,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\begin{pmatrix}
+\boldsymbol{U}&amp;
+\boldsymbol{U}^\perp
+\end{pmatrix}^\intercal
+\begin{pmatrix}
+\boldsymbol{U}&amp;
+\boldsymbol{U}^\perp
+\end{pmatrix} = \boldsymbol{I}.
+\end{aligned}
+\]</span></p>
+<p>Then, by the equivalence between left and right inverses,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{I}=
+\begin{pmatrix}
+\boldsymbol{U}&amp;
+\boldsymbol{U}^\perp
+\end{pmatrix}
+\begin{pmatrix}
+\boldsymbol{U}&amp;
+\boldsymbol{U}^\perp
+\end{pmatrix}^\intercal
+=
+\begin{pmatrix}
+\boldsymbol{U}&amp;
+\boldsymbol{U}^\perp
+\end{pmatrix}
+\begin{pmatrix}
+\boldsymbol{U}^\intercal\\
+(\boldsymbol{U}^\perp)^\intercal
+\end{pmatrix}
+\end{aligned}
+=
+\boldsymbol{U}\boldsymbol{U}^\intercal+ \boldsymbol{U}^\perp (\boldsymbol{U}^\perp)^\intercal.
+\]</span></p>
+<p>Solving gives</p>
+<p><span class="math display">\[
+\begin{aligned}
+\underset{\mathcal{S}^\perp}{\boldsymbol{P}} = \boldsymbol{U}^\perp (\boldsymbol{U}^\perp)^\intercal= \boldsymbol{I}- \boldsymbol{U}\boldsymbol{U}^\intercal= \boldsymbol{I}- \underset{\mathcal{S}}{\boldsymbol{P}}.
+\end{aligned}
+\]</span></p>
+</section>
+<section id="square-roots-and-inverses-via-eigendecomposition" class="level2">
+<h2 class="anchored" data-anchor-id="square-roots-and-inverses-via-eigendecomposition">Square roots and inverses via eigendecomposition</h2>
+<p>The projection matrix was defined in terms of orthogonal bases. However, we would like it for spaces spanned by a generic, non-orthonormal set of vectors to solve our least squares problem, since in general <span class="math inline">\(\boldsymbol{X}\)</span> does not have orthonormal columns.</p>
+<p>To bridge the gap, we can construct a linear operator that converts a set of vectors to an orthogonal basis.</p>
+<p>First, recall that a square, symmetric <span class="math inline">\(P \times P\)</span> matrix <span class="math inline">\(\boldsymbol{A}\)</span> can always be written in the form</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{A}&amp;= \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal
+\quad\textrm{where}\quad \\
+\boldsymbol{U}^\intercal\boldsymbol{U}&amp;= \boldsymbol{I}\textrm{ ($\boldsymbol{U}$ is orthogonal) and }\\
+\boldsymbol{\Lambda}&amp;=
+\begin{pmatrix}
+\lambda_1 &amp; 0  &amp; \ldots &amp; 0 \\
+0 &amp; \lambda_2 &amp; 0\ldots &amp; 0 \\
+\vdots &amp;  &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \ldots 0 &amp; \lambda_P  \\
+\end{pmatrix}
+\textrm{ is diagonal.}
+\end{aligned}
+\]</span></p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove that the columns of <span class="math inline">\(\boldsymbol{U}\)</span> are the eigenvectors, and the <span class="math inline">\(\lambda_p\)</span> are the corresponding eigenvalues.</p>
+</div>
+</div>
+<p>A matrix is called “positive definite” if the eigenvalues are all strictly positive, and positive semi-definite if they are all non-zero.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove that positive definiteness is equivalent to <span class="math inline">\(\boldsymbol{v}^\intercal\boldsymbol{A}\boldsymbol{v}&gt; 0\)</span>, and semi-definiteness to <span class="math inline">\(\boldsymbol{v}^\intercal\boldsymbol{A}\boldsymbol{v}\ge 0\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove that if <span class="math inline">\(\boldsymbol{A}\)</span> is of the form <span class="math inline">\(\boldsymbol{A}= \boldsymbol{Q}^\intercal\boldsymbol{Q}\)</span> for some <span class="math inline">\(\boldsymbol{Q}\)</span>, then <span class="math inline">\(\boldsymbol{A}\)</span> is positive semi-definite.</p>
+</div>
+</div>
+<p>Note that <span class="math inline">\(\boldsymbol{A}\)</span> is invertible if and only if its eigenvalues are non-zero. To see that nonzero eigenvalues are sufficient, we can write <span class="math inline">\(\boldsymbol{A}^{-1} = \boldsymbol{U}\Lambda^{-1} \boldsymbol{U}^\intercal\)</span>.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Verify that <span class="math inline">\(\boldsymbol{A}^{-1}\)</span> so defined is an inverse.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove that, if some <span class="math inline">\(\lambda_p = 0\)</span>, then <span class="math inline">\(\boldsymbol{A}\)</span> is not invertible.</p>
+</div>
+</div>
+<p>From the eigendecomposition, one can define the <em>square root</em> of a symmetric positive semit-definite matrix <span class="math inline">\(\boldsymbol{A}\)</span>: that is, a matrix <span class="math inline">\(\boldsymbol{A}^{1/2}\)</span> such that <span class="math inline">\((\boldsymbol{A}^{1/2})^\intercal\boldsymbol{A}^{1/2} = \boldsymbol{A}\)</span>. First, define</p>
+<p><span class="math display">\[
+\boldsymbol{\Lambda}^{1/2} :=
+\begin{pmatrix}
+\sqrt{\lambda_1} &amp; 0  &amp; \ldots &amp; 0 \\
+0 &amp; \sqrt{\lambda_2} &amp; 0\ldots &amp; 0 \\
+\vdots &amp;  &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \ldots 0 &amp; \sqrt{\lambda_P}  \\
+\end{pmatrix}.
+\]</span></p>
+<p>Then <span class="math inline">\(\boldsymbol{U}\boldsymbol{\Lambda}^{1/2} \boldsymbol{U}^\intercal\)</span> is a square root of <span class="math inline">\(\boldsymbol{A}\)</span>. Matrix square roots are not unique, but that will not matter — all that matters is that symmetric positive semi-definite matrices always have a square root. However, when I write <span class="math inline">\(\boldsymbol{A}^{1/2}\)</span>, I will refer to the symmetric square root given in the formula above.</p>
+<p>Further <span class="math inline">\(\boldsymbol{A}^{1/2}\)</span> itself is invertible if and only if <span class="math inline">\(\boldsymbol{A}\)</span> is invertible.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove that <span class="math inline">\(\boldsymbol{A}^{1/2}\)</span> so defined is a square root.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Find a different matrix than the one given above that is also a square root.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove that any square root <span class="math inline">\(\boldsymbol{A}^{1/2}\)</span> is invertible.</p>
+</div>
+</div>
+</section>
+<section id="matrix-square-roots-for-orthonormalization" class="level2">
+<h2 class="anchored" data-anchor-id="matrix-square-roots-for-orthonormalization">Matrix square roots for orthonormalization</h2>
+<p>In our case, recall that we want to find an orthonormal basis of the column span of <span class="math inline">\(\boldsymbol{X}\)</span>. Let us assume that <span class="math inline">\(\boldsymbol{X}\)</span> has full column rank. Observe that</p>
+<ol type="1">
+<li><span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is symmetric and positive definite.</li>
+<li><span class="math inline">\(\Rightarrow\)</span> We can form the inverse square root <span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X})^{-1/2}\)</span>.</li>
+<li><span class="math inline">\(\Rightarrow\)</span> We can define <span class="math inline">\(\boldsymbol{U}:= \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1/2}\)</span>.</li>
+</ol>
+<p>Then</p>
+<ol type="1">
+<li><span class="math inline">\(\boldsymbol{U}\)</span> is orthonormal and</li>
+<li><span class="math inline">\(\boldsymbol{U}\)</span> has the same column span as <span class="math inline">\(\boldsymbol{X}\)</span>.</li>
+</ol>
+<p>Effectively we have produced an orthonormal basis for <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prove that <span class="math inline">\(\boldsymbol{U}\)</span> is orthonormal and <span class="math inline">\(\boldsymbol{U}\)</span> has the same column span as <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+</div>
+</div>
+<p>Note that right multiplying <span class="math inline">\(\boldsymbol{X}\)</span> effectively transforms each row of <span class="math inline">\(\boldsymbol{X}\)</span> — that is, the regressor <span class="math inline">\(x_n\)</span> — into a new regressor <span class="math inline">\(z_n = (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1/2} z_n\)</span> which has an identity covariance matrix.</p>
+<p>Using our orthonormal basis, we can write the projection matrix as</p>
+<p><span class="math display">\[
+\underset{\mathcal{S}_\boldsymbol{X}}{\boldsymbol{P}} = \boldsymbol{U}\boldsymbol{U}^\intercal=
+\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1/2} (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1/2} \boldsymbol{X}^\intercal=
+\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal.
+\]</span></p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Exercise">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Check directly that any vector that can be written in the form <span class="math inline">\(\boldsymbol{v}= \boldsymbol{X}\beta\)</span> satisfies <span class="math inline">\(\boldsymbol{v}= \underset{\mathcal{S}_\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{v}\)</span>, and that any <span class="math inline">\(\boldsymbol{v}\in \mathcal{S}_\boldsymbol{X}^\perp\)</span> satisfies <span class="math inline">\(\underset{\mathcal{S}_\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{v}= \boldsymbol{0}\)</span>.</p>
+<p>One might simply begin with the above formula and verify that it acts as a projection directly. However, doing so may seem mysterious or somehow lucky. Bulding the projection up as we have done shows where it comes from.</p>
+</div>
+</div>
+<p>Finally, we have derived the projection operator onto the span of <span class="math inline">\(\boldsymbol{X}\)</span>:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\underset{\mathcal{S}_\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}={}&amp; \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}
+     ={} \boldsymbol{X}\hat{\beta}\quad\textrm{where}\\
+     \hat{\beta}={}&amp; (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}.
+\end{aligned}
+\]</span></p>
+<p>We give this fitted vector a special name:</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{Y}}:= \underset{\mathcal{S}_\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}= \boldsymbol{X}\hat{\beta}.
+\]</span></p>
+<p>Additionally, we have that the fitted residuals are given by</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\varepsilon}}= \boldsymbol{Y}- \boldsymbol{X}\hat{\beta}= \boldsymbol{I}\boldsymbol{Y}- \underset{\mathcal{S}_\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}
+  = (\boldsymbol{I}- \underset{\mathcal{S}_\boldsymbol{X}}{\boldsymbol{P}})\boldsymbol{Y}= \underset{\mathcal{S}_\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}.
+\]</span></p>
+<p>Note that <span class="math inline">\(\boldsymbol{Y}= \hat{\boldsymbol{Y}}+ \hat{\boldsymbol{\varepsilon}}= (\underset{\mathcal{S}_\boldsymbol{X}}{\boldsymbol{P}}  + \underset{\mathcal{S}_\boldsymbol{X}^\perp}{\boldsymbol{P}}) \boldsymbol{Y}\)</span>. Also, our squared error loss is given by <span class="math inline">\(\left\Vert\hat{\boldsymbol{\varepsilon}}\right\Vert_2^2 = \left\Vert\underset{\mathcal{S}_\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}\right\Vert_2^2\)</span>, the squared magnitude of the component of <span class="math inline">\(\boldsymbol{Y}\)</span> not lying in <span class="math inline">\(\boldsymbol{X}\)</span>.</p>
+</section>
+</section>
+<section id="conclusion" class="level1">
+<h1>Conclusion</h1>
+<p>Putting this together, we see that</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{Y}}= \boldsymbol{X}\hat{\boldsymbol{\beta}}= \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}= \underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}.
+\]</span></p>
+<p>That is, our best guess for <span class="math inline">\(\boldsymbol{Y}\)</span>, in a least squares sense, is given by the projection of <span class="math inline">\(\boldsymbol{Y}\)</span> onto the column span of <span class="math inline">\(\boldsymbol{X}\)</span>. Similarly,</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\varepsilon}}= \boldsymbol{Y}- \hat{\boldsymbol{Y}}= \boldsymbol{I}\boldsymbol{Y}- \underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}= (\boldsymbol{I}- \underset{\boldsymbol{X}}{\boldsymbol{P}}) \boldsymbol{Y}= \underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}
+\]</span></p>
+<p>is the projection perpendicular to the column span of <span class="math inline">\(\boldsymbol{X}\)</span>. These particularly simple forms are independent of the particular value of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, and are in fact uniquely defined even when <span class="math inline">\(\boldsymbol{X}\)</span> is not full–column rank and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Least squares as a projection."</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: false</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>::: {.content-visible when-format="html"}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>{{&lt; include /macros.tex &gt;}}</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu"># Goals</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Review / introduce some linear algebra</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Orthogonal bases</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Eigendecompositions</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Matrix square roots</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Derive the OLS estimator from a geometric perspective</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Derive the form of projection operators</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    without using vector calculus</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Write the OLS estimator as a projection operator</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">  - </span>Briefly discuss some consequences of OLS as a projection</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu"># Recap</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Last lecture we derived the formula</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>\X^\trans \X \betahat = \X^\trans \Y</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>which, if $\X^\trans \X$ is inverible, gives</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>\betahat = (\X^\trans \X)^{-1} \X^\trans \Y.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>We derived this formula by minimizing the squared error</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>using multivariate calculus.  Today we'll do the same </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>thing using the perspective of orthogonal projection operators</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>without using vector gradients at all.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>Doing so will both shed light on the optimization</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>perspective, as well as review a lot of linear algebra concepts</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>that will be useful in the remainder of the class.</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>Our payoff will be best defined in terms of some quantities we'll</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>be seeing repeatedly, and which we will now give a name:</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title='Notation'}  </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>When $\X^\trans \X \betahat = \X^\trans \Y$ --- that is, when $\betavhat$</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>is any value that minimizes the sum of squared residuals</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>in the regression $\Y \sim \X \betav + \resv$, we define</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>\Yhat := \X \betavhat</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>\quad\quad\textrm{and}\quad\quad</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>\resvhat := \Y - \Yhat = \Y - \X \betavhat.</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>Note that, since $\betavhat \in \argmin{\beta} \resv^\trans \resv$, we have</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>\resvhat^\trans \resvhat = \min_\beta \resv^\trans \resv.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>Note that $\Yhat$ and $\resvhat$ are always uniquely defined,</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>even if $\betavhat$ is not uniquely defined, and that</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>\Y = \Yhat + \resvhat.</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a><span class="fu"># Bases and spans</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>When you first encounter linear algebra, you think of</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>vectors as lists of numbers.  A more advanced and useful</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>way to think of vectors as *linear combinations of basis functions*.</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>For example, take a vector $\vv \in \rdom{3}$, and take the</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>unit vectors $\ev_p$ containing a $1$ in the $p$--th location</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>and zeros elsewhere.  We can write</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>\vv = </span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>\v_1 <span class="sc">\\</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>\v_2 <span class="sc">\\</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>\v_3</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>\end{pmatrix} =</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>\v_1 </span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>1 <span class="sc">\\</span></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>0 <span class="sc">\\</span></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>\end{pmatrix} +</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>\v_2</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>0 <span class="sc">\\</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>1 <span class="sc">\\</span></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>0</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>\end{pmatrix} +</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>\v_3 </span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>0 <span class="sc">\\</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>0 <span class="sc">\\</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>1</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>\v_1 \ev_1 + \v_2 \ev_2 + \v_3 \ev_3</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>\ev_1 &amp; \ev_2 &amp; \ev_3</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>\v_1 <span class="sc">\\</span></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>\v_2 <span class="sc">\\</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>\v_3</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>\end{pmatrix},</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>where the matrix in the final expression is $3 \times 3$, and is formed</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>by stacking the basis vectors $\ev_p$ horizontally.  (In fact, this</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>vector is the identity matrix, which accounts for the final expression.)</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>In general, if we have $P$ orthonormal basis vectors $\u_p \in \rdom{P}$, which</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>are stacked in a matrix</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>\U = </span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>\u_1 &amp; \ldots &amp; \u_P</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>\end{pmatrix},</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>then $\U^\trans \U = \id$, so $\U^\trans = \U^{-1}$, and we can </span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>represent $\vv \in \rdom{P}$ as a linear combination of the $\u_p$</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>by solving</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>%</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>\vv ={}&amp; \U \av  \Leftrightarrow <span class="sc">\\</span></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>\U^\trans \vv ={}&amp; \U ^\trans \U \av  \Leftrightarrow <span class="sc">\\</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>\U^\trans \vv ={}&amp; \av.</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>%</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>In other words, the cofficient of $\vv$ in front of $\uv_p$ is simply</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>given by $\vv^\trans \uv_p$.</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>The "span" of a set of all linear product of the vectors.  A set of</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>$P$ vectors can span a space of dimension at most $P$.  The span</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>of a set of vectors defines a "subspace".   In general, a subspace can have many different sets of vectors that span it,</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>orthonormal, or not.</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>Let $\Sc$ be a subspace spanned by orthonormal vectors</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>$\uv_1, \ldots, \uv_Q$, all in $\rdom{P}$.  We cannot have $Q &gt; P$,</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>since there can be at most $P$ linearly independent vectors</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>in $\rdom{P}$.  Correspondingly, when $Q &lt; P$, there will be some vectors</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>that do not lie in $\Sc$, since there do exist $P$ linearly independent</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a>vectors in $\rdom{P}$.  We can use the existence of such vectors</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>to construct another subspace, $\Sc^\perp$, spanned by orthonormal</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>vectors $\uv^\perp_1, \ldots, \uv^\perp_{P-Q}$, such that</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>$(\uv^\perp_i) ^\trans \uv_j = 0$ for all $i$ and $j$. </span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a>We will collect the vectors $\uv^\perp_p$ as the column</span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>vectors of a matrix $\U^\perp$.  It follows that we can</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>write any vector $vv \in \rdom{P}$ as</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>\vv = \U \av + \U^\perp \av^\perp</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>for some unique $\av$ and $\av^\perp$.</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a><span class="fu"># Projections</span></span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>Take a subsapce $\Sc$ of $\rdom{P}$ with dimension $Q &lt; P$.</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>We can define the projection of $\vv \in \rdom{P}$ into $\Sc$ as follows:</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>  \projop{\Sc} \vv = \argmin{\sv \in \Sc} \norm{\vv - \sv}_2^2</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a>                 = \argmin{\sv \in \Sc} \left(\vv - \sv \right)^\trans \left(\vv - \sv \right).</span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>(This is formally an "orthogonal projection," but we'll only be discussing</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>orthogonal projections in this class, so to save space I'll just</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a>be saying "projection.")</span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a>Since $\sv \in \Sc$, we can write it as a linear combination of the </span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>orthonormal vectors $\u_p$:</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>\sv = \U \av \quad\textrm{ for some } \av</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>Similarly, we can write</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>\vv =&amp; \U \alphav + \U^\perp \alphav^\perp</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>\textrm{ where } \alpha_p = \u_p^\trans \vv</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>\textrm{ and } \alpha^\perp_p = (\u^\perp_p)^\trans \vv,<span class="sc">\\</span></span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>\textrm{i.e. } \alphav =&amp; \U^\trans \vv</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>\textrm{ and } \alphav^\perp = (\U^\perp)^\trans \vv.</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a>Putting these into the projection, we see that the quantity to be</span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>minimized can be written as a function of $\av$, and that</span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a>    \argmin{\av} \norm{\U \alphav + \U^\perp \alphav^\perp -  \U \av}_2^2 </span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a>    ={}&amp;</span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>    \argmin{\av} \norm{\U (\alphav - \av) + \U^\perp \alphav^\perp}_2^2</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a>    <span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>    \argmin{\av} \left( </span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>      (\alphav - \av)^\trans \U^\trans \U (\alphav - \av) +</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>      (\alphav^\perp)^\trans (\U^\perp)^\trans \U^\perp \alphav^\perp +</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a>      2 (\alphav - \av)^\trans \U^\trans \U^\perp \alphav^\perp</span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>    \right)</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a>    <span class="sc">\\</span>={}&amp;</span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>    \argmin{\av} \left( </span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>      \norm{\alphav - \av}_2^2 + \norm{\alphav^\perp}_2^2</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>    \right).</span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>The minimum is achieved at</span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>\av = \alphav = \U^\trans \vv,</span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a>so</span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a>  \projop{\Sc} \vv = \U \av = \U \U^\trans \vv =: \proj{\Sc} \vv,</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a>where we defined </span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a>\proj{\Sc} = \U \U^\trans.</span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>Effectively, we have shown that the solution to a </span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a>minimization problem (the left hand side of the preceding equation) takes the form of a </span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>matrix multiplication (the right hand side of the preceding equation).</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a><span class="fu">## Projection basis invariance</span></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a>Something suspicious has happened, though --- we started with a</span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a>subspace, and got an answer that depends on the basis we chose.</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a>What if we had chosen a different orthonormal basis, $\V$,</span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a>which spans $\Sc$? Would we have gotten a different answer?</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>It turns out, no.  Note that the fact that $\V$ spans $\Sc$</span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>means that we can write</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>\V = \U \U^\trans \V</span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>\quad\textrm{and}\quad</span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>\U = \V \V^\trans \U.</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>That is, $\V$ is unchanged when projecting into the span</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>of $\U$, and vice-versa.  Using this, we can see that</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a>\U \U^\trans \vv ={}&amp; \U (\V \V^\trans \U)^\trans \vv <span class="sc">\\</span></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>={}&amp; \U \U^\trans \V \V^\trans \vv <span class="sc">\\</span></span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a>={}&amp; (\U \U^\trans \V) \V^\trans \vv <span class="sc">\\</span></span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>={}&amp; \V \V^\trans \vv.</span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>So the projection operator does not depend on what basis we choose.</span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a><span class="fu">## Some properties of projection matrices</span></span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>The projection matrix has some special properties that are worth mentioning.</span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>First, if $\vv \in \Sc$, then $\proj{\Sc}\vv = \vv$</span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a>  Similarly, $\proj{\Sc} \vv = 0$ is $\vv \in \Sc^\perp$.</span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Second, $\proj{\Sc}$ is symmetric, since $\U \U^\trans = (\U \U^\trans)^\trans$.</span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Third, $\proj{\Sc}$ is "idempotent", meaning $\proj{\Sc} = \proj{\Sc} \proj{\Sc}$.</span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>Prove these results.</span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a>These properties say that $\proj{\Sc}$ has a special eigenstructure.  In</span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>particular the fact that $\proj{\Sc} = \proj{\Sc} \proj{\Sc}$ means the</span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>eigenvalues of $\proj{\Sc}$ must be either zero or one, as we now show.</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a>Let $\lambda$ be an eigenvalue of $\proj{\Sc}$ with eigenvector $\vv$.  Then</span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>\lambda \vv = \proj{\Sc} \vv =  \proj{\Sc} \ldots \proj{\Sc} \vv = \lambda^k \vv.</span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>Therefore we need $\lambda^k = \lambda$ for any $k$!  Only two values</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>are possible: $\lambda \in <span class="sc">\{</span> 0, 1<span class="sc">\}</span>$.  And we know that, for any basis</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>vectors $\av \in \Sc$ and $\av^\perp \in \Sc^\perp$,</span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a>\proj{\Sc} \av = \av \quad\textrm{and}\quad \proj{\Sc} \av^\perp = 0,</span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>so the eigenvectors are precisely any vectors lying entirely in </span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>either $\Sc$ or $\Sc^\perp$.</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a><span class="fu">## The orthogonal projection matrix</span></span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>Once we have the projection matrix for $\Sc$, we can easily form</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>the projection matrix onto the set's orthogonal complement,</span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>$\Sc^\perp$:</span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a>\proj{\Sc^\perp} = \id - \proj{\Sc}.</span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>One way to see this is via the identity between left and right inverses.  By</span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a>orthogonality,</span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>\U &amp;</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>\U^\perp</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}^\trans</span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>\U &amp;</span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>\U^\perp</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>\end{pmatrix} = \id.</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>Then, by the equivalence between left and right inverses,</span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>\id = </span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a>\U &amp;</span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>\U^\perp</span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a>\U &amp;</span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a>\U^\perp</span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}^\trans</span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>\U &amp;</span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a>\U^\perp</span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>\U^\trans <span class="sc">\\</span></span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>(\U^\perp)^\trans</span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a>=</span>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a>\U \U^\trans + \U^\perp (\U^\perp)^\trans.</span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a>Solving gives</span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a>\proj{\Sc^\perp} = \U^\perp (\U^\perp)^\trans = \id - \U \U^\trans = \id - \proj{\Sc}.</span>
+<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-388"><a href="#cb1-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a><span class="fu">## Square roots and inverses via eigendecomposition</span></span>
+<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a>The projection matrix was defined in terms of orthogonal bases.  However,</span>
+<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a>we would like it for spaces spanned by a generic, non-orthonormal</span>
+<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a>set of vectors to solve our least squares problem, since in general</span>
+<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a>$\X$ does not have orthonormal columns.</span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a>To bridge the gap, we can construct a linear operator that converts</span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a>a set of vectors to an orthogonal basis.</span>
+<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a>First, recall that a square, symmetric $P \times P$ matrix $\A$ can</span>
+<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a>always be written in the form</span>
+<span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-403"><a href="#cb1-403" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a>\A &amp;= \U \Lambda \U^\trans</span>
+<span id="cb1-405"><a href="#cb1-405" aria-hidden="true" tabindex="-1"></a>\quad\textrm{where}\quad <span class="sc">\\</span></span>
+<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a>\U^\trans\U &amp;= \id \textrm{ ($\U$ is orthogonal) and }<span class="sc">\\</span></span>
+<span id="cb1-407"><a href="#cb1-407" aria-hidden="true" tabindex="-1"></a>\Lammat &amp;= </span>
+<span id="cb1-408"><a href="#cb1-408" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-409"><a href="#cb1-409" aria-hidden="true" tabindex="-1"></a>\lambda_1 &amp; 0  &amp; \ldots &amp; 0 <span class="sc">\\</span></span>
+<span id="cb1-410"><a href="#cb1-410" aria-hidden="true" tabindex="-1"></a>0 &amp; \lambda_2 &amp; 0\ldots &amp; 0 <span class="sc">\\</span></span>
+<span id="cb1-411"><a href="#cb1-411" aria-hidden="true" tabindex="-1"></a>\vdots &amp;  &amp; \ddots &amp; \vdots <span class="sc">\\</span></span>
+<span id="cb1-412"><a href="#cb1-412" aria-hidden="true" tabindex="-1"></a>0 &amp; 0 &amp; \ldots 0 &amp; \lambda_P  <span class="sc">\\</span></span>
+<span id="cb1-413"><a href="#cb1-413" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}</span>
+<span id="cb1-414"><a href="#cb1-414" aria-hidden="true" tabindex="-1"></a>\textrm{ is diagonal.}</span>
+<span id="cb1-415"><a href="#cb1-415" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-416"><a href="#cb1-416" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-417"><a href="#cb1-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-418"><a href="#cb1-418" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-419"><a href="#cb1-419" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-420"><a href="#cb1-420" aria-hidden="true" tabindex="-1"></a>Prove that the columns of $\U$ are the eigenvectors, and the $\lambda_p$ are the</span>
+<span id="cb1-421"><a href="#cb1-421" aria-hidden="true" tabindex="-1"></a>corresponding eigenvalues.  </span>
+<span id="cb1-422"><a href="#cb1-422" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-423"><a href="#cb1-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-424"><a href="#cb1-424" aria-hidden="true" tabindex="-1"></a>A matrix is called "positive definite" if the eigenvalues are</span>
+<span id="cb1-425"><a href="#cb1-425" aria-hidden="true" tabindex="-1"></a>all strictly positive, and positive semi-definite if they</span>
+<span id="cb1-426"><a href="#cb1-426" aria-hidden="true" tabindex="-1"></a>are all non-zero.  </span>
+<span id="cb1-427"><a href="#cb1-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-428"><a href="#cb1-428" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-429"><a href="#cb1-429" aria-hidden="true" tabindex="-1"></a>Prove that positive definiteness is equivalent to $\vv^\trans \A \vv &gt; 0$,</span>
+<span id="cb1-430"><a href="#cb1-430" aria-hidden="true" tabindex="-1"></a>and semi-definiteness to $\vv^\trans \A \vv \ge 0$.</span>
+<span id="cb1-431"><a href="#cb1-431" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-432"><a href="#cb1-432" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-433"><a href="#cb1-433" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-434"><a href="#cb1-434" aria-hidden="true" tabindex="-1"></a>Prove that if $\A$ is of the form</span>
+<span id="cb1-435"><a href="#cb1-435" aria-hidden="true" tabindex="-1"></a>$\A = \Q^\trans \Q$ for some $\Q$, then $\A$ is positive semi-definite.</span>
+<span id="cb1-436"><a href="#cb1-436" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-437"><a href="#cb1-437" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-438"><a href="#cb1-438" aria-hidden="true" tabindex="-1"></a>Note that $\A$ is invertible if and only if its eigenvalues</span>
+<span id="cb1-439"><a href="#cb1-439" aria-hidden="true" tabindex="-1"></a>are non-zero.  To see that nonzero eigenvalues are sufficient,</span>
+<span id="cb1-440"><a href="#cb1-440" aria-hidden="true" tabindex="-1"></a>we can write $\A^{-1} = \U \Lambda^{-1} \U^\trans$.</span>
+<span id="cb1-441"><a href="#cb1-441" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-442"><a href="#cb1-442" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-443"><a href="#cb1-443" aria-hidden="true" tabindex="-1"></a>Verify that $\A^{-1}$ so defined is an inverse.</span>
+<span id="cb1-444"><a href="#cb1-444" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-445"><a href="#cb1-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-446"><a href="#cb1-446" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-447"><a href="#cb1-447" aria-hidden="true" tabindex="-1"></a>Prove that, if some $\lambda_p = 0$, then $\A$</span>
+<span id="cb1-448"><a href="#cb1-448" aria-hidden="true" tabindex="-1"></a>is not invertible.</span>
+<span id="cb1-449"><a href="#cb1-449" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-450"><a href="#cb1-450" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-451"><a href="#cb1-451" aria-hidden="true" tabindex="-1"></a>From the eigendecomposition, one can define the *square root* of</span>
+<span id="cb1-452"><a href="#cb1-452" aria-hidden="true" tabindex="-1"></a>a symmetric positive semit-definite matrix $\A$: that is,</span>
+<span id="cb1-453"><a href="#cb1-453" aria-hidden="true" tabindex="-1"></a>a matrix $\A^{1/2}$ such that $(\A^{1/2})^\trans \A^{1/2} = \A$.</span>
+<span id="cb1-454"><a href="#cb1-454" aria-hidden="true" tabindex="-1"></a>First, define</span>
+<span id="cb1-455"><a href="#cb1-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-456"><a href="#cb1-456" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-457"><a href="#cb1-457" aria-hidden="true" tabindex="-1"></a>\Lammat^{1/2} := </span>
+<span id="cb1-458"><a href="#cb1-458" aria-hidden="true" tabindex="-1"></a>\begin{pmatrix}</span>
+<span id="cb1-459"><a href="#cb1-459" aria-hidden="true" tabindex="-1"></a>\sqrt{\lambda_1} &amp; 0  &amp; \ldots &amp; 0 <span class="sc">\\</span></span>
+<span id="cb1-460"><a href="#cb1-460" aria-hidden="true" tabindex="-1"></a>0 &amp; \sqrt{\lambda_2} &amp; 0\ldots &amp; 0 <span class="sc">\\</span></span>
+<span id="cb1-461"><a href="#cb1-461" aria-hidden="true" tabindex="-1"></a>\vdots &amp;  &amp; \ddots &amp; \vdots <span class="sc">\\</span></span>
+<span id="cb1-462"><a href="#cb1-462" aria-hidden="true" tabindex="-1"></a>0 &amp; 0 &amp; \ldots 0 &amp; \sqrt{\lambda_P}  <span class="sc">\\</span></span>
+<span id="cb1-463"><a href="#cb1-463" aria-hidden="true" tabindex="-1"></a>\end{pmatrix}.</span>
+<span id="cb1-464"><a href="#cb1-464" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-465"><a href="#cb1-465" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-466"><a href="#cb1-466" aria-hidden="true" tabindex="-1"></a>Then $\U \Lammat^{1/2} \U^\trans$ is a square root of $\A$.</span>
+<span id="cb1-467"><a href="#cb1-467" aria-hidden="true" tabindex="-1"></a>Matrix square roots are not unique, but that will not matter ---</span>
+<span id="cb1-468"><a href="#cb1-468" aria-hidden="true" tabindex="-1"></a>all that matters is that symmetric positive semi-definite matrices</span>
+<span id="cb1-469"><a href="#cb1-469" aria-hidden="true" tabindex="-1"></a>always have a square root.  However, when I write $\A^{1/2}$,</span>
+<span id="cb1-470"><a href="#cb1-470" aria-hidden="true" tabindex="-1"></a>I will refer to the symmetric square root given in the formula above.</span>
+<span id="cb1-471"><a href="#cb1-471" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-472"><a href="#cb1-472" aria-hidden="true" tabindex="-1"></a>Further $\A^{1/2}$ itself is invertible if and only if</span>
+<span id="cb1-473"><a href="#cb1-473" aria-hidden="true" tabindex="-1"></a>$\A$ is invertible.</span>
+<span id="cb1-474"><a href="#cb1-474" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-475"><a href="#cb1-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-476"><a href="#cb1-476" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-477"><a href="#cb1-477" aria-hidden="true" tabindex="-1"></a>Prove that $\A^{1/2}$ so defined is a square root.</span>
+<span id="cb1-478"><a href="#cb1-478" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-479"><a href="#cb1-479" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-480"><a href="#cb1-480" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-481"><a href="#cb1-481" aria-hidden="true" tabindex="-1"></a>Find a different matrix than the one given above that is also a square root.</span>
+<span id="cb1-482"><a href="#cb1-482" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-483"><a href="#cb1-483" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-484"><a href="#cb1-484" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-485"><a href="#cb1-485" aria-hidden="true" tabindex="-1"></a>Prove that any square root $\A^{1/2}$ is invertible.</span>
+<span id="cb1-486"><a href="#cb1-486" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-487"><a href="#cb1-487" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-488"><a href="#cb1-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-489"><a href="#cb1-489" aria-hidden="true" tabindex="-1"></a><span class="fu">## Matrix square roots for orthonormalization</span></span>
+<span id="cb1-490"><a href="#cb1-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-491"><a href="#cb1-491" aria-hidden="true" tabindex="-1"></a>In our case, recall that we want to find an orthonormal</span>
+<span id="cb1-492"><a href="#cb1-492" aria-hidden="true" tabindex="-1"></a>basis of the column span of $\X$.  Let us </span>
+<span id="cb1-493"><a href="#cb1-493" aria-hidden="true" tabindex="-1"></a>assume that $\X$ has full column rank.  Observe that</span>
+<span id="cb1-494"><a href="#cb1-494" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-495"><a href="#cb1-495" aria-hidden="true" tabindex="-1"></a>1) $\X^\trans \X$ is symmetric and positive definite.</span>
+<span id="cb1-496"><a href="#cb1-496" aria-hidden="true" tabindex="-1"></a>2) $\Rightarrow$ We can form the inverse square root $(\X^\trans \X)^{-1/2}$.</span>
+<span id="cb1-497"><a href="#cb1-497" aria-hidden="true" tabindex="-1"></a>3) $\Rightarrow$ We can define $\U := \X (\X^\trans \X)^{-1/2}$.</span>
+<span id="cb1-498"><a href="#cb1-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-499"><a href="#cb1-499" aria-hidden="true" tabindex="-1"></a>Then</span>
+<span id="cb1-500"><a href="#cb1-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-501"><a href="#cb1-501" aria-hidden="true" tabindex="-1"></a>1) $\U$ is orthonormal and</span>
+<span id="cb1-502"><a href="#cb1-502" aria-hidden="true" tabindex="-1"></a>2) $\U$ has the same column span as $\X$.</span>
+<span id="cb1-503"><a href="#cb1-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-504"><a href="#cb1-504" aria-hidden="true" tabindex="-1"></a>Effectively we have produced an orthonormal basis for $\X$.</span>
+<span id="cb1-505"><a href="#cb1-505" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-506"><a href="#cb1-506" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-507"><a href="#cb1-507" aria-hidden="true" tabindex="-1"></a>Prove that $\U$ is orthonormal and $\U$ has the same column span as $\X$.</span>
+<span id="cb1-508"><a href="#cb1-508" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-509"><a href="#cb1-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-510"><a href="#cb1-510" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-511"><a href="#cb1-511" aria-hidden="true" tabindex="-1"></a>Note that right multiplying $\X$ effectively transforms each</span>
+<span id="cb1-512"><a href="#cb1-512" aria-hidden="true" tabindex="-1"></a>row of $\X$ --- that is, the regressor $\x_n$ --- into</span>
+<span id="cb1-513"><a href="#cb1-513" aria-hidden="true" tabindex="-1"></a>a new regressor $\z_n = (\X^\trans \X)^{-1/2} \z_n$</span>
+<span id="cb1-514"><a href="#cb1-514" aria-hidden="true" tabindex="-1"></a>which has an identity covariance matrix.</span>
+<span id="cb1-515"><a href="#cb1-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-516"><a href="#cb1-516" aria-hidden="true" tabindex="-1"></a>Using our orthonormal basis, we can write the projection matrix as</span>
+<span id="cb1-517"><a href="#cb1-517" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-518"><a href="#cb1-518" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-519"><a href="#cb1-519" aria-hidden="true" tabindex="-1"></a>\proj{\Sc_\X} = \U \U^\trans = </span>
+<span id="cb1-520"><a href="#cb1-520" aria-hidden="true" tabindex="-1"></a>\X (\X^\trans \X)^{-1/2} (\X^\trans \X)^{-1/2} \X^\trans =</span>
+<span id="cb1-521"><a href="#cb1-521" aria-hidden="true" tabindex="-1"></a>\X (\X^\trans \X)^{-1} \X^\trans.</span>
+<span id="cb1-522"><a href="#cb1-522" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-523"><a href="#cb1-523" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-524"><a href="#cb1-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-525"><a href="#cb1-525" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title='Exercise'} </span>
+<span id="cb1-526"><a href="#cb1-526" aria-hidden="true" tabindex="-1"></a>Check directly that any vector that</span>
+<span id="cb1-527"><a href="#cb1-527" aria-hidden="true" tabindex="-1"></a>can be written in the form $\vv = \X \beta$ satisfies</span>
+<span id="cb1-528"><a href="#cb1-528" aria-hidden="true" tabindex="-1"></a>$\vv = \proj{\Sc_\X} \vv$, and that any $\vv \in \Sc_\X^\perp$</span>
+<span id="cb1-529"><a href="#cb1-529" aria-hidden="true" tabindex="-1"></a>satisfies $\proj{\Sc_\X} \vv = \zerov$.  </span>
+<span id="cb1-530"><a href="#cb1-530" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-531"><a href="#cb1-531" aria-hidden="true" tabindex="-1"></a>One might simply begin with the above formula</span>
+<span id="cb1-532"><a href="#cb1-532" aria-hidden="true" tabindex="-1"></a>and verify that it acts as a projection directly.  However,</span>
+<span id="cb1-533"><a href="#cb1-533" aria-hidden="true" tabindex="-1"></a>doing so may seem mysterious or somehow lucky.  Bulding</span>
+<span id="cb1-534"><a href="#cb1-534" aria-hidden="true" tabindex="-1"></a>the projection up as we have done shows where it comes from.</span>
+<span id="cb1-535"><a href="#cb1-535" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-536"><a href="#cb1-536" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-537"><a href="#cb1-537" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-538"><a href="#cb1-538" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-539"><a href="#cb1-539" aria-hidden="true" tabindex="-1"></a>Finally, we have derived the projection operator onto</span>
+<span id="cb1-540"><a href="#cb1-540" aria-hidden="true" tabindex="-1"></a>the span of $\X$:</span>
+<span id="cb1-541"><a href="#cb1-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-542"><a href="#cb1-542" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-543"><a href="#cb1-543" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb1-544"><a href="#cb1-544" aria-hidden="true" tabindex="-1"></a>\proj{\Sc_\X} \Y ={}&amp; \X (\X^\trans \X)^{-1} \X^\trans \Y </span>
+<span id="cb1-545"><a href="#cb1-545" aria-hidden="true" tabindex="-1"></a>     ={} \X \betahat \quad\textrm{where}<span class="sc">\\</span></span>
+<span id="cb1-546"><a href="#cb1-546" aria-hidden="true" tabindex="-1"></a>     \betahat ={}&amp; (\X^\trans \X)^{-1} \X^\trans \Y.</span>
+<span id="cb1-547"><a href="#cb1-547" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb1-548"><a href="#cb1-548" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-549"><a href="#cb1-549" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-550"><a href="#cb1-550" aria-hidden="true" tabindex="-1"></a>We give this fitted vector a special name:</span>
+<span id="cb1-551"><a href="#cb1-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-552"><a href="#cb1-552" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-553"><a href="#cb1-553" aria-hidden="true" tabindex="-1"></a>\Yhat := \proj{\Sc_\X} \Y = \X \betahat.</span>
+<span id="cb1-554"><a href="#cb1-554" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-555"><a href="#cb1-555" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-556"><a href="#cb1-556" aria-hidden="true" tabindex="-1"></a>Additionally, we have that the fitted residuals are given by</span>
+<span id="cb1-557"><a href="#cb1-557" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-558"><a href="#cb1-558" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-559"><a href="#cb1-559" aria-hidden="true" tabindex="-1"></a>\resvhat = \Y - \X \betahat = \id \Y - \proj{\Sc_\X} \Y </span>
+<span id="cb1-560"><a href="#cb1-560" aria-hidden="true" tabindex="-1"></a>  = (\id - \proj{\Sc_\X})\Y = \proj{\Sc_\X^\perp} \Y.</span>
+<span id="cb1-561"><a href="#cb1-561" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-562"><a href="#cb1-562" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-563"><a href="#cb1-563" aria-hidden="true" tabindex="-1"></a>Note that $\Y = \Yhat + \resvhat = (\proj{\Sc_\X}  + \proj{\Sc_\X^\perp}) \Y$.</span>
+<span id="cb1-564"><a href="#cb1-564" aria-hidden="true" tabindex="-1"></a>Also, our squared error loss is given by</span>
+<span id="cb1-565"><a href="#cb1-565" aria-hidden="true" tabindex="-1"></a>$\norm{\resvhat}_2^2 = \norm{\proj{\Sc_\X^\perp} \Y}_2^2$, the squared</span>
+<span id="cb1-566"><a href="#cb1-566" aria-hidden="true" tabindex="-1"></a>magnitude of the component of $\Y$ not lying in $\X$.</span>
+<span id="cb1-567"><a href="#cb1-567" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-568"><a href="#cb1-568" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-569"><a href="#cb1-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-570"><a href="#cb1-570" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusion</span></span>
+<span id="cb1-571"><a href="#cb1-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-572"><a href="#cb1-572" aria-hidden="true" tabindex="-1"></a>Putting this together, we see that</span>
+<span id="cb1-573"><a href="#cb1-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-574"><a href="#cb1-574" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-575"><a href="#cb1-575" aria-hidden="true" tabindex="-1"></a>\Yhat = \X \betavhat = \X (\X^\trans \X)^{-1} \X^\trans \Y = \proj{\X} \Y.</span>
+<span id="cb1-576"><a href="#cb1-576" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-577"><a href="#cb1-577" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-578"><a href="#cb1-578" aria-hidden="true" tabindex="-1"></a>That is, our best guess for $\Y$, in a least squares sense, is given</span>
+<span id="cb1-579"><a href="#cb1-579" aria-hidden="true" tabindex="-1"></a>by the projection of $\Y$ onto the column span of $\X$.  Similarly,</span>
+<span id="cb1-580"><a href="#cb1-580" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-581"><a href="#cb1-581" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-582"><a href="#cb1-582" aria-hidden="true" tabindex="-1"></a>\resvhat = \Y - \Yhat = \id \Y - \proj{\X} \Y = (\id - \proj{\X}) \Y = \proj{\X^\perp} \Y</span>
+<span id="cb1-583"><a href="#cb1-583" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb1-584"><a href="#cb1-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-585"><a href="#cb1-585" aria-hidden="true" tabindex="-1"></a>is the projection perpendicular to the column span of $\X$.  These particularly</span>
+<span id="cb1-586"><a href="#cb1-586" aria-hidden="true" tabindex="-1"></a>simple forms are independent of the particular value of $\betavhat$, and </span>
+<span id="cb1-587"><a href="#cb1-587" aria-hidden="true" tabindex="-1"></a>are in fact uniquely defined even when $\X$ is not full--column rank</span>
+<span id="cb1-588"><a href="#cb1-588" aria-hidden="true" tabindex="-1"></a>and $\X^\trans \X$ is not invertible.</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
