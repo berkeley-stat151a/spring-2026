@@ -234,6 +234,7 @@ window.Quarto = {
   <li><a href="#regression-to-the-mean-with-noisy-test-set-data" id="toc-regression-to-the-mean-with-noisy-test-set-data" class="nav-link" data-scroll-target="#regression-to-the-mean-with-noisy-test-set-data"><span class="header-section-number">4</span> Regression to the mean with noisy test set data</a></li>
   <li><a href="#leaving-a-single-datapoint-out-of-regression" id="toc-leaving-a-single-datapoint-out-of-regression" class="nav-link" data-scroll-target="#leaving-a-single-datapoint-out-of-regression"><span class="header-section-number">5</span> Leaving a single datapoint out of regression</a></li>
   <li><a href="#prediction-in-the-bodyfat-example" id="toc-prediction-in-the-bodyfat-example" class="nav-link" data-scroll-target="#prediction-in-the-bodyfat-example"><span class="header-section-number">6</span> Prediction in the bodyfat example</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
   </ul>
 </nav>
     </div>
@@ -270,29 +271,165 @@ window.Quarto = {
 <!-------------------------------------->
 <section id="fwl-and-f-tests-for-subsets-of-regressors" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> FWL and F-tests for subsets of regressors</h1>
-<p>See <span class="citation" data-cites="davidson2004econometric">Davidson, MacKinnon, et al. (<a href="#ref-davidson2004econometric" role="doc-biblioref">2004</a>)</span> 4.4 “Tests of several restrictions”</p>
-<p>Begin with the fact that if you define <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}_A\)</span> to be the residuals from the first regression, then</p>
-<p><span class="math display">\[
-\hat{\boldsymbol{\varepsilon}}_A^\intercal\hat{\boldsymbol{\varepsilon}}_A = \hat{\boldsymbol{Y}}_{AB}^\intercal\hat{\boldsymbol{Y}}_{AB} + \hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB}.
+<p>In this homework problem, we use the FWL theorem to connect our F-test with a more common (but less general) form you will find in many textbooks. This question has been liberally adapted from Section 4.4 (“Tests of several restrictions”) of <span class="citation" data-cites="davidson2004econometric">Davidson, MacKinnon, et al. (<a href="#ref-davidson2004econometric" role="doc-biblioref">2004</a>)</span>.</p>
+<p>Suppose we have a normal regression model: <span class="math display">\[
+\boldsymbol{Y}= \boldsymbol{X}_A {\boldsymbol{\beta}^{*}}+ \boldsymbol{X}_B \boldsymbol{\gamma}^*+ \boldsymbol{\varepsilon}
+\quad\textrm{where}\quad
+\boldsymbol{\varepsilon}\sim \mathcal{N}\left(0, \sigma^2 \boldsymbol{I}_N\right),
+\]</span> and want to test that the null hypotheiss that <span class="math inline">\(\boldsymbol{\gamma}= \boldsymbol{0}\)</span>. That is, we are asking whether we can reject the hypohtesis that the extra regressors <span class="math inline">\(\boldsymbol{X}_B\)</span> add anything to the explanatory power of the model.</p>
+<p>Define the two regressions: <span class="math display">\[
+\begin{aligned}
+\boldsymbol{Y}={}&amp; \boldsymbol{X}_A \hat{\boldsymbol{\beta}}_A + \hat{\boldsymbol{\varepsilon}}_A &amp; \textrm{(``restricted'')} \\
+\boldsymbol{Y}={}&amp; \boldsymbol{X}_A \hat{\boldsymbol{\beta}}_{AB} + \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+ \hat{\boldsymbol{\varepsilon}}_{AB} &amp; \textrm{(``unrestricted'')}.
+\end{aligned}
+\]</span> Let <span class="math inline">\(\boldsymbol{X}_A\)</span> have <span class="math inline">\(P\)</span> columns and <span class="math inline">\(\boldsymbol{X}_B\)</span> have <span class="math inline">\(Q\)</span> columns.</p>
+<p><strong>(a)</strong> Since <span class="math display">\[
+\begin{pmatrix}
+\hat{\boldsymbol{\beta}}\\
+\hat{\boldsymbol{\gamma}}
+\end{pmatrix}
+-
+\begin{pmatrix}
+{\boldsymbol{\beta}^{*}}\\
+\boldsymbol{\gamma}^*
+\end{pmatrix}
+\sim
+\mathcal{N}\left(
+\begin{pmatrix}
+\boldsymbol{0}\\ \boldsymbol{0}
+\end{pmatrix},
+\sigma^2
+\begin{pmatrix}
+\boldsymbol{X}_A^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_A^\intercal\boldsymbol{X}_B \\
+\boldsymbol{X}_B^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_B^\intercal\boldsymbol{X}_B \\
+\end{pmatrix}^{-1}
+\right).
+\]</span> Note that <span class="math display">\[
+\begin{pmatrix}
+\boldsymbol{0}_{Q \times P} &amp; \boldsymbol{I}_Q
+\end{pmatrix}
+\begin{pmatrix}
+\boldsymbol{\beta}\\
+\boldsymbol{\gamma}
+\end{pmatrix} = \boldsymbol{\gamma},
+\]</span> and so <span class="math display">\[
+\hat{\boldsymbol{\gamma}}- \boldsymbol{\gamma}^*\sim
+\mathcal{N}\left(
+  \boldsymbol{0},
+  \sigma^2
+    \begin{pmatrix} \boldsymbol{0}_{Q \times P} &amp; \boldsymbol{I}_Q \end{pmatrix}
+    \begin{pmatrix}
+    \boldsymbol{X}_A^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_A^\intercal\boldsymbol{X}_B \\
+    \boldsymbol{X}_B^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_B^\intercal\boldsymbol{X}_B \\
+    \end{pmatrix}^{-1}
+    \begin{pmatrix} \boldsymbol{0}_{P \times Q} \\ \boldsymbol{I}_Q \end{pmatrix}
+\right).
 \]</span></p>
-<p>Then show that</p>
-<p><span class="math display">\[
-\hat{\boldsymbol{Y}}_{AB}^\intercal\hat{\boldsymbol{Y}}_{AB} = \sigma^{-2} \hat{\boldsymbol{\beta}}_B^\intercal(\boldsymbol{M}_A \boldsymbol{X})^\intercal(\boldsymbol{M}_A \boldsymbol{X}) \hat{\boldsymbol{\beta}}_B
-= \hat{\boldsymbol{\beta}}_B (\hat{\boldsymbol{\Sigma}})^{-1}_{BB} \hat{\boldsymbol{\beta}}_B,
+<p>Using these, show that the standard F-test is given by the test statistic <span class="math display">\[
+\phi =
+\frac{
+  \hat{\boldsymbol{\gamma}}^\intercal
+  \left(
+    \begin{pmatrix} \boldsymbol{0}_{Q \times P} &amp; \boldsymbol{I}_Q \end{pmatrix}
+    \begin{pmatrix}
+    \boldsymbol{X}_A^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_A^\intercal\boldsymbol{X}_B \\
+    \boldsymbol{X}_B^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_B^\intercal\boldsymbol{X}_B \\
+    \end{pmatrix}^{-1}
+    \begin{pmatrix} \boldsymbol{0}_{P \times Q} \\ \boldsymbol{I}_Q \end{pmatrix}
+  \right)^{-1}
+  \hat{\boldsymbol{\gamma}}/ Q
+}{\hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB} / (N - P - Q)}.
+\]</span> Our goal is to simplify this complicated expression.</p>
+<p><strong>(b)</strong> Using the fact that <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}_A = \underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{Y}\)</span>, show that <span class="math display">\[
+\hat{\boldsymbol{\varepsilon}}_A = \underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+ \hat{\boldsymbol{\varepsilon}}_{AB},
+\]</span> and so <span class="math display">\[
+\hat{\boldsymbol{\varepsilon}}_A^\intercal\hat{\boldsymbol{\varepsilon}}_A - \hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB} =
+\hat{\boldsymbol{\gamma}}^\intercal\boldsymbol{X}_B^\intercal\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}.
 \]</span></p>
-<p>giving that the numerator of the F-test is</p>
-<p><span class="math display">\[
-\hat{\boldsymbol{\beta}}_B (\hat{\boldsymbol{\Sigma}})^{-1}_{BB} \hat{\boldsymbol{\beta}}_B =
-  \hat{\boldsymbol{Y}}_{AB}^\intercal\hat{\boldsymbol{Y}}_{AB} = \hat{\boldsymbol{\varepsilon}}_A^\intercal\hat{\boldsymbol{\varepsilon}}_A  - \hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB}.
+<p><strong>(c)</strong> Using the FWL theorem, the unrestricted regression is identical to the regression <span class="math display">\[
+\hat{\boldsymbol{Y}}_{AB} = \left(\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \right) \hat{\boldsymbol{\gamma}}+ \hat{\boldsymbol{\varepsilon}}_{AB}.
 \]</span></p>
-<p>Finally, connect with defining <span class="math inline">\(R^2\)</span> by first centering everything.</p>
+<p>It follows that <span class="math display">\[
+\hat{\boldsymbol{\gamma}}- \boldsymbol{\gamma}^*\sim
+\mathcal{N}\left(\boldsymbol{0},
+\sigma^2 \left(\boldsymbol{X}_B^\intercal\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \right)^{-1}
+\right).
+\]</span> From this, show that <span class="math display">\[
+\boldsymbol{X}_B^\intercal\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B =
+  \left(
+    \begin{pmatrix} \boldsymbol{0}_{Q \times P} &amp; \boldsymbol{I}_Q \end{pmatrix}
+    \begin{pmatrix}
+    \boldsymbol{X}_A^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_A^\intercal\boldsymbol{X}_B \\
+    \boldsymbol{X}_B^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_B^\intercal\boldsymbol{X}_B \\
+    \end{pmatrix}^{-1}
+    \begin{pmatrix} \boldsymbol{0}_{P \times Q} \\ \boldsymbol{I}_Q \end{pmatrix}
+  \right)^{-1}.
+\]</span></p>
+<p><strong>Note:</strong> The Schur complement is another way to derive this identity.</p>
+<p><strong>(d)</strong> Plug in your results from (b) and (c) into (a) to derive the test statistic <span class="math display">\[
+\phi =
+\frac{\left( \hat{\boldsymbol{\varepsilon}}_A^\intercal\hat{\boldsymbol{\varepsilon}}_A - \hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB}\right) / Q}{\hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB} / (N - P - Q)}.
+\]</span></p>
+<p>This is sometimes re-written in terms of <span class="math display">\[
+\begin{aligned}
+RSSR ={}&amp; \hat{\boldsymbol{\varepsilon}}_A^\intercal\hat{\boldsymbol{\varepsilon}}_A &amp; \textrm{(restricted sum of squared residuals)} \\
+USSR ={}&amp; \hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB} &amp; \textrm{(unrestricted sum of squared residuals)}
+\end{aligned}
+\]</span> as <span class="math display">\[
+\phi = \frac{(RSSR - USSR) / Q}{USSR / (N - P - Q)}.
+\]</span> Note that when you include new regressors, the SSR must decrease, so <span class="math inline">\(USSR &lt; RSSR\)</span>. This simple formula shows that the F-test is checking whether the <em>relative decrease</em> in sum of squared residuals when you include the new regressors is large relative to the appropriate F-distribution.</p>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
 </section>
 <section id="omitted-variable-bias" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Omitted variable bias</h1>
-<p>Cinelli and Hazlett 2019 Making Sense of Sensitivity</p>
+<p>This homework problem is taken from <span class="citation" data-cites="cinelli:2020:making">Cinelli and Hazlett (<a href="#ref-cinelli:2020:making" role="doc-biblioref">2020</a>)</span>.</p>
+<p>Suppose we believe that the following model is correctly specified: <span class="math display">\[
+y= \beta_0 + \boldsymbol{\beta}^\intercal\boldsymbol{x}+ \boldsymbol{\gamma}z+ \tau d+ \varepsilon,
+\]</span> where</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol{x}\)</span> is an observed vector of covariates,</li>
+<li><span class="math inline">\(z\)</span> is an unobserved (omitted) scalar-valued covariate,</li>
+<li><span class="math inline">\(d\)</span> is a binary indicator of a causal intervention, and</li>
+<li><span class="math inline">\(\varepsilon\)</span> is a mean-zero error term that is independent of <span class="math inline">\(\boldsymbol{x}\)</span>, <span class="math inline">\(z\)</span>, and <span class="math inline">\(d\)</span>.</li>
+</ul>
+<p>We’re interested in <span class="math inline">\(\tau\)</span>, the causal effect of <span class="math inline">\(d\)</span>, but are concerned about how much our OLS estimate is biased by the fact that we have excluded the variable <span class="math inline">\(z\)</span>. Let <span class="math inline">\(\boldsymbol{X}\)</span>, <span class="math inline">\(\boldsymbol{Z}\)</span>, and <span class="math inline">\(\boldsymbol{D}\)</span> denote the regressor matrices. Write</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{Y}={}&amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}+ \boldsymbol{Z}\hat{\gamma}+ \boldsymbol{D}\hat{\tau}+ \hat{\boldsymbol{\varepsilon}}
+\quad\textrm{(infeasible full regression)}\\
+\boldsymbol{Y}={}&amp; \boldsymbol{X}\hat{\boldsymbol{\beta}}_{\mathrm{res}}+ \boldsymbol{D}\hat{\tau}_{\mathrm{res}}+ \hat{\boldsymbol{\varepsilon}}_{\mathrm{res}}
+\quad\textrm{(feasible restricted regression)}\\
+\end{aligned}
+\]</span></p>
+<p>Assume all matrices are full rank, and that that <span class="math inline">\(N\)</span> is large enough that, if we had run the full regression that <span class="math inline">\(\hat{\tau}\)</span> would be accurate enough for practical purposes, so we would like to know <span class="math inline">\(\hat{\tau}\)</span>. But since we don’t observe <span class="math inline">\(Z\)</span>, we can only estimate <span class="math inline">\(\hat{\tau}_{\mathrm{res}}\)</span>. We are interested in estimating / understanding the <em>omitted variable bias</em>,</p>
+<p><span class="math display">\[
+\widehat{\mathrm{Bias}} := \hat{\tau}_{\mathrm{res}}- \hat{\tau}.
+\]</span></p>
+<p>Define the orthogonal projection <span class="math display">\[
+\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} = (\boldsymbol{I}_N - \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal).
+\]</span></p>
+<p><strong>(a)</strong> Using the FWL theorem, show that</p>
+<p><span class="math display">\[
+\hat{\tau}_{\mathrm{res}}= \frac{\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right)^\intercal\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}\right)}{\left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2}.
+\]</span></p>
+<p><strong>(b)</strong> Plugging in the full regression for <span class="math inline">\(\boldsymbol{Y}\)</span> into (a), show that</p>
+<p><span class="math display">\[
+\hat{\tau}_{\mathrm{res}}= \frac{\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right)^\intercal\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Z}\right)}{\left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2} \hat{\gamma}+ \hat{\tau}.
+\]</span></p>
+<p><strong>Hint</strong>: <span class="math inline">\(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{X}= \boldsymbol{0}\)</span> and <span class="math inline">\(\boldsymbol{D}^\intercal\hat{\boldsymbol{\varepsilon}}= \boldsymbol{0}\)</span>.</p>
+<p><strong>(c)</strong> Consider the regression <span class="math inline">\(z\sim \delta d+ \boldsymbol{x}^\intercal\boldsymbol{\alpha}\)</span>, with corresponding OLS estimates <span class="math inline">\(\hat{\delta}\)</span> and <span class="math inline">\(\hat{\boldsymbol{a}}\)</span>. Show that</p>
+<p><span class="math display">\[
+\hat{\delta}= \frac{\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right)^\intercal\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Z}\right)}{\left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2}.
+\]</span></p>
+<p><strong>(d)</strong> Plug (c) into (b) to get the very nice formula</p>
+<p><span class="math display">\[
+\widehat{\mathrm{Bias}} = \hat{\tau}_{\mathrm{res}}- \hat{\tau}= \hat{\delta}\hat{\gamma}.
+\]</span></p>
+<p><strong>(e)</strong> Suppose that we believe that the model is correctly specified, and that <span class="math inline">\(y\)</span> is independent of <span class="math inline">\(z\)</span> — that is, the omitted variable doesn’t affect the outcome. What does this imply about the omitted variable bias?</p>
+<p><strong>(f)</strong> Suppose we believe that the model is correctly specified, and that the treatment <span class="math inline">\(d\)</span> is independent of <span class="math inline">\(z\)</span> — that is, the omitted variable doesn’t affect whether or not an observation receives treatment. What does this imply about the omitted variable bias?</p>
+<p><strong>(g)</strong> In ordinary lanuage, what kinds of omitted variables do we need to worry about?</p>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -474,12 +611,18 @@ A^{-1} - \frac{A^{-1} \boldsymbol{u}\boldsymbol{v}^\intercal A^{-1}}{1 + \boldsy
 <li>Will this result produce a better fit to the data than simply regressing <span class="math inline">\(y_n \sim \boldsymbol{x}_n\)</span>? Why or why not?</li>
 <li>Do you think this result produce a useful prediction for new data? Why or why not?</li>
 </ul>
+</section>
+<section id="references" class="level1" data-number="7">
+
 
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">7 References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-cinelli:2020:making" class="csl-entry" role="listitem">
+Cinelli, Carlos, and Chad Hazlett. 2020. <span>“Making Sense of Sensitivity: <span>Extending</span> Omitted Variable Bias.”</span> <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em> 82 (1): 39–67.
+</div>
 <div id="ref-davidson2004econometric" class="csl-entry" role="listitem">
 Davidson, Russell, James G MacKinnon, et al. 2004. <em>Econometric Theory and Methods</em>. Vol. 5. Oxford University Press New York.
 </div>
