@@ -1,0 +1,150 @@
+---
+title: "Lab 6: cubic splines and `glmnet`"
+author: your name
+number-sections: true
+output: 
+  pdf_document:
+    keep_tex: false
+    pandoc_args: ["--variable", "urlcolor=blue"]
+geometry: margin=1in
+header-includes:
+  - \usepackage{dsfont}
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(splines2)
+library(glmnet)
+```
+
+## Introduction
+
+In this lab we will fit a linear model on the Ames dataset using cubic splines. 
+To avoid overfitting, we will use $L^2$ (Ridge) and $L^1$ (Lasso) regularization, choosing the appropriate penalty parameters by cross-validation.
+You can find the dataset on the [course website](https://stat151a.berkeley.edu/spring-2026/datasets/#ames-housing-dataset).
+
+As in Lab 3, we will focus on "normal" sales of residential units.
+We scale `SalePrice` to thousands of dollars and normalize six continuous regressors --- `Lot.Area`, `Gr.Liv.Area`, `Total.Bsmt.SF`, `X1st.Flr.SF`, `Year.Built`, `Garage.Area` --- to $[0, 1]$.
+
+```{r preprocessing}
+ames <- read.csv("ames.csv") |>
+  dplyr::filter(
+    !(MS.Zoning %in% c("C (all)", "A (agr)", "I (all)")),
+    Sale.Condition == "Normal"
+  ) |>
+  tidyr::drop_na(SalePrice) |> 
+  mutate(SalePrice = SalePrice / 1000)
+
+cols <- c(
+  "Lot.Area", "Gr.Liv.Area", "Total.Bsmt.SF", "X1st.Flr.SF", "Year.Built", "Garage.Area"
+)
+for (col in cols) {
+  col_rng <- range(ames[[col]])
+  ames[[col]] <- (ames[[col]] - col_rng[1]) / (col_rng[2] - col_rng[1])
+}
+```
+
+Recall that splines of degree $d$ are smooth functions that are piecewise polynomials of degree $d$, with points where the pieces connect called knots. 
+A spline of degree $d$ on $[0, 1]$ with fixed $K$ internal knots can be written as a linear combination of certain $K + d$ basis functions, called B-splines. 
+The quantity $K + d$ is thus referred to as the number of degrees of freedom, `df`. 
+
+The `splines2` package provides a function `bSpline()` for constructing B-spline bases. 
+To create a cubic ($d = 3$) B-spline basis with $K$ interior knots, we can use `bSpline(x, df = K + 3)`. 
+The function also accepts the `degree` argument, which defaults to 3.
+Knots are placed automatically at equal quantiles of `x`. 
+Since our regressors are normalized to $[0, 1]$, we set boundary knots at 0 and 1 explicitly via `Boundary.knots = c(0, 1)` to ensure the basis is consistent across train and test sets.
+
+When using `glmnet`, build the basis matrix explicitly with `bSpline()` and pass it as the `x` argument; `glmnet` will add its own intercept.
+When you need to evaluate a spline basis on new data (e.g., the test set), use `predict(basis_object, newx = x_test)` rather than calling `bSpline()` again --- this ensures the same knots are reused.
+
+You may find the following helper function and global variable useful:
+```{r helpers}
+r2 <- function(y, yhat) 1 - sum((y - yhat)^2) / sum((y - mean(y))^2)
+BK <- c(0, 1) # boundary knots
+```
+
+\pagebreak
+
+## Question 1:
+
+**(a)** Split the data into training and testing data sets in proportion 70 / 30, and fix them throughout the lab. 
+
+
+**(b)** Let's practice using `bSpline`. 
+Fit two linear models on the training set to predict `SalePrice`:
+  
+  - one using a cubic spline basis on `Gr.Liv.Area` with `df = 8`, 
+  
+  - one using a cubic spline basis with `df = 50`. 
+
+Plot both fitted curves against `Gr.Liv.Area` alongside the training data. 
+How do the two curves differ?
+
+ 
+**(c)** Fit the same model for $\texttt{df} \in \{4, 5, \dots, 53\}$, recording train/test $\texttt{R}^2$ and the coefficient norm $\|\beta\|$.
+
+Plot these quantities against `df`.
+What do you observe? 
+
+We may choose `df` that maximizes the test $\texttt{R}^2$ --- is there anything wrong with this approach?
+
+
+**(d)** We can include spline bases for multiple regressors at once by adding them in the formula, for example `lm(SalePrice ~ bSpline(...) + ... + bSpline(...))`.
+
+Fit a linear model on the training set using cubic spline bases with $\texttt{df} = 8$ for `Gr.Liv.Area`, `Lot.Area`, `Total.Bsmt.SF`, `X1st.Flr.SF`, `Year.Built`, and `Garage.Area` simultaneously.
+
+Report train/test $\texttt{R}^2$ and compare to the single-variable model from (b).
+
+\pagebreak
+
+## Question 2: 
+
+One way to solve the model selection problem above (that is, choosing good `df`) is to use *regularized* linear regression with a large basis of regressors. 
+
+**(a)** `glmnet` with `alpha = 0` solves the ridge objective
+$$\min_\beta \; \frac{1}{n}\|\tilde{Y} - \tilde{X}\beta\|_2^2 + \lambda\|\beta\|_2^2$$
+where $\tilde{X}$ has each column standardized to mean zero and unit variance, and $\tilde{Y}$ is standardized to mean zero and unit variance.
+The closed-form solution is
+$$\hat\beta = \bigl(\tilde{X}^T\tilde{X} + n\lambda I\bigr)^{-1} \tilde{X}^T\tilde{Y}.$$
+
+Let $X$ be the $\texttt{df} = 50$ spline basis on `Gr.Liv.Area` and $Y$ the `SalePrice` column, both on the training set.
+
+Standardize both $X$ and $Y$ (using population standard deviation) to get $\tilde{X}$ and $\tilde{Y}$. 
+
+Then solve for $\hat\beta$ using `t()`, `%*%`, and `solve()` for $\lambda \in \{0.01, 0.1, 1, 10, 100\}$.
+Report train/test $\texttt{R}^2$ at each $\lambda$.
+
+
+**(b)** Fit the same model using `glmnet(x, y, alpha = 0, lambda = lambdas, standardize = FALSE, intercept = FALSE)` on your standardized $\tilde{X}$ and $\tilde{Y}$.
+
+Use `coef(fit, s = lambda_value)` to extract coefficients at $\lambda = 1$.
+Verify the result matches your hand solution from (a).
+
+
+**(c)** From this point on, return to the raw $X$ and $Y$ and let `glmnet` handle standardization internally.
+
+Fit a ridge model over a full range of $\lambda$ values using `glmnet(x, y, alpha = 0)`.
+
+Use the built-in `plot()` method to visualize the coefficient paths as a function of $\lambda$.
+What do you observe --- how do the coefficients change as $\lambda$ increases?
+
+
+**(d)** This introduces the problem of choosing $\lambda$.
+We can choose it by cross-validation, which can be done very efficiently. 
+
+Perform $10$-fold cross-validation with Ridge using `cv.glmnet`.
+Plot the resulting CV error curve using `plot()`.
+
+Extract coefficients at the best CV choice $\lambda_{\text{CV}}$ and at the 1SE choice $\lambda_{\text{1SE}}$.
+How do the coefficient norms and train/test $\texttt{R}^2$ at the two choices compare?
+
+
+**(e)** We can add more regressors by expanding the spline basis for each predictor separately. 
+
+Use cross-validation to fit a ridge model on cubic spline expansions of all six regressors (`df = 10` each).
+Report its train/test $\texttt{R}^2$. How do they compare to the single-variable model from (d)?
+
+
+**(f)** Build a combined spline basis using all six regressors with `df = 5` each ($6 \times 5 = 30$ columns total).
+Fit a Lasso model (setting `alpha = 1` in `glmnet`) on this basis and plot the coefficient paths.
+What do you observe --- how does this differ from ridge?
