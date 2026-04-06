@@ -265,6 +265,88 @@ may be a better version of this question.
 <p>Hint: <span class="math inline">\(\varepsilon_*\)</span>, <span class="math inline">\(x_*\)</span>, and <span class="math inline">\(z_*\)</span> are independent of the training data <span class="math inline">\(\boldsymbol{Y}\)</span>, so the conditioning doesn’t affect their expectations.</p>
 <p><strong>(g)</strong></p>
 <p>Suppose that <span class="math inline">\(\sigma_\varepsilon/ \beta\)</span> is not too large, so the residual standard deviation is not too large relative to the effect of academic ability on GPA. Are we then able to do effective prediction using the regression <span class="math inline">\(y_n \sim \gamma z_n\)</span>, say, to identify which students are likely to have good GPAs using only test scores? Explain why or why not in intuitive terms.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong></p>
+<p>We will not change their GPA by helping memorize the test. Improving their academic ability will increase their GPA.</p>
+<p><strong>(b)</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\hat{\gamma}\right] ={}&amp;
+\mathbb{E}\left[\frac{\sum_{n=1}^Ny_n z_n}{\sum_{n=1}^Nz_n^2}\right]
+\\={}&amp;
+\frac{\sum_{n=1}^N\mathbb{E}\left[y_n\right] z_n}{\sum_{n=1}^Nz_n^2}
+\\={}&amp;
+\frac{\sum_{n=1}^N\mathbb{E}\left[\beta x_n + \varepsilon_n\right] z_n}{\sum_{n=1}^Nz_n^2}
+\\={}&amp;
+\frac{\sum_{n=1}^N\left( \beta x_n + \mathbb{E}\left[\varepsilon_n\right]\right) z_n}{\sum_{n=1}^Nz_n^2}
+\\={}&amp;
+\frac{\sum_{n=1}^N\beta x_n z_n}{\sum_{n=1}^Nz_n^2}
+\\={}&amp;
+\frac{\frac{1}{N} \sum_{n=1}^Nx_n z_n}{\frac{1}{N} \sum_{n=1}^Nz_n^2} \beta
+\\={}&amp;
+0.9 \beta
+\end{aligned}
+\]</span></p>
+<p>The true influence of <span class="math inline">\(z_n\)</span> on <span class="math inline">\(y_n\)</span> is <span class="math inline">\(0\)</span>, so <span class="math inline">\(\mathbb{E}\left[\hat{\gamma}\right] = 0.9 \beta\)</span> overestimates it. However, it is less than <span class="math inline">\(\beta\)</span>, the “true” effect of <span class="math inline">\(x_n\)</span> on <span class="math inline">\(y_n\)</span>, because the sample correlation of <span class="math inline">\(z_n\)</span> with <span class="math inline">\(x_n\)</span> is less than one.</p>
+<p><strong>(c)</strong></p>
+<p>No, we are not. The true ability is an confounder. We should measure <span class="math inline">\(0\)</span>, but instead measure a positive association.</p>
+<p><strong>(d)</strong></p>
+<p>We have</p>
+<p><span class="math display">\[
+\mathbb{E}\left[y_*\right] ={}
+\mathbb{E}\left[\beta x_* + \varepsilon_*\right]  =
+\beta \mathbb{E}\left[x_*\right] + \mathbb{E}\left[\varepsilon_*\right]  = 0
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\mathrm{Var}\left(y_*\right) ={}
+\mathrm{Var}\left(\beta x_* + \varepsilon_*\right)  =
+\beta^2 \mathrm{Var}\left(x_*\right) + \mathrm{Var}\left(\varepsilon_*\right)  = \beta^2 + \sigma_\varepsilon^2.
+\]</span></p>
+<p><strong>(e)</strong></p>
+<p>We have</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\hat{y}_* \vert \boldsymbol{Y}\right] ={}
+\mathbb{E}\left[\hat{\gamma}z_* \vert \boldsymbol{Y}\right]  =
+\hat{\gamma}\mathbb{E}\left[z_* \vert \boldsymbol{Y}\right]  = 0
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\mathrm{Var}\left(\hat{y}_* \vert \boldsymbol{Y}\right) ={}
+\mathrm{Var}\left(\hat{\gamma}z_* \vert \boldsymbol{Y}\right)  =
+\hat{\gamma}^2 \mathrm{Var}\left(z_* \vert \boldsymbol{Y}\right)  = \hat{\gamma}^2.
+\]</span></p>
+<p><strong>(f)</strong></p>
+<p>We only have to compute</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\hat{y}_* y_* \vert \boldsymbol{Y}\right] ={}&amp;
+\mathbb{E}\left[(\hat{\gamma}z_*) (\beta x_* + \varepsilon_*) \vert \boldsymbol{Y}\right] \\={}&amp;
+\mathbb{E}\left[\hat{\gamma}\beta z_*  x_* + \hat{\gamma}z_* \varepsilon_* \vert \boldsymbol{Y}\right] \\={}&amp;
+\hat{\gamma}\beta \mathbb{E}\left[ z_*  x_* \vert \boldsymbol{Y}\right] + \hat{\gamma}\mathbb{E}\left[z_* \varepsilon_* \vert \boldsymbol{Y}\right] \\={}&amp;
+\hat{\gamma}\beta \mathbb{E}\left[ z_*  x_*\right] + \hat{\gamma}\mathbb{E}\left[z_* \varepsilon_*\right] \\={}&amp;
+0.9 \hat{\gamma}\beta.
+\end{aligned}
+\]</span></p>
+<p>Plugging in,</p>
+<p><span class="math display">\[
+\textrm{Correlation}(y_*, \hat{y}_* \vert \boldsymbol{Y}) =
+\frac{0.9 \hat{\gamma}\beta}{\sqrt{\hat{\gamma}^2} \sqrt{\beta^2 + \sigma_\varepsilon^2}} =
+\frac{0.9 }{\sqrt{1 + \left( \frac{\sigma_\varepsilon}{\beta}\right)^2}}.
+\]</span></p>
+<p><strong>(g)</strong></p>
+<p>Yes, we can perform prediction using <span class="math inline">\(y_n \sim z_n\)</span>, since the correlation between the prediction <span class="math inline">\(\hat{y}_*\)</span> and <span class="math inline">\(y_*\)</span> is high as long as <span class="math inline">\(\sigma_\varepsilon/ \beta\)</span> is not too large. For prediction, it does not matter that <span class="math inline">\(z_n\)</span> is not causally related to <span class="math inline">\(y_n\)</span> — it is enough that it is correlated with a variable that is causally related to <span class="math inline">\(y_n\)</span>.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -278,6 +360,38 @@ may be a better version of this question.
 <p><strong>(c)</strong> Show that <span class="math inline">\(\hat{\boldsymbol{\gamma}}\sim \mathcal{N}\left(\boldsymbol{U}^\intercal{\boldsymbol{\beta}^{*}}, \frac{\sigma^2}{N} \Lambda^{-1}\right)\)</span>, and so the entries <span class="math inline">\(\hat{\boldsymbol{\gamma}}_p\)</span> are independent with variance <span class="math inline">\(\sigma^2 \lambda_p^{-1} / N\)</span>.</p>
 <p><strong>(d)</strong> We have shown that each entry of <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span> is a linear combination of independent Gaussians with variance <span class="math inline">\(\sigma^2 \lambda_p^{-1} / N\)</span>. What do you expect to happen to the covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> as <span class="math inline">\(\lambda_p\)</span> approaches zero for some <span class="math inline">\(p\)</span>?</p>
 <p><strong>(e)</strong> When <span class="math inline">\(\boldsymbol{X}\)</span> is not full-rank, then at least one <span class="math inline">\(\lambda_p = 0\)</span>, and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible. Interpret this fact in light of the above result.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> Since <span class="math inline">\(\boldsymbol{z}_n = \boldsymbol{U}^\intercal\boldsymbol{x}_n\)</span>, the <span class="math inline">\(n\)</span>-th row of <span class="math inline">\(\boldsymbol{Z}\)</span> is <span class="math inline">\(\boldsymbol{z}_n^\intercal= \boldsymbol{x}_n^\intercal\boldsymbol{U}\)</span>, so <span class="math inline">\(\boldsymbol{Z}= \boldsymbol{X}\boldsymbol{U}\)</span>. Then</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{Z}^\intercal\boldsymbol{Z}
+={}&amp; (\boldsymbol{X}\boldsymbol{U})^\intercal(\boldsymbol{X}\boldsymbol{U})
+\\={}&amp; \boldsymbol{U}^\intercal\boldsymbol{X}^\intercal\boldsymbol{X}\boldsymbol{U}
+\\={}&amp; \boldsymbol{U}^\intercal(N \hat{\boldsymbol{M}}_{\boldsymbol{X}}) \boldsymbol{U}
+\\={}&amp; N \boldsymbol{U}^\intercal(\boldsymbol{U}\Lambda \boldsymbol{U}^\intercal) \boldsymbol{U}
+\\={}&amp; N (\boldsymbol{U}^\intercal\boldsymbol{U}) \Lambda (\boldsymbol{U}^\intercal\boldsymbol{U})
+\\={}&amp; N \Lambda.
+\end{aligned}
+\]</span></p>
+<p><strong>(b)</strong> Using (a), the regression <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{X}\boldsymbol{\beta}\)</span> can be written <span class="math inline">\(\boldsymbol{Y}\sim \boldsymbol{Z}\boldsymbol{U}^\intercal\boldsymbol{\beta}= \boldsymbol{Z}\boldsymbol{\gamma}\)</span> where <span class="math inline">\(\boldsymbol{\gamma}= \boldsymbol{U}^\intercal\boldsymbol{\beta}\)</span>, i.e., <span class="math inline">\(\boldsymbol{\beta}= \boldsymbol{U}\boldsymbol{\gamma}\)</span>. By the reparameterization result from a previous homework (an invertible linear reparameterization gives the same fitted values), we have <span class="math inline">\(\hat{\boldsymbol{\beta}}= \boldsymbol{U}\hat{\boldsymbol{\gamma}}\)</span>, so <span class="math inline">\(\boldsymbol{U}^\intercal\hat{\boldsymbol{\beta}}= \boldsymbol{U}^\intercal\boldsymbol{U}\hat{\boldsymbol{\gamma}}= \hat{\boldsymbol{\gamma}}\)</span>.</p>
+<p><strong>(c)</strong> Since <span class="math inline">\(\hat{\boldsymbol{\gamma}}= \boldsymbol{U}^\intercal\hat{\boldsymbol{\beta}}\)</span>, by the transformation of multivariate normals, <span class="math display">\[
+\hat{\boldsymbol{\gamma}}\sim \mathcal{N}\left(\boldsymbol{U}^\intercal{\boldsymbol{\beta}^{*}}, \sigma^2 \boldsymbol{U}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{U}\right).
+\]</span> Since <span class="math display">\[
+\boldsymbol{U}^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{U}= (\boldsymbol{U}^\intercal\boldsymbol{X}^\intercal\boldsymbol{X}\boldsymbol{U})^{-1} = (\boldsymbol{Z}^\intercal\boldsymbol{Z})^{-1} = N^{-1} \Lambda^{-1},
+\]</span> the result follows.</p>
+<p><strong>(d)</strong> From (c), the <span class="math inline">\(p\)</span>-th component of <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span> has variance <span class="math inline">\(\sigma^2 \lambda_p^{-1}/N\)</span>. As <span class="math inline">\(\lambda_p \to 0\)</span>, this variance diverges to <span class="math inline">\(\infty\)</span>. Since <span class="math inline">\(\hat{\boldsymbol{\beta}}= \boldsymbol{U}\hat{\boldsymbol{\gamma}}\)</span> is a linear combination of the components of <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span>, the covariance matrix <span class="math inline">\(\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) = \frac{\sigma^2}{N} \boldsymbol{U}\Lambda^{-1} \boldsymbol{U}^\intercal\)</span>, any components of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> with non-zero entries in the <span class="math inline">\(p\)</span>–th column of <span class="math inline">\(\boldsymbol{U}\)</span> will go to <span class="math inline">\(\pm \infty\)</span>.</p>
+<p><strong>(e)</strong> When <span class="math inline">\(\boldsymbol{X}\)</span> is not full-rank, at least one <span class="math inline">\(\lambda_p = 0\)</span>. From (c) this would correspond to an infinite variance for the corresponding component of <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span>, meaning that component of the OLS estimator is completely undetermined by the data. Equivalently, <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible, so the OLS normal equations have no unique solution. The result above shows this is not just a computational nuisance: the estimator genuinely has infinite (undefined) variance along directions in which <span class="math inline">\(\boldsymbol{X}\)</span> has no variation.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -301,7 +415,7 @@ may be a better version of this question.
 <p>Hint: Inside the square, add and subtract <span class="math inline">\(\overline{\boldsymbol{\beta}}^\intercal\boldsymbol{x}\)</span>.</p>
 <p><strong>(c)</strong> Show that</p>
 <p><span class="math display">\[
-\mathbb{E}\left[(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}\right] =
+\mathbb{E}\left[(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 | \boldsymbol{X}, \boldsymbol{x}\right] =
 \boldsymbol{x}^\intercal\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) \boldsymbol{x}.
 \]</span></p>
 <p>Hint: Expand the square, and rearrange <span class="math inline">\(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}= \overline{\boldsymbol{\beta}}\boldsymbol{x}\)</span> and <span class="math inline">\(\boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}}= \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}\)</span> in one of the two factors of each term.</p>
@@ -316,6 +430,75 @@ may be a better version of this question.
 <p><strong>(e)</strong> Suppose the model is correctly specified, so there exists some <span class="math inline">\({\boldsymbol{\beta}^{*}}\)</span> so that <span class="math inline">\(\mu(\boldsymbol{x}) = {\boldsymbol{\beta}^{*}}^\intercal\boldsymbol{x}\)</span>. Show that the “bias term” vanishes, even if <span class="math inline">\(\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right)\)</span> is large.</p>
 <p><strong>(f)</strong> Suppose that <span class="math inline">\(N\)</span> is very large so that <span class="math inline">\(\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) \approx 0\)</span>. Show that the variance term vanishes, even though <span class="math inline">\((\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}})^2\)</span> may be large.</p>
 <p><strong>(g)</strong> Suppose that the model is correctly specified and <span class="math inline">\(N\)</span> is very large. Do you still make any errors in predicting <span class="math inline">\(y\)</span>? What is the source of these errors?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> Write <span class="math inline">\(y- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}}= (y- \mu(\boldsymbol{x})) + (\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})\)</span> and expand the square:</p>
+<p><span class="math display">\[
+(y- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2
+= (y- \mu(\boldsymbol{x}))^2
++ 2(y- \mu(\boldsymbol{x}))(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})
++ (\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2.
+\]</span></p>
+<p>Taking conditional expectation given <span class="math inline">\(\boldsymbol{X}, \boldsymbol{x}\)</span>: the new response <span class="math inline">\(y\)</span> is independent of the training data <span class="math inline">\(\boldsymbol{Y}\)</span> (and hence of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>), so</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(y- \mu(\boldsymbol{x}))(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}}) \vert \boldsymbol{X}, \boldsymbol{x}\right]
+= \mathbb{E}\left[y- \mu(\boldsymbol{x}) \vert \boldsymbol{x}\right] \cdot \mathbb{E}\left[\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}, \boldsymbol{x}\right]
+= 0,
+\]</span></p>
+<p>since <span class="math inline">\(\mathbb{E}\left[y- \mu(\boldsymbol{x}) \vert \boldsymbol{x}\right] = 0\)</span> by definition of <span class="math inline">\(\mu(\boldsymbol{x})\)</span>. Therefore</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[(y- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 \vert \boldsymbol{X}, \boldsymbol{x}\right]
+={}&amp; \mathbb{E}\left[(y- \mu(\boldsymbol{x}))^2 \vert \boldsymbol{x}\right]
++ \mathbb{E}\left[(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 \vert \boldsymbol{X}, \boldsymbol{x}\right]
+\\={}&amp; \mathrm{Var}\left(y\vert \boldsymbol{x}\right)
++ \mathbb{E}\left[(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 \vert \boldsymbol{X}, \boldsymbol{x}\right].
+\end{aligned}
+\]</span></p>
+<p><strong>(b)</strong> As in (a), write <span class="math inline">\(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}}= (\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}})
++ (\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})\)</span> and expand the square. The cross term is</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}})(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}}) \vert \boldsymbol{X}, \boldsymbol{x}\right]
+={}&amp; (\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}) \cdot \boldsymbol{x}^\intercal\mathbb{E}\left[\overline{\boldsymbol{\beta}}- \hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right]
+= 0,
+\end{aligned}
+\]</span></p>
+<p>since <span class="math inline">\(\mathbb{E}\left[\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right] = \overline{\boldsymbol{\beta}}\)</span> by definition of <span class="math inline">\(\overline{\boldsymbol{\beta}}\)</span>. The first squared term is non-random given <span class="math inline">\(\boldsymbol{X}\)</span>, so</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 \vert \boldsymbol{X}, \boldsymbol{x}\right]
+= (\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}})^2
++ \mathbb{E}\left[(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 \vert \boldsymbol{X}\right].
+\]</span></p>
+<p><strong>(c)</strong> Write <span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[(\boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}})^2 \vert \boldsymbol{X}, \boldsymbol{x}\right] ={}&amp;
+\mathbb{E}\left[(\boldsymbol{x}^\intercal(\overline{\boldsymbol{\beta}}- \hat{\boldsymbol{\beta}}))^2 \vert \boldsymbol{X}, \boldsymbol{x}\right] \\={}&amp;
+\boldsymbol{x}^\intercal\mathbb{E}\left[(\overline{\boldsymbol{\beta}}- \hat{\boldsymbol{\beta}}) (\overline{\boldsymbol{\beta}}- \hat{\boldsymbol{\beta}})^\intercal\vert \boldsymbol{X}\right] \boldsymbol{x}\\={}&amp;
+\boldsymbol{x}^\intercal\mathbb{E}\left[(\hat{\boldsymbol{\beta}}- \overline{\boldsymbol{\beta}}) (\hat{\boldsymbol{\beta}}- \overline{\boldsymbol{\beta}})^\intercal\vert \boldsymbol{X}\right] \boldsymbol{x}\\={}&amp;
+\boldsymbol{x}^\intercal\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\boldsymbol{X}\right) \boldsymbol{x}.
+\end{aligned}
+\]</span></p>
+<p><strong>(d)</strong> This is just plugging in.</p>
+<p><strong>(e)</strong> If <span class="math inline">\(\mu(\boldsymbol{x}) = {\boldsymbol{\beta}^{*}}^\intercal\boldsymbol{x}\)</span>, then under correct specification, OLS is unbiased: <span class="math inline">\(\overline{\boldsymbol{\beta}}= \mathbb{E}\left[\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right] = {\boldsymbol{\beta}^{*}}\)</span>. Therefore</p>
+<p><span class="math display">\[
+\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}= {\boldsymbol{\beta}^{*}}^\intercal\boldsymbol{x}- \boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}}= 0.
+\]</span></p>
+<p><strong>(f)</strong> If <span class="math inline">\(\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) \approx 0\)</span> (entrywise), then for any fixed <span class="math inline">\(\boldsymbol{x}\)</span>:</p>
+<p><span class="math display">\[
+\boldsymbol{x}^\intercal\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}\vert \boldsymbol{X}\right) \boldsymbol{x}\approx 0.
+\]</span></p>
+<p><strong>(g)</strong> Yes, errors still occur. Even with correct specification and <span class="math inline">\(N \to \infty\)</span>, the irreducible error <span class="math inline">\(\mathrm{Var}\left(y\vert \boldsymbol{x}\right)\)</span> remains. This reflects the inherent randomness in <span class="math inline">\(y\)</span> that cannot be explained by <span class="math inline">\(\boldsymbol{x}\)</span> alone, i.e., the noise <span class="math inline">\(\varepsilon_n\)</span> in the data generating process.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -355,8 +538,79 @@ p(\hat{\boldsymbol{\beta}}_\lambda | \boldsymbol{X}) = \mathcal{N}\left(
 <li>At what value of <span class="math inline">\(\lambda\)</span> does the variance term have a maximum? What is the maximum variance term?</li>
 </ul>
 <p>Explain your answers intuitively in terms of how ridge regression shrinks <span class="math inline">\(\hat{\boldsymbol{\beta}}_\lambda\)</span> towards zero.</p>
-<p><strong>(f)</strong> Show (e.g.&nbsp;by computing derivatives), that the bias term is incresing in <span class="math inline">\(\lambda\)</span>, and the variance term is decreasing in <span class="math inline">\(\lambda\)</span>. From this, argue that the predictive mean squared error for a particular <span class="math inline">\(\boldsymbol{x}\)</span> will be minimized at some non–zero value of <span class="math inline">\(\lambda\)</span>, even though the model is correctly specified and the resulting <span class="math inline">\(\hat{\boldsymbol{\beta}}_\lambda\)</span> is biased.</p>
+<p><strong>(f)</strong> Show (e.g.&nbsp;by computing derivatives), that the bias term is increasing in <span class="math inline">\(\lambda\)</span>, and the variance term is decreasing in <span class="math inline">\(\lambda\)</span>. From this, argue that the predictive mean squared error for a particular <span class="math inline">\(\boldsymbol{x}\)</span> will be minimized at some non–zero value of <span class="math inline">\(\lambda\)</span>, even though the model is correctly specified and the resulting <span class="math inline">\(\hat{\boldsymbol{\beta}}_\lambda\)</span> is biased.</p>
 <p><strong>(g)</strong> Will the <span class="math inline">\(\lambda\)</span> that minimizes predictive error be the same for different <span class="math inline">\(\boldsymbol{x}\)</span>? Argue why or why not.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> This is identical to the derivation of the normal distribution for the OLS estimator, but with the ridge penalty included. Since <span class="math inline">\(\boldsymbol{Y}\vert \boldsymbol{X}\sim \mathcal{N}\left(\boldsymbol{X}{\boldsymbol{\beta}^{*}}, \sigma^2 \boldsymbol{I}_N\right)\)</span> and <span class="math inline">\(\hat{\boldsymbol{\beta}}_\lambda = \boldsymbol{A}\boldsymbol{Y}\)</span> with <span class="math inline">\(\boldsymbol{A}= (\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P)^{-1} \boldsymbol{X}^\intercal\)</span>, the estimator is a linear function of <span class="math inline">\(\boldsymbol{Y}\)</span> and hence normally distributed. Its mean is</p>
+<p><span class="math display">\[
+\mathbb{E}\left[\hat{\boldsymbol{\beta}}_\lambda \vert \boldsymbol{X}\right]
+= (\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P)^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}{\boldsymbol{\beta}^{*}},
+\]</span></p>
+<p>and its covariance is</p>
+<p><span class="math display">\[
+\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}_\lambda \vert \boldsymbol{X}\right)
+= \boldsymbol{A}\sigma^2 \boldsymbol{I}_N \boldsymbol{A}^\intercal
+= \sigma^2 (\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P)^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P)^{-1}.
+\]</span></p>
+<p><strong>(b)</strong> When <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{I}_P\)</span>, we have <span class="math display">\[
+(\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P)^{-1}
+= \frac{1}{1+\lambda}\boldsymbol{I}_P.
+\]</span><br>
+Substituting into the formula from (a):</p>
+<p><span class="math display">\[
+\mathrm{Cov}\left(\hat{\boldsymbol{\beta}}_\lambda \vert \boldsymbol{X}\right)
+= \sigma^2 \cdot \frac{1}{1+\lambda}\boldsymbol{I}_P \cdot \boldsymbol{I}_P \cdot \frac{1}{1+\lambda}\boldsymbol{I}_P
+= \frac{\sigma^2}{(1+\lambda)^2}\boldsymbol{I}_P.
+\]</span></p>
+<p><strong>(c)</strong> Plugging into (b), when <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \boldsymbol{I}_P\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{\beta}}_\lambda ={}&amp; (\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda \boldsymbol{I}_P)^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}
+\\={}&amp;
+\frac{1}{1+\lambda} \boldsymbol{X}^\intercal\boldsymbol{Y}
+\Rightarrow\\
+\overline{\boldsymbol{\beta}}= \mathbb{E}\left[\hat{\boldsymbol{\beta}}_\lambda \vert \boldsymbol{X}\right]
+={}&amp; \frac{1}{1+\lambda} \boldsymbol{X}^\intercal\mathbb{E}\left[\boldsymbol{Y}\vert \boldsymbol{X}\right]
+\\={}&amp; \frac{1}{1+\lambda} \boldsymbol{X}^\intercal\boldsymbol{X}{\boldsymbol{\beta}^{*}}
+\\={}&amp; \frac{1}{1+\lambda} {\boldsymbol{\beta}^{*}}.
+\end{aligned}
+\]</span></p>
+<p>Under the normal model, <span class="math inline">\(y\vert \boldsymbol{x}, {\boldsymbol{\beta}^{*}}\sim \mathcal{N}\left(\boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}}, \sigma^2\right)\)</span>, so <span class="math inline">\(\mu(\boldsymbol{x}) = \mathbb{E}\left[y\vert \boldsymbol{x}\right] = \boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}}\)</span>. Therefore</p>
+<p><span class="math display">\[
+\mu(\boldsymbol{x}) - \boldsymbol{x}^\intercal\overline{\boldsymbol{\beta}}
+= \boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}}- \frac{1}{1+\lambda}\boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}}
+= \frac{\lambda}{1+\lambda}\boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}}.
+\]</span></p>
+<p><strong>(d)</strong> Using <span class="math inline">\(\mathrm{Var}\left(y\vert \boldsymbol{x}\right) = \sigma^2\)</span> (irreducible error), the bias term from (c), and the corrected variance term from (b):</p>
+<p><span class="math display">\[
+\mathbb{E}\left[(y- \boldsymbol{x}^\intercal\hat{\boldsymbol{\beta}}_\lambda)^2 \vert \boldsymbol{X}, \boldsymbol{x}\right]
+= \underbrace{\sigma^2}_{\textrm{Irreducible error}}
++ \underbrace{\frac{\lambda^2}{(1+\lambda)^2} (\boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}})^2}_{\textrm{Bias term}}
++ \underbrace{\frac{\sigma^2}{(1+\lambda)^2} \boldsymbol{x}^\intercal\boldsymbol{x}}_{\textrm{Variance term}}.
+\]</span></p>
+<p><strong>(e)</strong> The bias term <span class="math inline">\(\lambda^2 / (1 + \lambda^2)\)</span> is less than one, and as <span class="math inline">\(\lambda \rightarrow \infty\)</span> it approaches one. So the bias is maximized when <span class="math inline">\(\lambda = \infty\)</span>, where it takes the value <span class="math inline">\((\boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}})^2\)</span>.</p>
+<p>The bias term is greater than zero except at <span class="math inline">\(\lambda = 0\)</span>, so it is minimized when <span class="math inline">\(\lambda = 0\)</span>, at which point it is zero.</p>
+<p>The variance term is <span class="math inline">\(&gt; 0\)</span>, and approaches zero as <span class="math inline">\(\lambda \rightarrow \infty\)</span>. So it is smallest when <span class="math inline">\(\lambda = \infty\)</span>, at which point it is zero.</p>
+<p>The term <span class="math inline">\(1 / (1 + \lambda)^2\)</span> is $ &lt; 1$ except at <span class="math inline">\(\lambda = 0\)</span>, when it is <span class="math inline">\(1\)</span>. So the variance is maximized at <span class="math inline">\(\lambda = 0\)</span>, at which point it is <span class="math inline">\(\sigma^2 \boldsymbol{x}^\intercal\boldsymbol{x}\)</span>.</p>
+<p><strong>(f)</strong> By differentiating,</p>
+<p><span class="math display">\[
+\frac{d}{ d\lambda} \frac{\lambda^2}{(1 + \lambda)^2} =
+2 \frac{\lambda}{(1 + \lambda)^2} - 2 \frac{\lambda^2}{(1 + \lambda)^3} =
+2 \frac{\lambda}{(1 + \lambda)^2} \left(1 - \frac{\lambda}{1 + \lambda} \right) &gt; 0,
+\]</span> so the bias term is increasing in <span class="math inline">\(\lambda\)</span>.</p>
+<p>Next, <span class="math inline">\(\lambda \mapsto (1 + \lambda)^2\)</span> is increasing in <span class="math inline">\(\lambda\)</span>, and <span class="math inline">\(z\mapsto 1 / z\)</span> is decreasing in <span class="math inline">\(z\)</span>, so the variance is decreasing in <span class="math inline">\(\lambda\)</span>.</p>
+<p><strong>(g)</strong> The optimal <span class="math inline">\(\lambda^* = \frac{\sigma^2 \boldsymbol{x}^\intercal\boldsymbol{x}}{(\boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}})^2}\)</span> depends on both <span class="math inline">\(\boldsymbol{x}^\intercal\boldsymbol{x}\)</span> and <span class="math inline">\((\boldsymbol{x}^\intercal{\boldsymbol{\beta}^{*}})^2\)</span>, both of which vary with the prediction point <span class="math inline">\(\boldsymbol{x}\)</span>. In general, the optimal <span class="math inline">\(\lambda\)</span> differs for different <span class="math inline">\(\boldsymbol{x}\)</span>, so no single fixed <span class="math inline">\(\lambda\)</span> is simultaneously optimal for all prediction points.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -404,6 +658,84 @@ p(\boldsymbol{a}\vert \boldsymbol{b}) =
 <p><strong>(g)</strong> What happens to the posterior mean <span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right]\)</span> as <span class="math inline">\(s\rightarrow \infty\)</span>? What happens as <span class="math inline">\(s\rightarrow 0\)</span>?</p>
 <p><strong>(h)</strong> What happens to the posterior variance <span class="math inline">\(\mathrm{Cov}\left(\sqrt{N} \boldsymbol{\beta}\vert \boldsymbol{Y}\right)\)</span> as <span class="math inline">\(s\rightarrow \infty\)</span>? (Note the scaling by <span class="math inline">\(\sqrt{N}\)</span>.) How does this relate to the limiting frequentist covariance of <span class="math inline">\(\sqrt{N}(\hat{\boldsymbol{\beta}}- {\boldsymbol{\beta}^{*}})\)</span> given by the CLT?</p>
 <p><strong>(i)</strong> For what value of <span class="math inline">\(\lambda\)</span> is the posterior mean <span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right]\)</span> the same as the ridge regression estimator?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> If <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are uncorrelated, then <span class="math inline">\(\Sigma_{ab} = \boldsymbol{0}\)</span> (and <span class="math inline">\(\Sigma_{ba} = \boldsymbol{0}\)</span>). The conditional distribution formula gives</p>
+<p><span class="math display">\[
+p(\boldsymbol{a}\vert \boldsymbol{b})
+= \mathcal{N}\left(\boldsymbol{\mu}_a + \boldsymbol{0}\cdot \Sigma_{bb}^{-1}(\boldsymbol{b}- \boldsymbol{\mu}_b),\;
+         \Sigma_{aa} - \boldsymbol{0}\cdot \Sigma_{bb}^{-1} \cdot \boldsymbol{0}\right)
+= \mathcal{N}\left(\boldsymbol{\mu}_a, \Sigma_{aa}\right)
+= p(\boldsymbol{a}).
+\]</span></p>
+<p>Since <span class="math inline">\(p(\boldsymbol{a}\vert \boldsymbol{b}) = p(\boldsymbol{a})\)</span>, by the stated sufficient condition, <span class="math inline">\(\boldsymbol{a}\)</span> and <span class="math inline">\(\boldsymbol{b}\)</span> are independent.</p>
+<p><strong>(b)</strong> Assuming <span class="math inline">\(\boldsymbol{b}= c\boldsymbol{a}\)</span>:</p>
+<p><span class="math display">\[
+\Sigma_{bb} = \mathrm{Cov}\left(\boldsymbol{b}\right) = \mathrm{Cov}\left(c\boldsymbol{a}\right) = c^2 \mathrm{Cov}\left(\boldsymbol{a}\right) = c^2 \Sigma_{aa},
+\]</span></p>
+<p><span class="math display">\[
+\Sigma_{ab} = \mathrm{Cov}\left(\boldsymbol{a}, \boldsymbol{b}\right) = \mathrm{Cov}\left(\boldsymbol{a}, c\boldsymbol{a}\right) = c\mathrm{Cov}\left(\boldsymbol{a}\right) = c\Sigma_{aa}.
+\]</span></p>
+<p><strong>(c)</strong> Substituting <span class="math inline">\(\Sigma_{ab} = c\Sigma_{aa}\)</span> and <span class="math inline">\(\Sigma_{bb} = c^2\Sigma_{aa}\)</span> from (b):</p>
+<p><span class="math display">\[
+\mathrm{Cov}\left(\boldsymbol{a}\vert \boldsymbol{b}\right)
+= \Sigma_{aa} - \Sigma_{ab}\Sigma_{bb}^{-1}\Sigma_{ba}
+= \Sigma_{aa} - (c\Sigma_{aa})(c^2\Sigma_{aa})^{-1}(c\Sigma_{aa})
+= \Sigma_{aa} - \frac{c^2}{c^2}\Sigma_{aa}\Sigma_{aa}^{-1}\Sigma_{aa}
+= \Sigma_{aa} - \Sigma_{aa}
+= \boldsymbol{0}.
+\]</span></p>
+<p><strong>(d)</strong></p>
+<ul>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{Y}\right] = \mathbb{E}\left[\boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\right] = \boldsymbol{X}\mathbb{E}\left[\boldsymbol{\beta}\right] + \mathbb{E}\left[\boldsymbol{\varepsilon}\right] = \boldsymbol{X}\boldsymbol{0}+ \boldsymbol{0}= \boldsymbol{0}.\)</span></li>
+<li><span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\right] = \boldsymbol{0}\)</span></li>
+<li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{Y}\right) = \mathrm{Cov}\left(\boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\right) = \boldsymbol{X}\mathrm{Cov}\left(\boldsymbol{\beta}\right)\boldsymbol{X}^\intercal+ \mathrm{Cov}\left(\boldsymbol{\varepsilon}\right) = s^2 \boldsymbol{X}\boldsymbol{X}^\intercal+ \sigma^2\boldsymbol{I}_N\)</span></li>
+<li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{\beta}, \boldsymbol{Y}\right) = \mathrm{Cov}\left(\boldsymbol{\beta}, \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\right) = \mathrm{Cov}\left(\boldsymbol{\beta}\right)\boldsymbol{X}^\intercal+ \mathrm{Cov}\left(\boldsymbol{\beta}, \boldsymbol{\varepsilon}\right) = s^2\boldsymbol{I}_P \cdot \boldsymbol{X}^\intercal+ \boldsymbol{0}= s^2\boldsymbol{X}^\intercal.\)</span></li>
+<li><span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{\beta}\right) = s^2\boldsymbol{I}_P\)</span></li>
+</ul>
+<p><strong>(e)</strong></p>
+<p><span class="math display">\[
+\begin{pmatrix} \boldsymbol{\beta}\\ \boldsymbol{Y}\end{pmatrix}
+\sim \mathcal{N}\left(
+  \begin{pmatrix} \boldsymbol{0}\\ \boldsymbol{0}\end{pmatrix},
+  \begin{pmatrix} s^2\boldsymbol{I}_P &amp; s^2\boldsymbol{X}^\intercal\\ s^2\boldsymbol{X}&amp; s^2\boldsymbol{X}\boldsymbol{X}^\intercal+ \sigma^2\boldsymbol{I}_N \end{pmatrix}
+\right).
+\]</span></p>
+<p><strong>(f)</strong> Plugging in the corresponding quanties from (d) into (e),</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right] ={}&amp;
+\mathbb{E}\left[\boldsymbol{\beta}\right] + \mathrm{Cov}\left(\boldsymbol{\beta}, \boldsymbol{Y}\right) \mathrm{Cov}\left(\boldsymbol{Y}\right)^{-1} (\boldsymbol{Y}- \mathbb{E}\left[\boldsymbol{Y}\right])
+\\={}&amp;
+\boldsymbol{0}+ s^2 \boldsymbol{X}^\intercal\left( s^2 \boldsymbol{X}\boldsymbol{X}^\intercal+ \sigma^2\boldsymbol{I}_N \right)^{-1} (\boldsymbol{Y}- \boldsymbol{0})
+\\={}&amp; s^2  \left( s^2 \boldsymbol{X}^\intercal\boldsymbol{X}+ \sigma^2\boldsymbol{I}_N \right)^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}
+\\={}&amp; \left( \boldsymbol{X}^\intercal\boldsymbol{X}+ \frac{\sigma^2}{s^2}\boldsymbol{I}_N \right)^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}
+\end{aligned}
+\]</span> (The last formula uses the push-through identity.)</p>
+<p>Then, the covariance is <span class="math display">\[
+\begin{aligned}
+\mathrm{Cov}\left(\boldsymbol{\beta}\vert \boldsymbol{Y}\right) ={}&amp;
+  \mathrm{Cov}\left(\boldsymbol{\beta}\right) - \mathrm{Cov}\left(\boldsymbol{\beta}, \boldsymbol{Y}\right) \mathrm{Cov}\left(\boldsymbol{Y}\right)^{-1} \mathrm{Cov}\left(\boldsymbol{Y}, \boldsymbol{\beta}\right)
+\\={}&amp; s^2 \boldsymbol{I}_P - s^2 \boldsymbol{X}^\intercal\left(s^2 \boldsymbol{X}\boldsymbol{X}^\intercal+ \sigma^2\boldsymbol{I}_N \right)^{-1} s^2 \boldsymbol{X}
+\\={}&amp; s^2 \left( \boldsymbol{I}_P - s^2 \left(s^2 \boldsymbol{X}^\intercal\boldsymbol{X}+ \sigma^2\boldsymbol{I}_P \right)^{-1} \boldsymbol{X}^\intercal\boldsymbol{X}\right)
+\\={}&amp; s^2 \left(s^2 \boldsymbol{X}^\intercal\boldsymbol{X}+ \sigma^2\boldsymbol{I}_P \right)^{-1} \left( s^2 \boldsymbol{X}^\intercal\boldsymbol{X}+ \sigma^2\boldsymbol{I}_P -  s^2\boldsymbol{X}^\intercal\boldsymbol{X}\right)
+\\={}&amp; s^2 \sigma^2 \left(s^2 \boldsymbol{X}^\intercal\boldsymbol{X}+ \sigma^2\boldsymbol{I}_P \right)^{-1}
+\\={}&amp; \left(\sigma^{-2} \boldsymbol{X}^\intercal\boldsymbol{X}+ s^{-2}\boldsymbol{I}_P \right)^{-1}.
+\end{aligned}
+\]</span></p>
+<p><strong>(g)</strong> As <span class="math inline">\(s\rightarrow \infty\)</span>, <span class="math inline">\(\mathbb{E}\left[\boldsymbol{\beta}\vert \boldsymbol{Y}\right] \rightarrow \hat{\boldsymbol{\beta}}\)</span>, the OLS solution. As <span class="math inline">\(s\rightarrow 0\)</span>, it goes to zero.</p>
+<p><strong>(h)</strong> As <span class="math inline">\(s\rightarrow \infty\)</span>, <span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{\beta}\vert \boldsymbol{Y}\right) \rightarrow \sigma^2 (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\)</span>, the OLS covariance. As <span class="math inline">\(s\rightarrow 0\)</span>, the variance goes to zero.</p>
+<p><strong>(i)</strong> From (f), the posterior mean is <span class="math inline">\((\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda\boldsymbol{I}_P)^{-1}\boldsymbol{X}^\intercal\boldsymbol{Y}\)</span> with <span class="math inline">\(\lambda = \sigma^2/s^2\)</span>. The ridge regression estimator is <span class="math inline">\(\hat{\boldsymbol{\beta}}_\lambda = (\boldsymbol{X}^\intercal\boldsymbol{X}+ \lambda\boldsymbol{I}_P)^{-1}\boldsymbol{X}^\intercal\boldsymbol{Y}\)</span>. These are equal when <span class="math inline">\(\lambda = \sigma^2/s^2\)</span>.</p>
+</div>
+</div>
 
 
 </section>
