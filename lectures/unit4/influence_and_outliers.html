@@ -533,7 +533,7 @@ h_n := \boldsymbol{x}_n^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \
 </ul>
 <p><em>Proof:</em> Take the vector <span class="math inline">\(\boldsymbol{e}_n\)</span> that is <span class="math inline">\(1\)</span> in entry <span class="math inline">\(n\)</span> and <span class="math inline">\(0\)</span> elsewhere.</p>
 <p><span class="math display">\[
-h_n = \boldsymbol{e}_n^\intercal\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{e}_n = \boldsymbol{e}_n^\intercal\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{e}_n = \left\Vert\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{e}_n\right\Vert^2
+h_n = \boldsymbol{e}_n^\intercal\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{e}_n = \boldsymbol{e}_n^\intercal\underset{\boldsymbol{X}}{\boldsymbol{P}}^\intercal\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{e}_n = \left\Vert\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{e}_n\right\Vert^2
 \]</span></p>
 <p>Since <span class="math inline">\(\left\Vert h_n\right\Vert^2 = 1\)</span>, and <span class="math inline">\(\left\Vert\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{e}_n\right\Vert^2 \le \left\Vert\boldsymbol{e}_n\right\Vert\)</span>, it follows that <span class="math inline">\(h_n \le 1\)</span>. And since <span class="math inline">\(\left\Vert\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{e}_n\right\Vert^2 \ge 0\)</span>, it follows that <span class="math inline">\(h_n \ge 0\)</span>.</p>
 <ul>
@@ -545,7 +545,7 @@ h_n = \boldsymbol{e}_n^\intercal\underset{\boldsymbol{X}}{\boldsymbol{P}} \bolds
 <li>At least some <span class="math inline">\(h_n &gt; 0\)</span>.</li>
 </ul>
 <p>This follows directly from <span class="math inline">\(h_n \ge 0\)</span> and <span class="math inline">\(\sum_n h_n = P\)</span>.</p>
-<p>Additionally, we can see that <span class="math inline">\(\frac{d\hat{y}_n}{d y_n}  = h_n\)</span>. (This fact that one can use to define “leverage scores” in settings beyond linear regression.)</p>
+<p>Additionally, we can see that <span class="math inline">\(\frac{d\hat{y}_n}{d y_n}  = h_n\)</span>. (One can use this fact to define “leverage scores” in settings beyond linear regression.)</p>
 <p>Putting this together, we can see that</p>
 <ul>
 <li>Since <span class="math inline">\(\sum_{n=1}^Nh_n = P\)</span> and <span class="math inline">\(0 \le h_n \le 1\)</span>, not too many leverage scores can be large.<br>
@@ -560,10 +560,25 @@ h_n = \boldsymbol{e}_n^\intercal\underset{\boldsymbol{X}}{\boldsymbol{P}} \bolds
 <p><span class="math display">\[
 \hat{y}_n = \left( \underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}\right)_n = y_n.
 \]</span></p>
-<p>This is the same as <span class="math inline">\(y_n \approx \hat{y}_n = \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n\)</span>, which forces the fit to pass through the point <span class="math inline">\((\boldsymbol{x}_n, y_n)\)</span>.</p>
-<p>If there are <span class="math inline">\(P\)</span> such high–leverage points, then <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is completely determined by these points.</p>
+<p>This is the same as <span class="math inline">\(y_n = \hat{y}_n = \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n\)</span>, which forces the fit to pass through the point <span class="math inline">\((\boldsymbol{x}_n, y_n)\)</span>.</p>
+<p>If there are <span class="math inline">\(P\)</span> such high–leverage points, then <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> is completely determined by these points, since setting <span class="math inline">\(P\)</span> residuals to zero gives <span class="math inline">\(P\)</span> equations for <span class="math inline">\(P\)</span> unknowns.</p>
 <p>Note that, since <span class="math inline">\(\sum_{n=1}^Nh_n = P\)</span> and <span class="math inline">\(0 \le h_n \le 1\)</span>, there can only be <span class="math inline">\(P\)</span> leverage points that are approximately equal to one.</p>
-<p>Although this intuition is for leverage scores that are exactly one, it applies to leverage scores that are large but not exactly one — outlier <span class="math inline">\(\boldsymbol{x}_n\)</span>, with large leverage scores, force the regression line to fit the point, unlike outlier <span class="math inline">\(y_n\)</span> with large residuals. To see this, note that</p>
+<p>Although this intuition is for leverage scores that are exactly one, it applies to leverage scores that are large but not exactly one — outlier <span class="math inline">\(\boldsymbol{x}_n\)</span>, with large leverage scores, force the regression line to fit the point, unlike outlier <span class="math inline">\(y_n\)</span> with large residuals. <!-- An easy way to see
+this is via the loss function.  Recall that $\betavhat$ satisfies
+$$
+\begin{aligned}
+\betavhat ={}& \argmin{\betav} \sumn (\y_n - \xv_n^\trans \betav)^2
+\quad\Rightarrow\quad\\
+\frac{\partial}{\partial \betavhat} \sumn (\y_n - \xv_n^\trans \betavhat)^2 ={}& \zerov
+\quad\Rightarrow\quad\\
+2 \sumn (\y_n - \xv_n^\trans \betavhat) \xv_n ={}& 2 \sumn \reshat_n \xv_n = \zerov.
+\end{aligned}
+
+... to complete the argument, you still need to establish that
+$\x_n^\trans (\X^\trans \X)^{-1} \x_m$ is small for $n \ne m$, so maybe
+this doesn't help much relative to the approach below.
+$$ --></p>
+<p>To see this, note that</p>
 <p><span class="math display">\[
 \begin{aligned}
 \hat{y}_n ={}&amp; \left(\underset{\boldsymbol{X}}{\boldsymbol{P}} \boldsymbol{Y}\right)_{n} \\
@@ -1507,7 +1522,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-345"><a href="#cb24-345" aria-hidden="true" tabindex="-1"></a>elsewhere.  </span>
 <span id="cb24-346"><a href="#cb24-346" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-347"><a href="#cb24-347" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-348"><a href="#cb24-348" aria-hidden="true" tabindex="-1"></a>h_n = \ev_n^\trans \proj{\X} \ev_n = \ev_n^\trans \proj{\X} \ev_n = \norm{\proj{\X} \ev_n}^2</span>
+<span id="cb24-348"><a href="#cb24-348" aria-hidden="true" tabindex="-1"></a>h_n = \ev_n^\trans \proj{\X} \ev_n = \ev_n^\trans \proj{\X}^\trans \proj{\X} \ev_n = \norm{\proj{\X} \ev_n}^2</span>
 <span id="cb24-349"><a href="#cb24-349" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb24-350"><a href="#cb24-350" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-351"><a href="#cb24-351" aria-hidden="true" tabindex="-1"></a>Since $\norm{h_n}^2 = 1$, and $\norm{\proj{\X} \ev_n}^2 \le \norm{\ev_n}$, it follows</span>
@@ -1526,38 +1541,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-364"><a href="#cb24-364" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-365"><a href="#cb24-365" aria-hidden="true" tabindex="-1"></a>This follows directly from $h_n \ge 0$ and $\sum_n h_n = P$.</span>
 <span id="cb24-366"><a href="#cb24-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-367"><a href="#cb24-367" aria-hidden="true" tabindex="-1"></a>Additionally, we can see that $\frac{d\yhat_n}{d \y_n}  = h_n$. (This </span>
-<span id="cb24-368"><a href="#cb24-368" aria-hidden="true" tabindex="-1"></a>fact that one can use to define "leverage scores" in settings</span>
-<span id="cb24-369"><a href="#cb24-369" aria-hidden="true" tabindex="-1"></a>beyond linear regression.)</span>
-<span id="cb24-370"><a href="#cb24-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-371"><a href="#cb24-371" aria-hidden="true" tabindex="-1"></a>Putting this together, we can see that</span>
-<span id="cb24-372"><a href="#cb24-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-373"><a href="#cb24-373" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $\sumn h_n = P$ and $0 \le h_n \le 1$, not too many leverage scores</span>
-<span id="cb24-374"><a href="#cb24-374" aria-hidden="true" tabindex="-1"></a>  can be large.  </span>
-<span id="cb24-375"><a href="#cb24-375" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>On average, a typical $h_n \approx P / N$ if the data is well-behaved.</span>
-<span id="cb24-376"><a href="#cb24-376" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If a leverage score is large, it means that the value of $\y_n$ has a high</span>
-<span id="cb24-377"><a href="#cb24-377" aria-hidden="true" tabindex="-1"></a>  influence on its own fit, $\yhat_n$.</span>
-<span id="cb24-378"><a href="#cb24-378" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If a leverage score is large, $\xv_n$ is large relative to the estimated</span>
-<span id="cb24-379"><a href="#cb24-379" aria-hidden="true" tabindex="-1"></a>  "covariance" $\meann \X^\trans \X$, up to its expected scaling of $1/N$.</span>
+<span id="cb24-367"><a href="#cb24-367" aria-hidden="true" tabindex="-1"></a>Additionally, we can see that $\frac{d\yhat_n}{d \y_n}  = h_n$. (One can use this fact to </span>
+<span id="cb24-368"><a href="#cb24-368" aria-hidden="true" tabindex="-1"></a>define "leverage scores" in settings beyond linear regression.)</span>
+<span id="cb24-369"><a href="#cb24-369" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-370"><a href="#cb24-370" aria-hidden="true" tabindex="-1"></a>Putting this together, we can see that</span>
+<span id="cb24-371"><a href="#cb24-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-372"><a href="#cb24-372" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Since $\sumn h_n = P$ and $0 \le h_n \le 1$, not too many leverage scores</span>
+<span id="cb24-373"><a href="#cb24-373" aria-hidden="true" tabindex="-1"></a>  can be large.  </span>
+<span id="cb24-374"><a href="#cb24-374" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>On average, a typical $h_n \approx P / N$ if the data is well-behaved.</span>
+<span id="cb24-375"><a href="#cb24-375" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If a leverage score is large, it means that the value of $\y_n$ has a high</span>
+<span id="cb24-376"><a href="#cb24-376" aria-hidden="true" tabindex="-1"></a>  influence on its own fit, $\yhat_n$.</span>
+<span id="cb24-377"><a href="#cb24-377" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>If a leverage score is large, $\xv_n$ is large relative to the estimated</span>
+<span id="cb24-378"><a href="#cb24-378" aria-hidden="true" tabindex="-1"></a>  "covariance" $\meann \X^\trans \X$, up to its expected scaling of $1/N$.</span>
+<span id="cb24-379"><a href="#cb24-379" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-380"><a href="#cb24-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-381"><a href="#cb24-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-382"><a href="#cb24-382" aria-hidden="true" tabindex="-1"></a><span class="fu">## Effect of high leverage</span></span>
-<span id="cb24-383"><a href="#cb24-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-384"><a href="#cb24-384" aria-hidden="true" tabindex="-1"></a>What happens to a regression when you have very high leverage?  Suppose</span>
-<span id="cb24-385"><a href="#cb24-385" aria-hidden="true" tabindex="-1"></a>that $h_n = 1$.  That means that the vector $\ev_n$, which has $1$ in </span>
-<span id="cb24-386"><a href="#cb24-386" aria-hidden="true" tabindex="-1"></a>entry $n$ and $0$ otherwise, is an eigenvector of $\proj{\X}$, and</span>
-<span id="cb24-387"><a href="#cb24-387" aria-hidden="true" tabindex="-1"></a>consequently $\ev_n$ is in the column span of $\X$.  This means that</span>
-<span id="cb24-388"><a href="#cb24-388" aria-hidden="true" tabindex="-1"></a>the $n$--th entry of $\proj{\X} \Y$ is given by</span>
-<span id="cb24-389"><a href="#cb24-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-390"><a href="#cb24-390" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-391"><a href="#cb24-391" aria-hidden="true" tabindex="-1"></a>\yhat_n = \left( \proj{\X} \Y \right)_n = \y_n.</span>
-<span id="cb24-392"><a href="#cb24-392" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-393"><a href="#cb24-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-394"><a href="#cb24-394" aria-hidden="true" tabindex="-1"></a>This is the same as $\y_n \approx \yhat_n = \betavhat^\trans \xv_n$,</span>
-<span id="cb24-395"><a href="#cb24-395" aria-hidden="true" tabindex="-1"></a>which forces the fit to pass through the point $(\xv_n, \y_n)$.</span>
-<span id="cb24-396"><a href="#cb24-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-397"><a href="#cb24-397" aria-hidden="true" tabindex="-1"></a>If there are $P$ such high--leverage points, then $\betavhat$ is completely</span>
-<span id="cb24-398"><a href="#cb24-398" aria-hidden="true" tabindex="-1"></a>determined by these points.</span>
+<span id="cb24-381"><a href="#cb24-381" aria-hidden="true" tabindex="-1"></a><span class="fu">## Effect of high leverage</span></span>
+<span id="cb24-382"><a href="#cb24-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-383"><a href="#cb24-383" aria-hidden="true" tabindex="-1"></a>What happens to a regression when you have very high leverage?  Suppose</span>
+<span id="cb24-384"><a href="#cb24-384" aria-hidden="true" tabindex="-1"></a>that $h_n = 1$.  That means that the vector $\ev_n$, which has $1$ in </span>
+<span id="cb24-385"><a href="#cb24-385" aria-hidden="true" tabindex="-1"></a>entry $n$ and $0$ otherwise, is an eigenvector of $\proj{\X}$, and</span>
+<span id="cb24-386"><a href="#cb24-386" aria-hidden="true" tabindex="-1"></a>consequently $\ev_n$ is in the column span of $\X$.  This means that</span>
+<span id="cb24-387"><a href="#cb24-387" aria-hidden="true" tabindex="-1"></a>the $n$--th entry of $\proj{\X} \Y$ is given by</span>
+<span id="cb24-388"><a href="#cb24-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-389"><a href="#cb24-389" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-390"><a href="#cb24-390" aria-hidden="true" tabindex="-1"></a>\yhat_n = \left( \proj{\X} \Y \right)_n = \y_n.</span>
+<span id="cb24-391"><a href="#cb24-391" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-392"><a href="#cb24-392" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-393"><a href="#cb24-393" aria-hidden="true" tabindex="-1"></a>This is the same as $\y_n = \yhat_n = \betavhat^\trans \xv_n$,</span>
+<span id="cb24-394"><a href="#cb24-394" aria-hidden="true" tabindex="-1"></a>which forces the fit to pass through the point $(\xv_n, \y_n)$.</span>
+<span id="cb24-395"><a href="#cb24-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-396"><a href="#cb24-396" aria-hidden="true" tabindex="-1"></a>If there are $P$ such high--leverage points, then $\betavhat$ is completely</span>
+<span id="cb24-397"><a href="#cb24-397" aria-hidden="true" tabindex="-1"></a>determined by these points, since setting $P$ residuals to zero gives</span>
+<span id="cb24-398"><a href="#cb24-398" aria-hidden="true" tabindex="-1"></a>$P$ equations for $P$ unknowns.</span>
 <span id="cb24-399"><a href="#cb24-399" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-400"><a href="#cb24-400" aria-hidden="true" tabindex="-1"></a>Note that, since $\sumn h_n = P$ and $0 \le h_n \le 1$, there can only</span>
 <span id="cb24-401"><a href="#cb24-401" aria-hidden="true" tabindex="-1"></a>be $P$ leverage points that are approximately equal to one.</span>
@@ -1565,244 +1580,261 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb24-403"><a href="#cb24-403" aria-hidden="true" tabindex="-1"></a>Although this intuition is for leverage scores that are exactly one, it</span>
 <span id="cb24-404"><a href="#cb24-404" aria-hidden="true" tabindex="-1"></a>applies to leverage scores that are large but not exactly one --- outlier</span>
 <span id="cb24-405"><a href="#cb24-405" aria-hidden="true" tabindex="-1"></a>$\xv_n$, with large leverage scores, force the regression line to fit the</span>
-<span id="cb24-406"><a href="#cb24-406" aria-hidden="true" tabindex="-1"></a>point, unlike outlier $y_n$ with large residuals.  To see this, note</span>
-<span id="cb24-407"><a href="#cb24-407" aria-hidden="true" tabindex="-1"></a>that </span>
-<span id="cb24-408"><a href="#cb24-408" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-409"><a href="#cb24-409" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-410"><a href="#cb24-410" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb24-411"><a href="#cb24-411" aria-hidden="true" tabindex="-1"></a>\yhat_n ={}&amp; \left(\proj{\X} \Y \right)_{n} <span class="sc">\\</span></span>
-<span id="cb24-412"><a href="#cb24-412" aria-hidden="true" tabindex="-1"></a>={}&amp; \sum_{m=1}^N \left(\proj{\X}\right)_{nm} \y_m <span class="sc">\\</span></span>
-<span id="cb24-413"><a href="#cb24-413" aria-hidden="true" tabindex="-1"></a>={}&amp; \sum_{m \ne n} \left(\proj{\X}\right)_{nm} \y_m + h_n \y_n.</span>
-<span id="cb24-414"><a href="#cb24-414" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb24-415"><a href="#cb24-415" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-416"><a href="#cb24-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-417"><a href="#cb24-417" aria-hidden="true" tabindex="-1"></a>How big can the off--diagonal entries $\left(\proj{\X}\right)_{nm}$ be</span>
-<span id="cb24-418"><a href="#cb24-418" aria-hidden="true" tabindex="-1"></a>when $h_n$ is large?  Again using the $n$--th standard basis vector $\ev_n$,</span>
-<span id="cb24-419"><a href="#cb24-419" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-420"><a href="#cb24-420" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb24-421"><a href="#cb24-421" aria-hidden="true" tabindex="-1"></a>1 ={}&amp; \norm{\ev_n}^2 </span>
-<span id="cb24-422"><a href="#cb24-422" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>\ge{}&amp; \norm{\proj{\X} \ev_n}^2</span>
-<span id="cb24-423"><a href="#cb24-423" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \ev_n^\trans \proj{\X} \proj{\X} \ev_n</span>
-<span id="cb24-424"><a href="#cb24-424" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \sum_{m=1}^N \left(\proj{\X}\right)_{nm}^2</span>
-<span id="cb24-425"><a href="#cb24-425" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \sum_{m \ne n} \left(\proj{\X}\right)_{nm}^2 + h_n^2,</span>
-<span id="cb24-426"><a href="#cb24-426" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb24-427"><a href="#cb24-427" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-428"><a href="#cb24-428" aria-hidden="true" tabindex="-1"></a>so that, when $h_n \approx 1$,</span>
-<span id="cb24-429"><a href="#cb24-429" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-430"><a href="#cb24-430" aria-hidden="true" tabindex="-1"></a>\sum_{m \ne n} \left(\proj{\X}\right)_{nm}^2 \le 1 - h_n^2 \approx 0,</span>
-<span id="cb24-431"><a href="#cb24-431" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-432"><a href="#cb24-432" aria-hidden="true" tabindex="-1"></a>and so</span>
-<span id="cb24-433"><a href="#cb24-433" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-434"><a href="#cb24-434" aria-hidden="true" tabindex="-1"></a>\yhat_n \approx h_n \y_n.</span>
-<span id="cb24-435"><a href="#cb24-435" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-436"><a href="#cb24-436" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-437"><a href="#cb24-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-438"><a href="#cb24-438" aria-hidden="true" tabindex="-1"></a><span class="fu">## Kleiber's whale revisited</span></span>
-<span id="cb24-439"><a href="#cb24-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-440"><a href="#cb24-440" aria-hidden="true" tabindex="-1"></a>Recall Kleiber's dataset of animal sizes and metabolisms.  Let's look at the</span>
-<span id="cb24-441"><a href="#cb24-441" aria-hidden="true" tabindex="-1"></a>original linear regression with and without the whale:</span>
-<span id="cb24-442"><a href="#cb24-442" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-445"><a href="#cb24-445" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb24-446"><a href="#cb24-446" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at the data, find outliers</span></span>
-<span id="cb24-447"><a href="#cb24-447" aria-hidden="true" tabindex="-1"></a>lm_kl <span class="ot">&lt;-</span> <span class="fu">lm</span>(Metabol_kcal_per_day <span class="sc">~</span> Weight_kg <span class="sc">+</span> <span class="dv">1</span>, kleiber_df)</span>
-<span id="cb24-448"><a href="#cb24-448" aria-hidden="true" tabindex="-1"></a>lm_drop_kl <span class="ot">&lt;-</span> <span class="fu">lm</span>(Metabol_kcal_per_day <span class="sc">~</span> Weight_kg <span class="sc">+</span> <span class="dv">1</span>, kleiber_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Animal <span class="sc">!=</span> <span class="st">"Whale"</span>))</span>
-<span id="cb24-449"><a href="#cb24-449" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-450"><a href="#cb24-450" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-453"><a href="#cb24-453" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb24-454"><a href="#cb24-454" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb24-455"><a href="#cb24-455" aria-hidden="true" tabindex="-1"></a>kleiber_df <span class="ot">&lt;-</span> kleiber_df <span class="sc">%&gt;%</span></span>
-<span id="cb24-456"><a href="#cb24-456" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res=</span>lm_kl<span class="sc">$</span>residuals) <span class="sc">%&gt;%</span></span>
-<span id="cb24-457"><a href="#cb24-457" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yhat=</span>lm_kl<span class="sc">$</span>fitted.values) <span class="sc">%&gt;%</span></span>
-<span id="cb24-458"><a href="#cb24-458" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yhat_drop=</span><span class="fu">predict</span>(lm_drop_kl, kleiber_df)) <span class="sc">%&gt;%</span></span>
-<span id="cb24-459"><a href="#cb24-459" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lev=</span><span class="fu">hatvalues</span>(lm_kl))</span>
-<span id="cb24-460"><a href="#cb24-460" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb24-461"><a href="#cb24-461" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(kleiber_df) <span class="sc">+</span></span>
-<span id="cb24-462"><a href="#cb24-462" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Weight_kg, <span class="at">y=</span>Metabol_kcal_per_day, <span class="at">color=</span>Animal, <span class="at">size=</span><span class="dv">2</span>)) <span class="sc">+</span></span>
-<span id="cb24-463"><a href="#cb24-463" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>Weight_kg, <span class="at">y=</span>yhat, <span class="at">linetype=</span><span class="st">"With whale"</span>)) <span class="sc">+</span></span>
-<span id="cb24-464"><a href="#cb24-464" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>Weight_kg, <span class="at">y=</span>yhat_drop, <span class="at">linetype=</span><span class="st">"Without whale"</span>)) <span class="sc">+</span></span>
-<span id="cb24-465"><a href="#cb24-465" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fu">max</span>(kleiber_df<span class="sc">$</span>Metabol_kcal_per_day) <span class="sc">*</span> <span class="fl">1.05</span>)</span>
+<span id="cb24-406"><a href="#cb24-406" aria-hidden="true" tabindex="-1"></a>point, unlike outlier $y_n$ with large residuals. </span>
+<span id="cb24-407"><a href="#cb24-407" aria-hidden="true" tabindex="-1"></a> <span class="co">&lt;!-- An easy way to see</span></span>
+<span id="cb24-408"><a href="#cb24-408" aria-hidden="true" tabindex="-1"></a><span class="co">this is via the loss function.  Recall that $\betavhat$ satisfies</span></span>
+<span id="cb24-409"><a href="#cb24-409" aria-hidden="true" tabindex="-1"></a><span class="co">$$</span></span>
+<span id="cb24-410"><a href="#cb24-410" aria-hidden="true" tabindex="-1"></a><span class="co">\begin{aligned}</span></span>
+<span id="cb24-411"><a href="#cb24-411" aria-hidden="true" tabindex="-1"></a><span class="co">\betavhat ={}&amp; \argmin{\betav} \sumn (\y_n - \xv_n^\trans \betav)^2</span></span>
+<span id="cb24-412"><a href="#cb24-412" aria-hidden="true" tabindex="-1"></a><span class="co">\quad\Rightarrow\quad\\</span></span>
+<span id="cb24-413"><a href="#cb24-413" aria-hidden="true" tabindex="-1"></a><span class="co">\frac{\partial}{\partial \betavhat} \sumn (\y_n - \xv_n^\trans \betavhat)^2 ={}&amp; \zerov</span></span>
+<span id="cb24-414"><a href="#cb24-414" aria-hidden="true" tabindex="-1"></a><span class="co">\quad\Rightarrow\quad\\</span></span>
+<span id="cb24-415"><a href="#cb24-415" aria-hidden="true" tabindex="-1"></a><span class="co">2 \sumn (\y_n - \xv_n^\trans \betavhat) \xv_n ={}&amp; 2 \sumn \reshat_n \xv_n = \zerov.</span></span>
+<span id="cb24-416"><a href="#cb24-416" aria-hidden="true" tabindex="-1"></a><span class="co">\end{aligned}</span></span>
+<span id="cb24-417"><a href="#cb24-417" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-418"><a href="#cb24-418" aria-hidden="true" tabindex="-1"></a><span class="co">... to complete the argument, you still need to establish that</span></span>
+<span id="cb24-419"><a href="#cb24-419" aria-hidden="true" tabindex="-1"></a><span class="co">$\x_n^\trans (\X^\trans \X)^{-1} \x_m$ is small for $n \ne m$, so maybe</span></span>
+<span id="cb24-420"><a href="#cb24-420" aria-hidden="true" tabindex="-1"></a><span class="co">this doesn't help much relative to the approach below.</span></span>
+<span id="cb24-421"><a href="#cb24-421" aria-hidden="true" tabindex="-1"></a><span class="co">$$ --&gt;</span></span>
+<span id="cb24-422"><a href="#cb24-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-423"><a href="#cb24-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-424"><a href="#cb24-424" aria-hidden="true" tabindex="-1"></a>To see this, note that </span>
+<span id="cb24-425"><a href="#cb24-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-426"><a href="#cb24-426" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-427"><a href="#cb24-427" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb24-428"><a href="#cb24-428" aria-hidden="true" tabindex="-1"></a>\yhat_n ={}&amp; \left(\proj{\X} \Y \right)_{n} <span class="sc">\\</span></span>
+<span id="cb24-429"><a href="#cb24-429" aria-hidden="true" tabindex="-1"></a>={}&amp; \sum_{m=1}^N \left(\proj{\X}\right)_{nm} \y_m <span class="sc">\\</span></span>
+<span id="cb24-430"><a href="#cb24-430" aria-hidden="true" tabindex="-1"></a>={}&amp; \sum_{m \ne n} \left(\proj{\X}\right)_{nm} \y_m + h_n \y_n.</span>
+<span id="cb24-431"><a href="#cb24-431" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb24-432"><a href="#cb24-432" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-433"><a href="#cb24-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-434"><a href="#cb24-434" aria-hidden="true" tabindex="-1"></a>How big can the off--diagonal entries $\left(\proj{\X}\right)_{nm}$ be</span>
+<span id="cb24-435"><a href="#cb24-435" aria-hidden="true" tabindex="-1"></a>when $h_n$ is large?  Again using the $n$--th standard basis vector $\ev_n$,</span>
+<span id="cb24-436"><a href="#cb24-436" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-437"><a href="#cb24-437" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb24-438"><a href="#cb24-438" aria-hidden="true" tabindex="-1"></a>1 ={}&amp; \norm{\ev_n}^2 </span>
+<span id="cb24-439"><a href="#cb24-439" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>\ge{}&amp; \norm{\proj{\X} \ev_n}^2</span>
+<span id="cb24-440"><a href="#cb24-440" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \ev_n^\trans \proj{\X} \proj{\X} \ev_n</span>
+<span id="cb24-441"><a href="#cb24-441" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \sum_{m=1}^N \left(\proj{\X}\right)_{nm}^2</span>
+<span id="cb24-442"><a href="#cb24-442" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; \sum_{m \ne n} \left(\proj{\X}\right)_{nm}^2 + h_n^2,</span>
+<span id="cb24-443"><a href="#cb24-443" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb24-444"><a href="#cb24-444" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-445"><a href="#cb24-445" aria-hidden="true" tabindex="-1"></a>so that, when $h_n \approx 1$,</span>
+<span id="cb24-446"><a href="#cb24-446" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-447"><a href="#cb24-447" aria-hidden="true" tabindex="-1"></a>\sum_{m \ne n} \left(\proj{\X}\right)_{nm}^2 \le 1 - h_n^2 \approx 0,</span>
+<span id="cb24-448"><a href="#cb24-448" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-449"><a href="#cb24-449" aria-hidden="true" tabindex="-1"></a>and so</span>
+<span id="cb24-450"><a href="#cb24-450" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-451"><a href="#cb24-451" aria-hidden="true" tabindex="-1"></a>\yhat_n \approx h_n \y_n.</span>
+<span id="cb24-452"><a href="#cb24-452" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-453"><a href="#cb24-453" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-454"><a href="#cb24-454" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-455"><a href="#cb24-455" aria-hidden="true" tabindex="-1"></a><span class="fu">## Kleiber's whale revisited</span></span>
+<span id="cb24-456"><a href="#cb24-456" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-457"><a href="#cb24-457" aria-hidden="true" tabindex="-1"></a>Recall Kleiber's dataset of animal sizes and metabolisms.  Let's look at the</span>
+<span id="cb24-458"><a href="#cb24-458" aria-hidden="true" tabindex="-1"></a>original linear regression with and without the whale:</span>
+<span id="cb24-459"><a href="#cb24-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-462"><a href="#cb24-462" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-463"><a href="#cb24-463" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at the data, find outliers</span></span>
+<span id="cb24-464"><a href="#cb24-464" aria-hidden="true" tabindex="-1"></a>lm_kl <span class="ot">&lt;-</span> <span class="fu">lm</span>(Metabol_kcal_per_day <span class="sc">~</span> Weight_kg <span class="sc">+</span> <span class="dv">1</span>, kleiber_df)</span>
+<span id="cb24-465"><a href="#cb24-465" aria-hidden="true" tabindex="-1"></a>lm_drop_kl <span class="ot">&lt;-</span> <span class="fu">lm</span>(Metabol_kcal_per_day <span class="sc">~</span> Weight_kg <span class="sc">+</span> <span class="dv">1</span>, kleiber_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Animal <span class="sc">!=</span> <span class="st">"Whale"</span>))</span>
 <span id="cb24-466"><a href="#cb24-466" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-467"><a href="#cb24-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-468"><a href="#cb24-468" aria-hidden="true" tabindex="-1"></a>In this case, the fact that the whale has high leverage was obvious.  But</span>
-<span id="cb24-469"><a href="#cb24-469" aria-hidden="true" tabindex="-1"></a>we can also see this from the leverage scores:</span>
-<span id="cb24-470"><a href="#cb24-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-473"><a href="#cb24-473" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb24-474"><a href="#cb24-474" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb24-475"><a href="#cb24-475" aria-hidden="true" tabindex="-1"></a>kleiber_df <span class="sc">%&gt;%</span></span>
-<span id="cb24-476"><a href="#cb24-476" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(lev) <span class="sc">%&gt;%</span></span>
-<span id="cb24-477"><a href="#cb24-477" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb24-478"><a href="#cb24-478" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Animal, <span class="at">y=</span>lev)) <span class="sc">+</span></span>
-<span id="cb24-479"><a href="#cb24-479" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Leverage score"</span>) <span class="sc">+</span> </span>
-<span id="cb24-480"><a href="#cb24-480" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Animal (sorted in leverage score order)"</span>) <span class="sc">+</span></span>
-<span id="cb24-481"><a href="#cb24-481" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span>
-<span id="cb24-482"><a href="#cb24-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-470"><a href="#cb24-470" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-471"><a href="#cb24-471" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb24-472"><a href="#cb24-472" aria-hidden="true" tabindex="-1"></a>kleiber_df <span class="ot">&lt;-</span> kleiber_df <span class="sc">%&gt;%</span></span>
+<span id="cb24-473"><a href="#cb24-473" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">res=</span>lm_kl<span class="sc">$</span>residuals) <span class="sc">%&gt;%</span></span>
+<span id="cb24-474"><a href="#cb24-474" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yhat=</span>lm_kl<span class="sc">$</span>fitted.values) <span class="sc">%&gt;%</span></span>
+<span id="cb24-475"><a href="#cb24-475" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yhat_drop=</span><span class="fu">predict</span>(lm_drop_kl, kleiber_df)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-476"><a href="#cb24-476" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">lev=</span><span class="fu">hatvalues</span>(lm_kl))</span>
+<span id="cb24-477"><a href="#cb24-477" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-478"><a href="#cb24-478" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(kleiber_df) <span class="sc">+</span></span>
+<span id="cb24-479"><a href="#cb24-479" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Weight_kg, <span class="at">y=</span>Metabol_kcal_per_day, <span class="at">color=</span>Animal, <span class="at">size=</span><span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb24-480"><a href="#cb24-480" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>Weight_kg, <span class="at">y=</span>yhat, <span class="at">linetype=</span><span class="st">"With whale"</span>)) <span class="sc">+</span></span>
+<span id="cb24-481"><a href="#cb24-481" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>Weight_kg, <span class="at">y=</span>yhat_drop, <span class="at">linetype=</span><span class="st">"Without whale"</span>)) <span class="sc">+</span></span>
+<span id="cb24-482"><a href="#cb24-482" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="fu">max</span>(kleiber_df<span class="sc">$</span>Metabol_kcal_per_day) <span class="sc">*</span> <span class="fl">1.05</span>)</span>
 <span id="cb24-483"><a href="#cb24-483" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-484"><a href="#cb24-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-485"><a href="#cb24-485" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-486"><a href="#cb24-486" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-485"><a href="#cb24-485" aria-hidden="true" tabindex="-1"></a>In this case, the fact that the whale has high leverage was obvious.  But</span>
+<span id="cb24-486"><a href="#cb24-486" aria-hidden="true" tabindex="-1"></a>we can also see this from the leverage scores:</span>
 <span id="cb24-487"><a href="#cb24-487" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-488"><a href="#cb24-488" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data dropping</span></span>
-<span id="cb24-489"><a href="#cb24-489" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-490"><a href="#cb24-490" aria-hidden="true" tabindex="-1"></a>Above, we've shown how extreme values of $\xv_n$ and $\y_n$ can affect a</span>
-<span id="cb24-491"><a href="#cb24-491" aria-hidden="true" tabindex="-1"></a>linear regression.  These two concepts can be combined by considering the</span>
-<span id="cb24-492"><a href="#cb24-492" aria-hidden="true" tabindex="-1"></a>effect of "data dropping."  Specifically, we might ask how a regression</span>
-<span id="cb24-493"><a href="#cb24-493" aria-hidden="true" tabindex="-1"></a>would be different had we excluded a particular datapoint.  This is a</span>
-<span id="cb24-494"><a href="#cb24-494" aria-hidden="true" tabindex="-1"></a>nice concept because it measures how "important" an entire datapoint</span>
-<span id="cb24-495"><a href="#cb24-495" aria-hidden="true" tabindex="-1"></a>is, rather than separately considering the response and regressor. </span>
-<span id="cb24-496"><a href="#cb24-496" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-497"><a href="#cb24-497" aria-hidden="true" tabindex="-1"></a>Let $\betavhat_{-n}$ denote the estimate of $\betahat$ with the datapoint $n$</span>
-<span id="cb24-498"><a href="#cb24-498" aria-hidden="true" tabindex="-1"></a>left out.  Recall that we wrote </span>
-<span id="cb24-499"><a href="#cb24-499" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-500"><a href="#cb24-500" aria-hidden="true" tabindex="-1"></a>\betavhat =\sumn \omegav_n \y_n</span>
-<span id="cb24-501"><a href="#cb24-501" aria-hidden="true" tabindex="-1"></a>\quad\quad\textrm{where }\omegav_n := (\X^\trans \X)^{-1} \xv_n.</span>
-<span id="cb24-502"><a href="#cb24-502" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-503"><a href="#cb24-503" aria-hidden="true" tabindex="-1"></a>In your homework, you'll show that, in linear regression, you can </span>
-<span id="cb24-504"><a href="#cb24-504" aria-hidden="true" tabindex="-1"></a>write down the exact formula:</span>
-<span id="cb24-505"><a href="#cb24-505" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-506"><a href="#cb24-506" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-507"><a href="#cb24-507" aria-hidden="true" tabindex="-1"></a>\betavhat_{-n} - \betavhat=   -\frac{\reshat_n}{1 - h_n} \omegav_n</span>
-<span id="cb24-508"><a href="#cb24-508" aria-hidden="true" tabindex="-1"></a>\approx -\omegav_n \reshat_n \quad\textrm{(when $h_n$ is small)}</span>
-<span id="cb24-509"><a href="#cb24-509" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-510"><a href="#cb24-510" aria-hidden="true" tabindex="-1"></a>The term $\omegav_n$ is very close to a leverage score ---</span>
-<span id="cb24-511"><a href="#cb24-511" aria-hidden="true" tabindex="-1"></a>in fact, $h_n = \xv_n^\trans \omegav_n$. </span>
-<span id="cb24-512"><a href="#cb24-512" aria-hidden="true" tabindex="-1"></a>This formula says that a regression coefficient will have a large change</span>
-<span id="cb24-513"><a href="#cb24-513" aria-hidden="true" tabindex="-1"></a>when both $\reshat_n$ and $\omega_n$ are large.</span>
-<span id="cb24-514"><a href="#cb24-514" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-515"><a href="#cb24-515" aria-hidden="true" tabindex="-1"></a>The negative of the approximation for small $h_n$ is known as the "empirical influence function"</span>
-<span id="cb24-516"><a href="#cb24-516" aria-hidden="true" tabindex="-1"></a>of the $n$--th datapoint (sometimes just "influence function"):</span>
-<span id="cb24-517"><a href="#cb24-517" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-518"><a href="#cb24-518" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-519"><a href="#cb24-519" aria-hidden="true" tabindex="-1"></a>\textrm{Influence function of datapoint }n := \omegav_n \reshat_n.</span>
-<span id="cb24-520"><a href="#cb24-520" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-521"><a href="#cb24-521" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-522"><a href="#cb24-522" aria-hidden="true" tabindex="-1"></a>For linear models, it can be computed using the <span class="in">`influence`</span> <span class="in">`R`</span> function:</span>
-<span id="cb24-523"><a href="#cb24-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-524"><a href="#cb24-524" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-527"><a href="#cb24-527" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb24-528"><a href="#cb24-528" aria-hidden="true" tabindex="-1"></a>reg_all <span class="ot">&lt;-</span> <span class="fu">lm</span>(lm_form, births_df)</span>
-<span id="cb24-529"><a href="#cb24-529" aria-hidden="true" tabindex="-1"></a>infl <span class="ot">&lt;-</span> <span class="fu">influence</span>(reg_all)</span>
-<span id="cb24-530"><a href="#cb24-530" aria-hidden="true" tabindex="-1"></a>births_df <span class="ot">&lt;-</span> </span>
-<span id="cb24-531"><a href="#cb24-531" aria-hidden="true" tabindex="-1"></a>  births_df <span class="sc">%&gt;%</span></span>
-<span id="cb24-532"><a href="#cb24-532" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fage_infl=</span>infl<span class="sc">$</span>coefficients[, <span class="st">"fage"</span>]) <span class="sc">%&gt;%</span></span>
-<span id="cb24-533"><a href="#cb24-533" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yhat=</span>reg_all<span class="sc">$</span>fitted)</span>
-<span id="cb24-534"><a href="#cb24-534" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-535"><a href="#cb24-535" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-536"><a href="#cb24-536" aria-hidden="true" tabindex="-1"></a>We can look at the graph and color the points by their influence function. Clearly</span>
-<span id="cb24-537"><a href="#cb24-537" aria-hidden="true" tabindex="-1"></a>we can see that the large <span class="in">`fage`</span> points have high influence.</span>
-<span id="cb24-540"><a href="#cb24-540" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb24-541"><a href="#cb24-541" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
-<span id="cb24-542"><a href="#cb24-542" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(births_df) <span class="sc">+</span></span>
-<span id="cb24-543"><a href="#cb24-543" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>fage, <span class="at">y=</span>weight, <span class="at">color=</span>fage_infl), <span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb24-544"><a href="#cb24-544" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>fage, <span class="at">y=</span>yhat)) <span class="sc">+</span></span>
-<span id="cb24-545"><a href="#cb24-545" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(<span class="at">low=</span><span class="st">"red"</span>, <span class="at">high=</span><span class="st">"blue"</span>)</span>
-<span id="cb24-546"><a href="#cb24-546" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb24-547"><a href="#cb24-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-548"><a href="#cb24-548" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-549"><a href="#cb24-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-550"><a href="#cb24-550" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-551"><a href="#cb24-551" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-490"><a href="#cb24-490" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-491"><a href="#cb24-491" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb24-492"><a href="#cb24-492" aria-hidden="true" tabindex="-1"></a>kleiber_df <span class="sc">%&gt;%</span></span>
+<span id="cb24-493"><a href="#cb24-493" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(lev) <span class="sc">%&gt;%</span></span>
+<span id="cb24-494"><a href="#cb24-494" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb24-495"><a href="#cb24-495" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Animal, <span class="at">y=</span>lev)) <span class="sc">+</span></span>
+<span id="cb24-496"><a href="#cb24-496" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Leverage score"</span>) <span class="sc">+</span> </span>
+<span id="cb24-497"><a href="#cb24-497" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Animal (sorted in leverage score order)"</span>) <span class="sc">+</span></span>
+<span id="cb24-498"><a href="#cb24-498" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">hjust=</span><span class="dv">1</span>))</span>
+<span id="cb24-499"><a href="#cb24-499" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-500"><a href="#cb24-500" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-501"><a href="#cb24-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-502"><a href="#cb24-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-503"><a href="#cb24-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-504"><a href="#cb24-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-505"><a href="#cb24-505" aria-hidden="true" tabindex="-1"></a><span class="fu"># Data dropping</span></span>
+<span id="cb24-506"><a href="#cb24-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-507"><a href="#cb24-507" aria-hidden="true" tabindex="-1"></a>Above, we've shown how extreme values of $\xv_n$ and $\y_n$ can affect a</span>
+<span id="cb24-508"><a href="#cb24-508" aria-hidden="true" tabindex="-1"></a>linear regression.  These two concepts can be combined by considering the</span>
+<span id="cb24-509"><a href="#cb24-509" aria-hidden="true" tabindex="-1"></a>effect of "data dropping."  Specifically, we might ask how a regression</span>
+<span id="cb24-510"><a href="#cb24-510" aria-hidden="true" tabindex="-1"></a>would be different had we excluded a particular datapoint.  This is a</span>
+<span id="cb24-511"><a href="#cb24-511" aria-hidden="true" tabindex="-1"></a>nice concept because it measures how "important" an entire datapoint</span>
+<span id="cb24-512"><a href="#cb24-512" aria-hidden="true" tabindex="-1"></a>is, rather than separately considering the response and regressor. </span>
+<span id="cb24-513"><a href="#cb24-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-514"><a href="#cb24-514" aria-hidden="true" tabindex="-1"></a>Let $\betavhat_{-n}$ denote the estimate of $\betahat$ with the datapoint $n$</span>
+<span id="cb24-515"><a href="#cb24-515" aria-hidden="true" tabindex="-1"></a>left out.  Recall that we wrote </span>
+<span id="cb24-516"><a href="#cb24-516" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-517"><a href="#cb24-517" aria-hidden="true" tabindex="-1"></a>\betavhat =\sumn \omegav_n \y_n</span>
+<span id="cb24-518"><a href="#cb24-518" aria-hidden="true" tabindex="-1"></a>\quad\quad\textrm{where }\omegav_n := (\X^\trans \X)^{-1} \xv_n.</span>
+<span id="cb24-519"><a href="#cb24-519" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-520"><a href="#cb24-520" aria-hidden="true" tabindex="-1"></a>In your homework, you'll show that, in linear regression, you can </span>
+<span id="cb24-521"><a href="#cb24-521" aria-hidden="true" tabindex="-1"></a>write down the exact formula:</span>
+<span id="cb24-522"><a href="#cb24-522" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-523"><a href="#cb24-523" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-524"><a href="#cb24-524" aria-hidden="true" tabindex="-1"></a>\betavhat_{-n} - \betavhat=   -\frac{\reshat_n}{1 - h_n} \omegav_n</span>
+<span id="cb24-525"><a href="#cb24-525" aria-hidden="true" tabindex="-1"></a>\approx -\omegav_n \reshat_n \quad\textrm{(when $h_n$ is small)}</span>
+<span id="cb24-526"><a href="#cb24-526" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-527"><a href="#cb24-527" aria-hidden="true" tabindex="-1"></a>The term $\omegav_n$ is very close to a leverage score ---</span>
+<span id="cb24-528"><a href="#cb24-528" aria-hidden="true" tabindex="-1"></a>in fact, $h_n = \xv_n^\trans \omegav_n$. </span>
+<span id="cb24-529"><a href="#cb24-529" aria-hidden="true" tabindex="-1"></a>This formula says that a regression coefficient will have a large change</span>
+<span id="cb24-530"><a href="#cb24-530" aria-hidden="true" tabindex="-1"></a>when both $\reshat_n$ and $\omega_n$ are large.</span>
+<span id="cb24-531"><a href="#cb24-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-532"><a href="#cb24-532" aria-hidden="true" tabindex="-1"></a>The negative of the approximation for small $h_n$ is known as the "empirical influence function"</span>
+<span id="cb24-533"><a href="#cb24-533" aria-hidden="true" tabindex="-1"></a>of the $n$--th datapoint (sometimes just "influence function"):</span>
+<span id="cb24-534"><a href="#cb24-534" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-535"><a href="#cb24-535" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-536"><a href="#cb24-536" aria-hidden="true" tabindex="-1"></a>\textrm{Influence function of datapoint }n := \omegav_n \reshat_n.</span>
+<span id="cb24-537"><a href="#cb24-537" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-538"><a href="#cb24-538" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-539"><a href="#cb24-539" aria-hidden="true" tabindex="-1"></a>For linear models, it can be computed using the <span class="in">`influence`</span> <span class="in">`R`</span> function:</span>
+<span id="cb24-540"><a href="#cb24-540" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-541"><a href="#cb24-541" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-544"><a href="#cb24-544" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-545"><a href="#cb24-545" aria-hidden="true" tabindex="-1"></a>reg_all <span class="ot">&lt;-</span> <span class="fu">lm</span>(lm_form, births_df)</span>
+<span id="cb24-546"><a href="#cb24-546" aria-hidden="true" tabindex="-1"></a>infl <span class="ot">&lt;-</span> <span class="fu">influence</span>(reg_all)</span>
+<span id="cb24-547"><a href="#cb24-547" aria-hidden="true" tabindex="-1"></a>births_df <span class="ot">&lt;-</span> </span>
+<span id="cb24-548"><a href="#cb24-548" aria-hidden="true" tabindex="-1"></a>  births_df <span class="sc">%&gt;%</span></span>
+<span id="cb24-549"><a href="#cb24-549" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fage_infl=</span>infl<span class="sc">$</span>coefficients[, <span class="st">"fage"</span>]) <span class="sc">%&gt;%</span></span>
+<span id="cb24-550"><a href="#cb24-550" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">yhat=</span>reg_all<span class="sc">$</span>fitted)</span>
+<span id="cb24-551"><a href="#cb24-551" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb24-552"><a href="#cb24-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-553"><a href="#cb24-553" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bonus content: Data dropping (generalization to nonlinear estimators)</span></span>
-<span id="cb24-554"><a href="#cb24-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-555"><a href="#cb24-555" aria-hidden="true" tabindex="-1"></a>The above results rely heavily on the special structure of linear regression:</span>
-<span id="cb24-556"><a href="#cb24-556" aria-hidden="true" tabindex="-1"></a>e.g. the fact that $\betahat$ is a linear combination of $\Y$, and</span>
-<span id="cb24-557"><a href="#cb24-557" aria-hidden="true" tabindex="-1"></a>that $\Yhat$ is a projection of $\Y$.  In more general settings such</span>
-<span id="cb24-558"><a href="#cb24-558" aria-hidden="true" tabindex="-1"></a>results are not available.  In order to motivate the use of such </span>
-<span id="cb24-559"><a href="#cb24-559" aria-hidden="true" tabindex="-1"></a>diagnostics in more general settings (not covered in this class),</span>
-<span id="cb24-560"><a href="#cb24-560" aria-hidden="true" tabindex="-1"></a>let me introduce a slightly different approach based on derivatives.</span>
-<span id="cb24-561"><a href="#cb24-561" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-562"><a href="#cb24-562" aria-hidden="true" tabindex="-1"></a>Suppose we assign each datapoint a weight, $\w_n$, and write</span>
-<span id="cb24-563"><a href="#cb24-563" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-564"><a href="#cb24-564" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-565"><a href="#cb24-565" aria-hidden="true" tabindex="-1"></a>\betavhat(\w) = \argmin{\beta} \sumn \w_n (\y_n - \xv_n^\trans \betav)^2.</span>
-<span id="cb24-566"><a href="#cb24-566" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-553"><a href="#cb24-553" aria-hidden="true" tabindex="-1"></a>We can look at the graph and color the points by their influence function. Clearly</span>
+<span id="cb24-554"><a href="#cb24-554" aria-hidden="true" tabindex="-1"></a>we can see that the large <span class="in">`fage`</span> points have high influence.</span>
+<span id="cb24-557"><a href="#cb24-557" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb24-558"><a href="#cb24-558" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: false</span></span>
+<span id="cb24-559"><a href="#cb24-559" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(births_df) <span class="sc">+</span></span>
+<span id="cb24-560"><a href="#cb24-560" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>fage, <span class="at">y=</span>weight, <span class="at">color=</span>fage_infl), <span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb24-561"><a href="#cb24-561" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>fage, <span class="at">y=</span>yhat)) <span class="sc">+</span></span>
+<span id="cb24-562"><a href="#cb24-562" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_gradient2</span>(<span class="at">low=</span><span class="st">"red"</span>, <span class="at">high=</span><span class="st">"blue"</span>)</span>
+<span id="cb24-563"><a href="#cb24-563" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb24-564"><a href="#cb24-564" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-565"><a href="#cb24-565" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-566"><a href="#cb24-566" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-567"><a href="#cb24-567" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-568"><a href="#cb24-568" aria-hidden="true" tabindex="-1"></a>I have written $\betahat(\wv)$ because the optimal solution depends on the</span>
-<span id="cb24-569"><a href="#cb24-569" aria-hidden="true" tabindex="-1"></a>vector of weights, $\wv = (\w_1, \ldots, \w_N)^\trans$.  When $\wv = \onev$,</span>
-<span id="cb24-570"><a href="#cb24-570" aria-hidden="true" tabindex="-1"></a>we recover the original problem.  When we set one of the entries to</span>
-<span id="cb24-571"><a href="#cb24-571" aria-hidden="true" tabindex="-1"></a>zero, we remove that datapoint from the problem.  Using this, we can</span>
-<span id="cb24-572"><a href="#cb24-572" aria-hidden="true" tabindex="-1"></a>approximate the effect of removing a datapoint using the first-order</span>
-<span id="cb24-573"><a href="#cb24-573" aria-hidden="true" tabindex="-1"></a>Taylor series expansion:</span>
-<span id="cb24-574"><a href="#cb24-574" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-575"><a href="#cb24-575" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-576"><a href="#cb24-576" aria-hidden="true" tabindex="-1"></a>\betahat_{-n} \approx </span>
-<span id="cb24-577"><a href="#cb24-577" aria-hidden="true" tabindex="-1"></a>\betahat_{-n}^{linear} = \betahat + \frac{\partial \betahat(\wv)}{\partial \w_n}\vert_{\w_n=1} (0 - 1).</span>
-<span id="cb24-578"><a href="#cb24-578" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-579"><a href="#cb24-579" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-580"><a href="#cb24-580" aria-hidden="true" tabindex="-1"></a>One can show that</span>
-<span id="cb24-581"><a href="#cb24-581" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-582"><a href="#cb24-582" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-583"><a href="#cb24-583" aria-hidden="true" tabindex="-1"></a>\frac{\partial \betahat(\wv)}{\partial \w_n}\vert_{\w_n=1} = (\X^\trans \X)^{-1} \xv_n \reshat_n.</span>
-<span id="cb24-584"><a href="#cb24-584" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-585"><a href="#cb24-585" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-586"><a href="#cb24-586" aria-hidden="true" tabindex="-1"></a>Note that the Taylor series is a good approximation to the exact formula (given </span>
-<span id="cb24-587"><a href="#cb24-587" aria-hidden="true" tabindex="-1"></a>in the homework) when $h_n \ll 1$, which is expected when $h_n$ goes to zero</span>
-<span id="cb24-588"><a href="#cb24-588" aria-hidden="true" tabindex="-1"></a>at rate $1/N$:</span>
-<span id="cb24-589"><a href="#cb24-589" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-590"><a href="#cb24-590" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-591"><a href="#cb24-591" aria-hidden="true" tabindex="-1"></a>\betahat_{-n}  = \betahat - (\X^\trans \X)^{-1} \xv_n \frac{\reshat_n}{1 - h_n} \approx</span>
-<span id="cb24-592"><a href="#cb24-592" aria-hidden="true" tabindex="-1"></a>\betahat - (\X^\trans \X)^{-1} \xv_n \reshat = \betahat_{-n}^{linear}.</span>
-<span id="cb24-593"><a href="#cb24-593" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-594"><a href="#cb24-594" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-595"><a href="#cb24-595" aria-hidden="true" tabindex="-1"></a>In more complicated nonlinear problems, the exact formula is unavailable, but</span>
-<span id="cb24-596"><a href="#cb24-596" aria-hidden="true" tabindex="-1"></a>the linear approximation is typically computed.</span>
-<span id="cb24-597"><a href="#cb24-597" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-598"><a href="#cb24-598" aria-hidden="true" tabindex="-1"></a>From this (or the exact formula), we can see that the effect of</span>
-<span id="cb24-599"><a href="#cb24-599" aria-hidden="true" tabindex="-1"></a>extreme values on $\betahat$ is actually a product of both</span>
-<span id="cb24-600"><a href="#cb24-600" aria-hidden="true" tabindex="-1"></a>$\reshat_n$ and $\xv_n$.  Large residuals will not have an</span>
-<span id="cb24-601"><a href="#cb24-601" aria-hidden="true" tabindex="-1"></a>effect when $\xv_n = \zerov$, and outlier $\xv_n$ will not</span>
-<span id="cb24-602"><a href="#cb24-602" aria-hidden="true" tabindex="-1"></a>have an effect when $\reshat_n = 0$. </span>
-<span id="cb24-603"><a href="#cb24-603" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-604"><a href="#cb24-604" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-605"><a href="#cb24-605" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-568"><a href="#cb24-568" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-569"><a href="#cb24-569" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-570"><a href="#cb24-570" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bonus content: Data dropping (generalization to nonlinear estimators)</span></span>
+<span id="cb24-571"><a href="#cb24-571" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-572"><a href="#cb24-572" aria-hidden="true" tabindex="-1"></a>The above results rely heavily on the special structure of linear regression:</span>
+<span id="cb24-573"><a href="#cb24-573" aria-hidden="true" tabindex="-1"></a>e.g. the fact that $\betahat$ is a linear combination of $\Y$, and</span>
+<span id="cb24-574"><a href="#cb24-574" aria-hidden="true" tabindex="-1"></a>that $\Yhat$ is a projection of $\Y$.  In more general settings such</span>
+<span id="cb24-575"><a href="#cb24-575" aria-hidden="true" tabindex="-1"></a>results are not available.  In order to motivate the use of such </span>
+<span id="cb24-576"><a href="#cb24-576" aria-hidden="true" tabindex="-1"></a>diagnostics in more general settings (not covered in this class),</span>
+<span id="cb24-577"><a href="#cb24-577" aria-hidden="true" tabindex="-1"></a>let me introduce a slightly different approach based on derivatives.</span>
+<span id="cb24-578"><a href="#cb24-578" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-579"><a href="#cb24-579" aria-hidden="true" tabindex="-1"></a>Suppose we assign each datapoint a weight, $\w_n$, and write</span>
+<span id="cb24-580"><a href="#cb24-580" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-581"><a href="#cb24-581" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-582"><a href="#cb24-582" aria-hidden="true" tabindex="-1"></a>\betavhat(\w) = \argmin{\beta} \sumn \w_n (\y_n - \xv_n^\trans \betav)^2.</span>
+<span id="cb24-583"><a href="#cb24-583" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-584"><a href="#cb24-584" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-585"><a href="#cb24-585" aria-hidden="true" tabindex="-1"></a>I have written $\betahat(\wv)$ because the optimal solution depends on the</span>
+<span id="cb24-586"><a href="#cb24-586" aria-hidden="true" tabindex="-1"></a>vector of weights, $\wv = (\w_1, \ldots, \w_N)^\trans$.  When $\wv = \onev$,</span>
+<span id="cb24-587"><a href="#cb24-587" aria-hidden="true" tabindex="-1"></a>we recover the original problem.  When we set one of the entries to</span>
+<span id="cb24-588"><a href="#cb24-588" aria-hidden="true" tabindex="-1"></a>zero, we remove that datapoint from the problem.  Using this, we can</span>
+<span id="cb24-589"><a href="#cb24-589" aria-hidden="true" tabindex="-1"></a>approximate the effect of removing a datapoint using the first-order</span>
+<span id="cb24-590"><a href="#cb24-590" aria-hidden="true" tabindex="-1"></a>Taylor series expansion:</span>
+<span id="cb24-591"><a href="#cb24-591" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-592"><a href="#cb24-592" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-593"><a href="#cb24-593" aria-hidden="true" tabindex="-1"></a>\betahat_{-n} \approx </span>
+<span id="cb24-594"><a href="#cb24-594" aria-hidden="true" tabindex="-1"></a>\betahat_{-n}^{linear} = \betahat + \frac{\partial \betahat(\wv)}{\partial \w_n}\vert_{\w_n=1} (0 - 1).</span>
+<span id="cb24-595"><a href="#cb24-595" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-596"><a href="#cb24-596" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-597"><a href="#cb24-597" aria-hidden="true" tabindex="-1"></a>One can show that</span>
+<span id="cb24-598"><a href="#cb24-598" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-599"><a href="#cb24-599" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-600"><a href="#cb24-600" aria-hidden="true" tabindex="-1"></a>\frac{\partial \betahat(\wv)}{\partial \w_n}\vert_{\w_n=1} = (\X^\trans \X)^{-1} \xv_n \reshat_n.</span>
+<span id="cb24-601"><a href="#cb24-601" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-602"><a href="#cb24-602" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-603"><a href="#cb24-603" aria-hidden="true" tabindex="-1"></a>Note that the Taylor series is a good approximation to the exact formula (given </span>
+<span id="cb24-604"><a href="#cb24-604" aria-hidden="true" tabindex="-1"></a>in the homework) when $h_n \ll 1$, which is expected when $h_n$ goes to zero</span>
+<span id="cb24-605"><a href="#cb24-605" aria-hidden="true" tabindex="-1"></a>at rate $1/N$:</span>
 <span id="cb24-606"><a href="#cb24-606" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-607"><a href="#cb24-607" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-608"><a href="#cb24-608" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-609"><a href="#cb24-609" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bonus content: Rank-one updates for linear regression (Woodbury formula)</span></span>
-<span id="cb24-610"><a href="#cb24-610" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-611"><a href="#cb24-611" aria-hidden="true" tabindex="-1"></a>The proof of the data--dropping formula for linear regression uses the Woodbury </span>
-<span id="cb24-612"><a href="#cb24-612" aria-hidden="true" tabindex="-1"></a>formula, for which I now give a proof for completness.  Let $U$ and $V$ be $N \times K$ matrices,</span>
-<span id="cb24-613"><a href="#cb24-613" aria-hidden="true" tabindex="-1"></a>and $\id_N$ and $\id_K$ the $N\times N$ and $K \times K$ identity matrices, respectively.</span>
-<span id="cb24-614"><a href="#cb24-614" aria-hidden="true" tabindex="-1"></a>Using the fact that</span>
-<span id="cb24-615"><a href="#cb24-615" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-616"><a href="#cb24-616" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-617"><a href="#cb24-617" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb24-618"><a href="#cb24-618" aria-hidden="true" tabindex="-1"></a>(\id_N + U V^\trans)^{-1} (\id_N + U V^\trans) = \id_N</span>
-<span id="cb24-619"><a href="#cb24-619" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow\quad&amp;</span>
-<span id="cb24-620"><a href="#cb24-620" aria-hidden="true" tabindex="-1"></a>(\id_N + U V^\trans)^{-1} = \id_N - (\id_N + U V^\trans)^{-1} U V^\trans &amp; \textrm{(i)}<span class="sc">\\</span></span>
-<span id="cb24-621"><a href="#cb24-621" aria-hidden="true" tabindex="-1"></a>(\id_N + U V^\trans) U = U (\id_K +  V^\trans U)  </span>
-<span id="cb24-622"><a href="#cb24-622" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow\quad&amp;</span>
-<span id="cb24-623"><a href="#cb24-623" aria-hidden="true" tabindex="-1"></a>U (\id_N + V^\trans U )^{-1} = (\id_K + U^\trans V)^{-1} U  &amp; \textrm{(ii)} </span>
-<span id="cb24-624"><a href="#cb24-624" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb24-625"><a href="#cb24-625" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-626"><a href="#cb24-626" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-627"><a href="#cb24-627" aria-hidden="true" tabindex="-1"></a>we have that</span>
-<span id="cb24-628"><a href="#cb24-628" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-629"><a href="#cb24-629" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-630"><a href="#cb24-630" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb24-631"><a href="#cb24-631" aria-hidden="true" tabindex="-1"></a>(\id_N + U V^\trans)^{-1} ={}&amp; \id_N - (\id_N + U V^\trans)^{-1} U V^\trans  &amp; \textrm{by (i)} <span class="sc">\\</span></span>
-<span id="cb24-632"><a href="#cb24-632" aria-hidden="true" tabindex="-1"></a> ={}&amp; \id_N - U  (\id_K + V^\trans U )^{-1} V^\trans  &amp; \textrm{by (ii)}.</span>
-<span id="cb24-633"><a href="#cb24-633" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb24-634"><a href="#cb24-634" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-635"><a href="#cb24-635" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-636"><a href="#cb24-636" aria-hidden="true" tabindex="-1"></a>We can use this to prove the Woodbury formula as a special case when $K=1$.</span>
-<span id="cb24-637"><a href="#cb24-637" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-638"><a href="#cb24-638" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-639"><a href="#cb24-639" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
-<span id="cb24-640"><a href="#cb24-640" aria-hidden="true" tabindex="-1"></a>(A + \uv \vv^\trans)^{-1} ={}&amp;</span>
-<span id="cb24-641"><a href="#cb24-641" aria-hidden="true" tabindex="-1"></a>(A (\id_N  + A^{-1} \uv \vv^\trans))^{-1} </span>
-<span id="cb24-642"><a href="#cb24-642" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; </span>
-<span id="cb24-643"><a href="#cb24-643" aria-hidden="true" tabindex="-1"></a>(\id_N + (A^{-1} \uv) \vv^\trans )^{-1} A^{-1}</span>
-<span id="cb24-644"><a href="#cb24-644" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; </span>
-<span id="cb24-645"><a href="#cb24-645" aria-hidden="true" tabindex="-1"></a>(\id_N - A^{-1} \uv (1 + \vv^\trans A^{-1} \uv)^{-1} \vv^\trans ) A^{-1}</span>
-<span id="cb24-646"><a href="#cb24-646" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; </span>
-<span id="cb24-647"><a href="#cb24-647" aria-hidden="true" tabindex="-1"></a>A^{-1} - \frac{A^{-1} \uv \vv A^{-1}}{1 + \vv^\trans A^{-1} \uv}.</span>
-<span id="cb24-648"><a href="#cb24-648" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
-<span id="cb24-649"><a href="#cb24-649" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb24-650"><a href="#cb24-650" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-651"><a href="#cb24-651" aria-hidden="true" tabindex="-1"></a>This formula has importance for linear models far beyond the leave--one--out formula.  For</span>
-<span id="cb24-652"><a href="#cb24-652" aria-hidden="true" tabindex="-1"></a>instance, the "kernel trick" in machine learning can be understood as an application</span>
-<span id="cb24-653"><a href="#cb24-653" aria-hidden="true" tabindex="-1"></a>of the Woodbury formula.</span>
+<span id="cb24-607"><a href="#cb24-607" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-608"><a href="#cb24-608" aria-hidden="true" tabindex="-1"></a>\betahat_{-n}  = \betahat - (\X^\trans \X)^{-1} \xv_n \frac{\reshat_n}{1 - h_n} \approx</span>
+<span id="cb24-609"><a href="#cb24-609" aria-hidden="true" tabindex="-1"></a>\betahat - (\X^\trans \X)^{-1} \xv_n \reshat = \betahat_{-n}^{linear}.</span>
+<span id="cb24-610"><a href="#cb24-610" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-611"><a href="#cb24-611" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-612"><a href="#cb24-612" aria-hidden="true" tabindex="-1"></a>In more complicated nonlinear problems, the exact formula is unavailable, but</span>
+<span id="cb24-613"><a href="#cb24-613" aria-hidden="true" tabindex="-1"></a>the linear approximation is typically computed.</span>
+<span id="cb24-614"><a href="#cb24-614" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-615"><a href="#cb24-615" aria-hidden="true" tabindex="-1"></a>From this (or the exact formula), we can see that the effect of</span>
+<span id="cb24-616"><a href="#cb24-616" aria-hidden="true" tabindex="-1"></a>extreme values on $\betahat$ is actually a product of both</span>
+<span id="cb24-617"><a href="#cb24-617" aria-hidden="true" tabindex="-1"></a>$\reshat_n$ and $\xv_n$.  Large residuals will not have an</span>
+<span id="cb24-618"><a href="#cb24-618" aria-hidden="true" tabindex="-1"></a>effect when $\xv_n = \zerov$, and outlier $\xv_n$ will not</span>
+<span id="cb24-619"><a href="#cb24-619" aria-hidden="true" tabindex="-1"></a>have an effect when $\reshat_n = 0$. </span>
+<span id="cb24-620"><a href="#cb24-620" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-621"><a href="#cb24-621" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-622"><a href="#cb24-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-623"><a href="#cb24-623" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-624"><a href="#cb24-624" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-625"><a href="#cb24-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-626"><a href="#cb24-626" aria-hidden="true" tabindex="-1"></a><span class="fu">## Bonus content: Rank-one updates for linear regression (Woodbury formula)</span></span>
+<span id="cb24-627"><a href="#cb24-627" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-628"><a href="#cb24-628" aria-hidden="true" tabindex="-1"></a>The proof of the data--dropping formula for linear regression uses the Woodbury </span>
+<span id="cb24-629"><a href="#cb24-629" aria-hidden="true" tabindex="-1"></a>formula, for which I now give a proof for completness.  Let $U$ and $V$ be $N \times K$ matrices,</span>
+<span id="cb24-630"><a href="#cb24-630" aria-hidden="true" tabindex="-1"></a>and $\id_N$ and $\id_K$ the $N\times N$ and $K \times K$ identity matrices, respectively.</span>
+<span id="cb24-631"><a href="#cb24-631" aria-hidden="true" tabindex="-1"></a>Using the fact that</span>
+<span id="cb24-632"><a href="#cb24-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-633"><a href="#cb24-633" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-634"><a href="#cb24-634" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb24-635"><a href="#cb24-635" aria-hidden="true" tabindex="-1"></a>(\id_N + U V^\trans)^{-1} (\id_N + U V^\trans) = \id_N</span>
+<span id="cb24-636"><a href="#cb24-636" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow\quad&amp;</span>
+<span id="cb24-637"><a href="#cb24-637" aria-hidden="true" tabindex="-1"></a>(\id_N + U V^\trans)^{-1} = \id_N - (\id_N + U V^\trans)^{-1} U V^\trans &amp; \textrm{(i)}<span class="sc">\\</span></span>
+<span id="cb24-638"><a href="#cb24-638" aria-hidden="true" tabindex="-1"></a>(\id_N + U V^\trans) U = U (\id_K +  V^\trans U)  </span>
+<span id="cb24-639"><a href="#cb24-639" aria-hidden="true" tabindex="-1"></a>\quad\Rightarrow\quad&amp;</span>
+<span id="cb24-640"><a href="#cb24-640" aria-hidden="true" tabindex="-1"></a>U (\id_N + V^\trans U )^{-1} = (\id_K + U^\trans V)^{-1} U  &amp; \textrm{(ii)} </span>
+<span id="cb24-641"><a href="#cb24-641" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb24-642"><a href="#cb24-642" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-643"><a href="#cb24-643" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-644"><a href="#cb24-644" aria-hidden="true" tabindex="-1"></a>we have that</span>
+<span id="cb24-645"><a href="#cb24-645" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-646"><a href="#cb24-646" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-647"><a href="#cb24-647" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb24-648"><a href="#cb24-648" aria-hidden="true" tabindex="-1"></a>(\id_N + U V^\trans)^{-1} ={}&amp; \id_N - (\id_N + U V^\trans)^{-1} U V^\trans  &amp; \textrm{by (i)} <span class="sc">\\</span></span>
+<span id="cb24-649"><a href="#cb24-649" aria-hidden="true" tabindex="-1"></a> ={}&amp; \id_N - U  (\id_K + V^\trans U )^{-1} V^\trans  &amp; \textrm{by (ii)}.</span>
+<span id="cb24-650"><a href="#cb24-650" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb24-651"><a href="#cb24-651" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-652"><a href="#cb24-652" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-653"><a href="#cb24-653" aria-hidden="true" tabindex="-1"></a>We can use this to prove the Woodbury formula as a special case when $K=1$.</span>
+<span id="cb24-654"><a href="#cb24-654" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-655"><a href="#cb24-655" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-656"><a href="#cb24-656" aria-hidden="true" tabindex="-1"></a>\begin{aligned}</span>
+<span id="cb24-657"><a href="#cb24-657" aria-hidden="true" tabindex="-1"></a>(A + \uv \vv^\trans)^{-1} ={}&amp;</span>
+<span id="cb24-658"><a href="#cb24-658" aria-hidden="true" tabindex="-1"></a>(A (\id_N  + A^{-1} \uv \vv^\trans))^{-1} </span>
+<span id="cb24-659"><a href="#cb24-659" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; </span>
+<span id="cb24-660"><a href="#cb24-660" aria-hidden="true" tabindex="-1"></a>(\id_N + (A^{-1} \uv) \vv^\trans )^{-1} A^{-1}</span>
+<span id="cb24-661"><a href="#cb24-661" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; </span>
+<span id="cb24-662"><a href="#cb24-662" aria-hidden="true" tabindex="-1"></a>(\id_N - A^{-1} \uv (1 + \vv^\trans A^{-1} \uv)^{-1} \vv^\trans ) A^{-1}</span>
+<span id="cb24-663"><a href="#cb24-663" aria-hidden="true" tabindex="-1"></a><span class="sc">\\</span>={}&amp; </span>
+<span id="cb24-664"><a href="#cb24-664" aria-hidden="true" tabindex="-1"></a>A^{-1} - \frac{A^{-1} \uv \vv A^{-1}}{1 + \vv^\trans A^{-1} \uv}.</span>
+<span id="cb24-665"><a href="#cb24-665" aria-hidden="true" tabindex="-1"></a>\end{aligned}</span>
+<span id="cb24-666"><a href="#cb24-666" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb24-667"><a href="#cb24-667" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-668"><a href="#cb24-668" aria-hidden="true" tabindex="-1"></a>This formula has importance for linear models far beyond the leave--one--out formula.  For</span>
+<span id="cb24-669"><a href="#cb24-669" aria-hidden="true" tabindex="-1"></a>instance, the "kernel trick" in machine learning can be understood as an application</span>
+<span id="cb24-670"><a href="#cb24-670" aria-hidden="true" tabindex="-1"></a>of the Woodbury formula.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
