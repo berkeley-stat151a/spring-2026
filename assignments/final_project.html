@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Your name here">
 
-<title>STAT151A Homework 5.</title>
+<title>STAT151A Final Project</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -208,8 +173,23 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#the-output-of-lm" id="toc-the-output-of-lm" class="nav-link active" data-scroll-target="#the-output-of-lm"><span class="header-section-number">1</span> The output of <code>lm</code></a></li>
-  <li><a href="#simulating-coverage" id="toc-simulating-coverage" class="nav-link" data-scroll-target="#simulating-coverage"><span class="header-section-number">2</span> Simulating coverage</a></li>
+  <li><a href="#project-outline" id="toc-project-outline" class="nav-link active" data-scroll-target="#project-outline"><span class="header-section-number">1</span> Project outline</a>
+  <ul class="collapse">
+  <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Datasets</a></li>
+  <li><a href="#groups" id="toc-groups" class="nav-link" data-scroll-target="#groups">Groups</a>
+  <ul class="collapse">
+  <li><a href="#some-groups-need-to-have-only-two-people" id="toc-some-groups-need-to-have-only-two-people" class="nav-link" data-scroll-target="#some-groups-need-to-have-only-two-people">Some groups need to have only two people!</a></li>
+  </ul></li>
+  <li><a href="#key-dates" id="toc-key-dates" class="nav-link" data-scroll-target="#key-dates">Key dates</a></li>
+  </ul></li>
+  <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading"><span class="header-section-number">2</span> Grading</a></li>
+  <li><a href="#project-structure" id="toc-project-structure" class="nav-link" data-scroll-target="#project-structure"><span class="header-section-number">3</span> Project structure</a>
+  <ul class="collapse">
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions</a></li>
+  <li><a href="#attempted-answers" id="toc-attempted-answers" class="nav-link" data-scroll-target="#attempted-answers">Attempted answers</a></li>
+  <li><a href="#critical-analysis" id="toc-critical-analysis" class="nav-link" data-scroll-target="#critical-analysis">Critical analysis</a></li>
+  </ul></li>
+  <li><a href="#grading-rubric" id="toc-grading-rubric" class="nav-link" data-scroll-target="#grading-rubric"><span class="header-section-number">4</span> Grading Rubric</a></li>
   </ul>
 </nav>
     </div>
@@ -218,19 +198,13 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">STAT151A Homework 5.</h1>
+<h1 class="title">STAT151A Final Project</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Your name here </p>
-          </div>
-  </div>
     
   
     
@@ -241,113 +215,142 @@ window.Quarto = {
 </header>
 
 
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<section id="the-output-of-lm" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> The output of <code>lm</code></h1>
-<p>For this problem, download the <a href="../datasets/births/births14.csv">births.csv dataset</a>. We will manually reproduce most of the quantities computed by the <code>lm</code> function in <code>R</code> for the following regression:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quarto)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>root_dir <span class="ot">&lt;-</span> quarto<span class="sc">::</span><span class="fu">find_project_root</span>()</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>births_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">file.path</span>(root_dir, <span class="st">"datasets/births/births14.csv"</span>))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ols_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> mage <span class="sc">+</span> habit, births_df, <span class="at">x=</span><span class="cn">TRUE</span>, <span class="at">y=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">summary</span>(ols_fit))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = weight ~ 1 + mage + habit, data = births_df, x = TRUE, 
-    y = TRUE)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--6.0065 -0.6763  0.1039  0.8237  3.1172 
-
-Coefficients:
-             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  6.890764   0.207443  33.218  &lt; 2e-16 ***
-mage         0.013291   0.007112   1.869   0.0619 .  
-habitsmoker -0.580241   0.127545  -4.549 6.06e-06 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 1.278 on 978 degrees of freedom
-  (19 observations deleted due to missingness)
-Multiple R-squared:  0.02507,   Adjusted R-squared:  0.02307 
-F-statistic: 12.57 on 2 and 978 DF,  p-value: 4.063e-06</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ols_coeffs <span class="ot">&lt;-</span> <span class="fu">summary</span>(ols_fit)<span class="sc">$</span>coefficients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Note that, since I called <code>lm</code> with the arguments <code>x=TRUE</code> and <code>y=TRUE</code>, the <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{Y}\)</span> matrices are available as <code>ols_fit$x</code> and <code>ols_fit$y</code> respectively.</p>
-<p>For the following questions, use only core <code>R</code> functions (matrix multiplication and inversion and basic linear algebra) on <span class="math inline">\(\boldsymbol{X}\)</span> and <span class="math inline">\(\boldsymbol{Y}\)</span>.</p>
-<p><strong>(a)</strong> Compute <span class="math inline">\(\hat{\beta}\)</span> and show that it matches <code>coefficients(ols_fit)</code>.</p>
-<p><strong>(b)</strong> Compute <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}\)</span> and show that it matches <code>ols_fit$residuals</code>.</p>
-<p><strong>(c)</strong> Compute <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span> and show that it matches <code>ols_fit$fitted.values</code>.</p>
-<p><strong>(d)</strong> Estimate the residual standard deviation, <span class="math inline">\(\hat{\sigma}\)</span>, and show that it matches <code>sigma(ols_fit)</code>.</p>
-<p><strong>(e)</strong> Estimate the homoskedastic sampling covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that it matches <code>vcov(ols_fit)</code>.</p>
-<p><strong>(f)</strong> Estimate the heteroskedastic (sandwich) sampling covariance of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that it matches <code>sandwich::vcovCL(ols_fit, type="HC0", cadjust=FALSE)</code>.</p>
-<p><strong>(g)</strong> Estimate the standard errors of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that they match <code>ols_coeffs[, "Std. Error"]</code>.</p>
-<p><strong>(h)</strong> Esimate the t–statistics for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that they match <code>ols_coeffs[, "t value"]</code>.</p>
-<p><strong>(i)</strong> Esimate the p–values for <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> and show that they match <code>ols_coeffs[, "Pr(&gt;|t|)"]</code>.</p>
-<p><strong>(j)</strong> Estimate a <span class="math inline">\(\alpha = 0.05\)</span> two–sided confidence interval for the coefficient of <code>mage</code>, and show that it matches <code>confint(ols_fit, "mage", level=1 - alpha)</code>.</p>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
+<p><span class="math inline">\(\,\)</span></p>
+<p>Below are the details of your final project. As usual, these may be subject to change (with notice).</p>
+<section id="project-outline" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Project outline</h1>
+<p>The final project will be an open-ended investigation into real data using tools from linear regression.</p>
+<p>The final submission should take the form of a pdf with at most eight pages, including figures, but not including citations. We will ask that you submit reproducible code. The code will not be explicitly graded as part of the assignment, but we may use it to confirm that you actually did what you say you did.</p>
+<p>The final project will be collected via Gradescope.</p>
+<section id="datasets" class="level2">
+<h2 class="anchored" data-anchor-id="datasets">Datasets</h2>
+<p>The project will analyze one of the four datasets described and linked to in the first section of the <a href="../datasets/index.html">datasets page</a>: Housing, Microcredit, Teaching, Bodyfat, or Spotify.</p>
+<p>If you have an interesting, open–access dataset that you would like to make available to the whole class, I am open to considering it! Please reach out well before HW 5 is due.</p>
 </section>
-<section id="simulating-coverage" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Simulating coverage</h1>
-<!--
-A random variable $\z_n$ is "log-normally distributed",
-written $\textrm{LN}(\mu, \sigma^2)$, if $\z_n = \exp(\z_n')$ where
-$\z_n' \sim \gauss{\mu, \sigma^2}$.  Note that
-$\expect{\z_n} = \exp(\mu + \sigma^2 / 2)$.
--->
-<p>For each of the following model specifications, perform the following steps:</p>
+<section id="groups" class="level2">
+<h2 class="anchored" data-anchor-id="groups">Groups</h2>
+<p>For the final project, you must form groups of three students. Please select your own groups. Each person may participate in only one group. All members of a group will get the same grade. Changing the group members after having your project approved will require instructor approval.</p>
+<section id="some-groups-need-to-have-only-two-people" class="level3">
+<h3 class="anchored" data-anchor-id="some-groups-need-to-have-only-two-people">Some groups need to have only two people!</h3>
+<p>The class size does not divide into three, so there will need to be two groups of two people. If you would like to submit a group of two, you are welcome to do so, but if there are more than are necessary to divide the class, we will</p>
 <ul>
-<li>Fix <span class="math inline">\(\boldsymbol{\beta}\)</span> as described in the model specification</li>
-<li>Draw a single <span class="math inline">\(\boldsymbol{X}\)</span> matrix, with dimensions <span class="math inline">\(N \times 2\)</span> , where the first column is ones, and the second column IID standard normal random variables.</li>
-<li>Repeat for <span class="math inline">\(s=(1, \ldots, N_{sim})\)</span> simulations, with <span class="math inline">\(N_{sim} = 5000\)</span>:
+<li>Randomly select the needed number of two–person groups and then</li>
+<li>Require the rest of the groups to re–form into groups of three on their own.</li>
+</ul>
+<p>If you have a better idea for how to so this fairly, please let me know.</p>
+</section>
+</section>
+<section id="key-dates" class="level2">
+<h2 class="anchored" data-anchor-id="key-dates">Key dates</h2>
 <ul>
-<li>Draw <span class="math inline">\(\boldsymbol{\varepsilon}\)</span> as described in the model specification</li>
-<li>Set <span class="math inline">\(\boldsymbol{Y}= \boldsymbol{X}\boldsymbol{\beta}+ \boldsymbol{\varepsilon}\)</span></li>
-<li>Compute an 80% confidence interval for <span class="math inline">\(\boldsymbol{\beta}_1\)</span> using homoskedastic, normal error assumptions</li>
-<li>Record <span class="math inline">\(c_s = 1\)</span> if <span class="math inline">\({\boldsymbol{\beta}_1 \in I_1}\)</span> and <span class="math inline">\(0\)</span> otherwise.</li>
+<li>You must submit your group members and datset by Monday, Nov 11th at 9pm
+<ul>
+<li>Please use the Gradescope assignment “Final project group proposals” to submit your groups.</li>
 </ul></li>
-<li>Estimate the coverage probability, <span class="math inline">\(\hat{C} := \frac{1}{N_{sim}} \sum_{s=1}^{N_{sim}} c_s\)</span>.</li>
+<li>You must submit a first draft by Monday, Nov 25th at 9pm.</li>
+<li>You must submit a final draft by Monday, Dec 9th at 9pm.</li>
 </ul>
-<p>Note that if the original confidence interval is correct, then we should have <span class="math inline">\(\hat{C} \approx 0.8\)</span>. For each problem</p>
+</section>
+</section>
+<section id="grading" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Grading</h1>
+<p><strong>(Subject to change)</strong></p>
+<p>We will spend the class of Tuesday Nov 26th providing critical feedback on each others’ first drafts. Your final project grade will consist of:</p>
 <ul>
-<li>Evaluate whether <span class="math inline">\(\hat{C} \approx 0.8\)</span>, and explain whether this is expected.</li>
-<li>Evaluate the average width of the confidence interval</li>
+<li>10% peer grades of your first draft</li>
+<li>10% peer grades of your critical feedback on their first draft</li>
+<li>80% final draft</li>
 </ul>
-<p>For each model, set <span class="math inline">\(\boldsymbol{\beta}= (1, 2)^\intercal\)</span>.</p>
-<p><strong>(a)</strong></p>
+<p>I reserve the right to adjust and inflate the peer grades as needed if there seem to be systematic biases. I will not decrease the peer grades.</p>
+</section>
+<section id="project-structure" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Project structure</h1>
+<p>A typical project should consist of</p>
 <ul>
-<li><span class="math inline">\(N = 500\)</span></li>
-<li><span class="math inline">\(\varepsilon_n \sim \mathcal{N}\left(0, 1\right)\)</span></li>
+<li>A real-world question or questions to be investigated with the dataset,</li>
+<li>An attempt to answer the question using tools from this course, and</li>
+<li>A critical analysis of assumptions and potential shortcomings of the analysis.</li>
 </ul>
-<p><strong>(b)</strong></p>
+<p>We will provide a basic R markdown template to follow.</p>
+<p>For the whole project, <strong>clear and critical thinking is what matters</strong>. There are no extra points for positive results, nor are there extra points for the most sophisticated methods (unless they are motivated by the problem). There are extra points for novel or creative perspectives and ideas (when justified by careful reasoning).</p>
+<section id="questions" class="level3">
+<h3 class="anchored" data-anchor-id="questions">Questions</h3>
+<p>Questions should be about the real world, not framed directly in terms of statistical analyses.</p>
 <ul>
-<li><span class="math inline">\(N = 500\)</span></li>
-<li><span class="math inline">\(\varepsilon_n = z_n \cdot x_1\quad\)</span> where <span class="math inline">\(\quad z_n \sim \mathcal{N}\left(0, 1\right)\)</span></li>
+<li><strong>Good example</strong>: Can we increase household income by giving cash to poor families?</li>
+<li><strong>Good example</strong>: Can we produce a useful predictor of bodyfat from simpler measurements?</li>
+<li><strong>Bad example</strong>: Is there an association between <span class="math inline">\(x_n\)</span> and <span class="math inline">\(y_n\)</span> in this dataset?</li>
+<li><strong>Bad example</strong>: Is coefficient <span class="math inline">\(\beta_1\)</span> in such-and-such a regression statistically significant?</li>
 </ul>
-<p><strong>(c)</strong></p>
+<p>Here are some things to think about to make sure it’s a real-world question, and not a purely statistical question:</p>
 <ul>
-<li><span class="math inline">\(N = 500\)</span></li>
-<li><span class="math inline">\(\varepsilon_n = \exp(z_n) - \exp(1/2)\quad\)</span> where <span class="math inline">\(\quad z_n \sim \mathcal{N}\left(0, 1\right)\)</span> (Note that <span class="math inline">\(\varepsilon_n\)</span> is mean zero by properties of the lognormal distribution.)</li>
+<li>Different answers to the question would lead you to <em>do</em> something differently in the real world. (Maybe think about what you’d do differently and incorporate that into your question.)</li>
+<li>Your question should, in principle, be possible to answer with datasets, real or hypothetical, other than the one you have. Some datasets might provide better answers, some worse.</li>
+<li>You should be able to imagine an ideal (but maybe practically impossible) experiment which would give you a perfect answer to your question.</li>
+<li>You should be able to articulate your question and its possible answers to someone who doesn’t know any statistics at all.</li>
 </ul>
-<p><strong>(d)</strong></p>
-<p>Like (a), but <span class="math inline">\(N=10\)</span>.</p>
-<p><strong>(e)</strong></p>
-<p>Like (b), but <span class="math inline">\(N=10\)</span>.</p>
-<p><strong>(f)</strong></p>
-<p>Like (c), but <span class="math inline">\(N=10\)</span>.</p>
-<p><strong>(g)</strong></p>
-<p>Briefly describe the observed effect of non–Gaussian errors, heteroskedasticity, and low sample size on coverage and CI width.</p>
+<p>Please be clear about whether your problem is an inference or a prediction problem (or both, or neither).</p>
+</section>
+<section id="attempted-answers" class="level3">
+<h3 class="anchored" data-anchor-id="attempted-answers">Attempted answers</h3>
+<p>In order to attempt to answer your question with linear regression, you have to connect your real-world question with a regression analysis. Please be very clear about</p>
+<ul>
+<li>What assumptions you need to connect your regression to your question</li>
+<li>Whether those assumptions are reasonable</li>
+</ul>
+<p>Clear thinking will be more important here than definitive answers to your question.</p>
+</section>
+<section id="critical-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="critical-analysis">Critical analysis</h3>
+<p>Finally, please connect the results of your analysis to your question. Here are some of the kinds of questions you might ask:</p>
+<ul>
+<li>What is the answer to your question?</li>
+<li>Were you not able to answer your question due to some limitation you found in the data?</li>
+<li>How might you collect different data to successfully answer your question?</li>
+<li>What different statitsical analyses might answer the question better?</li>
+<li>What evidence is there that your assumptions are satisfied?</li>
+<li>What evidence could you imagine collecting to establish that your assumptions were satisfied?</li>
+</ul>
+<p>Again, clear thinking will be more important here than definitive answers to your question.</p>
+</section>
+</section>
+<section id="grading-rubric" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Grading Rubric</h1>
+<p>The final project will be graded on the basis of the following criteria. The grading will be structured so that a project that satisfied each <span class="math inline">\(\star\)</span> criteria will get an A, but you can make up points by doing a particularly good job on the other criteria. This means there can be many ways to get a good grade.</p>
+<ul>
+<li>Real-world question
+<ul>
+<li><span class="math inline">\(\star\)</span> The question is framed in terms that someone who knows no statistics can understand</li>
+<li><span class="math inline">\(\star\)</span> It is clear whether the question or use case is prediction or inference</li>
+<li><span class="math inline">\(\star\)</span> The real-world question is clearly addressed (it need not be answered definitively, but it should be clear what the data can and cannot tell us about the question)</li>
+<li>The motivation or importance of the question or use case is especially clear</li>
+<li>Future actions based on the statistical analysis are well-articulated</li>
+</ul></li>
+<li>Application of statistical concepts
+<ul>
+<li><span class="math inline">\(\star\)</span> The authors carefully checked the dataset for missing or unusual values and cleaned the data as appropriate</li>
+<li><span class="math inline">\(\star\)</span> The authors appropriately quantified the statistical uncertainty in their analysis given their assumptions</li>
+<li><span class="math inline">\(\star\)</span> The results of their statistical analysis are meaningfully connected to the question or use case</li>
+<li>The authors explored a range of plausible assumptions</li>
+<li>The authors examined the data for evidence that their assumptions were or were not met</li>
+</ul></li>
+<li>Critical analysis
+<ul>
+<li><span class="math inline">\(\star\)</span> The authors carefully consider how data collection might affect the validity of their analysis or assumptions</li>
+<li><span class="math inline">\(\star\)</span> The authors clearly articulated how the dataset might answer or fail to answer the real-world question</li>
+<li><span class="math inline">\(\star\)</span> The authors carefully investigated unusual or suprising results or patterns in the data</li>
+<li>Alternative explanations or answers to the question or use case are carefully considered</li>
+<li>Outside data or scientific knowledge is brought to bear on the problem</li>
+</ul></li>
+<li>Clarity of exposition
+<ul>
+<li><span class="math inline">\(\star\)</span> Previous work and collaboration is clearly acknowledged</li>
+<li><span class="math inline">\(\star\)</span> The plots and tables are readable and well-labeled</li>
+<li><span class="math inline">\(\star\)</span> The report is well-structured, with a coherent introduction, analysis, and conclusion</li>
+<li>The primary conclusion or recommondations are clear, and the report can be safely read quickly</li>
+<li>The computational tools and methods are well-documented</li>
+</ul></li>
+</ul>
 
 
 </section>

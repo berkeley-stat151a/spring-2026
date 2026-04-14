@@ -1,0 +1,102 @@
+---
+title: "Final project"
+date: "2024-05-01"
+output:
+  bookdown::html_document2: default
+  bookdown::pdf_document2: default
+---
+
+```{r setup, include=FALSE}
+# Please do not show your code in the document unless it helps the
+# reader understand something important.  Set include=FALSE to suppress
+# R code.
+library(tidyverse)
+knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.align="center") 
+data("cars")
+```
+
+
+
+# Introduction
+
+A short, high-level description of what you want to do,
+how you do it, and what you find.
+
+
+# Problem description
+
+Ask your real-world question and describe why it's important. Bring in 
+outside context as necessary.  Be specific about how someone
+might use your results, either to gather more data, implement
+a policy, or produce a useful tool.
+
+You can cite papers like this: @belkin:2019:reconciling.
+
+
+# Data
+
+Describe where you got the data, and how it was collected.  Cite
+published papers and websites.  Describe how its collection method
+helps (or hurts) the ability to answer your real-world question.
+
+You can use code quantities direclty in the text.  For example,
+the `cars` dataset has `r nrow(cars)` rows.
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r carsplot, fig.cap="The cars data.", out.height="30%", echo=FALSE}
+ggplot(cars) +
+  geom_point(aes(x=speed, y=dist)) +
+  xlab("Speed") + ylab("Distance") +
+  ggtitle("Scatterplot of cars data")
+```
+
+
+
+You can refer to the plot as Figure \@ref(fig:carsplot).
+Please make sure that all axes and other formatting are clearly labeled,
+and that the figure annotations are roughly the same size as the document font
+so they are readable.
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent 
+printing of the R code that generated the plot.
+
+# Methods
+
+Describe how you will use your statistical model to answer your
+real-world question.  Describe what assumptions are necessary
+for your methods to provide an answer, and discuss whether
+they are likely to hold in real life.   Say what tools you
+use, and what statistical results you are relying on.
+
+Math can look like this:
+$$
+\begin{equation}
+\hat{\beta} = (X^T X)^{-1} X^T Y (\#eq:ols)
+\end{equation}
+$$
+
+You can refer to Equation \@ref(eq:ols) in the text as well.
+
+# Results
+
+Discuss the actual numerical results in an easy-to-read
+format.  Graphs are usually much better than tables of numbers.
+Make sure you connect your quantitiative results back to
+your assumptions and methods.
+
+
+# Discussion
+
+Put it all together.
+
+
+# Bibilography
+
+
+
