@@ -1,0 +1,116 @@
+---
+title: "Lab 7: Outliers"
+author: "Instruction sheet"
+number-sections: true
+output:
+  pdf_document:
+    keep_tex: false
+    pandoc_args: ["--variable", "urlcolor=blue"]
+geometry: margin=1in
+header-includes:
+  - \usepackage{amsmath}
+  - \usepackage{amssymb}
+  - \usepackage{tcolorbox}
+---
+
+# Overview
+
+Please read these instructions carefully before you start working.
+In this lab you will work in groups on simulated linear regression data.
+One group perturbs a small number of observations to shift an estimated coefficient; another group tries to find and remove those data points and recover a coefficient estimate close to the original.
+
+## The data-generating model
+
+Set a seed first---this will allow you to reproduce your data exactly. 
+Choose an obscure number so that teams don't end up with the same data.
+Generate data as follows:
+
+1. Sample $N$ once from a $\mathrm{Poisson}(200)$ distribution.
+2. Fix $P = 20$, the number of regressors, which consist of 3 independent blocks: 
+    - $x_1, \dots, x_{10}$ are normal with mean zero, unit variance, and pairwise correlation $0.1$, 
+    - $x_{11}, \dots, x_{19}$ are normal with mean zero, unit variance, and pairwise correlation $0.9$,
+    - $x_{20}$ is categorical, uniformly distributed on $\{a, b, c, d, e, f, g, h\}$.
+3. Sample the design matrix $X \in \mathbb{R}^{N \times P}$ consisting of $N$ independent rows distributed as above.
+4. Draw $\beta \in \mathbb{R}^{27}$ (the first 19 components correspond to $x_1, \ldots, x_{19}$ and the last 8 to the one-hot indicators for $x_{20}$) with independent components from a $\mathcal{N}(0, 2)$ distribution.
+5. Generate $y = X\beta + \varepsilon$ with $\varepsilon \sim \mathcal{N}(0, 4 I_N)$. Note that there is no intercept. 
+
+Upload your original dataset, named `<your_team_name>-orig.csv`, [here](https://forms.gle/DWGP2HkdbGpHWRoR6).
+\begin{tcolorbox}[colback=red!5, colframe=red!20, boxrule=0.5pt, arc=2pt]
+All uploaded \texttt{.csv} files must have columns \texttt{x1}, \texttt{x2}, \ldots, \texttt{x20}, \texttt{y} in that order (\texttt{x20} is a character column; all others are numeric). 
+The response \texttt{y} is the last column.
+\end{tcolorbox}
+
+## Part 1: Design the perturbation
+
+Pick one index $k \in \{ 1, \dots, 27 \}$ and agree that $\beta_k$ is the coefficient the other team will try to recover.
+Modify or add exactly 10 rows in $(X, y)$; you may insert added rows anywhere in the dataset, not just at the end.
+You may **not delete** rows (only change existing rows or add new ones).
+Your goals:
+
+1. Move $\hat{\beta}_k$---the OLS estimate on the edited data---as far as possible from $\hat{\beta}_k^{\mathrm{orig}}$---the OLS estimate on the original data.
+2. Make the poisoned / added points hard to identify: for example, histograms should not make the 10 points obviously stand out.
+
+Keep a private list of which rows were corrupted or added (row indices and what you did).
+Upload the edited dataset, named `<your_team_name>-edit.csv`, [here](https://drive.google.com/drive/folders/1N8b4Nn3LRmdviPwty3t3-lvXnrpZqc4E?usp=sharing), and tell the GSI your team name and your chosen $k$---these will be recorded on the board.
+
+Document how you perturbed your data on the third page (brief is fine, but make sure we can reproduce your edited dataset by following your description).
+It's a good idea to regenerate the data from scratch and rerun your corruption protocol before uploading to make sure the result is reproducible.
+
+## Part 2: Clean and estimate
+
+Download your assigned opponent group's corrupted dataset from the [drive](https://drive.google.com/drive/folders/1N8b4Nn3LRmdviPwty3t3-lvXnrpZqc4E?usp=sharing). 
+You can also look up your target coefficient $\beta_k$ on the board.
+You do not know the true $\beta_k$ or its original OLS estimate $\hat{\beta}_k^{\mathrm{orig}}$, but you know that the other group (presumably) followed the above instructions in perturbing their dataset.
+
+- Use any tools (plots, standardized residuals, leverage, etc.) to identify which up to 10 observations were added or modified.
+- Remove **at most 10** rows that you believe are corrupted or injected. You are allowed to remove **fewer** than 10.
+
+Document how you chose which data points to remove.
+Once you are satisfied with your cleaned data, upload it [here](https://drive.google.com/drive/folders/1N8b4Nn3LRmdviPwty3t3-lvXnrpZqc4E?usp=sharing), naming it `<opponent_team_name>-clean.csv`.
+
+**Scoring:** the GSI will fit OLS on your cleaned dataset to obtain $\hat{\beta}_k^{\mathrm{clean}}$. Your score is
+\begin{equation*}
+    \text{score}
+    = \frac{\big| \hat{\beta}_k^{\mathrm{clean}} - \hat{\beta}_k^{\mathrm{orig}} \big|}{\widehat{\mathrm{se}}_k^{\mathrm{orig}}}
+\end{equation*}
+where $\widehat{\mathrm{se}}_k^{\mathrm{orig}}$ is the homoskedastic standard error of $\hat{\beta}_k^{\mathrm{orig}}$ from the original (uncorrupted) OLS fit.
+
+The team with the **lowest** score wins. 
+
+## If you are not attending the lab in person
+
+Please generate, corrupt, and clean the data yourself.
+Document the process carefully and in detail, and submit this `pdf` report with both documentation sections filled in.
+You don't need to upload any `.csv` files, but make it clear which coefficient you targeted, how you perturbed the data, and what you did to clean it and recover the original estimate.
+
+\pagebreak 
+
+# Documentation 
+
+## Corrupting the data
+
+\begin{center}
+\vspace{2em}
+\textit{Document how you corrupted or injected fake data in this section.}
+\vspace{2em}
+\end{center}
+
+```{r} 
+    # Paste the code that creates your edited dataset.
+    # Include the code used to generate the data + seed.
+```
+
+\vspace{10em}
+
+## Cleaning the data
+
+\begin{center}
+\vspace{2em}
+\textit{Document how you cleaned your opponent's corrupted data in this section.} 
+\vspace{2em}
+\end{center}
+
+```{r} 
+    # Paste the code that cleans your opponent's dataset.
+    # Include the code used for plots, diagnostics, etc. 
+```

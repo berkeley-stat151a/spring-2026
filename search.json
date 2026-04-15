@@ -739,7 +739,7 @@
     "href": "labs/index.html",
     "title": "Labs",
     "section": "",
-    "text": "Attendance at Lab 0 is required, but you’ll just practice turning things in.\nLab 1: R introduction (To download a template click here)\nLab 2: OLS simulations (To download a template click here)\nLab 3: Designing and interpreting regressors (To download a template click here)\nLab 4: Reproducing lm and coverage simulations (To download a template click here)\nLab 5: Bias-variance tradeoff and cross-validation (To download a template click here)\nLab 6: Cubic splines and glmnet (To download a template click here)"
+    "text": "Attendance at Lab 0 is required, but you’ll just practice turning things in.\nLab 1: R introduction (To download a template click here)\nLab 2: OLS simulations (To download a template click here)\nLab 3: Designing and interpreting regressors (To download a template click here)\nLab 4: Reproducing lm and coverage simulations (To download a template click here)\nLab 5: Bias-variance tradeoff and cross-validation (To download a template click here)\nLab 6: Cubic splines and glmnet (To download a template click here)\nLab 7: Outliers (To download a template click here)"
   },
   {
     "objectID": "lectures/index.html",
