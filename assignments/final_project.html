@@ -176,20 +176,22 @@ window.Quarto = {
   <li><a href="#project-outline" id="toc-project-outline" class="nav-link active" data-scroll-target="#project-outline"><span class="header-section-number">1</span> Project outline</a>
   <ul class="collapse">
   <li><a href="#datasets" id="toc-datasets" class="nav-link" data-scroll-target="#datasets">Datasets</a></li>
-  <li><a href="#forming-groups" id="toc-forming-groups" class="nav-link" data-scroll-target="#forming-groups">Forming groups</a>
-  <ul class="collapse">
-  <li><a href="#one-group-needs-to-have-four-people" id="toc-one-group-needs-to-have-four-people" class="nav-link" data-scroll-target="#one-group-needs-to-have-four-people">One group needs to have four people!</a></li>
-  </ul></li>
+  <li><a href="#forming-groups" id="toc-forming-groups" class="nav-link" data-scroll-target="#forming-groups">Forming groups</a></li>
   <li><a href="#key-dates" id="toc-key-dates" class="nav-link" data-scroll-target="#key-dates">Key dates</a></li>
   </ul></li>
-  <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading"><span class="header-section-number">2</span> Grading</a></li>
-  <li><a href="#project-structure" id="toc-project-structure" class="nav-link" data-scroll-target="#project-structure"><span class="header-section-number">3</span> Project structure</a>
+  <li><a href="#grading" id="toc-grading" class="nav-link" data-scroll-target="#grading"><span class="header-section-number">2</span> Grading</a>
+  <ul class="collapse">
+  <li><a href="#examples" id="toc-examples" class="nav-link" data-scroll-target="#examples">Examples</a></li>
+  </ul></li>
+  <li><a href="#format-and-submitting" id="toc-format-and-submitting" class="nav-link" data-scroll-target="#format-and-submitting"><span class="header-section-number">3</span> Format and submitting</a></li>
+  <li><a href="#project-structure" id="toc-project-structure" class="nav-link" data-scroll-target="#project-structure"><span class="header-section-number">4</span> Project structure</a>
   <ul class="collapse">
   <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions</a></li>
   <li><a href="#attempted-answers" id="toc-attempted-answers" class="nav-link" data-scroll-target="#attempted-answers">Attempted answers</a></li>
   <li><a href="#critical-analysis" id="toc-critical-analysis" class="nav-link" data-scroll-target="#critical-analysis">Critical analysis</a></li>
   </ul></li>
-  <li><a href="#grading-rubric" id="toc-grading-rubric" class="nav-link" data-scroll-target="#grading-rubric"><span class="header-section-number">4</span> Grading Rubric</a></li>
+  <li><a href="#grading-rubric" id="toc-grading-rubric" class="nav-link" data-scroll-target="#grading-rubric"><span class="header-section-number">5</span> Grading Rubric</a></li>
+  <li><a href="#use-of-ai" id="toc-use-of-ai" class="nav-link" data-scroll-target="#use-of-ai"><span class="header-section-number">6</span> Use of AI</a></li>
   </ul>
 </nav>
     </div>
@@ -220,8 +222,6 @@ window.Quarto = {
 <section id="project-outline" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Project outline</h1>
 <p>The final project will be an open-ended investigation into real data using tools from linear regression.</p>
-<p>The final submission should take the form of a pdf with at most eight pages, including figures, but not including citations. We will ask that you submit reproducible code. The code will not be explicitly graded as part of the assignment, but we may use it to confirm that you actually did what you say you did.</p>
-<p>The final project will be collected via Gradescope.</p>
 <section id="datasets" class="level2">
 <h2 class="anchored" data-anchor-id="datasets">Datasets</h2>
 <p>The project will analyze one of the four datasets described and linked to in the first section of the <a href="../datasets/index.html">datasets page</a>: Housing, Microcredit, Teaching, Bodyfat, or Spotify.</p>
@@ -231,21 +231,17 @@ reach out well before HW 5 is due. -->
 </section>
 <section id="forming-groups" class="level2">
 <h2 class="anchored" data-anchor-id="forming-groups">Forming groups</h2>
-<p>For the final project, you must form groups of three students. Please select your own groups. Each person may participate in only one group. All members of a group will get the same grade. Changing the group members after having your project approved will require instructor approval.</p>
-<p>To form a group, get your three group members together and draw a random number using the following R command:</p>
+<p>For the final project, you must form groups of four students. Please select your own groups. Each person may participate in only one group. All members of a group will get the same grade. Changing the group members after having your project approved will require instructor approval.</p>
+<p>To form a group, get your group members together and draw a random number using the following R command:</p>
 <p><code>sample(1e9, size=1)</code></p>
-<p>Make sure all your group members and only the group members enter this number in the Gradescope assignment “Final project group proposals.”</p>
-<p>If a particular randomly generated group number as fewer than three members, you may be broken up or randomly assigned another group member. If more than one particular group number has more than four members, the group will be randomly split up and assigned to other groups.</p>
+<p>Please then submit the Gradescope assignment “Final project group proposals” as a <strong>group submission</strong> with this group number.</p>
+<p>If a particular randomly generated group number as fewer than four members, you may be broken up or randomly assigned another group member. If more than one particular group number has more than four members, the group will be randomly split up and assigned to other groups.</p>
 <p>You may enter “no group” into the Gradescope assignment to be randomly assigned a group.</p>
-<section id="one-group-needs-to-have-four-people" class="level3">
-<h3 class="anchored" data-anchor-id="one-group-needs-to-have-four-people">One group needs to have four people!</h3>
-<p>The class size does not divide into three, so there will need to be one group of four people. I do not know how to fairly allow one group to have four, so I will wait until all the groups are submitted, and then randomly allocate any un-grouped students to other groups.</p>
-</section>
 </section>
 <section id="key-dates" class="level2">
 <h2 class="anchored" data-anchor-id="key-dates">Key dates</h2>
 <ul>
-<li>You must submit your group members and datset by Sunday, April 19th at 9pm (see above)</li>
+<li>You must submit your group members and dataset by Sunday, April 19th at 9pm (see above)</li>
 <li>You must submit a first draft by Sunday, April 26th at 9pm.</li>
 <li>You must submit a final draft by Sunday, May 10th at 9pm.</li>
 </ul>
@@ -253,18 +249,27 @@ reach out well before HW 5 is due. -->
 </section>
 <section id="grading" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Grading</h1>
-<p><strong>(Subject to change)</strong></p>
-<p>We will spend the class of Monday April 27th providing critical feedback on each others’ first drafts. Your final project grade will consist of:</p>
+<p>We will spend the class of Monday April 27th providing critical feedback on each others’ first drafts. <strong>Lecture attendance by at least one group member on this day is mandatory.</strong></p>
+<p>Your final project grade will consist of:</p>
 <ul>
 <li>10% peer grades of your first draft</li>
 <li>10% peer grades of your critical feedback on their first draft</li>
-<li>80% final draft</li>
+<li>80% final submission</li>
 </ul>
 <p>I reserve the right to adjust and inflate the peer grades as needed if there seem to be systematic biases. I will not decrease the peer grades.</p>
+<section id="examples" class="level2">
+<h2 class="anchored" data-anchor-id="examples">Examples</h2>
+<p>Three examples of successful final projects from past courses have been shared in the Files section of BCourses. Please do not circulate these projects.</p>
 </section>
-<section id="project-structure" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Project structure</h1>
-<p>The final project (and the draft) should be sumbitted as a pdf not exceeding six pages, excluding citations. That is, the whole final project may be longer than six pages as long as the additional pages are only bibliograhy. Note that figures and any included code count towards the six page limit.</p>
+</section>
+<section id="format-and-submitting" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Format and submitting</h1>
+<p>The final submission should take the form of a pdf with at most eight pages, including figures, but not including citations. Only the first eight pages of the report are subject to grading.</p>
+<p>The final project will be collected via Gradescope as a group assignment.</p>
+<p>We will ask that you submit reproducible code as a zip file. The code will not be explicitly graded as part of the assignment, but we may use it to confirm that you actually did what you say you did.</p>
+</section>
+<section id="project-structure" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Project structure</h1>
 <p>A typical project should consist of</p>
 <ul>
 <li>A real-world question or questions to be investigated with the dataset,</li>
@@ -314,8 +319,8 @@ reach out well before HW 5 is due. -->
 <p>Again, clear thinking will be more important here than definitive answers to your question.</p>
 </section>
 </section>
-<section id="grading-rubric" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Grading Rubric</h1>
+<section id="grading-rubric" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Grading Rubric</h1>
 <p>The final project will be graded on the basis of the following criteria. The grading will be structured so that a project that satisfied each <span class="math inline">\(\star\)</span> criteria will get an A, but you can make up points by doing a particularly good job on the other criteria. This means there can be many ways to get a good grade.</p>
 <ul>
 <li>Real-world question
@@ -351,6 +356,23 @@ reach out well before HW 5 is due. -->
 <li>The computational tools and methods are well-documented</li>
 </ul></li>
 </ul>
+</section>
+<section id="use-of-ai" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Use of AI</h1>
+<p>I consider the use of AI analogous to a friend who had done well in the course before. You may ask for help, but you must not let them do the work for you.</p>
+<p>Here are some example uses of AI that are acceptable:</p>
+<ul>
+<li>It’s okay to ask AI to check grammar and typos of text you wrote yourself.</li>
+<li>It’s okay to ask AI to generate a figure according to precise instructions from you.</li>
+<li>It’s okay to ask AI to check code or mathematical derivations for errors.</li>
+</ul>
+<p>Here are some example uses of AI that are not acceptable:</p>
+<ul>
+<li>It’s not okay to ask AI to generate text outright.</li>
+<li>It’s not okay to give AI the rubric and ask it to suggests a project outline.</li>
+<li>It’s not okay to submit a draft to AI and ask it to edit it so as to receive a higher grade.</li>
+</ul>
+<p>The distinction is whether you have asked AI to do the work for you, or to help edit work you have already done.</p>
 
 
 </section>
