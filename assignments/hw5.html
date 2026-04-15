@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Your name here">
 
-<title>Assignments</title>
+<title>STAT151A Homework 5</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -77,6 +78,35 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 </script>
 <script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -113,7 +143,7 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 <span class="menu-text">Lectures</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../assignments/index.html" aria-current="page"> 
+    <a class="nav-link" href="../assignments/index.html"> 
 <span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
@@ -144,25 +174,34 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#homework" id="toc-homework" class="nav-link active" data-scroll-target="#homework">Homework</a></li>
-  <li><a href="#quiz-review-guide" id="toc-quiz-review-guide" class="nav-link" data-scroll-target="#quiz-review-guide">Quiz review guide</a></li>
-  <li><a href="#final-project" id="toc-final-project" class="nav-link" data-scroll-target="#final-project">Final Project</a></li>
+  <li><a href="#interpretation-of-transforms-of-the-response" id="toc-interpretation-of-transforms-of-the-response" class="nav-link active" data-scroll-target="#interpretation-of-transforms-of-the-response"><span class="header-section-number">1</span> Interpretation of transforms of the response</a></li>
+  <li><a href="#bootstrap" id="toc-bootstrap" class="nav-link" data-scroll-target="#bootstrap"><span class="header-section-number">2</span> Bootstrap</a></li>
+  <li><a href="#simple-regressions" id="toc-simple-regressions" class="nav-link" data-scroll-target="#simple-regressions"><span class="header-section-number">3</span> Simple regressions</a></li>
+  <li><a href="#correlated-variables-and-the-lln" id="toc-correlated-variables-and-the-lln" class="nav-link" data-scroll-target="#correlated-variables-and-the-lln"><span class="header-section-number">4</span> Correlated variables and the LLN</a></li>
+  <li><a href="#open-answers" id="toc-open-answers" class="nav-link" data-scroll-target="#open-answers"><span class="header-section-number">5</span> Open answers</a></li>
+  <li><a href="#multiple-choice" id="toc-multiple-choice" class="nav-link" data-scroll-target="#multiple-choice"><span class="header-section-number">6</span> Multiple choice</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Assignments</h1>
-<p class="subtitle lead">Stat 151A: Linear Models</p>
+<h1 class="title">STAT151A Homework 5</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Your name here </p>
+          </div>
+  </div>
     
   
     
@@ -173,34 +212,56 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 </header>
 
 
-<section id="homework" class="level1">
-<h1>Homework</h1>
-<ul>
-<li><a href="../assignments/hw0.html">Homework 0</a>. (With solutions.) Due Sunday Feb 1st (9pm)</li>
-<li><a href="../assignments/hw1.html">Homework 1</a>. (With solutions.) Due Sunday Feb 22nd (9pm)</li>
-<li><a href="../assignments/hw2.html">Homework 2</a>. (With solutions.) Due Sunday Mar 15th (9pm)</li>
-<li><a href="../assignments/hw3.html">Homework 3</a>. (With solutions.) Due Sunday April 5th (9pm)</li>
-<li><a href="../assignments/hw4.html">Homework 4</a>. Due Sunday April 19th (9pm)</li>
-</ul>
-<!--
-
-
-[Homework 5](hw5.qmd)
--->
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<section id="interpretation-of-transforms-of-the-response" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Interpretation of transforms of the response</h1>
+<p>Suppose I have data of the where <span class="math inline">\(n = 1, \ldots N\)</span> indexes households, <span class="math inline">\(y_n\)</span> is the expenditure on food in a time period (so that <span class="math inline">\(y_n &gt; 0\)</span> for all <span class="math inline">\(n\)</span>). Suppose that households are randomly selected to either receive food stamps (for which <span class="math inline">\(x_n = 1\)</span>) or to not receive food stamps (for which <span class="math inline">\(x_n = 0\)</span>). Also, suppose we measure household income <span class="math inline">\(z_n\)</span>.</p>
+<p><strong>(a)</strong></p>
+<p>Suppose we regress <span class="math inline">\(y_n \sim \beta_0 + \beta_1 x_n + \beta_2 z_n\)</span>. Let <span class="math inline">\(\hat{f}(x_, z) = \hat{\beta}_0 + \hat{\beta}_1 x+ \hat{\beta}_2 z\)</span> denote the fit.</p>
+<p>Using this regression, we might estimate the effect of food stamps on food expenditure by <span class="math inline">\(\hat{f}(1, z) - \hat{f}(0, z)\)</span>. How does this estimate depend on <span class="math inline">\(z\)</span>?</p>
+<p><strong>(b)</strong></p>
+<p>Suppose we regress <span class="math inline">\(\log y_n \sim \gamma_0 + \gamma_1 x_n + \gamma_2 z_n\)</span>. Let <span class="math inline">\(\hat{g}(x_, z) = \hat{\gamma}_0 + \hat{\gamma}_1 x+ \hat{\gamma}_2 z\)</span>.</p>
+<p>Using this regression, we might estimate the effect of food stamps on food expenditure by <span class="math inline">\(\exp(\hat{g}(1, z)) - \exp(\hat{g}(0, z))\)</span>. How does this estimate depend on <span class="math inline">\(z\)</span>?</p>
+<p><strong>(c)</strong></p>
+<p>The regressions in (a) and (b) make different implicit assumptions about how food stamps affect consumption for a particular household. State these assumptions in ordinary language.</p>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
 </section>
-<section id="quiz-review-guide" class="level1">
-<h1>Quiz review guide</h1>
-<p>The following document is to help you study for the final. There is no need to turn anything in.</p>
-<p><a href="../assignments/quiz_review.html">Quiz review</a></p>
+<section id="bootstrap" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Bootstrap</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
 </section>
-<section id="final-project" class="level1">
-<h1>Final Project</h1>
-<p><a href="../assignments/final_project.html">Final project</a></p>
-<ul>
-<li>Final project first draft due Sunday April 26th (9pm)</li>
-<li>Final project final draft due Sunday May 10th (9pm)</li>
-<li><a href="project_template.Rmd">R markdown example</a>, and here’s an example <a href="../references.bib">bibliography</a>. (Note that you do not need to follow this document structure exactly — I only include this as an example to get started.)</li>
-</ul>
+<section id="simple-regressions" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Simple regressions</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="correlated-variables-and-the-lln" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Correlated variables and the LLN</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="open-answers" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Open answers</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="multiple-choice" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Multiple choice</h1>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+<!------------------------------------------------------------>
+</section>
+<section id="references" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> References</h1>
 
 
 </section>
