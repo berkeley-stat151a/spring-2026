@@ -175,7 +175,13 @@ window.Quarto = {
   <ul>
   <li><a href="#multiple-choice-questions" id="toc-multiple-choice-questions" class="nav-link active" data-scroll-target="#multiple-choice-questions">Multiple choice questions</a>
   <ul class="collapse">
-  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions</a></li>
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions</a>
+  <ul class="collapse">
+  <li><a href="#quiz-0" id="toc-quiz-0" class="nav-link" data-scroll-target="#quiz-0">Quiz 0</a></li>
+  <li><a href="#quiz-1" id="toc-quiz-1" class="nav-link" data-scroll-target="#quiz-1">Quiz 1</a></li>
+  <li><a href="#quiz-2" id="toc-quiz-2" class="nav-link" data-scroll-target="#quiz-2">Quiz 2</a></li>
+  <li><a href="#quiz-3" id="toc-quiz-3" class="nav-link" data-scroll-target="#quiz-3">Quiz 3</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="all_mc.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
@@ -209,6 +215,28 @@ window.Quarto = {
 <p>I encourage you to try to think of correct (and incorrect) answers for yourself as a way of preparing for the final exam!</p>
 <section id="questions" class="level2">
 <h2 class="anchored" data-anchor-id="questions">Questions</h2>
+<section id="quiz-0" class="level3">
+<h3 class="anchored" data-anchor-id="quiz-0">Quiz 0</h3>
+<ol type="1">
+<li>If a square, symmetric matrix <span class="math inline">\(\boldsymbol{A}\)</span> is invertible, then…</li>
+<li>Let <span class="math inline">\(\boldsymbol{X}\)</span> denote a full-rank <span class="math inline">\(N \times P\)</span> matrix with <span class="math inline">\(N &gt; P\)</span>. Then…</li>
+<li>Suppose that <span class="math inline">\(\boldsymbol{u}\)</span> and <span class="math inline">\(\boldsymbol{v}\)</span> are orthogonal <span class="math inline">\(N\)</span>-vectors with <span class="math inline">\(N \ge 2\)</span>. Then…</li>
+<li>Let <span class="math inline">\(\boldsymbol{X}\)</span> denote an <span class="math inline">\(N \times P\)</span> matrix, with <span class="math inline">\(P &lt; N\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span> a nonzero <span class="math inline">\(P\)</span>-vector, and <span class="math inline">\(\boldsymbol{Y}\)</span> an <span class="math inline">\(N\)</span>-vector. Which of these matrix expressions is <strong>not</strong> well-defined?</li>
+<li>Suppose that <span class="math inline">\(x_n\)</span> are IID Gaussian with mean <span class="math inline">\(\mathbb{E}\left[x_n\right] = 2\)</span> and <span class="math inline">\(\mathrm{Var}\left(x_n\right) = 9\)</span>. Which of the following expressions diverges (goes to positive or negative infinity) as <span class="math inline">\(N \rightarrow \infty\)</span>?</li>
+</ol>
+</section>
+<section id="quiz-1" class="level3">
+<h3 class="anchored" data-anchor-id="quiz-1">Quiz 1</h3>
+<ol type="1">
+<li>Suppose that <span class="math inline">\(\boldsymbol{x}_n = \boldsymbol{A}\boldsymbol{z}_n\)</span> for all <span class="math inline">\(n\)</span>, where <span class="math inline">\(\boldsymbol{A}\)</span> is invertible but not symmetric. For the regressions <span class="math inline">\(y\sim \boldsymbol{\beta}^\intercal\boldsymbol{x}\)</span> and <span class="math inline">\(y\sim \boldsymbol{\gamma}^\intercal\boldsymbol{z}\)</span>, it is necessarily true that…</li>
+<li>Which of the following is <em>never</em> a well justified reason to choose <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> by minimizing the mean of squared errors <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N(y_n 3. \boldsymbol{x}_n^\intercal\boldsymbol{\beta})^2\)</span>?</li>
+<li>Let <span class="math inline">\(\underset{\boldsymbol{X}}{\boldsymbol{P}} = \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\)</span> denote the projection matrix onto the columns of <span class="math inline">\(\boldsymbol{X}\)</span>, where <span class="math inline">\(\boldsymbol{X}\)</span> is full rank. Which of the following expressions is false?</li>
+<li>Suppose that <span class="math inline">\(x_{n1}\)</span> and <span class="math inline">\(x_{n2}\)</span> are mean zero and very highly (but not perfectly) positively correlated, and we regress <span class="math inline">\(y_n \sim \beta_1 x_{n1} + \beta_2 x_{n2}\)</span>. Then…</li>
+<li>Let <span class="math inline">\(\boldsymbol{S}_1, \ldots, \boldsymbol{S}_K\)</span> denote a partition of the space of regressors, so that for each <span class="math inline">\(n\)</span>, <span class="math inline">\(\boldsymbol{x}_n \in \boldsymbol{S}_k\)</span> for exactly one <span class="math inline">\(k\)</span>. Let <span class="math inline">\(z_{nk} = \mathbb{I}\left(\boldsymbol{x}_n \in S_k\right)\)</span>, and consider regressing <span class="math inline">\(y\sim \beta_1 z_{n1}+ \ldots + \beta_K z_{nK}\)</span>, without a constant. Assume that each <span class="math inline">\(\boldsymbol{S}_k\)</span> has at least one observation in it. Then, conditionally on the regressors…</li>
+</ol>
+</section>
+<section id="quiz-2" class="level3">
+<h3 class="anchored" data-anchor-id="quiz-2">Quiz 2</h3>
 <p>For the multiple choice questions, recall our four classes of assumptions:</p>
 <ul>
 <li><ol type="A">
@@ -226,30 +254,26 @@ window.Quarto = {
 </ul>
 <p>In each assumption assume that the pairs <span class="math inline">\((\boldsymbol{x}_n, y_n)\)</span> are IID and that <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank, and that all necessary conditions hold for the application of the CLT and LLN as in the lecture notes.</p>
 <p>Recall that <span class="math inline">\(\hat{\sigma}^2 = \frac{1}{N - P} \sum_{n=1}^N(y_n - \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n)^2\)</span>.</p>
-<ul>
-<li>If a square, symmetric matrix <span class="math inline">\(\boldsymbol{A}\)</span> is invertible, then</li>
-<li>Let <span class="math inline">\(\boldsymbol{X}\)</span> denote a full-rank <span class="math inline">\(N \times P\)</span> matrix with <span class="math inline">\(N &gt; P\)</span>. Then</li>
-<li>Suppose that <span class="math inline">\(\boldsymbol{u}\)</span> and <span class="math inline">\(\boldsymbol{v}\)</span> are orthogonal <span class="math inline">\(N\)</span>-vectors with <span class="math inline">\(N \ge 2\)</span>. Then</li>
-<li>Let <span class="math inline">\(\boldsymbol{X}\)</span> denote an <span class="math inline">\(N \times P\)</span> matrix, with <span class="math inline">\(P &lt; N\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span> a nonzero <span class="math inline">\(P\)</span>-vector, and <span class="math inline">\(\boldsymbol{Y}\)</span> an <span class="math inline">\(N\)</span>-vector. Which of these matrix expressions is <strong>not</strong> well-defined?</li>
-<li>Suppose that <span class="math inline">\(x_n\)</span> are IID Gaussian with mean <span class="math inline">\(\mathbb{E}\left[x_n\right] = 2\)</span> and <span class="math inline">\(\mathrm{Var}\left(x_n\right) = 9\)</span>. Which of the following expressions diverges (goes to positive or negative infinity) as <span class="math inline">\(N \rightarrow \infty\)</span>?</li>
-<li>Suppose that <span class="math inline">\(\boldsymbol{x}_n = \boldsymbol{A}\boldsymbol{z}_n\)</span> for all <span class="math inline">\(n\)</span>, where <span class="math inline">\(\boldsymbol{A}\)</span> is invertible but not symmetric. For the regressions <span class="math inline">\(y\sim \boldsymbol{\beta}^\intercal\boldsymbol{x}\)</span> and <span class="math inline">\(y\sim \boldsymbol{\gamma}^\intercal\boldsymbol{z}\)</span>, it is necessarily true that</li>
-<li>Which of the following is <em>never</em> a well justified reason to choose <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> by minimizing the mean of squared errors <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N(y_n - \boldsymbol{x}_n^\intercal\boldsymbol{\beta})^2\)</span>?</li>
-<li>Let <span class="math inline">\(\underset{\boldsymbol{X}}{\boldsymbol{P}} = \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\)</span> denote the projection matrix onto the columns of <span class="math inline">\(\boldsymbol{X}\)</span>, where <span class="math inline">\(\boldsymbol{X}\)</span> is full rank. Which of the following expressions is false?</li>
-<li>Suppose that <span class="math inline">\(x_{n1}\)</span> and <span class="math inline">\(x_{n2}\)</span> are mean zero and very highly (but not perfectly) positively correlated, and we regress <span class="math inline">\(y_n \sim \beta_1 x_{n1} + \beta_2 x_{n2}\)</span>. Then</li>
-<li>Let <span class="math inline">\(\boldsymbol{S}_1, \ldots, \boldsymbol{S}_K\)</span> denote a partition of the space of regressors, so that for each <span class="math inline">\(n\)</span>, <span class="math inline">\(\boldsymbol{x}_n \in \boldsymbol{S}_k\)</span> for exactly one <span class="math inline">\(k\)</span>. Let <span class="math inline">\(z_{nk} = \mathbb{I}\left(\boldsymbol{x}_n \in S_k\right)\)</span>, and consider regressing <span class="math inline">\(y\sim \beta_1 z_{n1}+ \ldots + \beta_K z_{nK}\)</span>, without a constant. Assume that each <span class="math inline">\(\boldsymbol{S}_k\)</span> has at least one observation in it. Then, conditionally on the regressors,</li>
+<ol type="1">
 <li>Under the normal assumption (A), under the null, the standard t-statistic based on <span class="math inline">\(\hat{\sigma}\)</span>…</li>
 <li>Under the homoskedastic assumption (B), under the null, the standard t-statistic based on <span class="math inline">\(\hat{\sigma}\)</span>…</li>
 <li>Under the heteroskedastic assumption (C), under the null, the standard t-statistic based on the sandwich covariance…</li>
 <li>Under the heteroskedastic assumption (C), inference that is incorrectly based on the homoskedastic assumption (B) will, in general…</li>
 <li>Let <span class="math inline">\({\boldsymbol{\beta}^{*}}:= \mathbb{E}\left[\boldsymbol{x}\boldsymbol{x}^\intercal\right]^{-1} \mathbb{E}\left[\boldsymbol{x}y\right]\)</span>. Under the machine learning assumption (D),</li>
-<li>In a machine learning problem with ridge regression, it is typically best practice to select the ridge parameter using</li>
+</ol>
+</section>
+<section id="quiz-3" class="level3">
+<h3 class="anchored" data-anchor-id="quiz-3">Quiz 3</h3>
+<ol type="1">
+<li>In a machine learning problem with ridge regression, it is typically best practice to select the ridge parameter using…</li>
 <li>When running ridge regression, as you <em>decrease</em> the ridge penalty parameter…</li>
 <li>For machine learning, a good reason to use a highly expressive spline basis is…</li>
-<li>For machine learning, you don’t want your spine basis to be too expressive because</li>
+<li>For machine learning, you don’t want your spine basis to be too expressive because…</li>
 <li>In Bayesian analysis, the ridge parameter corresponds to…</li>
-</ul>
+</ol>
 
 
+</section>
 </section>
 </section>
 
