@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Assignments</title>
+<title>Course Overview</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -113,7 +113,7 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 <span class="menu-text">Lectures</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../assignments/index.html" aria-current="page"> 
+    <a class="nav-link" href="../assignments/index.html"> 
 <span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
@@ -140,22 +140,14 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#homework" id="toc-homework" class="nav-link active" data-scroll-target="#homework">Homework</a></li>
-  <li><a href="#quiz-review-guide" id="toc-quiz-review-guide" class="nav-link" data-scroll-target="#quiz-review-guide">Quiz review guide</a></li>
-  <li><a href="#final-project" id="toc-final-project" class="nav-link" data-scroll-target="#final-project">Final Project</a></li>
-  </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
-    </div>
+        
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="course_overview.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Assignments</h1>
+<h1 class="title">Course Overview</h1>
 <p class="subtitle lead">Stat 151A: Linear Models</p>
 </div>
 
@@ -173,38 +165,109 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 </header>
 
 
-<section id="homework" class="level1">
-<h1>Homework</h1>
 <ul>
-<li><a href="../assignments/hw0.html">Homework 0</a>. (With solutions.) Due Sunday Feb 1st (9pm)</li>
-<li><a href="../assignments/hw1.html">Homework 1</a>. (With solutions.) Due Sunday Feb 22nd (9pm)</li>
-<li><a href="../assignments/hw2.html">Homework 2</a>. (With solutions.) Due Sunday Mar 15th (9pm)</li>
-<li><a href="../assignments/hw3.html">Homework 3</a>. (With solutions.) Due Sunday April 5th (9pm)</li>
-<li><a href="../assignments/hw4.html">Homework 4</a>. Due Sunday April 19th (9pm)</li>
-</ul>
-<!--
-
-
-[Homework 5](hw5.qmd)
--->
-</section>
-<section id="quiz-review-guide" class="level1">
-<h1>Quiz review guide</h1>
-<p>The following documents are to help you study for the final. There is no need to turn anything in.</p>
-<p><a href="../assignments/quiz_review.html">Quiz review</a></p>
-<p><a href="../assignments/all_mc.html">Multiple choice questions (but not answers)</a></p>
-</section>
-<section id="final-project" class="level1">
-<h1>Final Project</h1>
-<p><a href="../assignments/final_project.html">Final project</a></p>
+<li>Unit 0
 <ul>
-<li>Final project first draft due Sunday April 26th (9pm)</li>
-<li>Final project final draft due Sunday May 10th (9pm)</li>
-<li><a href="project_template.Rmd">R markdown example</a>, and here’s an example <a href="../references.bib">bibliography</a>. (Note that you do not need to follow this document structure exactly — I only include this as an example to get started.)</li>
+<li>Linear algebra
+<ul>
+<li>Formal operations: Valid dimensions in matrix multiplication, transpose, trace</li>
+<li>Algebra: As a representation of linear systems, invertibility, determinant</li>
+<li>Geometry: orthogonal vectors, basis vectors, linear combinations of basis vectors</li>
+<li>Eigenvalues and eigenvectors of square symmetric matrices</li>
+</ul></li>
+<li>Probability
+<ul>
+<li>Means, covariance, variance, correlation</li>
+<li>Conditional expectation, conditional variance, independence</li>
+<li>Asymptotics: Law of large numbers, central limit theorem, continuous mapping theorem</li>
+<li>The standard normal distribution</li>
+</ul></li>
+<li>Tasks in data analysis
+<ul>
+<li>Descriptive statistics</li>
+<li>Prediction</li>
+<li>Inference</li>
+</ul></li>
+</ul></li>
+<li>Unit 1
+<ul>
+<li>Simple linear regression
+<ul>
+<li>The basic formula</li>
+<li>Sample means as a special case</li>
+<li>Coefficient as a measure of association</li>
+<li>Asymmetry between x and y</li>
+</ul></li>
+<li>Matrix form
+<ul>
+<li>The regressor matrix and response and residual vectors</li>
+<li>The derivation of the formula for vector-valued betahat</li>
+<li>Being able to express familiar simpler regressions in matrix form
+<ul>
+<li>Including sample mean, simple linear regression</li>
+</ul></li>
+<li>ESS, RSS, TSS, and R squared, and the limitations of these measures of fit</li>
+</ul></li>
+<li>Interpretations
+<ul>
+<li>As a descriptive statistic</li>
+<li>As a maximum likelihood estimator under normality</li>
+<li>As a consistent estimator of a true coefficient</li>
+<li>As a risk minimizer for prediction</li>
+</ul></li>
+<li>Transformations
+<ul>
+<li>One-hot encodings and categorical variables</li>
+<li>Linear transformations of regressors leave the fit unchanged
+<ul>
+<li>A one-hot encoding and a constant</li>
+<li>Rescaling and centering continuous variables</li>
+</ul></li>
+<li>Non-linear transformations of regressors give more expressive regressions
+<ul>
+<li>Polynomials, indicators, splines</li>
+</ul></li>
+<li>Interactions between regressors and indicator variables
+<ul>
+<li>Example: different slopes in different categories</li>
+</ul></li>
+<li>Transformations of the response
+<ul>
+<li>Changing units of the response</li>
+<li>Choosing the scale that makes the most sense</li>
+<li>Log transformations of heavy tailed reponses</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>Unit 2
+<ul>
+<li></li>
+</ul></li>
+<li>Unit 3
+<ul>
+<li>Expressive basis functions
+<ul>
+<li>What are some examples? (Splines, polynomials)</li>
+<li>Why do we use them in a prediction context?</li>
+<li>What are the tradeoffs determining how many we should use?</li>
+</ul></li>
+<li>The bias-variance tradeoff
+<ul>
+<li>In the context of linear regression, what does this mean? (Squared error, conditional on the regressors)</li>
+<li>Why is it important for prediction problems?</li>
+<li>What are some ways to trade off bias for variance in regression problems.</li>
+</ul></li>
+<li>Ridge regression
+<ul>
+<li>What is it? (Formula, Bayesian interpretation)</li>
+<li>How does the ridge parameter affect the bias and variance in the bias-variance tradeoff?</li>
+<li>Why do we use ridge regression togeher with expressive basis functions?</li>
+</ul></li>
+</ul></li>
 </ul>
+<p>Unit 4 - FWL theorem - Be able to apply it with guidance (as in the homework) - Understand what it means for constants (centering regressors) - Errors in regressors / regression to the mean - Recognizing that inference with OLS assumes that x is measured without noise - If you have noise in your regressors, you underestimate the true effect exactly as in ridge regression - Be able to recognize examples where you’re actually trying to measure the effect of something you only observe with noise - Omitted variables - Why do we care for inference? Why don’t we care for prediction? - When is omitted variable bias a problem? (When the omitted variable is associated with both the response and variable of interest — apply the FWL theorem) - Understand why you can’t get around omitted variables by putting every possible regressor in the regression - Influence and outliers - Whether something is an outlier depends strongly on context - Understand the different kinds of influence of x outliers and y outliers - Know how to diagnose (residuals for y, leverage for x) - Know basic properties of leverage scores (between 0 and 1, sum to P)</p>
 
 
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

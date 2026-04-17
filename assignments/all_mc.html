@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Assignments</title>
+<title>Multiple Choice Question Review</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -77,6 +77,35 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 </script>
 <script async="" src="https://siteimproveanalytics.com/js/siteanalyze_6294756.js"></script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -113,7 +142,7 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 <span class="menu-text">Lectures</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../assignments/index.html" aria-current="page"> 
+    <a class="nav-link" href="../assignments/index.html"> 
 <span class="menu-text">Assignments</span></a>
   </li>  
   <li class="nav-item">
@@ -144,18 +173,19 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#homework" id="toc-homework" class="nav-link active" data-scroll-target="#homework">Homework</a></li>
-  <li><a href="#quiz-review-guide" id="toc-quiz-review-guide" class="nav-link" data-scroll-target="#quiz-review-guide">Quiz review guide</a></li>
-  <li><a href="#final-project" id="toc-final-project" class="nav-link" data-scroll-target="#final-project">Final Project</a></li>
+  <li><a href="#multiple-choice-questions" id="toc-multiple-choice-questions" class="nav-link active" data-scroll-target="#multiple-choice-questions">Multiple choice questions</a>
+  <ul class="collapse">
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions</a></li>
+  </ul></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="index.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="all_mc.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Assignments</h1>
+<h1 class="title">Multiple Choice Question Review</h1>
 <p class="subtitle lead">Stat 151A: Linear Models</p>
 </div>
 
@@ -173,37 +203,54 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 </header>
 
 
-<section id="homework" class="level1">
-<h1>Homework</h1>
+<section id="multiple-choice-questions" class="level1">
+<h1>Multiple choice questions</h1>
+<p>Below, you will find the multiple choice questions from the quizzes, but not the candidate responses.</p>
+<p>I encourage you to try to think of correct (and incorrect) answers for yourself as a way of preparing for the final exam!</p>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">Questions</h2>
+<p>For the multiple choice questions, recall our four classes of assumptions:</p>
 <ul>
-<li><a href="../assignments/hw0.html">Homework 0</a>. (With solutions.) Due Sunday Feb 1st (9pm)</li>
-<li><a href="../assignments/hw1.html">Homework 1</a>. (With solutions.) Due Sunday Feb 22nd (9pm)</li>
-<li><a href="../assignments/hw2.html">Homework 2</a>. (With solutions.) Due Sunday Mar 15th (9pm)</li>
-<li><a href="../assignments/hw3.html">Homework 3</a>. (With solutions.) Due Sunday April 5th (9pm)</li>
-<li><a href="../assignments/hw4.html">Homework 4</a>. Due Sunday April 19th (9pm)</li>
+<li><ol type="A">
+<li>The normal assumption: <span class="math inline">\(y_n \vert \boldsymbol{x}_n \sim \mathcal{N}\left({\boldsymbol{\beta}^{*}}^\intercal\boldsymbol{x}_n, \sigma^2\right)\)</span>.</li>
+</ol></li>
+<li><ol start="2" type="A">
+<li>The homoskedastic assumption: <span class="math inline">\(\varepsilon_n = y_n - {\boldsymbol{\beta}^{*}}^\intercal\boldsymbol{x}_n\)</span>, with <span class="math inline">\(\mathbb{E}\left[\varepsilon_n \vert \boldsymbol{x}_n\right] = 0\)</span>, and <span class="math inline">\(\mathrm{Var}\left(\boldsymbol{\varepsilon}_n | \boldsymbol{x}_n\right) = \sigma^2\)</span>.</li>
+</ol></li>
+<li><ol start="3" type="A">
+<li>The heteroskedastic assumption: Like (B), but <span class="math inline">\(\mathrm{Var}\left(\boldsymbol{\varepsilon}_n | \boldsymbol{x}_n\right) = \sigma_n^2\)</span>, where <span class="math inline">\(\sigma_n\)</span> is some function of <span class="math inline">\(\boldsymbol{x}_n\)</span> that is different for different <span class="math inline">\(\boldsymbol{x}_n\)</span>.</li>
+</ol></li>
+<li><ol start="4" type="A">
+<li>The machine learning assumption: <span class="math inline">\((\boldsymbol{x}_n, y_n)\)</span> are IID.</li>
+</ol></li>
 </ul>
-<!--
-
-
-[Homework 5](hw5.qmd)
--->
-</section>
-<section id="quiz-review-guide" class="level1">
-<h1>Quiz review guide</h1>
-<p>The following documents are to help you study for the final. There is no need to turn anything in.</p>
-<p><a href="../assignments/quiz_review.html">Quiz review</a></p>
-<p><a href="../assignments/all_mc.html">Multiple choice questions (but not answers)</a></p>
-</section>
-<section id="final-project" class="level1">
-<h1>Final Project</h1>
-<p><a href="../assignments/final_project.html">Final project</a></p>
+<p>In each assumption assume that the pairs <span class="math inline">\((\boldsymbol{x}_n, y_n)\)</span> are IID and that <span class="math inline">\(\boldsymbol{X}\)</span> is full-rank, and that all necessary conditions hold for the application of the CLT and LLN as in the lecture notes.</p>
+<p>Recall that <span class="math inline">\(\hat{\sigma}^2 = \frac{1}{N - P} \sum_{n=1}^N(y_n - \hat{\boldsymbol{\beta}}^\intercal\boldsymbol{x}_n)^2\)</span>.</p>
 <ul>
-<li>Final project first draft due Sunday April 26th (9pm)</li>
-<li>Final project final draft due Sunday May 10th (9pm)</li>
-<li><a href="project_template.Rmd">R markdown example</a>, and here’s an example <a href="../references.bib">bibliography</a>. (Note that you do not need to follow this document structure exactly — I only include this as an example to get started.)</li>
+<li>If a square, symmetric matrix <span class="math inline">\(\boldsymbol{A}\)</span> is invertible, then</li>
+<li>Let <span class="math inline">\(\boldsymbol{X}\)</span> denote a full-rank <span class="math inline">\(N \times P\)</span> matrix with <span class="math inline">\(N &gt; P\)</span>. Then</li>
+<li>Suppose that <span class="math inline">\(\boldsymbol{u}\)</span> and <span class="math inline">\(\boldsymbol{v}\)</span> are orthogonal <span class="math inline">\(N\)</span>-vectors with <span class="math inline">\(N \ge 2\)</span>. Then</li>
+<li>Let <span class="math inline">\(\boldsymbol{X}\)</span> denote an <span class="math inline">\(N \times P\)</span> matrix, with <span class="math inline">\(P &lt; N\)</span>, <span class="math inline">\(\boldsymbol{\beta}\)</span> a nonzero <span class="math inline">\(P\)</span>-vector, and <span class="math inline">\(\boldsymbol{Y}\)</span> an <span class="math inline">\(N\)</span>-vector. Which of these matrix expressions is <strong>not</strong> well-defined?</li>
+<li>Suppose that <span class="math inline">\(x_n\)</span> are IID Gaussian with mean <span class="math inline">\(\mathbb{E}\left[x_n\right] = 2\)</span> and <span class="math inline">\(\mathrm{Var}\left(x_n\right) = 9\)</span>. Which of the following expressions diverges (goes to positive or negative infinity) as <span class="math inline">\(N \rightarrow \infty\)</span>?</li>
+<li>Suppose that <span class="math inline">\(\boldsymbol{x}_n = \boldsymbol{A}\boldsymbol{z}_n\)</span> for all <span class="math inline">\(n\)</span>, where <span class="math inline">\(\boldsymbol{A}\)</span> is invertible but not symmetric. For the regressions <span class="math inline">\(y\sim \boldsymbol{\beta}^\intercal\boldsymbol{x}\)</span> and <span class="math inline">\(y\sim \boldsymbol{\gamma}^\intercal\boldsymbol{z}\)</span>, it is necessarily true that</li>
+<li>Which of the following is <em>never</em> a well justified reason to choose <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span> by minimizing the mean of squared errors <span class="math inline">\(\frac{1}{N} \sum_{n=1}^N(y_n - \boldsymbol{x}_n^\intercal\boldsymbol{\beta})^2\)</span>?</li>
+<li>Let <span class="math inline">\(\underset{\boldsymbol{X}}{\boldsymbol{P}} = \boldsymbol{X}(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{X}^\intercal\)</span> denote the projection matrix onto the columns of <span class="math inline">\(\boldsymbol{X}\)</span>, where <span class="math inline">\(\boldsymbol{X}\)</span> is full rank. Which of the following expressions is false?</li>
+<li>Suppose that <span class="math inline">\(x_{n1}\)</span> and <span class="math inline">\(x_{n2}\)</span> are mean zero and very highly (but not perfectly) positively correlated, and we regress <span class="math inline">\(y_n \sim \beta_1 x_{n1} + \beta_2 x_{n2}\)</span>. Then</li>
+<li>Let <span class="math inline">\(\boldsymbol{S}_1, \ldots, \boldsymbol{S}_K\)</span> denote a partition of the space of regressors, so that for each <span class="math inline">\(n\)</span>, <span class="math inline">\(\boldsymbol{x}_n \in \boldsymbol{S}_k\)</span> for exactly one <span class="math inline">\(k\)</span>. Let <span class="math inline">\(z_{nk} = \mathbb{I}\left(\boldsymbol{x}_n \in S_k\right)\)</span>, and consider regressing <span class="math inline">\(y\sim \beta_1 z_{n1}+ \ldots + \beta_K z_{nK}\)</span>, without a constant. Assume that each <span class="math inline">\(\boldsymbol{S}_k\)</span> has at least one observation in it. Then, conditionally on the regressors,</li>
+<li>Under the normal assumption (A), under the null, the standard t-statistic based on <span class="math inline">\(\hat{\sigma}\)</span>…</li>
+<li>Under the homoskedastic assumption (B), under the null, the standard t-statistic based on <span class="math inline">\(\hat{\sigma}\)</span>…</li>
+<li>Under the heteroskedastic assumption (C), under the null, the standard t-statistic based on the sandwich covariance…</li>
+<li>Under the heteroskedastic assumption (C), inference that is incorrectly based on the homoskedastic assumption (B) will, in general…</li>
+<li>Let <span class="math inline">\({\boldsymbol{\beta}^{*}}:= \mathbb{E}\left[\boldsymbol{x}\boldsymbol{x}^\intercal\right]^{-1} \mathbb{E}\left[\boldsymbol{x}y\right]\)</span>. Under the machine learning assumption (D),</li>
+<li>In a machine learning problem with ridge regression, it is typically best practice to select the ridge parameter using</li>
+<li>When running ridge regression, as you <em>decrease</em> the ridge penalty parameter…</li>
+<li>For machine learning, a good reason to use a highly expressive spline basis is…</li>
+<li>For machine learning, you don’t want your spine basis to be too expressive because</li>
+<li>In Bayesian analysis, the ridge parameter corresponds to…</li>
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
