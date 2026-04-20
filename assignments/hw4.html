@@ -378,6 +378,98 @@ USSR ={}&amp; \hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\var
 \]</span> as <span class="math display">\[
 \phi = \frac{(RSSR - USSR) / Q}{USSR / (N - P - Q)}.
 \]</span> Note that when you include new regressors, the SSR must decrease, so <span class="math inline">\(USSR &lt; RSSR\)</span>. This simple formula shows that the F-test is checking whether the <em>relative decrease</em> in sum of squared residuals when you include the new regressors is large relative to the appropriate F-distribution.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> Plug the following expressions into the definintion of the F-statistic given in the lecture notes:</p>
+<p><span class="math display">\[
+\boldsymbol{A}=
+\begin{pmatrix}
+\boldsymbol{0}_{Q \times P} &amp; \boldsymbol{I}_Q
+\end{pmatrix}
+\quad
+a= \boldsymbol{0}_Q
+\quad
+\boldsymbol{X}^\intercal\boldsymbol{X}=
+    \begin{pmatrix}
+    \boldsymbol{X}_A^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_A^\intercal\boldsymbol{X}_B \\
+    \boldsymbol{X}_B^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_B^\intercal\boldsymbol{X}_B \\
+    \end{pmatrix}
+\quad
+\hat{\sigma}^2 = \hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB} / (N - P - Q).
+\]</span></p>
+<p>There is nothing wrong with just using this expression for testing. We are trying to get a simpler formula in order to have some intuition about F-tests of subsets of regressors.</p>
+<p><strong>(b)</strong></p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{\varepsilon}}_A ={}&amp; \underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{Y}
+\\={}&amp; \underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \left(
+\boldsymbol{X}_A \hat{\boldsymbol{\beta}}+  \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+ \hat{\boldsymbol{\varepsilon}}_{AB}
+\right)
+\\={}&amp; \underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+ \hat{\boldsymbol{\varepsilon}}_{AB},
+\end{aligned}
+\]</span> since <span class="math inline">\(\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_A = \boldsymbol{0}\)</span> and <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}_{AB}\)</span> is already orthogonal to <span class="math inline">\(\boldsymbol{X}_A\)</span>. Then</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{\varepsilon}}_A^\intercal\hat{\boldsymbol{\varepsilon}}_A ={}&amp;
+\left(\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+ \hat{\boldsymbol{\varepsilon}}_{AB} \right)^\intercal
+\left(\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+ \hat{\boldsymbol{\varepsilon}}_{AB} \right)
+\\={}&amp;
+\hat{\boldsymbol{\gamma}}^\intercal\boldsymbol{X}_B^\intercal\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+
+\hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB} +
+\hat{\boldsymbol{\gamma}}^\intercal\boldsymbol{X}_B^\intercal\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \hat{\boldsymbol{\varepsilon}}_{AB} +
+\hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}
+\\={}&amp;
+\hat{\boldsymbol{\gamma}}^\intercal\boldsymbol{X}_B^\intercal\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+
+\hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB} +
+\hat{\boldsymbol{\gamma}}^\intercal\boldsymbol{X}_B^\intercal\hat{\boldsymbol{\varepsilon}}_{AB} +
+\hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\boldsymbol{X}_B \hat{\boldsymbol{\gamma}}
+\\={}&amp;
+\hat{\boldsymbol{\gamma}}^\intercal\boldsymbol{X}_B^\intercal\underset{\boldsymbol{X}_A^\perp}{\boldsymbol{P}} \boldsymbol{X}_B \hat{\boldsymbol{\gamma}}+
+\hat{\boldsymbol{\varepsilon}}_{AB}^\intercal\hat{\boldsymbol{\varepsilon}}_{AB},
+\end{aligned}
+\]</span> because <span class="math inline">\(\hat{\boldsymbol{\varepsilon}}_{AB}\)</span> is orthogonal to <span class="math inline">\(\boldsymbol{X}_B\)</span>.</p>
+<p><strong>(c)</strong> We know that</p>
+<p><span class="math display">\[
+\hat{\gamma}= \begin{pmatrix}
+\boldsymbol{0}_{Q \times P} &amp; \boldsymbol{I}_Q
+\end{pmatrix}
+\begin{pmatrix}
+\hat{\boldsymbol{\beta}}\\
+\hat{\boldsymbol{\gamma}}
+\end{pmatrix},
+\]</span> and so by the properties of the multivariate normal distribution, <span class="math display">\[
+\hat{\boldsymbol{\gamma}}- \boldsymbol{\gamma}^*=
+\begin{pmatrix}
+\boldsymbol{0}_{Q \times P} &amp; \boldsymbol{I}_Q
+\end{pmatrix}
+\begin{pmatrix}
+\hat{\boldsymbol{\beta}}- {\boldsymbol{\beta}^{*}}\\
+\hat{\boldsymbol{\gamma}}- \boldsymbol{\gamma}^*
+\end{pmatrix}
+\sim
+\mathcal{N}\left(
+  \boldsymbol{0},
+  \sigma^2
+    \begin{pmatrix} \boldsymbol{0}_{Q \times P} &amp; \boldsymbol{I}_Q \end{pmatrix}
+    \begin{pmatrix}
+    \boldsymbol{X}_A^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_A^\intercal\boldsymbol{X}_B \\
+    \boldsymbol{X}_B^\intercal\boldsymbol{X}_A &amp; \boldsymbol{X}_B^\intercal\boldsymbol{X}_B \\
+    \end{pmatrix}^{-1}
+    \begin{pmatrix} \boldsymbol{0}_{P \times Q} \\ \boldsymbol{I}_Q \end{pmatrix}
+\right).
+\]</span> We have derived the same distribution two different ways, so the covariances must be equal.</p>
+<p>Note that this proof doesn’t depend on actually assuming that the data is normally distributed — it’s a mathematical proof of the identity of two matrices, using the fact that <em>if the data were normally distributed</em>, the matrices would have to coincide. As mentioned in the problem, the same result can be derived with Schur complements, which is in turn another way to derive the FWL theorem.</p>
+<p><strong>(d)</strong> This is just plugging in.</p>
+</div>
+</div>
 <!-------------------------------------->
 <!-------------------------------------->
 <!-------------------------------------->
@@ -412,11 +504,16 @@ y= \beta_0 + \boldsymbol{\beta}^\intercal\boldsymbol{x}+ \boldsymbol{\gamma}z+ \
 \]</span></p>
 <p><strong>(a)</strong> Using the FWL theorem, show that</p>
 <p><span class="math display">\[
-\hat{\tau}_{\mathrm{res}}= \frac{\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right)^\intercal\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}\right)}{\left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2}.
+\hat{\tau}_{\mathrm{res}}= \frac{
+  \left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right)^\intercal\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}\right)
+  }{
+    \left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2
+  }.
 \]</span></p>
 <p><strong>(b)</strong> Plugging in the full regression for <span class="math inline">\(\boldsymbol{Y}\)</span> into (a), show that</p>
 <p><span class="math display">\[
-\hat{\tau}_{\mathrm{res}}= \frac{\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right)^\intercal\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Z}\right)}{\left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2} \hat{\gamma}+ \hat{\tau}.
+\hat{\tau}_{\mathrm{res}}= \frac{\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right)^\intercal
+\left(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Z}\right)}{\left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2} \hat{\gamma}+ \hat{\tau}.
 \]</span></p>
 <p><strong>Hint</strong>: <span class="math inline">\(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{X}= \boldsymbol{0}\)</span> and <span class="math inline">\(\boldsymbol{D}^\intercal\hat{\boldsymbol{\varepsilon}}= \boldsymbol{0}\)</span>.</p>
 <p><strong>(c)</strong> Consider the regression <span class="math inline">\(z\sim \delta d+ \boldsymbol{x}^\intercal\boldsymbol{\alpha}\)</span>, with corresponding OLS estimates <span class="math inline">\(\hat{\delta}\)</span> and <span class="math inline">\(\hat{\boldsymbol{a}}\)</span>. Show that</p>
@@ -430,6 +527,48 @@ y= \beta_0 + \boldsymbol{\beta}^\intercal\boldsymbol{x}+ \boldsymbol{\gamma}z+ \
 <p><strong>(e)</strong> Suppose that we believe that the model is correctly specified, and that <span class="math inline">\(y\)</span> is independent of <span class="math inline">\(z\)</span> — that is, the omitted variable doesn’t affect the outcome. What does this imply about the omitted variable bias?</p>
 <p><strong>(f)</strong> Suppose we believe that the model is correctly specified, and that the treatment <span class="math inline">\(d\)</span> is independent of <span class="math inline">\(z\)</span> — that is, the omitted variable doesn’t affect whether or not an observation receives treatment. What does this imply about the omitted variable bias?</p>
 <p><strong>(g)</strong> In ordinary lanuage, what kinds of omitted variables do we need to worry about?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> The FWL theorem gives have that <span class="math inline">\(\hat{\tau}_{\mathrm{res}}\)</span> can be derived from the regresssion <span class="math inline">\(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}\sim \underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\tau\)</span>, so <span class="math display">\[
+\hat{\tau}_{\mathrm{res}}= \left( \boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right)^{-1}
+  \boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}.
+\]</span> The result then follows because <span class="math inline">\(\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} = \underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}\)</span> and <span class="math inline">\(\left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2\)</span> is a scalar.</p>
+<p><strong>(b)</strong> We just plug in for <span class="math inline">\(\boldsymbol{Y}\)</span> giving</p>
+<p><span class="math display">\[
+\begin{aligned}
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Y}={}&amp;
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \left(
+  \boldsymbol{X}\hat{\boldsymbol{\beta}}+ \boldsymbol{Z}\hat{\gamma}+ \boldsymbol{D}\hat{\tau}+ \hat{\boldsymbol{\varepsilon}}
+\right) \\={}&amp;
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}   \boldsymbol{X}\hat{\boldsymbol{\beta}}+
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Z}\hat{\gamma}+
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}  \boldsymbol{D}\hat{\tau}+
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \hat{\boldsymbol{\varepsilon}}
+\\={}&amp;
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Z}\hat{\gamma}+
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}}  \boldsymbol{D}\hat{\tau}+
+\boldsymbol{D}^\intercal\hat{\boldsymbol{\varepsilon}}.
+\\={}&amp;
+\boldsymbol{D}^\intercal\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{Z}\hat{\gamma}+
+\left\Vert\underset{\boldsymbol{X}^\perp}{\boldsymbol{P}} \boldsymbol{D}\right\Vert_2^2 \hat{\tau}.
+\end{aligned}
+\]</span></p>
+<p>Then plug in to (a).</p>
+<p><strong>(c)</strong> This is just another application of the FWL theorem.</p>
+<p><strong>(d)</strong> This is just plugging in.</p>
+<p><strong>(e)</strong> If <span class="math inline">\(y\)</span> is independent of <span class="math inline">\(z\)</span>, then we expect the true <span class="math inline">\(\gamma = 0\)</span>, and with a large amount of data <span class="math inline">\(\hat{\gamma}\approx 0\)</span>. Plugging into (d), we see that the omitted variable bias should be approximately zero.</p>
+<p><strong>(f)</strong> Reasoning as in (e), we expect the true <span class="math inline">\(\delta = 0\)</span>, and so <span class="math inline">\(\hat{\delta}\approx 0\)</span>. Plugging into (d), we see that the omitted variable bias should again be approximately zero.</p>
+<p><strong>(g)</strong> We need to worry about ommitted variables that are associated with both the response variable and the covariate whose coefficient we are interested in.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -449,6 +588,52 @@ y= \beta_0 + \boldsymbol{\beta}^\intercal\boldsymbol{x}+ \boldsymbol{\gamma}z+ \
 <p>Let <span class="math inline">\(\boldsymbol{X}= (x_1, \ldots x_N)^\intercal\)</span> denote the vector of class sizes. Let <span class="math inline">\(\bar{x}_{k}\)</span> denote the average size of class taken by student <span class="math inline">\(k(n)\)</span>. Let <span class="math inline">\(x'_n := x_n - \bar{x}_{k(n)}\)</span>. Using the FWL theorem, show that <span class="math inline">\(\hat{\beta}\)</span> in the regression <span class="math inline">\(y_n \sim x_n \beta + \boldsymbol{z}_n^\intercal\gamma\)</span> is equal to <span class="math inline">\(\hat{\beta}\)</span> in the regression <span class="math inline">\(y'_n \sim x'_n \beta\)</span>.</p>
 <p><strong>(d)</strong></p>
 <p>Some students tend to give higher ratings than others, and some students tend to take larger classes than others. Models like this are sometime called “fixed effects models,” since they estimate the student-to-student variability with “fixed” regression parameters. How would you interpret <span class="math inline">\(\hat{\gamma}_k\)</span>, the <span class="math inline">\(k\)</span>–th estimate coefficient in the regression <span class="math inline">\(y_n \sim x_n \beta + \boldsymbol{z}_n^\intercal\gamma\)</span>?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong></p>
+<p>This follows from</p>
+<p><span class="math display">\[
+\boldsymbol{Z}^\intercal\boldsymbol{Z}=
+\begin{pmatrix}
+N_1 &amp; 0 &amp; \ldots &amp; 0 \\
+\vdots &amp; N_2 &amp; \ldots &amp; 0 \\
+0 &amp; \ldots &amp; 0 &amp; N_K \\
+\end{pmatrix}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\boldsymbol{Z}^\intercal\boldsymbol{Y}=
+\begin{pmatrix}
+\sum_{m: k(n) = 1} y_m \\
+\vdots \\
+\sum_{m: k(n) = K} y_m \\
+\end{pmatrix},
+\]</span></p>
+<p>so that</p>
+<p><span class="math display">\[
+(\boldsymbol{Z}^\intercal\boldsymbol{Z})^{-1} \boldsymbol{Z}^\intercal\boldsymbol{Y}=
+\begin{pmatrix}
+\bar{y}_1 \\
+\vdots \\
+\bar{y}_K
+\end{pmatrix}.
+\]</span></p>
+<p>Apply the formula <span class="math inline">\(\underset{\boldsymbol{Z}}{\boldsymbol{P}} \boldsymbol{Y}= \boldsymbol{Z}(\boldsymbol{Z}^\intercal\boldsymbol{Z})^{-1} \boldsymbol{Z}^\intercal\boldsymbol{Y}\)</span>, using the fact that <span class="math inline">\(z_n\)</span> has a <span class="math inline">\(1\)</span> in row <span class="math inline">\(k(n)\)</span>, and so picks out element <span class="math inline">\(\bar{y}_{k(n)}\)</span> from <span class="math inline">\((\boldsymbol{Z}^\intercal\boldsymbol{Z})^{-1} \boldsymbol{Z}^\intercal\boldsymbol{Y}\)</span>.</p>
+<p><strong>(b)</strong></p>
+<p>This follows immediately from (a) and the fact that <span class="math inline">\(\underset{\boldsymbol{Z}^\perp}{\boldsymbol{P}}\boldsymbol{Y}= (\boldsymbol{I}- \underset{\boldsymbol{Z}}{\boldsymbol{P}}) \boldsymbol{Y}\)</span>.</p>
+<p><strong>(c)</strong></p>
+<p>By the same reasoning as (b) and (c), <span class="math inline">\(\boldsymbol{X}' = \underset{\boldsymbol{Z}^\perp}{\boldsymbol{P}} \boldsymbol{X}\)</span>. The result then folows from the FWL theorem.</p>
+<p><strong>(d)</strong> <span class="math inline">\(\hat{\gamma}_k\)</span> can be interpreted as an estimate of a students’ average tendency to give high ratings, approximately controlling for class size.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -478,6 +663,22 @@ y= \beta_0 + \boldsymbol{\beta}^\intercal\boldsymbol{x}+ \boldsymbol{\gamma}z+ \
 <li>Therefore dogs are easier to predict than cats.</li>
 </ul>
 <p>Is this a resonable conclusion? Why or why not?</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> This would mean that, on average, dogs are as easy to predict as cats.</p>
+<p><strong>(b)</strong> Due to regression to the mean, we expect <span class="math inline">\(\hat{\beta}\)</span> to be smaller than one, even though the two averages are the same.</p>
+<p><strong>(c)</strong> Just as in (b), we expect <span class="math inline">\(\hat{\gamma}\)</span> to be smaller than one.</p>
+<p><strong>(d)</strong> This is not a reasonable conclusion; we expect <span class="math inline">\(\hat{\beta}\)</span> to be smaller than one due to the randomness in the regrssor alone. How much lower will depend on the test set variability, and requires a more detailed analysis.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -497,15 +698,64 @@ A^{-1} - \frac{A^{-1} \boldsymbol{u}\boldsymbol{v}^\intercal A^{-1}}{1 + \boldsy
 \hat{\boldsymbol{\beta}}_{-n} = (\boldsymbol{X}_{-n}^\intercal\boldsymbol{X}_{-n})^{-1} \boldsymbol{X}_{-n}^\intercal\boldsymbol{Y}_{-n}
 = (\boldsymbol{X}^\intercal\boldsymbol{X}- \boldsymbol{x}_n \boldsymbol{x}_n^\intercal)^{-1} (\boldsymbol{X}^\intercal\boldsymbol{Y}- \boldsymbol{x}_n y_n)
 \]</span></p>
+<p><strong>Solution</strong></p>
+<p>This follows from <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}= \sum_{n=1}^N\boldsymbol{x}_n \boldsymbol{x}_n^\intercal\)</span> and <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{Y}= \sum_{n=1}^N\boldsymbol{x}_n y_n\)</span>.</p>
 <p><strong>b</strong></p>
 <p>Using the Woodbury formula, derive the following expression: <span class="math display">\[
 (\boldsymbol{X}^\intercal\boldsymbol{X}- \boldsymbol{x}_n \boldsymbol{x}_n^\intercal)^{-1} =
 (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} + \frac{(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n \boldsymbol{x}_n^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} }{1 - h_n}
 \]</span></p>
+<p><strong>Solution</strong></p>
+<p>Direct application of the formula with <span class="math inline">\(\boldsymbol{u}= \boldsymbol{x}_n\)</span> and <span class="math inline">\(\boldsymbol{v}= -\boldsymbol{x}_n\)</span> gives <span class="math display">\[
+(\boldsymbol{X}^\intercal\boldsymbol{X}- \boldsymbol{x}_n \boldsymbol{x}_n^\intercal)^{-1} =
+(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} +
+  \frac{(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n \boldsymbol{x}_n^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} }{1 - \boldsymbol{x}_n^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}\boldsymbol{x}_n}.
+\]</span></p>
+<p>Then recognize the leverage score.</p>
 <p><strong>c</strong></p>
 <p>Combine (a) and (b) to derive the following explicit expression for <span class="math inline">\(\hat{\boldsymbol{\beta}}_{-n}\)</span>:</p>
 <p><span class="math display">\[
 \hat{\boldsymbol{\beta}}_{-n} = \hat{\boldsymbol{\beta}}- (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n \frac{1}{1 - h_n} \hat{\varepsilon}_n.
+\]</span></p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We have</p>
+<p><span class="math display">\[
+(\boldsymbol{X}^\intercal\boldsymbol{X}- \boldsymbol{x}_n \boldsymbol{x}_n^\intercal)^{-1} \boldsymbol{X}^\intercal\boldsymbol{Y}=
+\hat{\beta}+
+  \frac{(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n \boldsymbol{x}_n^\intercal\hat{\beta}}{1 - h_n}.
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+(\boldsymbol{X}^\intercal\boldsymbol{X}- \boldsymbol{x}_n \boldsymbol{x}_n^\intercal)^{-1} \boldsymbol{x}_n y_n =
+(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1}  \boldsymbol{x}_n y_n + \frac{(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n h_n }{1 - h_n} y_n.
+\]</span></p>
+<p>Combining,</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{\boldsymbol{\beta}}_{-n} ={}&amp;
+\hat{\beta}+ (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n  \left(
+   \frac{\boldsymbol{x}_n^\intercal\hat{\beta}}{1 - h_n} - y_n - \frac{h_n }{1 - h_n} y_n
+\right)
+\\={}&amp;
+\hat{\beta}+ (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n  \left(
+   \frac{1 }{1 - h_n} \hat{y}_n - \left(1 + \frac{h_n }{1 - h_n} \right)y_n
+   \right)
+\\={}&amp;
+\hat{\beta}+ (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n  \left(
+   \frac{1 }{1 - h_n} \hat{y}_n - \frac{1 }{1 - h_n} y_n
+\right)
+\\={}&amp;
+\hat{\beta}- (\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n  \frac{1 }{1 - h_n} \hat{\varepsilon}_n
+\end{aligned}
 \]</span></p>
 <p><strong>d</strong></p>
 <p>Letting <span class="math inline">\(\hat{y}_{n,-n} = \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}_{-n}\)</span> denote the estimate of <span class="math inline">\(y_n\)</span> after deleting the <span class="math inline">\(n\)</span>–th observation. Using (c), derive the following explicit expression the change in <span class="math inline">\(\hat{y}_n\)</span> upon deleting the <span class="math inline">\(n\)</span>–th observation:</p>
@@ -513,6 +763,19 @@ A^{-1} - \frac{A^{-1} \boldsymbol{u}\boldsymbol{v}^\intercal A^{-1}}{1 + \boldsy
 \hat{y}_{n,-n} - \hat{y}_n = \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}_{-n} - \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}= -\frac{h_n}{1 - h_n} \hat{\varepsilon}_n.
 \]</span></p>
 <p>This shows that the effect of deleting observation <span class="math inline">\(n\)</span> on <span class="math inline">\(\hat{y}_n\)</span> is large only if both the residual and leverage score is large.</p>
+<p><strong>Solution</strong> Taking <span class="math inline">\(\boldsymbol{x}_n^\intercal\)</span> times each side of the result from <strong>c</strong> gives</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat{y}_{n,-n} ={}&amp; \boldsymbol{x}_n^\intercal\hat{\boldsymbol{\beta}}_{-n}
+\\={}&amp;
+\boldsymbol{x}_n^\intercal\hat{\beta}- \boldsymbol{x}_n^\intercal(\boldsymbol{X}^\intercal\boldsymbol{X})^{-1} \boldsymbol{x}_n  \frac{1 }{1 - h_n} \hat{\varepsilon}_n
+\\={}&amp;
+\hat{y}_n - \frac{h_n}{1 - h_n} \hat{\varepsilon}_n.
+\end{aligned}
+\]</span></p>
+<p>The result follows by subtracting <span class="math inline">\(\hat{y}_n\)</span> from both sides.</p>
+</div>
+</div>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
@@ -611,6 +874,23 @@ A^{-1} - \frac{A^{-1} \boldsymbol{u}\boldsymbol{v}^\intercal A^{-1}}{1 + \boldsy
 <li>Will this result produce a better fit to the data than simply regressing <span class="math inline">\(y_n \sim \boldsymbol{x}_n\)</span>? Why or why not?</li>
 <li>Do you think this result produce a useful prediction for new data? Why or why not?</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solutions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solutions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>(a)</strong> The new regressors are invertible linear transforms of the original regressors. This means <span class="math inline">\(\hat{\boldsymbol{Y}}\)</span> does not change, but the coefficients change.</p>
+<p><strong>(b)</strong> The new regressors are again invertible linear transforms of the original regressors. The difference is a linear combination of <code>height_norm</code> and <code>weight_norm</code>, so <span class="math inline">\(\boldsymbol{X}^\intercal\boldsymbol{X}\)</span> is not invertible, and <code>\betavhat</code> is not uniquely defined. <code>R</code> reports <code>NA</code> for coefficients that it cannot estimate.</p>
+<p><strong>(c)</strong> You can estimate the ratio because it is a nonlinear transformation of the regressors. With this new regressor, the fit can change. Including another regressor, no matter poorly associated with the response, can never make the error increase. Your colleague is incorrect.</p>
+<p><strong>(d)</strong> Since <span class="math inline">\(\boldsymbol{A}x_n\)</span> is a linear combination of <span class="math inline">\(\boldsymbol{x}_n\)</span>, it can never give a better fit than regressing on <span class="math inline">\(x_n\)</span> alone. (It can give a worse fit if <span class="math inline">\(\boldsymbol{A}\)</span> is lower rank than <span class="math inline">\(\boldsymbol{x}_n\)</span>.) Searching over all possible <span class="math inline">\(\boldsymbol{A}\)</span> will never give you a better fit than <span class="math inline">\(y_n \sim \boldsymbol{x}_n\)</span>. This is not a good idea for a research project.</p>
+<p><strong>(e)</strong> Since <span class="math inline">\(f(\boldsymbol{x}_n)\)</span> can be a nonlinear function, you can produce a better fit than regressing on <span class="math inline">\(\boldsymbol{x}_n\)</span> alone. In fact, the best possible fit among all possible functions is a highly expressive function which fits the data perfectly with zero error. You don’t need a neural network to identify this. Having zero error does not mean the fit is useful for anything — it likely overfits the training data and has poor predictive power on new data. This is not a good idea for a research project.</p>
+</div>
+</div>
 </section>
 <section id="references" class="level1" data-number="7">
 
