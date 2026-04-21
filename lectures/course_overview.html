@@ -241,7 +241,47 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 </ul></li>
 <li>Unit 2
 <ul>
-<li></li>
+<li>The logic of testing confidence intervals in general</li>
+<li>The selection of rejection regions</li>
+<li>Level and power</li>
+<li>Nulls and alternatives</li>
+<li>Statistical tests
+<ul>
+<li>The multivariate normal and its linear transformations</li>
+<li>How to construct tests of linear combinations of the OLS coefficients with the t-statistic</li>
+<li>Testing single entries as linear combinations as t-statistics</li>
+<li>Tests of multiple linear combinations of OLS coefficients via the F statistic</li>
+<li>Tests that sets of coefficients are zero as F statistics</li>
+</ul></li>
+<li>Four classes of assumptions, when they might apply, and what they imply
+<ul>
+<li>Normal errors
+<ul>
+<li>Assumed “true” parameters</li>
+<li>Rarely applies without good reason</li>
+<li>Distribution of OLS given in closed form for all N for fixed regressors</li>
+<li>Only assumption under which we have chi2, t distributions and F distributions</li>
+</ul></li>
+<li>Homoskedastic errors
+<ul>
+<li>Assumed “true” parameters</li>
+<li>Residuals have the same variance, which is more plausible that normality but often suspect</li>
+<li>Similar to the normal, but only asymptotically via the CLT</li>
+</ul></li>
+<li>Heteroskedastic errors
+<ul>
+<li>Assumed “true” parameters</li>
+<li>Residual variance can depend on x</li>
+<li>Similar to the normal asymptotically, but with different “sandwich” covariance</li>
+</ul></li>
+<li>Machine learning assumption
+<ul>
+<li>IID pairs (x, y)</li>
+<li>More appropriate for prediction problems, though IID assumption still need to be taken critically</li>
+<li>No “true” parameters, but there is a limiting value as N goes to infinity that plays the role of true parameters</li>
+<li>Inference is the same as in heteroskedastic errors</li>
+</ul></li>
+</ul></li>
 </ul></li>
 <li>Unit 3
 <ul>
@@ -264,8 +304,34 @@ gtag('config', 'G-MMK2VCM6EW', { 'anonymize_ip': true});
 <li>Why do we use ridge regression togeher with expressive basis functions?</li>
 </ul></li>
 </ul></li>
+<li>Unit 4
+<ul>
+<li>FWL theorem
+<ul>
+<li>Be able to apply it with guidance (as in the homework)</li>
+<li>Understand what it means for constants (centering regressors)</li>
+</ul></li>
+<li>Errors in regressors / regression to the mean
+<ul>
+<li>Recognizing that inference with OLS assumes that x is measured without noise</li>
+<li>If you have noise in your regressors, you underestimate the true effect exactly as in ridge regression</li>
+<li>Be able to recognize examples where you’re actually trying to measure the effect of something you only observe with noise</li>
+</ul></li>
+<li>Omitted variables
+<ul>
+<li>Why do we care for inference? Why don’t we care for prediction?</li>
+<li>When is omitted variable bias a problem? (When the omitted variable is associated with both the response and variable of interest — apply the FWL theorem)</li>
+<li>Understand why you can’t get around omitted variables by putting every possible regressor in the regression</li>
+</ul></li>
+<li>Influence and outliers
+<ul>
+<li>Whether something is an outlier depends strongly on context</li>
+<li>Understand the different kinds of influence of x outliers and y outliers</li>
+<li>Know how to diagnose (residuals for y, leverage for x)</li>
+<li>Know basic properties of leverage scores (between 0 and 1, sum to P)</li>
+</ul></li>
+</ul></li>
 </ul>
-<p>Unit 4 - FWL theorem - Be able to apply it with guidance (as in the homework) - Understand what it means for constants (centering regressors) - Errors in regressors / regression to the mean - Recognizing that inference with OLS assumes that x is measured without noise - If you have noise in your regressors, you underestimate the true effect exactly as in ridge regression - Be able to recognize examples where you’re actually trying to measure the effect of something you only observe with noise - Omitted variables - Why do we care for inference? Why don’t we care for prediction? - When is omitted variable bias a problem? (When the omitted variable is associated with both the response and variable of interest — apply the FWL theorem) - Understand why you can’t get around omitted variables by putting every possible regressor in the regression - Influence and outliers - Whether something is an outlier depends strongly on context - Understand the different kinds of influence of x outliers and y outliers - Know how to diagnose (residuals for y, leverage for x) - Know basic properties of leverage scores (between 0 and 1, sum to P)</p>
 
 
 
