@@ -39,7 +39,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-549806ee2085284f45b00abea8c6df48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-61b8630a7460f5ca6424850dd77b5673.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-57b703ef80590d21b33f7d22a2bbd8af.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -174,13 +174,9 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#interpretation-of-transforms-of-the-response" id="toc-interpretation-of-transforms-of-the-response" class="nav-link active" data-scroll-target="#interpretation-of-transforms-of-the-response"><span class="header-section-number">1</span> Interpretation of transforms of the response</a></li>
-  <li><a href="#bootstrap" id="toc-bootstrap" class="nav-link" data-scroll-target="#bootstrap"><span class="header-section-number">2</span> Bootstrap</a></li>
-  <li><a href="#simple-regressions" id="toc-simple-regressions" class="nav-link" data-scroll-target="#simple-regressions"><span class="header-section-number">3</span> Simple regressions</a></li>
-  <li><a href="#correlated-variables-and-the-lln" id="toc-correlated-variables-and-the-lln" class="nav-link" data-scroll-target="#correlated-variables-and-the-lln"><span class="header-section-number">4</span> Correlated variables and the LLN</a></li>
-  <li><a href="#open-answers" id="toc-open-answers" class="nav-link" data-scroll-target="#open-answers"><span class="header-section-number">5</span> Open answers</a></li>
-  <li><a href="#multiple-choice" id="toc-multiple-choice" class="nav-link" data-scroll-target="#multiple-choice"><span class="header-section-number">6</span> Multiple choice</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">7</span> References</a></li>
+  <li><a href="#correlated-variables-in-regressions" id="toc-correlated-variables-in-regressions" class="nav-link active" data-scroll-target="#correlated-variables-in-regressions"><span class="header-section-number">1</span> Correlated variables in regressions</a></li>
+  <li><a href="#correlated-variables-in-regressions-for-tests" id="toc-correlated-variables-in-regressions-for-tests" class="nav-link" data-scroll-target="#correlated-variables-in-regressions-for-tests"><span class="header-section-number">2</span> Correlated variables in regressions for tests</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">3</span> References</a></li>
   </ul>
 </nav>
     </div>
@@ -215,53 +211,115 @@ window.Quarto = {
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
-<section id="interpretation-of-transforms-of-the-response" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Interpretation of transforms of the response</h1>
-<p>Suppose I have data of the where <span class="math inline">\(n = 1, \ldots N\)</span> indexes households, <span class="math inline">\(y_n\)</span> is the expenditure on food in a time period (so that <span class="math inline">\(y_n &gt; 0\)</span> for all <span class="math inline">\(n\)</span>). Suppose that households are randomly selected to either receive food stamps (for which <span class="math inline">\(x_n = 1\)</span>) or to not receive food stamps (for which <span class="math inline">\(x_n = 0\)</span>). Also, suppose we measure household income <span class="math inline">\(z_n\)</span>.</p>
-<p><strong>(a)</strong></p>
-<p>Suppose we regress <span class="math inline">\(y_n \sim \beta_0 + \beta_1 x_n + \beta_2 z_n\)</span>. Let <span class="math inline">\(\hat{f}(x_, z) = \hat{\beta}_0 + \hat{\beta}_1 x+ \hat{\beta}_2 z\)</span> denote the fit.</p>
-<p>Using this regression, we might estimate the effect of food stamps on food expenditure by <span class="math inline">\(\hat{f}(1, z) - \hat{f}(0, z)\)</span>. How does this estimate depend on <span class="math inline">\(z\)</span>?</p>
-<p><strong>(b)</strong></p>
-<p>Suppose we regress <span class="math inline">\(\log y_n \sim \gamma_0 + \gamma_1 x_n + \gamma_2 z_n\)</span>. Let <span class="math inline">\(\hat{g}(x_, z) = \hat{\gamma}_0 + \hat{\gamma}_1 x+ \hat{\gamma}_2 z\)</span>.</p>
-<p>Using this regression, we might estimate the effect of food stamps on food expenditure by <span class="math inline">\(\exp(\hat{g}(1, z)) - \exp(\hat{g}(0, z))\)</span>. How does this estimate depend on <span class="math inline">\(z\)</span>?</p>
-<p><strong>(c)</strong></p>
-<p>The regressions in (a) and (b) make different implicit assumptions about how food stamps affect consumption for a particular household. State these assumptions in ordinary language.</p>
+<section id="correlated-variables-in-regressions" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Correlated variables in regressions</h1>
+<p>This problem is essentially just a special case of the “Eigendecomposition and covariances” problem from HW 3.</p>
+<p>Suppose that <span class="math inline">\(\mathrm{Var}\left(x\right) = 1\)</span>, <span class="math inline">\(\mathrm{Var}\left(x'\right) = 1\)</span>, and <span class="math inline">\(\mathrm{Cov}\left(x, x'\right) = \rho\)</span>. Let <span class="math inline">\(\boldsymbol{x}= (x, x')^\intercal\)</span>.</p>
+<p><strong>(a)</strong> Show that <span class="math display">\[
+\mathrm{Cov}\left(\begin{pmatrix}
+x\\
+x'
+\end{pmatrix}
+\right) =
+\begin{pmatrix}
+1 &amp; \rho \\
+\rho &amp; 1
+\end{pmatrix}.
+\]</span> Verify by direct calculation that the covariance matrix has eigenvectors <span class="math inline">\((1,1)^\intercal\)</span> and <span class="math inline">\((1, -1)^\intercal\)</span>, with eigenvales <span class="math inline">\(1 + \rho\)</span> and <span class="math inline">\(1 - \rho\)</span>, respectively.</p>
+<p><strong>(b)</strong> Suppose we run the regression <span class="math inline">\(y\sim \beta_1 x+ \beta_2 x'\)</span>. Using the eigenvectors from (a), define the new variables <span class="math display">\[
+\boldsymbol{z}:=
+\begin{pmatrix}
+s\\
+d
+\end{pmatrix} =
+\begin{pmatrix}
+1 &amp; 1 \\
+1 &amp; -1 \\
+\end{pmatrix}
+\begin{pmatrix}
+x\\
+x'
+\end{pmatrix}.
+\]</span> Here, <span class="math inline">\(s\)</span> stands for “sum” and <span class="math inline">\(d\)</span> for “difference.” Consider the regression <span class="math inline">\(y\sim \gamma_s s+ \gamma_d d\)</span>, with <span class="math inline">\(\hat{\boldsymbol{\gamma}}= (\gamma_s \gamma_d)^\intercal\)</span>. Using results from earlier in class, find an expression for <span class="math inline">\(\hat{\boldsymbol{\gamma}}\)</span> in terms of <span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>, assuming <span class="math inline">\(\left|\rho\right| &lt; 1\)</span>.</p>
+<p><strong>(c)</strong> Derive (b) a different way by writing</p>
+<p><span class="math display">\[
+\begin{aligned}
+\beta_1 x+ \beta_2 x' ={}&amp;
+\beta_1 \left(\frac{1}{2}x+ \frac{1}{2}x+ \frac{1}{2}x' - \frac{1}{2} x' \right) +
+\beta_2 \left(\frac{1}{2}x' + \frac{1}{2}x' + \frac{1}{2}x- \frac{1}{2}x\right),
+\end{aligned}
+\]</span> and grouping terms.</p>
+<p><strong>(d)</strong> Suppose that <span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{x}\right) = \boldsymbol{U}\Lambda \boldsymbol{U}^\intercal\)</span> is the eigendecomposition of a covariance matrix in general. Show that, in general, <span class="math inline">\(\mathrm{Cov}\left(\boldsymbol{U}^\intercal x\right)\)</span> is diagonal. This implies that <span class="math inline">\(\mathrm{Cov}\left(s, d\right) = 0\)</span>.</p>
+<p>Verify this directly: evaluate <span class="math inline">\(\mathrm{Var}\left(s\right)\)</span>, <span class="math inline">\(\mathrm{Var}\left(d\right)\)</span>, and <span class="math inline">\(\mathrm{Cov}\left(s, d\right)\)</span> in terms of <span class="math inline">\(\rho\)</span>.</p>
+<p><strong>(e)</strong> Find the limiting value of the regressor second moment matrix <span class="math inline">\(\frac{1}{N} \boldsymbol{Z}^\intercal\boldsymbol{Z}\)</span>. Use this to argue that, for large <span class="math inline">\(N\)</span>, under homoskedasticity,</p>
+<p><span class="math display">\[
+\sqrt{N} \left(
+\begin{pmatrix}
+  \hat{\gamma}_s\\
+  \hat{\gamma}_d
+\end{pmatrix}  -
+\begin{pmatrix}
+  \gamma^*_s\\
+  \gamma^*_d
+\end{pmatrix}
+\right)
+\sim
+\mathcal{N}\left(
+\begin{pmatrix}
+0 \\ 0
+\end{pmatrix},
+\frac{\sigma^2}{2}
+\begin{pmatrix}
+\frac{1}{1 + \rho} &amp; 0 \\
+0  &amp; \frac{1}{1 - \rho}
+\end{pmatrix}
+\right)
+\]</span></p>
+<p><strong>(f)</strong> Now, suppose that we have two highly positively correlated regressors, so that <span class="math inline">\(\rho \approx 1\)</span>. Using (e), argue that, for large <span class="math inline">\(N\)</span>,</p>
+<ul>
+<li><span class="math inline">\(\mathrm{Var}\left(\frac{1}{2} (\hat{\beta}_1 + \hat{\beta}_2)\right) \approx \sigma^2 / (4N)\)</span>, so the <em>average</em> of the two correlated regressors’ coefficients is well-estimated.</li>
+<li><span class="math inline">\(\mathrm{Var}\left(\frac{1}{2} (\hat{\beta}_1 - \hat{\beta}_2)\right) \approx \sigma^2 / (2N ( 1 - \rho))\)</span>, and <span class="math inline">\(1 - \rho \approx 0\)</span>, so the <em>difference</em> of the two correlated regressors’ coefficients is very poorly estimated.</li>
+<li>The estimates <span class="math inline">\(\hat{\beta}_1, \hat{\beta}_2\)</span> are <em>highly negatively</em> correlated when their regressors are <em>higly positively</em> correlated.</li>
+</ul>
+<p>Finally, argue that all this is reversed if <span class="math inline">\(x\)</span> and <span class="math inline">\(x'\)</span> are almost perfectly negatively correlated.</p>
+<p><strong>(g)</strong> Suppose you are now given a totally generic regression, <span class="math inline">\(y\sim \boldsymbol{\beta}^\intercal\boldsymbol{r}\)</span> for some regressors <span class="math inline">\(\boldsymbol{r}\)</span>. Select two of these regressors, which we assume are <span class="math inline">\(r_1\)</span> and <span class="math inline">\(r_2\)</span> without loss of generality, and assume the regression has a constant. Suppose you are interested in the joint distribution of <span class="math inline">\(\hat{\beta}_1\)</span> and <span class="math inline">\(\hat{\beta}_2\)</span>. Convert this problem to an instance of our simple problem for large <span class="math inline">\(N\)</span> above by</p>
+<ol type="1">
+<li>Applying the FWL theorem to remove the effect of the other regressors, and</li>
+<li>Re-scaling the regressors so they have approximately unit variance.</li>
+</ol>
+<p>In this sense, the above toy problem, together with the FWL theorem, gives a fairly complete intuition of the effect of correlated regressors on pairs of coefficient estimates.</p>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 <!------------------------------------------------------------>
 </section>
-<section id="bootstrap" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Bootstrap</h1>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
+<section id="correlated-variables-in-regressions-for-tests" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Correlated variables in regressions for tests</h1>
+<p>Following the previous problem, with a change in notation, suppose that we have a two-variable regression (possibly after the application of the FWL theorem and normalization), <span class="math inline">\(y\sim \beta_1 x+ \beta_2 x'\)</span>. For this problem, we will assume that <span class="math inline">\(\rho \approx 0\)</span>, so that we assume that we can approximately substitute <span class="math inline">\(x\)</span> and <span class="math inline">\(x'\)</span> with one another.</p>
+<p>Suppose that <span class="math inline">\(y_n = {\beta^{*}}x_n + \varepsilon_n \approx {\beta^{*}}x'_n + \varepsilon_n\)</span>, for mean zero <span class="math inline">\(\varepsilon_n\)</span>, and <span class="math inline">\(N\)</span> is large. Suppose in this problem that <span class="math inline">\({\beta^{*}}= 1\)</span>; all that really matters is that it’s not zero.</p>
+<p>As shown above, we know that <span class="math display">\[
+\begin{aligned}
+\hat{y}_n ={}&amp; \hat{\beta}_1 x_n + \hat{\beta}_2 x'_n + \hat{\varepsilon}_n
+\\={}&amp;
+\frac{1}{2} (\hat{\beta}_1 + \hat{\beta}_2) (x_n + x'_n) +
+\frac{1}{2} (\hat{\beta}_1 - \hat{\beta}_2) (x_n - x'_n) + \hat{\varepsilon}_n.
+\end{aligned}
+\]</span></p>
+<p>We showed above that <span class="math inline">\(\frac{1}{2} (\hat{\beta}_1 - \hat{\beta}_2)\)</span> is very poorly estimated, that <span class="math inline">\(\frac{1}{2} (\hat{\beta}_1 + \hat{\beta}_2) \approx {\beta^{*}}\)</span> and is very well estimated, and that <span class="math inline">\(\frac{1}{2} (\hat{\beta}_1 + \hat{\beta}_2)\)</span> and <span class="math inline">\(\frac{1}{2} (\hat{\beta}_1 - \hat{\beta}_2)\)</span> are approximately independent. This means that, for any random choice of dataset,</p>
+<ul>
+<li><span class="math inline">\(\frac{1}{2} (\hat{\beta}_1 + \hat{\beta}_2) \approx {\beta^{*}}\)</span></li>
+<li><span class="math inline">\(\frac{1}{2} (\hat{\beta}_1 - \hat{\beta}_2)\)</span> could be essentially anything.</li>
+</ul>
+<p>For all the problems below, plot the answers on a 2D plot with <span class="math inline">\(\hat{\beta}_1\)</span> on the x-axis and <span class="math inline">\(\hat{\beta}_2\)</span> on the y-axis.</p>
+<p><strong>(a)</strong> Plot the 2d sampling distribution of <span class="math inline">\(\hat{\beta}_1\)</span> and <span class="math inline">\(\hat{\beta}_2\)</span>.</p>
+<p><strong>(b)</strong> Note that <span class="math inline">\(\hat{\beta}_1 = \frac{1}{2} (\hat{\beta}_1 + \hat{\beta}_2) + \frac{1}{2} (\hat{\beta}_1 - \hat{\beta}_2) (x_n - x'_n)\)</span>. Is the marginal variance of <span class="math inline">\(\hat{\beta}_1\)</span> very high or very small? Same question for <span class="math inline">\(\hat{\beta}_2\)</span>.</p>
+<p><strong>(c)</strong> Taking your answer for (b) into account, plot the acceptance region for a t-test of the null <span class="math inline">\(H_0: \beta_1 = 0\)</span>. How well-powered is your test against <span class="math inline">\({\beta^{*}}= 1\)</span>? Same for <span class="math inline">\(H_0: \beta_2 = 0\)</span>.</p>
+<p><strong>(d)</strong> Plot the acceptance region for a t-test of the null <span class="math inline">\(H_0: \frac{1}{2} (\beta_1 + \beta_2) = 0\)</span>.<br>
+<strong>Hint:</strong> re-do (a), but if <span class="math inline">\({\beta^{*}}\)</span> were <span class="math inline">\(0\)</span> rather than <span class="math inline">\(1\)</span>. How well-powered is your test against <span class="math inline">\(\frac{1}{2} (\beta_1 + \beta_2) = {\beta^{*}}\)</span>?</p>
+<p><strong>(e)</strong> Plot the acceptance region for a t-test of the null <span class="math inline">\(H_0: \frac{1}{2} (\beta_1 - \beta_2) = 0\)</span>. <strong>Hint:</strong> How would your answer in (a) have changed if we added soething of the form <span class="math inline">\({\beta^{*}}_d (x_n - x'_n)\)</span> to <span class="math inline">\(y_n\)</span>? In our setup, How well-powered is your test?</p>
+<p><strong>(f)</strong> Plot the acceptance region for an F-test of the null that <span class="math inline">\(\beta_1 = 0\)</span> and <span class="math inline">\(\beta_2 = 0\)</span>. In our setup, how well-powered is this test?</p>
 </section>
-<section id="simple-regressions" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Simple regressions</h1>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="correlated-variables-and-the-lln" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Correlated variables and the LLN</h1>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="open-answers" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Open answers</h1>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="multiple-choice" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Multiple choice</h1>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-<!------------------------------------------------------------>
-</section>
-<section id="references" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> References</h1>
+<section id="references" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> References</h1>
 
 
 </section>
